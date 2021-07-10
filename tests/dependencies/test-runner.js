@@ -1,4 +1,4 @@
-import { assert, suite } from './test-config.js'
+import { assert, suite } from '../test-config.js'
 
 const testRunner = suite('TestRunner')
 
