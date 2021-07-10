@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "description": "Domain code for evermind",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tests": "uvu ./tests"
   },
   "repository": {
     "type": "git",
