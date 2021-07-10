@@ -1,0 +1,23 @@
+{
+  "name": "evermind-domain",
+  "version": "0.1.0",
+  "description": "Domain code for evermind",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ferllop/evermind-domain.git"
+  },
+  "keywords": [
+    "evermaind",
+    "domain"
+  ],
+  "author": "Ferran Llop Alonso",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/ferllop/evermind-domain/issues"
+  },
+  "homepage": "https://github.com/ferllop/evermind-domain#readme"
+}
