@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/ferllop/evermind-domain/issues"
   },
-  "homepage": "https://github.com/ferllop/evermind-domain#readme"
+  "homepage": "https://github.com/ferllop/evermind-domain#readme",
+  "devDependencies": {
+    "uvu": "^0.5.1"
+  }
 }
