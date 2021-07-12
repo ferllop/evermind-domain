@@ -1,1 +1,1 @@
-export { precondition } from 'preconditions'
+export { precondition, PreconditionError } from 'preconditions'
