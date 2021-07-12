@@ -1,0 +1,1 @@
+export { precondition } from 'preconditions'
