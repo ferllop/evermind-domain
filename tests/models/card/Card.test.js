@@ -1,7 +1,7 @@
-import { Card } from '../../src/models/card/Card.js'
-import { WrittenAnswer } from '../../src/models/card/WrittenAnswer.js'
-import { WrittenQuestion } from '../../src/models/card/WrittenQuestion.js'
-import { assert, suite } from '../test-config.js'
+import { Card } from '../../../src/models/card/Card.js'
+import { WrittenAnswer } from '../../../src/models/card/WrittenAnswer.js'
+import { WrittenQuestion } from '../../../src/models/card/WrittenQuestion.js'
+import { assert, suite } from '../../test-config.js'
 
 const card = suite('Card')
 

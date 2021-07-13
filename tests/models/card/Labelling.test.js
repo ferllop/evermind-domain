@@ -1,6 +1,6 @@
-import { PreconditionError } from '../../src/lib/preconditions.js'
-import { Labelling } from '../../src/models/card/Labelling.js'
-import { assert, suite } from '../test-config.js'
+import { PreconditionError } from '../../../src/lib/preconditions.js'
+import { Labelling } from '../../../src/models/card/Labelling.js'
+import { assert, suite } from '../../test-config.js'
 
 const labelling = suite('Labelling')
 

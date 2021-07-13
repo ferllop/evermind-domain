@@ -1,5 +1,5 @@
-import { Subscription } from '../../src/models/subscription/Subscription.js'
-import { assert, suite } from '../test-config.js'
+import { Subscription } from '../../../src/models/subscription/Subscription.js'
+import { assert, suite } from '../../test-config.js'
 
 const subscription = suite('Subscription')
 
