@@ -1,4 +1,4 @@
-import { Enum } from '../helpers/Enum.js'
+import { Enum } from '../../helpers/Enum.js'
 
 export class Level extends Enum {
     static LEVEL_0 = new Level(0)

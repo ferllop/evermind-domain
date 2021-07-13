@@ -1,5 +1,5 @@
-import { precondition } from '../lib/preconditions.js'
-import { Hour } from './Hour.js'
+import { precondition } from '../../lib/preconditions.js'
+import { Hour } from '../value/Hour.js'
 import { Level } from './Level.js'
 
 export class Subscription {

@@ -1,5 +1,5 @@
-import { Level } from '../../src/models/Level.js'
-import { assert, suite } from '../test-config.js'
+import { Level } from '../../../src/models/subscription/Level.js'
+import { assert, suite } from '../../test-config.js'
 
 const level = suite('Level')
 

@@ -1,4 +1,4 @@
-import { precondition } from '../lib/preconditions.js'
+import { precondition } from '../../lib/preconditions.js'
 
 export class Labelling {
     static LABEL_LIST_SEPARATOR = ','

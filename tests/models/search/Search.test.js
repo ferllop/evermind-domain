@@ -1,6 +1,6 @@
 import { PreconditionError } from'preconditions'
-import { Search } from'../../src/models/Search.js'
-import { assert, suite } from'../test-config.js'
+import { Search } from'../../../src/models/search/Search.js'
+import { assert, suite } from'../../test-config.js'
 
 const search = suite('Search')
 
