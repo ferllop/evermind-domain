@@ -1,4 +1,4 @@
-import { precondition } from '../lib/preconditions.js'
+import { precondition } from '../../lib/preconditions.js'
 
 export class Hour {
     /**@type {string} */

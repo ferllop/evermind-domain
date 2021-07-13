@@ -1,5 +1,5 @@
 import { precondition } from '../../lib/preconditions.js'
-import { Labelling } from '../Labelling.js'
+import { Labelling } from '../card/Labelling.js'
 import { Token } from './Token.js'
 
 export class Search {

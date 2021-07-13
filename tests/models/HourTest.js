@@ -1,5 +1,5 @@
 import { PreconditionError } from '../../src/lib/preconditions.js'
-import { Hour } from '../../src/models/Hour.js'
+import { Hour } from '../../src/models/value/Hour.js'
 import { assert, suite } from '../test-config.js'
 
 const hour = suite("Hour")
