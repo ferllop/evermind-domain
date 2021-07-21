@@ -17,14 +17,13 @@ level('should know which level is previous', () => {
 
 level('should return itself when asking about next when level is last', () => {
     /**@type {Level}*/
-    const lastLevel = Level.values()[Level.values().length -1]
-
+    const lastLevel = Level.getValues()[Level.getValues().length -1]
     assert.equal(lastLevel.next(), lastLevel)
 })
 
 level('should return itself when asking about previous when level is the first', () => {
     /**@type {Level}*/
-    const firstLevel = Level.values()[0]
+    const firstLevel = Level.getValues()[0]
     assert.equal(firstLevel.previous(), firstLevel)
 })
 

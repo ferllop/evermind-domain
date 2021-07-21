@@ -1,62 +1,80 @@
+import { precondition } from '../../lib/preconditions.js'
 import { Answer } from './Answer.js'
 import { Labelling } from './Labelling.js'
 import { Question } from './Question.js'
+import { WrittenAnswer } from './WrittenAnswer.js'
+import { WrittenQuestion } from './WrittenQuestion.js'
 
-export class Card{
+export class Card {
 
     /**@type {string} */
-    authorID
-    
+    #authorID
+
     /**@type {Question} */
-    question
-    
+    #question
+
     /**@type {Answer} */
-    answer
+    #answer
 
     /**@type {Labelling} */
-    labelling;
+    #labelling
 
     /**
-     * 
      * @param {string} authorID 
-     * @param {Question} question 
-     * @param {Answer} answer 
-     * @param {Labelling | string[] | string} labels 
+     * @param {string} question 
+     * @param {string} answer 
+     * @param {string[]} labels 
      */
-    constructor(authorID, question, answer, labels){
-        this.authorID = authorID;
-        this.question = question;
-        this.answer = answer;
-
-        if(labels instanceof Labelling) {
-            this.labelling = labels
-        } else {
-            this.labelling = new Labelling(labels);
-        }
+    constructor(authorID, question, answer, labels) {
+        precondition(Card.isValid(authorID, question, answer, labels))
+        this.#authorID = authorID
+        this.#question = new WrittenQuestion(question)
+        this.#answer = new WrittenAnswer(answer)
+        this.#labelling = new Labelling(labels)
     }
 
     /**@returns {Card} */
-    clone(){
-        return new Card(this.getAuthorID(), this.getQuestion(), this.getAnswer(), this.getLabelling())
+    clone() {
+        return new Card(
+            this.getAuthorID(),
+            this.getQuestion().getQuestion(),
+            this.getAnswer().getAnswer(),
+            this.getLabelling().getLabels()
+        )
     }
 
     /**@returns {string} */
     getAuthorID() {
-        return this.authorID;
+        return this.#authorID
     }
 
     /**@returns {Question} */
     getQuestion() {
-        return this.question;
+        return this.#question
     }
 
     /**@returns {Answer} */
     getAnswer() {
-        return this.answer;
+        return this.#answer
     }
 
     /**@returns {Labelling} */
     getLabelling() {
-        return this.labelling;
+        return this.#labelling
     }
+
+    /**
+     * @param {string} authorID 
+     * @param {string} question 
+     * @param {string} answer 
+     * @param {string[]} labels 
+     * @returns {boolean}
+     */
+    static isValid(authorID, question, answer, labels) {
+        return authorID &&
+            WrittenQuestion.isValid(question) &&
+            WrittenAnswer.isValid(answer) &&
+            Labelling.areValid(labels)
+    }
+
 }

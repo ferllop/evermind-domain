@@ -66,4 +66,11 @@ export class Labelling {
     static isValid(label) {
         return ! (/.*[^-,\w\s].*/.test(label))
     }
+
+    /**
+     * @param {string[]} labels
+     * @returns {boolean} */
+     static areValid(labels) {
+        return labels.every(label => Labelling.isValid(label))
+    }
 }

@@ -1,3 +1,4 @@
+import { precondition } from '../../lib/preconditions.js'
 import { Answer } from './Answer.js'
 
 export class WrittenAnswer extends Answer {
@@ -7,6 +8,7 @@ export class WrittenAnswer extends Answer {
     /**@param {string} answer */
     constructor(answer) {
         super()
+        precondition(!!answer)
         this.answer = answer
     }
 
@@ -15,5 +17,14 @@ export class WrittenAnswer extends Answer {
      */
     getAnswer() {
         return this.answer
+    }
+
+
+    /**
+     * @param {string} answer 
+     * @returns {boolean}
+     */
+     static isValid(answer) {
+        return Boolean(answer)
     }
 }

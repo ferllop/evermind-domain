@@ -1,6 +1,9 @@
 import { Enum } from '../../helpers/Enum.js'
 
 export class Level extends Enum {
+    /**@type {Level[]} */
+    static #values = []
+
     static LEVEL_0 = new Level(0)
     static LEVEL_1 = new Level(1)
     static LEVEL_2 = new Level(3)
@@ -15,7 +18,7 @@ export class Level extends Enum {
 
     /**@param {number} value */
     constructor(value) {
-        super()
+        super(Level.getValues())
         this.#value = value
     }
 
@@ -29,7 +32,7 @@ export class Level extends Enum {
         if (this.isLast()) {
             return this
         }
-        return Level.values()[this.ordinal() + 1]
+        return Level.getValues()[this.ordinal() + 1]
     }
 
     /**@returns {Level} */
@@ -37,7 +40,18 @@ export class Level extends Enum {
         if (this.ordinal() == 0) {
             return this
         }
-        return Level.values()[this.ordinal() - 1]
+        return Level.getValues()[this.ordinal() - 1]
+    }
+
+    /** @returns {Level[]} */
+    static getValues() {
+        return Level.#values
+    }
+
+
+    /**@returns {boolean} */
+    isLast() {
+        return this.ordinal() == Level.getValues().length - 1
     }
 
 }
