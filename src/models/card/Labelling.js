@@ -71,6 +71,6 @@ export class Labelling {
      * @param {string[]} labels
      * @returns {boolean} */
      static areValid(labels) {
-        return labels.every(label => Labelling.isValid(label))
+        return labels.length > 0 && labels.every(label => Labelling.isValid(label))
     }
 }

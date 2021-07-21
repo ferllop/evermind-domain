@@ -14,11 +14,12 @@ export class Storable {
     /**
      * @param {string} table 
      * @param {object} dto 
+     * @param {Id} id
      */
-    constructor(table, dto, id) {
+    constructor(table, dto, id = null) {
         this.#table = table
         this.#dto = dto
-
+        this.#id = id
     }
 
     /** @returns {string} */

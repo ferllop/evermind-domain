@@ -71,7 +71,7 @@ export class Card {
      * @returns {boolean}
      */
     static isValid(authorID, question, answer, labels) {
-        return authorID &&
+        return Boolean(authorID) &&
             WrittenQuestion.isValid(question) &&
             WrittenAnswer.isValid(answer) &&
             Labelling.areValid(labels)

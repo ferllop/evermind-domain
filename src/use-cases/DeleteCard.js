@@ -8,7 +8,7 @@ export class DeleteCardUseCase {
      */
     execute(id) {
         if (!id) {
-            throw new DomainError(ErrorType.DATA_FROM_USE_CASE_NOT_VALID)
+            throw new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
         }
 
         return new CardController().deleteCard(id)

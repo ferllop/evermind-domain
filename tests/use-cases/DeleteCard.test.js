@@ -1,3 +1,5 @@
+import { DomainError } from '../../src/errors/DomainError.js'
+import { ErrorType } from '../../src/errors/ErrorType.js'
 import { CreateCardUseCase } from '../../src/use-cases/CreateCard.js'
 import { DeleteCardUseCase } from '../../src/use-cases/DeleteCard.js'
 import { ReadCardUseCase } from '../../src/use-cases/ReadCard.js'
@@ -14,6 +16,12 @@ deleteCard('given a card, when execute this use case, the card should be deleted
 
 deleteCard('given unexisting card id, when execute this use case, it should return false', () => {
     assert.is(new DeleteCardUseCase().execute('not-existing-id'), false)
+})
+
+deleteCard('given invalid id, should throw an INPUT_DATA_NOT_VALID DomainError', () => {
+    assert.throws(() => new DeleteCardUseCase().execute(''),
+        error => error instanceof DomainError && error.getType() === ErrorType.INPUT_DATA_NOT_VALID
+    )
 })
 
 deleteCard.run()

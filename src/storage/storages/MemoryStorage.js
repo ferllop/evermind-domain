@@ -44,7 +44,7 @@ class Table {
     update(storable) {
         precondition(storable.hasId())
         if (this.#rows.has(storable.getId())) {
-            this.#rows.set(storable.getId(), storable)
+            this.#rows.set(storable.getId(), storable.getDto())
             return true
         }
         return false
@@ -132,5 +132,9 @@ export class MemoryStorage {
 
     hasTable(table) {
         return this.#tables.has(table)
+    }
+
+    getTables() {
+        return this.#tables
     }
 }

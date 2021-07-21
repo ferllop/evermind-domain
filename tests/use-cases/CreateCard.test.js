@@ -14,16 +14,11 @@ createCard('given data representing a card, when execute this use case, the card
 
 createCard('given wrong card data, when execute this use case, it should throw a DomainError with DATA_NOT_VALID code', () => {
     const card = CardMother.dto()
-    try {
-        new CreateCardUseCase().execute({
-            ...CardMother.dto(), 
-            authorID: ''
-        })
-        assert.unreachable()
-    } catch (error) {
-        assert.instance(error, DomainError)
-        assert.is(error.getType(), ErrorType.INPUT_DATA_NOT_VALID)
-    }
+    assert.throws(
+        () => new CreateCardUseCase().execute({...CardMother.dto(), authorID: ''}),
+        error => error instanceof DomainError &&
+            error.getType() === ErrorType.INPUT_DATA_NOT_VALID
+    )
 })
 
 createCard.run()

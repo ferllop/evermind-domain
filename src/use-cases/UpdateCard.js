@@ -9,7 +9,7 @@ export class UpdateCardUseCase {
      * @param {object} dto 
      */
     execute(id, dto) {
-        if (!Boolean(id) && !CardMapper.isDtoValid(dto)) {
+        if (!Boolean(id) || !CardMapper.isDtoValid(dto)) {
             throw new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
         }
         return new CardController().updateCard(id, dto)

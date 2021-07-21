@@ -8,7 +8,7 @@ export class CardMapper {
      * @returns {boolean} 
      */
     static isDtoValid(dto) {
-        return dto && Card.isValid(dto.authorID, dto.question, dto.answer, dto.labelling)
+        return Boolean(dto) && Card.isValid(dto.authorID, dto.question, dto.answer, dto.labelling)
     }
 
     /** 
