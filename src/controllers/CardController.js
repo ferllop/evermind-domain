@@ -1,21 +1,15 @@
-import '../models/card/CardDto.js'
 import { Card } from '../models/card/Card.js'
+import { CardRepository } from '../repositories/CardRepository.js'
 import { MemoryStorage } from '../storage/storages/MemoryStorage.js'
-import { CardMapper } from '../storage/storables/CardMapper.js'
-import { Storable } from '../storage/Storable.js'
-import { precondition } from '../lib/preconditions.js'
 
 export class CardController {
-    static CARD_TABLE = 'cards'
 
     /**
      * @param {object} dto 
      * @returns {Id}
      */
     storeCard(dto) {
-        precondition(CardMapper.isDtoValid(dto))
-        const card = new Storable(CardController.CARD_TABLE, dto)
-        return MemoryStorage.getInstance().create(card)
+        return new CardRepository(MemoryStorage.getInstance()).storeCard(dto)
     }
 
     /** 
@@ -23,9 +17,7 @@ export class CardController {
      * @returns {boolean}
      * */
     deleteCard(id) {
-        precondition(Boolean(id))
-        const storable = new Storable(CardController.CARD_TABLE).setId(id)
-        return MemoryStorage.getInstance().delete(storable)
+        return new CardRepository(MemoryStorage.getInstance()).deleteCard(id)
     }
 
     /** 
@@ -33,13 +25,7 @@ export class CardController {
      * @returns {Card}
      */
     retrieveCard(id) {
-        precondition(Boolean(id))
-        const storable = new Storable(CardController.CARD_TABLE).setId(id)
-        const result = MemoryStorage.getInstance().read(storable)
-        if (!result || !CardMapper.isDtoValid(result.getDto())) {
-            return null
-        }
-        return CardMapper.fromDto(result.getDto())
+        return new CardRepository(MemoryStorage.getInstance()).retrieveCard(id)
     }
 
     /**
@@ -48,9 +34,7 @@ export class CardController {
      * @returns {boolean}
      */
     updateCard(id, dto) {
-        precondition(Boolean(id) && CardMapper.isDtoValid(dto))
-        const storable = new Storable(CardController.CARD_TABLE, dto, id)
-        return MemoryStorage.getInstance().update(storable)
+        return new CardRepository(MemoryStorage.getInstance()).updateCard(id, dto)
     }
 
 }
