@@ -8,14 +8,14 @@ import { assert, suite } from '../test-config.js'
 
 const deleteCard = suite("DeleteCard UseCase")
 
-deleteCard('given a card, when execute this use case, the card should be deleted from storage', () => {
+deleteCard('given a card, when execute this use case, then return true and the card should be deleted from storage', () => {
     const id = new CreateCardUseCase().execute(CardMother.dto())
     assert.ok(new DeleteCardUseCase().execute(id))
     assert.is(new ReadCardUseCase().execute(id), null)
 })
 
 deleteCard('given unexisting card id, when execute this use case, it should return false', () => {
-    assert.is(new DeleteCardUseCase().execute('not-existing-id'), false)
+    assert.not.ok(new DeleteCardUseCase().execute('not-existing-id'))
 })
 
 deleteCard('given invalid id, should throw an INPUT_DATA_NOT_VALID DomainError', () => {

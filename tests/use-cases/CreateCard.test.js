@@ -6,6 +6,12 @@ import { CardMother } from '../models/card/CardMother.js'
 import { assert, suite } from '../test-config.js'
 const createCard = suite("CreateCard UseCase")
 
+createCard('given data representing a card, when execute this use case, an valid id should be returned as a string', () => {
+    const id = new CreateCardUseCase().execute(CardMother.dto())
+    assert.type(id, 'string')
+    assert.ok(id.length > 0)
+})
+
 createCard('given data representing a card, when execute this use case, the card should remain in storage', () => {
     const id = new CreateCardUseCase().execute(CardMother.dto())
     const card = new ReadCardUseCase().execute(id)
