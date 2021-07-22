@@ -1,8 +1,8 @@
-import { Storable } from './Storable.js'
-import '../models/value/Id.js'
+import { Storable } from '../storables/Storable.js'
+import '../../models/value/Id.js'
 
 /** @interface */
-export class Storage {
+export class Datastore {
 
     /** 
      * @param {Storable} storable

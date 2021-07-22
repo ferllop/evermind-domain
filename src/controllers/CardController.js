@@ -1,6 +1,6 @@
 import { Card } from '../models/card/Card.js'
-import { CardRepository } from '../repositories/CardRepository.js'
-import { MemoryStorage } from '../storage/storages/MemoryStorage.js'
+import { CardRepository } from '../storage/repositories/CardRepository.js'
+import { InMemoryDatastore } from '../storage/datastores/InMemoryDatastore.js'
 
 export class CardController {
 
@@ -9,7 +9,7 @@ export class CardController {
      * @returns {Id}
      */
     storeCard(dto) {
-        return new CardRepository(MemoryStorage.getInstance()).storeCard(dto)
+        return new CardRepository(InMemoryDatastore.getInstance()).storeCard(dto)
     }
 
     /** 
@@ -17,7 +17,7 @@ export class CardController {
      * @returns {boolean}
      * */
     deleteCard(id) {
-        return new CardRepository(MemoryStorage.getInstance()).deleteCard(id)
+        return new CardRepository(InMemoryDatastore.getInstance()).deleteCard(id)
     }
 
     /** 
@@ -25,7 +25,7 @@ export class CardController {
      * @returns {Card}
      */
     retrieveCard(id) {
-        return new CardRepository(MemoryStorage.getInstance()).retrieveCard(id)
+        return new CardRepository(InMemoryDatastore.getInstance()).retrieveCard(id)
     }
 
     /**
@@ -34,7 +34,7 @@ export class CardController {
      * @returns {boolean}
      */
     updateCard(id, dto) {
-        return new CardRepository(MemoryStorage.getInstance()).updateCard(id, dto)
+        return new CardRepository(InMemoryDatastore.getInstance()).updateCard(id, dto)
     }
 
 }

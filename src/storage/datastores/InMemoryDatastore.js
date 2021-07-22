@@ -1,7 +1,7 @@
 import { precondition } from '../../lib/preconditions.js'
 import { uuid } from '../../lib/uuid.js'
-import { Storable } from '../Storable.js'
-import { Storage } from '../Storage.js'
+import { Storable } from '../storables/Storable.js'
+import { Datastore } from './Datastore.js'
 
 class Table {
     /**@type {Map<string, object>} */
@@ -61,30 +61,30 @@ class Table {
 }
 
 /**
- * @implements {Storage}
+ * @implements {Datastore}
  */
-export class MemoryStorage {
+export class InMemoryDatastore {
     
-     /** @type {MemoryStorage} */
+     /** @type {InMemoryDatastore} */
      static #instance
 
      static constructable = false
 
      static getInstance() {
-         if (!MemoryStorage.#instance) {
-             MemoryStorage.constructable = true
-             MemoryStorage.#instance = new MemoryStorage()
+         if (!InMemoryDatastore.#instance) {
+             InMemoryDatastore.constructable = true
+             InMemoryDatastore.#instance = new InMemoryDatastore()
          }
-         return MemoryStorage.#instance
+         return InMemoryDatastore.#instance
      }
 
     /** @type {Map<string, Table>} */
     #tables
 
     constructor() {
-        precondition(MemoryStorage.constructable)
+        precondition(InMemoryDatastore.constructable)
         this.#tables = new Map()
-        MemoryStorage.constructable = false
+        InMemoryDatastore.constructable = false
     }
 
     /** 

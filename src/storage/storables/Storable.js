@@ -1,4 +1,5 @@
-import { precondition } from '../lib/preconditions.js'
+import { precondition } from '../../lib/preconditions.js'
+/** @typedef {string} Id */
 
 export class Storable { 
 

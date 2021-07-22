@@ -1,9 +1,8 @@
-import '../models/card/CardDto.js'
-import { Card } from '../models/card/Card.js'
-import { MemoryStorage } from '../storage/storages/MemoryStorage.js'
-import { CardMapper } from '../storage/storables/CardMapper.js'
-import { Storable } from '../storage/Storable.js'
-import { precondition } from '../lib/preconditions.js'
+import '../../models/card/CardDto.js'
+import { Card } from '../../models/card/Card.js'
+import { CardMapper } from '../storables/CardMapper.js'
+import { Storable } from '../storables/Storable.js'
+import { precondition } from '../../lib/preconditions.js'
 
 export class CardRepository {
     static CARD_TABLE = 'cards'
