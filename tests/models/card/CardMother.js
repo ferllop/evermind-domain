@@ -1,3 +1,4 @@
+import { uuid } from '../../../src/lib/uuid.js'
 import { CardBuilder } from './CardBuilder.js'
 
 export class CardMother {
@@ -15,7 +16,20 @@ export class CardMother {
             authorID: 'authorID',
             question: 'question',
             answer: 'answer',
-            labelling: ['labelling']
+            labelling: ['labelling'],
+            ...CardMother.idDto()
         }
+    }
+
+    static invalidDto() {
+        return { ...CardMother.dto(), ...this.invalidIdDto(), authorID:''}
+    }
+
+    static invalidIdDto() {
+        return { id: ''}
+    }
+
+    static idDto(){
+        return { id: 'the-id'}
     }
 }

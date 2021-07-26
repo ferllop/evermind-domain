@@ -1,40 +1,73 @@
-import { Card } from '../models/card/Card.js'
 import { CardRepository } from '../storage/repositories/CardRepository.js'
 import { InMemoryDatastore } from '../storage/datastores/InMemoryDatastore.js'
+import { CardMapper } from '../storage/storables/CardMapper.js'
+import { Identification } from '../models/value/Identification.js'
+import { ErrorType } from '../errors/ErrorType.js'
+import { Response } from '../models/value/Response.js'
 
 export class CardController {
 
     /**
      * @param {object} dto 
-     * @returns {Id}
+     * @returns {Response}
      */
     storeCard(dto) {
-        return new CardRepository(InMemoryDatastore.getInstance()).storeCard(dto)
+        if (!CardMapper.isDtoValid(dto)) {
+            return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
+        }
+        const card = CardMapper.fromDto(dto)
+        const result = new CardRepository(InMemoryDatastore.getInstance()).storeCard(card)
+        if (!result) {
+            return Response.withError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
+        } 
+        return Response.OkWithoutData()
     }
 
     /** 
-     * @param {Id} id
-     * @returns {boolean}
+     * @param {object} dto
+     * @returns {Response}
      * */
-    deleteCard(id) {
-        return new CardRepository(InMemoryDatastore.getInstance()).deleteCard(id)
+    deleteCard({id}) {
+        if(!id) {
+            return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
+        }
+        const deleted = new CardRepository(InMemoryDatastore.getInstance()).deleteCard(new Identification(id))
+        if (!deleted) {
+            return Response.withError(ErrorType.RESOURCE_NOT_FOUND)
+        }
+
+        return Response.OkWithoutData()
     }
 
     /** 
-     * @param {Id} id
-     * @returns {Card}
+     * @param {object} dto
+     * @returns {Response}
      */
-    retrieveCard(id) {
-        return new CardRepository(InMemoryDatastore.getInstance()).retrieveCard(id)
+    retrieveCard({id}) {
+        if(!id) {
+            return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
+        }
+        const retrieved = new CardRepository(InMemoryDatastore.getInstance()).retrieveCard(new Identification(id))
+        if (!retrieved) {
+            return Response.withError(ErrorType.RESOURCE_NOT_FOUND)
+        }
+        return Response.OkWithData(CardMapper.toDto(retrieved))
     }
 
     /**
-     * @param {Id} id 
      * @param {object} dto 
-     * @returns {boolean}
+     * @returns {Response}
      */
-    updateCard(id, dto) {
-        return new CardRepository(InMemoryDatastore.getInstance()).updateCard(id, dto)
+    updateCard(dto) {
+        if (!CardMapper.isDtoValid(dto)) {
+            return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
+        }
+        const card = CardMapper.fromDto(dto)
+        const updated = new CardRepository(InMemoryDatastore.getInstance()).updateCard(card)
+        if(!updated) {
+            return Response.withError(ErrorType.RESOURCE_NOT_FOUND)
+        }
+        return Response.OkWithoutData()
     }
 
 }

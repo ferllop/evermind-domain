@@ -1,12 +1,12 @@
-import '../../models/card/CardDto.js'
 import { Card } from '../../models/card/Card.js'
 import { CardMapper } from '../storables/CardMapper.js'
-import { Storable } from '../storables/Storable.js'
-import { precondition } from '../../lib/preconditions.js'
+import { Identification } from '../../models/value/Identification.js'
+import { Datastore } from '../datastores/Datastore.js'
 
 export class CardRepository {
     static CARD_TABLE = 'cards'
 
+    /** @type {Datastore} */
     #dataStore
 
     constructor(dataStore) {
@@ -14,48 +14,48 @@ export class CardRepository {
     }
 
     /**
-     * @param {object} dto 
-     * @returns {Id}
+     * @param {Card} card 
+     * @returns {Boolean}
      */
-    storeCard(dto) {
-        precondition(CardMapper.isDtoValid(dto))
-        const card = new Storable(CardRepository.CARD_TABLE, dto)
-        return this.#dataStore.create(card)
+    storeCard(card) {
+        return this.#dataStore.create(CardRepository.CARD_TABLE, CardMapper.toDto(card))
     }
 
     /** 
-     * @param {Id} id
+     * @param {Identification} id
      * @returns {boolean}
      * */
     deleteCard(id) {
-        precondition(Boolean(id))
-        const storable = new Storable(CardRepository.CARD_TABLE).setId(id)
-        return this.#dataStore.delete(storable)
+        if (! this.#dataStore.hasTable(CardRepository.CARD_TABLE)) {
+            return false
+        }
+        return this.#dataStore.delete(CardRepository.CARD_TABLE, id.toString())
     }
 
     /** 
-     * @param {Id} id
+     * @param {Identification} id
      * @returns {Card}
      */
     retrieveCard(id) {
-        precondition(Boolean(id))
-        const storable = new Storable(CardRepository.CARD_TABLE).setId(id)
-        const result = this.#dataStore.read(storable)
-        if (!result || !CardMapper.isDtoValid(result.getDto())) {
+        if (!this.#dataStore.hasTable(CardRepository.CARD_TABLE)) {
             return null
         }
-        return CardMapper.fromDto(result.getDto())
+        const result = this.#dataStore.read(CardRepository.CARD_TABLE, id.toString())
+        if (!result || !CardMapper.isDtoValid(result)) {
+            return null
+        }
+        return CardMapper.fromDto(result)
     }
 
     /**
-     * @param {Id} id 
-     * @param {object} dto 
+     * @param {Card} card 
      * @returns {boolean}
      */
-    updateCard(id, dto) {
-        precondition(Boolean(id) && CardMapper.isDtoValid(dto))
-        const storable = new Storable(CardRepository.CARD_TABLE, dto, id)
-        return this.#dataStore.update(storable)
+    updateCard(card) {
+        if (!this.#dataStore.hasTable(CardRepository.CARD_TABLE)) {
+            return false
+        }
+        return this.#dataStore.update(CardRepository.CARD_TABLE, CardMapper.toDto(card))
     }
 
 }

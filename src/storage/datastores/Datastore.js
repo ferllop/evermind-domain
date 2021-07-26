@@ -1,40 +1,49 @@
-import { Storable } from '../storables/Storable.js'
-import '../../models/value/Id.js'
+import '../../models/value/Identification.js'
 
 /** @interface */
 export class Datastore {
 
     /** 
-     * @param {Storable} storable
-     * @returns {Id}
+     * @param {string} table
+     * @param {object} json
+     * @returns {Boolean}
      */
-    create(storable) {
+    create(table, json) {
         throw new Error("create must be implemented in a child class")
     }
 
     /**
-     * @param {Storable} storable
-     * @returns {Storable}
+     * @param {string} table
+     * @param {string} id
+     * @returns {object|null}
      */
-    read(storable) {
+    read(table, id) {
         throw new Error("read must be implemented in a child class")
     }
 
-    /** 
-     * @param {Storable} storable
+    /**
+     * @param {string} table
+     * @param {object} json
      * @returns {boolean}
      */
-    update(storable) {
+    update(table, json) {
         throw new Error("update must be implemented in a child class")
     }
 
     /** 
-     * @param {Storable} storable
+     * @param {string} table
+     * @param {string} id
      * @returns {boolean}
      */
-    delete(storable) {
+    delete(table, id) {
         throw new Error("delete must be implemented in a child class")
     }
+
+    /** 
+     * @param {string} table
+     * @returns {boolean}
+     */
+     hasTable(table) {
+        throw new Error("hasTable must be implemented in a child class")
+    }
 }
-
-

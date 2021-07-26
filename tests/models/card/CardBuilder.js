@@ -13,6 +13,9 @@ export class CardBuilder {
     /**@type {string[]} */
     labelling;
 
+    /** @type {string} */
+    id
+
     constructor() {
         this.authorID = ''
         this.question = 'question'
@@ -37,14 +40,19 @@ export class CardBuilder {
 
     /**
      * @param {string[]} labelling
-     * @returns 
+     * @returns {CardBuilder}
      */
     setLabelling(labelling) {
         this.labelling = labelling
         return this
     }
 
+    setId(id) {
+        this.id = id
+        return this
+    }
+
     build() {
-        return new Card(this.authorID, this.question, this.answer, this.labelling)
+        return new Card(this.authorID, this.question, this.answer, this.labelling, this.id)
     }
 }

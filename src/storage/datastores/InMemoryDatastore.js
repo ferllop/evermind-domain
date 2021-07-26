@@ -1,6 +1,4 @@
 import { precondition } from '../../lib/preconditions.js'
-import { uuid } from '../../lib/uuid.js'
-import { Storable } from '../storables/Storable.js'
 import { Datastore } from './Datastore.js'
 
 class Table {
@@ -12,51 +10,46 @@ class Table {
     }
 
     /**
-     * @param {Storable} storable 
-     * @returns {Id}
+     * @param {object} dto 
+     * @returns {Boolean}
      */
-    create(storable) {
-        precondition(!storable.hasId())
-        const id = uuid()
-        this.#rows.set(id, storable.getDto())
-
-        return id
+    create(dto) {
+        precondition(dto.id)
+        const previousSize = this.#rows.size
+        this.#rows.set(dto.id, dto)
+        return this.#rows.size === previousSize + 1
     }
 
     /**
-     * @param {Storable} storable
-     * @returns {Storable}
+     * @param {string} id
+     * @returns {object|null}
      */
-     read(storable) {
-        precondition(storable.hasId())
-        const data = this.#rows.get(storable.getId())
-        if (!data) {
-            return null 
-        }
-
-        return new Storable(storable.getTable(), data).setId(storable.getId())
+    read(id) {
+        precondition(Boolean(id))
+        const data = this.#rows.get(id)
+        return data ?? null
     }
 
     /** 
-     * @param {Storable} storable 
+     * @param {object} dto 
      * @returns {boolean}
      */
-    update(storable) {
-        precondition(storable.hasId())
-        if (this.#rows.has(storable.getId())) {
-            this.#rows.set(storable.getId(), storable.getDto())
-            return true
+    update(dto) {
+        precondition(dto.id)
+        if (!this.#rows.has(dto.id)) {
+            return false
         }
-        return false
+        const preupdateData = this.read(dto.id)
+        this.#rows.set(dto.id, { ...preupdateData, ...dto })
+        return true
     }
 
     /** 
-     * @param {Storable} storable 
+     * @param {string} id 
      * @returns {boolean}
      */
-    delete(storable) {
-        precondition(storable.hasId())
-        return this.#rows.delete(storable.getId())
+    delete(id) {
+        return this.#rows.delete(id)
     }
 }
 
@@ -64,19 +57,19 @@ class Table {
  * @implements {Datastore}
  */
 export class InMemoryDatastore {
-    
-     /** @type {InMemoryDatastore} */
-     static #instance
 
-     static constructable = false
+    /** @type {InMemoryDatastore} */
+    static #instance
 
-     static getInstance() {
-         if (!InMemoryDatastore.#instance) {
-             InMemoryDatastore.constructable = true
-             InMemoryDatastore.#instance = new InMemoryDatastore()
-         }
-         return InMemoryDatastore.#instance
-     }
+    static constructable = false
+
+    static getInstance() {
+        if (!InMemoryDatastore.#instance) {
+            InMemoryDatastore.constructable = true
+            InMemoryDatastore.#instance = new InMemoryDatastore()
+        }
+        return InMemoryDatastore.#instance
+    }
 
     /** @type {Map<string, Table>} */
     #tables
@@ -88,53 +81,54 @@ export class InMemoryDatastore {
     }
 
     /** 
-     * @param {Storable} storable
-     * @returns {Id}
+     * @param {string} table
+     * @param {object} dto
+     * @returns {Boolean}
      */
-    create(storable) {
-        const table = storable.getTable()
-        precondition(!storable.hasId())
-        if(!this.#tables.has(table)) {
+    create(table, dto) {
+        precondition(dto.id)
+        if (!this.#tables.has(table)) {
             this.#tables.set(table, new Table())
         }
-        return this.#tables.get(storable.getTable()).create(storable)
+        return this.#tables.get(table).create(dto)
     }
 
     /**
-     * @param {Storable} storable
-     * @returns {Storable}
+     * @param {string} table
+     * @param {string} id
+     * @returns {object|null}
      */
-    read(storable) {
-        const table = storable.getTable()
+    read(table, id) {
         precondition(this.hasTable(table))
-        return this.#tables.get(storable.getTable()).read(storable)
+        return this.#tables.get(table).read(id)
     }
 
     /** 
-     * @param {Storable} storable
+     * @param {string} table
+     * @param {object} dto
      * @returns {boolean} 
      */
-    update(storable) {
-        const table = storable.getTable()
+    update(table, dto) {
         precondition(this.hasTable(table))
-        return this.#tables.get(table).update(storable)
+        return this.#tables.get(table).update(dto)
     }
 
     /** 
-     * @param {Storable} storable 
+     * @param {string} table 
+     * @param {string} id 
      * @returns {boolean}
      */
-    delete(storable) {   
-        const table = storable.getTable()
-        precondition(this.hasTable(table))
-        return this.#tables.get(table).delete(storable)
+    delete(table, id) {
+        precondition(this.hasTable(table) && Boolean(id))
+        return this.#tables.get(table).delete(id)
     }
 
     hasTable(table) {
         return this.#tables.has(table)
     }
 
-    getTables() {
-        return this.#tables
+    clean() {
+        this.#tables = new Map()
     }
+
 }

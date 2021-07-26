@@ -4,12 +4,10 @@ import { ErrorType } from '../errors/ErrorType.js'
 
 export class ReadCardUseCase {
     /**
-     * @param {string} id 
+     * @param {object} dto 
+     * @returns {object}
      */
-    execute(id) {
-        if (!id) {
-            throw new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
-        }
-        return new CardController().retrieveCard(id)
+    execute(dto) {
+        return new CardController().retrieveCard(dto)
     }
 }

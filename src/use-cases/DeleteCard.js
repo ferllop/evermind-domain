@@ -4,13 +4,10 @@ import { ErrorType } from '../errors/ErrorType.js'
 
 export class DeleteCardUseCase {
     /**
-     * @param {string} id 
+     * @param {object} dto 
+     * @returns {object}
      */
-    execute(id) {
-        if (!id) {
-            throw new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
-        }
-
-        return new CardController().deleteCard(id)
+    execute(dto) {
+        return new CardController().deleteCard(dto)
     }
 }
