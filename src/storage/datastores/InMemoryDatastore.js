@@ -58,26 +58,11 @@ class Table {
  */
 export class InMemoryDatastore {
 
-    /** @type {InMemoryDatastore} */
-    static #instance
-
-    static constructable = false
-
-    static getInstance() {
-        if (!InMemoryDatastore.#instance) {
-            InMemoryDatastore.constructable = true
-            InMemoryDatastore.#instance = new InMemoryDatastore()
-        }
-        return InMemoryDatastore.#instance
-    }
-
     /** @type {Map<string, Table>} */
     #tables
 
     constructor() {
-        precondition(InMemoryDatastore.constructable)
         this.#tables = new Map()
-        InMemoryDatastore.constructable = false
     }
 
     /** 

@@ -1,13 +1,13 @@
 import { CardController } from '../controllers/CardController.js'
-import { DomainError } from '../errors/DomainError.js'
-import { ErrorType } from '../errors/ErrorType.js'
+import { Datastore } from '../storage/datastores/Datastore.js'
 
 export class DeleteCardUseCase {
     /**
      * @param {object} dto 
+     * @param {Datastore} datastore
      * @returns {object}
      */
-    execute(dto) {
-        return new CardController().deleteCard(dto)
+    execute(dto, datastore) {
+        return new CardController().deleteCard(dto, datastore)
     }
 }

@@ -1,6 +1,5 @@
+import { Datastore } from '../../src/storage/datastores/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
-import { CreateCardUseCase } from '../../src/use-cases/CreateCard.js'
-import { ReadCardUseCase } from '../../src/use-cases/ReadCard.js'
 import { UpdateCardUseCase } from '../../src/use-cases/UpdateCard.js'
 import { CardMother } from '../models/card/CardMother.js'
 import { ResultMother } from '../models/value/ResultMother.js'
@@ -8,31 +7,36 @@ import { assert, suite } from '../test-config.js'
 
 const updateCard = suite("UpdateCard UseCase")
 
-updateCard.before.each(() => InMemoryDatastore.getInstance().clean())
+/**@type {Datastore} */
+let datastore
+updateCard.before.each(() => {
+    datastore = new InMemoryDatastore()
+})
+
 
 updateCard(
     'given an unexisting table, ' +
     'should return an object with null as data property and ' +
     'RESOURCE_NOT_FOUND DomainError', () => {
-        const result = new UpdateCardUseCase().execute(CardMother.dto())
+        const result = new UpdateCardUseCase().execute(CardMother.dto(), datastore)
         assert.ok(ResultMother.isNotFound(result))
     })
 
 updateCard(
     'given a previously stored card and data to update it, ' +
     'the card should be updated in storage', () => {
-        new CreateCardUseCase().execute(CardMother.dto())
-        new UpdateCardUseCase().execute({ ...CardMother.dto(), authorID: 'updatedAuthor' })
-        const result = new ReadCardUseCase().execute(CardMother.idDto())
-        assert.equal(result.data.authorID, 'updatedAuthor')
+        CardMother.having(1).storedIn(datastore)
+        const newAuthorID = 'newAuthorId'
+        new UpdateCardUseCase().execute({ ...CardMother.numberedDto(1), authorID: newAuthorID }, datastore)
+        assert.ok(CardMother.storedCard(1, datastore).hasAuthorId(newAuthorID))
     })
 
 updateCard(
     'given a previously stored card and data to update it, ' +
     'should return an object with null as error property and ' +
     'null as data property', () => {
-        new CreateCardUseCase().execute(CardMother.dto())
-        const result = new UpdateCardUseCase().execute({ ...CardMother.dto(), authorID: 'updatedAuthor' })
+        CardMother.having(1).storedIn(datastore)
+        const result = new UpdateCardUseCase().execute({ ...CardMother.numberedDto(1), authorID: 'updatedAuthor' }, datastore)
         assert.ok(ResultMother.isEmptyOk(result))
     })
 
@@ -40,8 +44,8 @@ updateCard(
     'given an unexisting card in an existing table, ' +
     'should return an object with null as data property and ' +
     'RESOURCE_NOT_FOUND DomainError', () => {
-        new CreateCardUseCase().execute(CardMother.dto())
-        const result = new UpdateCardUseCase().execute({...CardMother.dto(), id: 'notExistingId'})
+        CardMother.having(1).storedIn(datastore)
+        const result = new UpdateCardUseCase().execute({...CardMother.numberedDto(1), id: 'notExistingId'}, datastore)
         assert.ok(ResultMother.isNotFound(result))
     })
 
