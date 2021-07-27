@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "tests": "ENABLE_PRECONDITIONS=true uvu ./tests"
+    "tests": "uvu ./tests"
   },
   "repository": {
     "type": "git",
