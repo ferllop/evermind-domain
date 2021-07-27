@@ -1,41 +1,8 @@
-import { Datastore } from '../../../src/storage/datastores/Datastore.js'
+import { IdentificationMother } from '../value/IdentificationMother.js'
 import { CardBuilder } from './CardBuilder.js'
 
 export class CardMother {
-    static CARDS_TABLE = 'cards'
-
-    static qty
-    static storedCardDto
-  
-    /** @param {number} qty */
-    static having(qty) {
-        this.qty = qty
-        return this
-    }
-    
-    /** @param {Datastore} datastore */
-    static storedIn(datastore) {
-        for(let i = 1; i <= this.qty; i++) {
-            datastore.create(this.CARDS_TABLE, this.numberedDto(i))
-        }
-    }
-
-    static cardExists(id, datastore) {
-     return Boolean(datastore.read(CardMother.CARDS_TABLE, CardMother.numberedIdDto(id).id))
-    }
-
-    static storedCard(id, datastore) {
-        this.storedCardDto = datastore.read(CardMother.CARDS_TABLE, CardMother.numberedIdDto(id).id)
-        return this
-    }
-
-    static hasAuthorId(authorId) {
-        return this.storedCardDto.authorID === authorId
-    }
-
-    static isCardDataStored(datastore) {
-        return datastore.read(CardMother.CARDS_TABLE, this.idDto().id).authorID === this.dto().authorID
-    }
+    static TABLE_NAME = 'cards'
 
     static standard() {
         return new CardBuilder()
@@ -52,7 +19,7 @@ export class CardMother {
             question: 'question',
             answer: 'answer',
             labelling: ['labelling'],
-            ...CardMother.idDto()
+            ...IdentificationMother.dto()
         }
     }
 
@@ -68,18 +35,7 @@ export class CardMother {
     }
 
     static invalidDto() {
-        return { ...CardMother.dto(), ...this.invalidIdDto(), authorID:''}
+        return { ...CardMother.dto(), ...IdentificationMother.invalidDto(), authorID:''}
     }
 
-    static invalidIdDto() {
-        return { id: ''}
-    }
-
-    static idDto(){
-        return { id: 'the-id'}
-    }
-
-    static numberedIdDto(number){
-        return { id: this.idDto().id + number}
-    }
 }

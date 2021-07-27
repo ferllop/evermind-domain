@@ -1,51 +1,51 @@
 import { Datastore } from '../../src/storage/datastores/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
-import { ReadCardUseCase } from '../../src/use-cases/ReadCard.js'
-import { CardMother } from '../models/card/CardMother.js'
+import { ReadUserUseCase } from '../../src/use-cases/ReadUser.js'
+import { UserMother } from '../models/user/UserMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
 import { ResultMother } from '../models/value/ResultMother.js'
 import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
 
-const readCard = suite("ReadCard UseCase")
+const readUser = suite("ReadUser UseCase")
 
 /**@type {Datastore} */
 let datastore
-readCard.before.each(() => {
+readUser.before.each(() => {
     datastore = new InMemoryDatastore()
 })
 
-readCard(
+readUser(
     'given invalid id, ' +
     'should return an object with data property as null and ' +
     'error property as INPUT_DATA_NOT_VALID DomainError', () => {
-        const result = new ReadCardUseCase().execute(IdentificationMother.invalidDto(), datastore)
+        const result = new ReadUserUseCase().execute(IdentificationMother.invalidDto(), datastore)
         assert.ok(ResultMother.isInputInvalid(result))
     })
 
-readCard(
-    'given a non existing id in an existing cards table, ' +
+readUser(
+    'given a non existing id in an existing users table, ' +
     'should return an object with data property as null ' +
     'and RESOURCE_NOT_FOUND DomainError', () => {
-        new DatastoreMother(CardMother, datastore).having(1).storedIn()
-        const result = new ReadCardUseCase().execute({ id: 'nonExistingId' }, datastore)
+        new DatastoreMother(UserMother, datastore).having(1).storedIn()
+        const result = new ReadUserUseCase().execute({ id: 'nonExistingId' }, datastore)
         assert.ok(ResultMother.isNotFound(result))
     })
 
-readCard(
-    'given a non existing cards table, ' +
+readUser(
+    'given a non existing users table, ' +
     'should return an object with data property as null ' +
     'and RESOURCE_NOT_FOUND DomainError', () => {
-        const result = new ReadCardUseCase().execute({ id: 'nonExistingId' }, datastore)
+        const result = new ReadUserUseCase().execute({ id: 'nonExistingId' }, datastore)
         assert.ok(ResultMother.isNotFound(result))
     })
 
-readCard(
+readUser(
     'given an existing id, ' +
-    'should return an object with null as error and card as data', () => {
-        new DatastoreMother(CardMother, datastore).having(1).storedIn()
-        const result = new ReadCardUseCase().execute(IdentificationMother.numberedDto(1), datastore)
-        assert.ok(ResultMother.isOkWithDataStrings(result, CardMother.numberedDto(1), ['authorID']))
+    'should return an object with null as error and user as data', () => {
+        new DatastoreMother(UserMother, datastore).having(1).storedIn()
+        const result = new ReadUserUseCase().execute(IdentificationMother.numberedDto(1), datastore)
+        assert.ok(ResultMother.isOkWithDataStrings(result, UserMother.numberedDto(1), ['authId']))
     })
 
-readCard.run()
+readUser.run()

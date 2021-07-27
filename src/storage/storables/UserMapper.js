@@ -1,6 +1,5 @@
 import { precondition } from '../../lib/preconditions.js'
 import { User } from '../../models/user/User.js'
-import { UserStatus } from '../../models/user/UserStatus.js'
 
 export class UserMapper {
     
@@ -9,7 +8,7 @@ export class UserMapper {
      * @returns {boolean} 
      */
     static isDtoValid(dto) {
-        return Boolean(dto) && User.isValid(dto.authID, dto.name, dto.username, dto.email, UserStatus.getByOrdinal(dto.status), dto.lastLogin, dto.lastConnection, dto.signedIn, dto.dayStartTime)
+        return Boolean(dto) && User.isValid(dto.authId, dto.name, dto.username, dto.email, dto.status, dto.lastLogin, dto.lastConnection, dto.signedIn, dto.dayStartTime, dto.id)
     }
 
     /** 
@@ -18,7 +17,7 @@ export class UserMapper {
      */
     static fromDto(dto) {
         precondition(UserMapper.isDtoValid(dto))
-        return new User(dto.authID, dto.name, dto.username, dto.email, UserStatus.getByOrdinal(dto.status), dto.lastLogin, dto.lastConnection, dto.signedIn, dto.dayStartTime)
+        return new User(dto.authId, dto.name, dto.username, dto.email, dto.status, dto.lastLogin, dto.lastConnection, dto.signedIn, dto.dayStartTime, dto.id)
     }
 
     /**
@@ -27,13 +26,14 @@ export class UserMapper {
      */
     static toDto(user) {
         return {
-            authID: user.getAuthID().toString(), 
+            id: user.getId().toString(),
+            authId: user.getAuthId().toString(), 
             name: user.getName(), 
             username: user.getUsername(), 
             email: user.getEmail().toString(), 
             status: user.getStatus().ordinal(), 
             lastLogin: user.getLastLogin().toDtoFormat(), 
-            lastConnection: user.lastConnection.toDtoFormat(), 
+            lastConnection: user.getLastConnection().toDtoFormat(), 
             signedIn: user.getSignedIn().toDtoFormat(), 
             dayStartTime: user.getDayStartTime()
         }

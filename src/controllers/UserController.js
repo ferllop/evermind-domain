@@ -16,8 +16,8 @@ export class UserController {
         if (!UserMapper.isDtoValid(dto)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
-        const card = UserMapper.fromDto(dto)
-        const result = new UserRepository(datastore).storeCard(card)
+        const user = UserMapper.fromDto(dto)
+        const result = new UserRepository(datastore).storeUser(user)
         if (!result) {
             return Response.withError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
         } 

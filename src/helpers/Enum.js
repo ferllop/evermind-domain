@@ -9,7 +9,6 @@ export class Enum {
         values.push(this)
     }
 
-
     /**@returns {number} */
     ordinal() {
         return this.#ordinal

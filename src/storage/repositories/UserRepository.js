@@ -17,7 +17,7 @@ export class UserRepository {
      * @param {User} user 
      * @returns {Boolean}
      */
-    storeCard(user) {
+    storeUser(user) {
         return this.#dataStore.create(UserRepository.TABLE_NAME, UserMapper.toDto(user))
     }
 

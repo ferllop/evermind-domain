@@ -71,4 +71,11 @@ export class EverDate extends Date {
         return this.toISOString()
     }
 
+    static isISOString(dateString) {
+        if (! /\dT\d.*Z$/.test(dateString)) {
+            return false
+        }
+        return ! isNaN(new Date(dateString).getTime())
+    }
+
 }
