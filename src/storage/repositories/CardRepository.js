@@ -4,7 +4,7 @@ import { Identification } from '../../models/value/Identification.js'
 import { Datastore } from '../datastores/Datastore.js'
 
 export class CardRepository {
-    static CARD_TABLE = 'cards'
+    static TABLE_NAME = 'cards'
 
     /** @type {Datastore} */
     #dataStore
@@ -18,7 +18,7 @@ export class CardRepository {
      * @returns {Boolean}
      */
     storeCard(card) {
-        return this.#dataStore.create(CardRepository.CARD_TABLE, CardMapper.toDto(card))
+        return this.#dataStore.create(CardRepository.TABLE_NAME, CardMapper.toDto(card))
     }
 
     /** 
@@ -26,10 +26,10 @@ export class CardRepository {
      * @returns {boolean}
      * */
     deleteCard(id) {
-        if (! this.#dataStore.hasTable(CardRepository.CARD_TABLE)) {
+        if (! this.#dataStore.hasTable(CardRepository.TABLE_NAME)) {
             return false
         }
-        return this.#dataStore.delete(CardRepository.CARD_TABLE, id.toString())
+        return this.#dataStore.delete(CardRepository.TABLE_NAME, id.toString())
     }
 
     /** 
@@ -37,10 +37,10 @@ export class CardRepository {
      * @returns {Card}
      */
     retrieveCard(id) {
-        if (!this.#dataStore.hasTable(CardRepository.CARD_TABLE)) {
+        if (!this.#dataStore.hasTable(CardRepository.TABLE_NAME)) {
             return null
         }
-        const result = this.#dataStore.read(CardRepository.CARD_TABLE, id.toString())
+        const result = this.#dataStore.read(CardRepository.TABLE_NAME, id.toString())
         if (!result || !CardMapper.isDtoValid(result)) {
             return null
         }
@@ -52,10 +52,10 @@ export class CardRepository {
      * @returns {boolean}
      */
     updateCard(card) {
-        if (!this.#dataStore.hasTable(CardRepository.CARD_TABLE)) {
+        if (!this.#dataStore.hasTable(CardRepository.TABLE_NAME)) {
             return false
         }
-        return this.#dataStore.update(CardRepository.CARD_TABLE, CardMapper.toDto(card))
+        return this.#dataStore.update(CardRepository.TABLE_NAME, CardMapper.toDto(card))
     }
 
 }

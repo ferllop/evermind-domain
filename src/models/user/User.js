@@ -1,7 +1,10 @@
+import { Email } from '../value/Email.js'
+import { Identification } from '../value/Identification.js'
 import { UserStatus } from './UserStatus.js'
+import { EverDate } from '../../helpers/EverDate.js'
 
 export class User {
-    /** @type  {string} */
+    /** @type  {Identification} */
     authID
     
     /** @type  {string} */
@@ -10,25 +13,25 @@ export class User {
     /** @type  {string} */
     username
     
-    /** @type  {string} */
+    /** @type  {Email} */
     email
     
     /** @type  {UserStatus} */
     status
     
-    /** @type  {Date} */
+    /** @type  {EverDate} */
     lastLogin
     
-    /** @type  {Date} */
+    /** @type  {EverDate} */
     lastConnection
     
-    /** @type  {Date} */
-    signIn
+    /** @type  {EverDate} */
+    signedIn
 
     /** @type  {number} */
     dayStartTime
 
-    constructor(authID, name, username, email, status, lastLogin, lastConnection, signIn, dayStartTime) {
+    constructor(authID, name, username, email, status, lastLogin, lastConnection, signedIn, dayStartTime) {
         this.authID = authID
         this.name = name
         this.username = username
@@ -36,11 +39,11 @@ export class User {
         this.status = status
         this.lastLogin = lastLogin
         this.lastConnection = lastConnection
-        this.signIn = signIn
+        this.signedIn = signedIn
         this.dayStartTime = dayStartTime
     }
     
-    /** @returns {String} */
+    /** @returns {Identification} */
     getAuthID() {
         return this.authID
     }
@@ -55,7 +58,7 @@ export class User {
         return this.username
     }
 
-    /** @returns {String} */
+    /** @returns {Email} */
     getEmail() {
         return this.email
     }
@@ -65,23 +68,46 @@ export class User {
         return this.status
     }
 
-    /** @returns {Date} */
+    /** @returns {EverDate} */
     getLastLogin() {
         return this.lastLogin
     }
 
-    /** @returns {Date} */
+    /** @returns {EverDate} */
     getLastConnection() {
         return this.lastConnection
     }
 
-    /** @returns {Date} */
-    getSignIn() {
-        return this.signIn
+    /** @returns {EverDate} */
+    getSignedIn() {
+        return this.signedIn
     }
 
     /** @returns {number} */
     getDayStartTime() {
         return this.dayStartTime
+    }
+
+    /**
+     * @param {Identification} authID 
+     * @param {string} name 
+     * @param {string} username 
+     * @param {Email} email 
+     * @param {UserStatus} status 
+     * @param {EverDate} lastLogin 
+     * @param {EverDate} lastConnection 
+     * @param {EverDate} signedIn 
+     * @param {number} dayStartTime 
+     * @returns {Boolean}
+     */
+    static isValid(authID, name, username, email, status, lastLogin, lastConnection, signedIn, dayStartTime) {
+        return Identification.isValid(authID) &&
+            typeof name === 'string' && name.length > 0 &&
+            typeof username === 'string' && username.length > 0 &&
+            Email.isValid(email) &&
+            status instanceof UserStatus &&
+            lastLogin.isNowOrBefore() &&
+            lastConnection.isSameOrAfter(lastLogin) &&
+            signedIn.isSameOrBefore(lastLogin)
     }
 }

@@ -14,7 +14,4 @@ export class Enum {
     ordinal() {
         return this.#ordinal
     }
-
-
-
 }
