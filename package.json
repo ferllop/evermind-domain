@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "tests": "ENABLE_PRECONDITIONS=true uvu ./tests"
+    "tests": "uvu ./tests"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,6 @@
     "uvu": "^0.5.1"
   },
   "dependencies": {
-    "preconditions": "github:ferllop/preconditions#semver:1.x.x"
+    "preconditions": "github:ferllop/preconditions#semver:2.x.x"
   }
 }

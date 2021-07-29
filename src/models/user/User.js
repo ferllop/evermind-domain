@@ -1,87 +1,128 @@
+import { Email } from '../value/Email.js'
+import { Identification } from '../value/Identification.js'
 import { UserStatus } from './UserStatus.js'
+import { EverDate } from '../../helpers/EverDate.js'
 
 export class User {
-    /** @type  {string} */
-    authID
+    
+    /** @type  {Identification} */
+    #id
+    
+    /** @type  {Identification} */
+    #authId
     
     /** @type  {string} */
-    name
+    #name
     
     /** @type  {string} */
-    username
+    #username
     
-    /** @type  {string} */
-    email
+    /** @type  {Email} */
+    #email
     
     /** @type  {UserStatus} */
-    status
+    #status
     
-    /** @type  {Date} */
-    lastLogin
+    /** @type  {EverDate} */
+    #lastLogin
     
-    /** @type  {Date} */
-    lastConnection
+    /** @type  {EverDate} */
+    #lastConnection
     
-    /** @type  {Date} */
-    signIn
+    /** @type  {EverDate} */
+    #signedIn
 
     /** @type  {number} */
-    dayStartTime
+    #dayStartTime
 
-    constructor(authID, name, username, email, status, lastLogin, lastConnection, signIn, dayStartTime) {
-        this.authID = authID
-        this.name = name
-        this.username = username
-        this.email = email
-        this.status = status
-        this.lastLogin = lastLogin
-        this.lastConnection = lastConnection
-        this.signIn = signIn
-        this.dayStartTime = dayStartTime
+    constructor(authId, name, username, email, status, lastLogin, lastConnection, signedIn, dayStartTime, id) {
+        this.#authId = new Identification(authId)
+        this.#name = name
+        this.#username = username
+        this.#email = new Email(email)
+        this.#status = UserStatus.getByOrdinal(status)
+        this.#lastLogin = new EverDate(lastLogin)
+        this.#lastConnection = new EverDate(lastConnection)
+        this.#signedIn = new EverDate(signedIn)
+        this.#dayStartTime = dayStartTime
+        this.#id = id ? new Identification(id) : new Identification()
     }
     
-    /** @returns {String} */
-    getAuthID() {
-        return this.authID
+    /** @returns {Identification} */
+    getAuthId() {
+        return this.#authId
     }
 
     /** @returns {String} */
     getName() {
-        return this.name
+        return this.#name
     }
 
     /** @returns {String} */
     getUsername() {
-        return this.username
+        return this.#username
     }
 
-    /** @returns {String} */
+    /** @returns {Email} */
     getEmail() {
-        return this.email
+        return this.#email
     }
 
     /** @returns {UserStatus} */
     getStatus() {
-        return this.status
+        return this.#status
     }
 
-    /** @returns {Date} */
+    /** @returns {EverDate} */
     getLastLogin() {
-        return this.lastLogin
+        return this.#lastLogin
     }
 
-    /** @returns {Date} */
+    /** @returns {EverDate} */
     getLastConnection() {
-        return this.lastConnection
+        return this.#lastConnection
     }
 
-    /** @returns {Date} */
-    getSignIn() {
-        return this.signIn
+    /** @returns {EverDate} */
+    getSignedIn() {
+        return this.#signedIn
     }
 
     /** @returns {number} */
     getDayStartTime() {
-        return this.dayStartTime
+        return this.#dayStartTime
+    }
+
+    /** @returns {Identification} */
+    getId() {
+        return this.#id
+    }
+
+    /**
+     * @param {string} authId
+     * @param {string} name 
+     * @param {string} username 
+     * @param {string} email 
+     * @param {number} status 
+     * @param {string} lastLogin 
+     * @param {string} lastConnection 
+     * @param {string} signedIn 
+     * @param {number} dayStartTime 
+     * @param {string} [id] 
+     * @returns {Boolean}
+     */
+    static isValid(authId, name, username, email, status, lastLogin, lastConnection, signedIn, dayStartTime, id) {
+        const lastLoginDate = new EverDate(lastLogin)
+        const lastConnectionDate = new EverDate(lastConnection)
+        return Identification.isValid(authId) &&
+            typeof name === 'string' && name.length > 0 &&
+            typeof username === 'string' && username.length > 0 &&
+            Email.isValid(email) &&
+            UserStatus.isValid(status) &&
+            lastLoginDate.isSameOrBefore(lastConnectionDate) &&
+            lastConnectionDate.isNowOrBefore() &&
+            new EverDate(signedIn).isSameOrBefore(lastLoginDate) &&
+            dayStartTime >= 0 && dayStartTime <= 23 &&
+            (Boolean(id) ? Identification.isValid(id) : true)
     }
 }
