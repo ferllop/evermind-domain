@@ -1,5 +1,7 @@
+import { Labelling } from '../../../src/models/card/Labelling.js'
 import { IdentificationMother } from '../value/IdentificationMother.js'
 import { CardBuilder } from './CardBuilder.js'
+import { LabellingMother } from './LabellingMother.js'
 
 export class CardMother {
     static TABLE_NAME = 'cards'
@@ -18,19 +20,20 @@ export class CardMother {
             authorID: 'authorID',
             question: 'question',
             answer: 'answer',
-            labelling: ['labelling'],
+            labelling: LabellingMother.dto().labelling,
             ...IdentificationMother.dto()
         }
     }
 
+    /** @param {number} number */
     static numberedDto(number) {
         const dto = this.dto()
         return {
             authorID: dto.authorID + number,
             question: dto.question + number,
             answer: dto.answer + number,
-            labelling: [dto.labelling[0] + number],
-            id: dto.id + number
+            id: dto.id + number,
+            ...LabellingMother.numberedDto(number)
         }
     }
 
