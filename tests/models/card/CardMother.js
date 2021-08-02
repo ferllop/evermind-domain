@@ -1,4 +1,3 @@
-import { Labelling } from '../../../src/models/card/Labelling.js'
 import { IdentificationMother } from '../value/IdentificationMother.js'
 import { CardBuilder } from './CardBuilder.js'
 import { LabellingMother } from './LabellingMother.js'

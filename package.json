@@ -30,6 +30,7 @@
     "uvu": "^0.5.1"
   },
   "dependencies": {
+    "@types/node": "^16.4.10",
     "preconditions": "github:ferllop/preconditions#semver:2.x.x"
   }
 }

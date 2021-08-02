@@ -4,11 +4,13 @@ import { Identification } from '../models/value/Identification.js'
 import { ErrorType } from '../errors/ErrorType.js'
 import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
+import { Identified } from '../storage/datastores/Identified.js'
+import { UserDto } from '../models/user/UserDto.js'
 
 export class UserController {
 
     /**
-     * @param {object} dto 
+     * @param {UserDto} dto 
      * @param {Datastore} datastore 
      * @returns {Response}
      */
@@ -25,14 +27,15 @@ export class UserController {
     }
 
     /** 
-     * @param {object} dto
+     * @param {Identified} dto
+     * @param {Datastore} datastore 
      * @returns {Response}
      * */
     deleteUser({id}, datastore) {
         if(!id) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
-        const deleted = new UserRepository(datastore).deleteCard(new Identification(id))
+        const deleted = new UserRepository(datastore).deleteUser(new Identification(id))
         if (!deleted) {
             return Response.withError(ErrorType.RESOURCE_NOT_FOUND)
         }
@@ -41,14 +44,15 @@ export class UserController {
     }
 
     /** 
-     * @param {object} dto
+     * @param {Identified} dto
+     * @param {Datastore} datastore 
      * @returns {Response}
      */
     retrieveUser({id}, datastore) {
         if(!id) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
-        const retrieved = new UserRepository(datastore).retrieveCard(new Identification(id))
+        const retrieved = new UserRepository(datastore).retrieveUser(new Identification(id))
         if (!retrieved) {
             return Response.withError(ErrorType.RESOURCE_NOT_FOUND)
         }
@@ -56,7 +60,8 @@ export class UserController {
     }
 
     /**
-     * @param {object} dto 
+     * @param {UserDto} dto 
+     * @param {Datastore} datastore 
      * @returns {Response}
      */
     updateUser(dto, datastore) {
@@ -64,7 +69,7 @@ export class UserController {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
         const card = UserMapper.fromDto(dto)
-        const updated = new UserRepository(datastore).updateCard(card)
+        const updated = new UserRepository(datastore).updateUser(card)
         if(!updated) {
             return Response.withError(ErrorType.RESOURCE_NOT_FOUND)
         }

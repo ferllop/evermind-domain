@@ -1,11 +1,11 @@
-import { PreconditionError } from'preconditions'
+import { PreconditionError } from '../../../src/lib/preconditions.js'
 import { Search } from'../../../src/models/search/Search.js'
 import { assert, suite } from'../../test-config.js'
 
 const search = suite('Search')
 
 search('should accept only queries with at least one character', () => {
-    assert.throws(() => new Search(''), error => error instanceof PreconditionError)
+    assert.throws(() => new Search(''), (error: Error) => error instanceof PreconditionError)
 })
 
 search('should be able to provide the author when a word prefixed with at symbol is provided alone', () => {

@@ -12,11 +12,11 @@ hour('should know how to insert itself into a given date', () => {
 })
 
 hour('should accept only values equal to 0 or greater', () => {
-    assert.throws(() => new Hour(-1), error => error instanceof PreconditionError)
+    assert.throws(() => new Hour(-1), (error: Error) => error instanceof PreconditionError)
 })
 
 hour('should accept only values equal to 23 or less', () => {
-    assert.throws(() => new Hour(24), error => error instanceof PreconditionError)
+    assert.throws(() => new Hour(24), (error: Error) => error instanceof PreconditionError)
 })
 
 hour.run()

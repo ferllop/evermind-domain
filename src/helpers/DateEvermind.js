@@ -1,9 +1,9 @@
-export class EverDate extends Date {
+export class DateEvermind extends Date {
     /**
-     * @returns {EverDate}
+     * @returns {DateEvermind}
      */
     now() {
-        return new EverDate()
+        return new DateEvermind()
     }
 
     /** 
@@ -71,6 +71,10 @@ export class EverDate extends Date {
         return this.toISOString()
     }
 
+    /**
+     * @param {string} dateString 
+     * @returns {boolean}
+     */
     static isISOString(dateString) {
         if (! /\dT\d.*Z$/.test(dateString)) {
             return false

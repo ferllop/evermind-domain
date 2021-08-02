@@ -1,10 +1,12 @@
 import { precondition } from '../../lib/preconditions.js'
 import { User } from '../../models/user/User.js'
+import { Identified } from '../datastores/Identified.js'
+import { UserDto } from '../../models/user/UserDto.js'
 
 export class UserMapper {
     
     /** 
-     * @param {object} dto
+     * @param {UserDto} dto
      * @returns {boolean} 
      */
     static isDtoValid(dto) {
@@ -12,7 +14,7 @@ export class UserMapper {
     }
 
     /** 
-     * @param {object} dto
+     * @param {UserDto} dto
      * @returns {User} 
      */
     static fromDto(dto) {
@@ -22,7 +24,7 @@ export class UserMapper {
 
     /**
      * @param {User} user 
-     * @returns {object}
+     * @returns {Identified & any}
      */
     static toDto(user) {
         return {

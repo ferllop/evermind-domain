@@ -1,10 +1,11 @@
 import { precondition } from '../../lib/preconditions.js'
 import { Card } from '../../models/card/Card.js'
+import { CardDto } from '../../models/card/CardDto.js'
 
 export class CardMapper {
     
     /** 
-     * @param {object} dto
+     * @param {CardDto} dto
      * @returns {boolean} 
      */
     static isDtoValid(dto) {
@@ -12,7 +13,7 @@ export class CardMapper {
     }
 
     /** 
-     * @param {object} dto
+     * @param {CardDto} dto
      * @returns {Card} 
      */
     static fromDto(dto) {
@@ -22,7 +23,7 @@ export class CardMapper {
 
     /**
      * @param {Card} card 
-     * @returns {object}
+     * @returns {CardDto}
      */
     static toDto(card) {
         return {

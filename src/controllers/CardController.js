@@ -4,11 +4,13 @@ import { Identification } from '../models/value/Identification.js'
 import { ErrorType } from '../errors/ErrorType.js'
 import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
+import { Identified } from '../storage/datastores/Identified.js'
+import { CardDto } from '../models/card/CardDto.js'
 
 export class CardController {
 
     /**
-     * @param {object} dto 
+     * @param {CardDto} dto 
      * @param {Datastore} datastore 
      * @returns {Response}
      */
@@ -25,7 +27,8 @@ export class CardController {
     }
 
     /** 
-     * @param {object} dto
+     * @param {Identified} dto
+     * @param {Datastore} datastore 
      * @returns {Response}
      * */
     deleteCard({id}, datastore) {
@@ -41,7 +44,8 @@ export class CardController {
     }
 
     /** 
-     * @param {object} dto
+     * @param {Identified} dto
+     * @param {Datastore} datastore 
      * @returns {Response}
      */
     retrieveCard({id}, datastore) {
@@ -56,7 +60,8 @@ export class CardController {
     }
 
     /**
-     * @param {object} dto 
+     * @param {CardDto} dto 
+     * @param {Datastore} datastore 
      * @returns {Response}
      */
     updateCard(dto, datastore) {

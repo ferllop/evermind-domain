@@ -1,8 +1,12 @@
 import { IdentificationMother } from '../value/IdentificationMother.js'
+import { UserDto } from '../../../src/models/user/UserDto.js'
 
 export class UserMother {
     static TABLE_NAME = 'users'
 
+    /**
+     * @returns {UserDto}
+     */
     static dto() {
         return {
             id: IdentificationMother.dto().id,
@@ -18,6 +22,10 @@ export class UserMother {
         }
     }
 
+    /**
+     * @param {number} number 
+     * @returns {UserDto}
+     */
     static numberedDto(number) {
         const dto = this.dto()
         return {
@@ -29,12 +37,12 @@ export class UserMother {
             email: dto.email + number,
         }
     }
-
+    /**
+     * 
+     * @returns {UserDto}
+     */
     static invalidDto() {
-        return {...this.dto(), authId: ''}
+        return { ...this.dto(), authId: '' }
     }
 
-    static isDataStored(datastore, table, id, property, expected) {
-        return datastore.read(table, id)[property] === expected
-    }
 }

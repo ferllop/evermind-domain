@@ -45,7 +45,7 @@ readUser(
     'should return an object with null as error and user as data', () => {
         new DatastoreMother(UserMother, datastore).having(1).storedIn()
         const result = new ReadUserUseCase().execute(IdentificationMother.numberedDto(1), datastore)
-        assert.ok(ResultMother.isOkWithDataStrings(result, UserMother.numberedDto(1), ['authId']))
+        assert.ok(ResultMother.isOkWithDataStrings(result, UserMother.numberedDto(1), 'authId'))
     })
 
 readUser.run()

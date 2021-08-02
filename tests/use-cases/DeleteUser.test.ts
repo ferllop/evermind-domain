@@ -9,11 +9,10 @@ import { assert, suite } from '../test-config.js'
 
 const deleteUser = suite("DeleteUser UseCase")
 
-/** @type {Datastore} */
-let datastore
-let datastoreMother
+let datastore: Datastore
+let datastoreMother: DatastoreMother
 
-deleteUser.before.each(context => {
+deleteUser.before.each(() => {
     datastore = new InMemoryDatastore()
     datastoreMother = new DatastoreMother(UserMother, datastore)
 })
@@ -22,14 +21,14 @@ deleteUser(
     'given an existing user id, ' +
     'should return an object with either ' +
     'data and error properties as null', () => {
-        datastoreMother.having(1).storedIn(datastore)
+        datastoreMother.having(1).storedIn()
         const result = new DeleteUserUseCase().execute(IdentificationMother.numberedDto(1), datastore)
         assert.ok(ResultMother.isEmptyOk(result))
     })
 
 deleteUser('given an existing user id, should remove it', () => {
-    datastoreMother.having(1).storedIn(datastore)
-    assert.ok(datastoreMother.exists(1, datastore))
+    datastoreMother.having(1).storedIn()
+    assert.ok(datastoreMother.exists(1))
     new DeleteUserUseCase().execute(IdentificationMother.numberedDto(1), datastore)
     assert.not.ok(datastoreMother.exists(1))
 })

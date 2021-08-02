@@ -4,14 +4,18 @@ export class ErrorType {
     static DATA_FROM_STORAGE_NOT_VALID = new ErrorType('Data received from storage is not valid')
     
     /** @type {string} */
-    #value
+    message
 
-    constructor(value) {
-        this.#value = value
+    /**
+     * 
+     * @param {string} message 
+     */
+    constructor(message) {
+        this.message = message
     }
 
     getValue() {
-        return this.#value
+        return this.message
     }
     
 }

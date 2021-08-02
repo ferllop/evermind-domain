@@ -11,6 +11,11 @@ export class LabellingMother {
         }
     }
 
+    /**
+     * @param {number} number 
+     * @param {number} labelsQty 
+     * @returns {object}
+     */
     static numberedDto(number, labelsQty = 1) {
         return {
             labelling: this.dtoWithXLabels(labelsQty).labelling

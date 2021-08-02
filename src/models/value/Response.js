@@ -1,15 +1,15 @@
 import { ErrorType } from '../../errors/ErrorType.js'
 
 export class Response {
-    /** @type {ErrorType} */
+    /** @type {ErrorType | null} */
     error
 
-    /** @type {object} */
+    /** @type {object | null} */
     data
 
     /**
-     * @param {ErrorType} error 
-     * @param {object} data 
+     * @param {ErrorType | null} error 
+     * @param {object | null} data 
      */
     constructor(error, data) {
         this.error = error

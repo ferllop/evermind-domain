@@ -13,10 +13,17 @@ export class Identification {
         this.#value = value ?? uuid()
     }
 
+    /**
+     * @returns {string}
+     */
     toString() {
         return this.#value
     }
 
+    /**
+     * @param {any} data 
+     * @returns {boolean}
+     */
     static isValid(data) {
         return typeof data === 'string' && data.length > 0
     }

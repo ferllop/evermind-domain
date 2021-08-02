@@ -21,18 +21,31 @@ export class CardBuilder {
         this.question = 'question'
         this.answer = 'answer'
         this.labelling = ['labelling']
+        this.id = ''
     }
 
+    /**
+     * @param {string} authorID 
+     * @returns {CardBuilder}
+     */
     setAuthorID(authorID) {
         this.authorID = authorID
         return this
     }
 
+    /**
+     * @param {string} question 
+     * @returns {CardBuilder}
+     */
     setQuestion(question) {
         this.question = question
         return this
     }
 
+    /**
+     * @param {string} answer 
+     * @returns {CardBuilder}
+     */
     setAnswer(answer) {
         this.answer = answer
         return this
@@ -47,11 +60,18 @@ export class CardBuilder {
         return this
     }
 
+    /**
+     * @param {string} id 
+     * @returns {CardBuilder}
+     */
     setId(id) {
         this.id = id
         return this
     }
 
+    /**
+     * @returns {Card}
+     */
     build() {
         return new Card(this.authorID, this.question, this.answer, this.labelling, this.id)
     }
