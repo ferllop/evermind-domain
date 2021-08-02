@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/node14/tsconfig.json",
+  "include": ["src/**/*", "tests/**/*"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "module": "ES2020",
+    "allowJs": true,                             /* Allow javascript files to be compiled. */
+    "checkJs": true,                             /* Report errors in .js files. */
+    "outDir": "./build",                              /* Redirect output structure to the directory. */
+    "removeComments": true,                      /* Do not emit comments to output. */
+    "noUnusedLocals": true,                      /* Report errors on unused locals. */
+    "noUnusedParameters": true,                  /* Report errors on unused parameters. */
+    "noFallthroughCasesInSwitch": true,          /* Report errors for fallthrough cases in switch statement. */
+  }
+}
