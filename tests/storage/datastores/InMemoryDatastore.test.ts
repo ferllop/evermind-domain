@@ -159,3 +159,38 @@ datastoreDeleting('should delete a dto with given an id', () => {
 
 datastoreDeleting.run()
 
+const datastoreFinder = suite('Datastore Finder')
+
+datastoreFinder.before.each(() => {
+    sutDatastore = new InMemoryDatastore()
+})
+
+datastoreFinder('should return an empty array where there are no coincidences', () => {
+    const table = 'aTable'
+    sutDatastore.create(table, {id:'a'})
+    const result = sutDatastore.find('aTable', () => false)
+    assert.is(result.length, 0)
+})
+
+datastoreFinder('should return an array whith one coincidence', () => {
+    const table = 'aTable'
+    sutDatastore.create(table, {id:'a', data: 'thing'})
+    const result = sutDatastore.find('aTable', (row: any) => row.data === 'thing')
+    assert.is(result.length, 1)
+})
+
+datastoreFinder('should return an array whith all the coincidences', () => {
+    const table = 'aTable'
+    const dtoA = {id:'a', label: 'labelA'}
+    const dtoB = {id:'b', label: 'labelA'}
+    const dtoC = {id:'c', label: 'labelB'}
+    sutDatastore.create(table, dtoA)
+    sutDatastore.create(table, dtoB)
+    sutDatastore.create(table, dtoC)
+    const result = sutDatastore.find('aTable', (row: any) => row.label === 'labelA')
+    assert.is(result.length, 2)
+    assert.ok(result.some(dto => dto.id === 'a') && result.some(dto => dto.id === 'b') && !result.some(dto => dto.id === 'c'))
+})
+
+datastoreFinder.run()
+

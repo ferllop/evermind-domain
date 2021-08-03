@@ -36,6 +36,16 @@ class Table<T extends Identified> {
     delete(id: string): boolean {
         return this.rows.delete(id)
     }
+
+    find(finder: Function): T[] {
+        let result: T[] = []
+        this.rows.forEach( row => {
+            if(finder(row)) {
+                result = result.concat(row)
+            }
+        })
+        return result
+    }
 }
 
 export class InMemoryDatastore implements Datastore {
@@ -45,7 +55,7 @@ export class InMemoryDatastore implements Datastore {
     constructor() {
         this.tables = new Map()
     }
-
+    
     create<T extends Identified>(table: string, dto: T): boolean {
         precondition(dto.id)
         if (!this.tables.has(table)) {
@@ -67,6 +77,11 @@ export class InMemoryDatastore implements Datastore {
     delete(table: string, id: string): boolean {
         precondition(this.hasTable(table) && Boolean(id))
         return Boolean(this.tables.get(table)?.delete(id))
+    }
+
+    find<T extends Identified>(table: string, finder: Function): T[] {
+        precondition(this.hasTable(table)) 
+        return  this.tables.get(table)?.find(finder) ?? []
     }
 
     hasTable(table: string): boolean {

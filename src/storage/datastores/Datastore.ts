@@ -9,6 +9,8 @@ export interface Datastore {
     update<T extends Identified>(table: string, dto: T): boolean
 
     delete(table: string, id: string): boolean
+
+    find<T extends Identified>(table: string, finder: Function): T[]
     
     hasTable(table: string): boolean
 
