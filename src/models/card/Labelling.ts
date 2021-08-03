@@ -11,7 +11,7 @@ export class Labelling {
             for (const label of labels) {
                 precondition(Labelling.isValid(label))
             }
-            this.labels = labels
+            this.labels = labels.map(label => label.toLowerCase())
         } else {
             this.labels = this.toArray(labels)
         }

@@ -15,7 +15,7 @@ export class Search {
     }
 
     private parseQuery(query: string): string[] {
-        return query.trim().split(Labelling.LABEL_LIST_SEPARATOR)
+        return query.trim().replace(/\s/g, '').split(Labelling.LABEL_LIST_SEPARATOR)
     }
 
     private getFirstAuthorUsernameToken(): Token {

@@ -9,12 +9,7 @@ import { CardDto } from '../models/card/CardDto.js'
 
 export class CardController {
 
-    /**
-     * @param {CardDto} dto 
-     * @param {Datastore} datastore 
-     * @returns {Response}
-     */
-    storeCard(dto, datastore) {
+    storeCard(dto: CardDto, datastore: Datastore): Response {
         if (!CardMapper.isDtoValid(dto)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -26,12 +21,7 @@ export class CardController {
         return Response.OkWithoutData()
     }
 
-    /** 
-     * @param {Identified} dto
-     * @param {Datastore} datastore 
-     * @returns {Response}
-     * */
-    deleteCard({id}, datastore) {
+    deleteCard({id}: Identified, datastore: Datastore): Response {
         if(!id) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -43,12 +33,7 @@ export class CardController {
         return Response.OkWithoutData()
     }
 
-    /** 
-     * @param {Identified} dto
-     * @param {Datastore} datastore 
-     * @returns {Response}
-     */
-    retrieveCard({id}, datastore) {
+    retrieveCard({id}: Identified, datastore: Datastore): Response {
         if(!id) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -59,12 +44,7 @@ export class CardController {
         return Response.OkWithData(CardMapper.toDto(retrieved))
     }
 
-    /**
-     * @param {CardDto} dto 
-     * @param {Datastore} datastore 
-     * @returns {Response}
-     */
-    updateCard(dto, datastore) {
+    updateCard(dto: CardDto, datastore: Datastore): Response {
         if (!CardMapper.isDtoValid(dto)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -76,4 +56,8 @@ export class CardController {
         return Response.OkWithoutData()
     }
 
+    findByLabels(labels: string[], datastore: Datastore): Response {
+        const result = new CardRepository(datastore).findByLabels(labels)
+        return Response.OkWithData(result)
+    }
 }

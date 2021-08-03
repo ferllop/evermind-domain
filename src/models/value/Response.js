@@ -4,12 +4,12 @@ export class Response {
     /** @type {ErrorType | null} */
     error
 
-    /** @type {object | null} */
+    /** @type {object | object[] | null} */
     data
 
     /**
      * @param {ErrorType | null} error 
-     * @param {object | null} data 
+     * @param {object | object[] | null} data 
      */
     constructor(error, data) {
         this.error = error
@@ -32,7 +32,7 @@ export class Response {
     }
 
     /**
-     * @param {object} data 
+     * @param {object | object[]} data 
      * @returns {Response}
      */
     static OkWithData(data) {

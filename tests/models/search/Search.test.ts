@@ -33,6 +33,12 @@ search('should be able to provide all labels when multiple words withouth at sym
     assert.equal(search.getLabels(), ['label1', 'label2', 'label3'])
 })
 
+search('should trim spaces between tokens', () => {
+    const search = new Search('label1, label2, label3, @author')
+    assert.equal(search.getLabels(), ['label1', 'label2', 'label3'])
+    assert.equal(search.getAuthorUsername(), 'author')
+})
+
 search('should be able to provide only labels when an author and labels are provided', () => {
     const search = new Search('label1,@author,label2')
     assert.equal(search.getLabels(), ['label1', 'label2'])

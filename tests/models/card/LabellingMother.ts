@@ -1,3 +1,5 @@
+import { Labelling } from '../../../src/models/card/Labelling.js'
+
 export class LabellingMother {
     static dto() {
         return {labelling: [this.existingLabel()]}
@@ -11,15 +13,10 @@ export class LabellingMother {
         }
     }
 
-    /**
-     * @param {number} number 
-     * @param {number} labelsQty 
-     * @returns {object}
-     */
-    static numberedDto(number, labelsQty = 1) {
+    static numberedDto(number: number, labelsQty: number = 1): object {
         return {
-            labelling: this.dtoWithXLabels(labelsQty).labelling
-                .map(label => label + 'ofCard' + number)
+            labelling: new Labelling(this.dtoWithXLabels(labelsQty).labelling
+                .map(label => label + 'ofCard' + number)).getLabels()
         }
     }
 

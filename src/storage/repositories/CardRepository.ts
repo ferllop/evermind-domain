@@ -42,4 +42,14 @@ export class CardRepository {
         return this.dataStore.update(CardRepository.TABLE_NAME, CardMapper.toDto(card))
     }
 
+    findByLabels(labels: string[]): CardDto[] {
+        if (!this.dataStore.hasTable(CardRepository.TABLE_NAME)) {
+            return []
+        }
+
+        return this.dataStore.find<CardDto>(CardRepository.TABLE_NAME, (card: CardDto) => {
+            return labels.some(label => card.labelling.includes(label))
+        }) 
+    }
+
 }
