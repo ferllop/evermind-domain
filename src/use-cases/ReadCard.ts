@@ -22,7 +22,7 @@ export class ReadCardUseCase {
             return new Response(result.getType(), null)
         }
 
-        return new Response(ErrorType.NULL, CardMapper.toDto(result))
+        return new Response(ErrorType.NULL, new CardMapper().toDto(result))
     }
     
 }

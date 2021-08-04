@@ -2,8 +2,19 @@ import { precondition } from '../../lib/preconditions.js'
 import { User } from '../../models/user/User.js'
 import { Identified } from '../datastores/Identified.js'
 import { UserDto } from '../../models/user/UserDto.js'
+import { Mapper } from './Mapper.js'
 
-export class UserMapper {
+export class UserMapper implements Mapper<User, UserDto> {
+    isDtoValid(dto: UserDto): boolean {
+        return UserMapper.isDtoValid(dto)
+    }
+    fromDto(dto: Identified<UserDto>): User {
+        return UserMapper.fromDto(dto)
+    }
+    toDto(entity: User): Identified<UserDto> {
+        return UserMapper.toDto(entity)
+    }
+    
     
     static isDtoValid(dto: UserDto): boolean {
         return Boolean(dto) && User.isValid(dto.authId, dto.name, dto.username, dto.email, dto.status, dto.lastLogin, dto.lastConnection, dto.signedIn, dto.dayStartTime)

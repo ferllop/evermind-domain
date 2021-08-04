@@ -8,10 +8,11 @@ import { ErrorType } from '../errors/ErrorType.js'
 export class CreateCardUseCase {
     
     execute(dto: CardDto, datastore: Datastore): Response<null> {
-        if (!CardMapper.isDtoValid(dto)) {
+        const mapper = new CardMapper()
+        if (!mapper.isDtoValid(dto)) {
              return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }
-        const card = CardMapper.fromDto({id: '', ...dto})
+        const card = mapper.fromDto({id: '', ...dto})
         const error = new CardController().storeCard(card, datastore)
         return new Response(error.getType(), null)
     }
