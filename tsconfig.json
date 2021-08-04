@@ -6,7 +6,7 @@
     "lib": ["es2020"],
     "moduleResolution": "node",
     "module": "es2020",
-    "baseUrl": "./", 
+    // "baseUrl": "./", 
     "allowJs": true,                             /* Allow javascript files to be compiled. */
     "checkJs": true,                             /* Report errors in .js files. */
     "outDir": "./build",                              /* Redirect output structure to the directory. */

@@ -7,7 +7,7 @@ export class CreateUserUseCase {
     /**
      * @param {UserDto} dto 
      * @param {Datastore} datastore
-     * @returns {Response}
+     * @returns {Response<null>}
      */
     execute(dto, datastore) {
         return new UserController().storeUser(dto, datastore)

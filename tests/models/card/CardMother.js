@@ -16,7 +16,7 @@ export class CardMother {
 
     static dto() {
         return {
-            authorID: 'authorID',
+            authorID: IdentificationMother.dto().id,
             question: 'question',
             answer: 'answer',
             labelling: LabellingMother.dto().labelling,

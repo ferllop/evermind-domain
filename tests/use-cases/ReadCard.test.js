@@ -45,7 +45,8 @@ readCard(
     'should return an object with null as error and card as data', () => {
         new DatastoreMother(CardMother, datastore).having(1).storedIn()
         const result = new ReadCardUseCase().execute(IdentificationMother.numberedDto(1), datastore)
-        assert.ok(ResultMother.isOkWithDataStrings(result, CardMother.numberedDto(1), 'authorID'))
+        ResultMother.isOkWithDataStrings(result, CardMother.numberedDto(1), 'authorID')
+        assert.ok(true)
     })
 
 readCard.run()

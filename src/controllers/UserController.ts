@@ -6,15 +6,11 @@ import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
 import { Identified } from '../storage/datastores/Identified.js'
 import { UserDto } from '../models/user/UserDto.js'
+import { User } from '../models/user/User.js'
 
 export class UserController {
 
-    /**
-     * @param {UserDto} dto 
-     * @param {Datastore} datastore 
-     * @returns {Response}
-     */
-    storeUser(dto, datastore) {
+    storeUser(dto: UserDto, datastore: Datastore): Response<null> {
         if (!UserMapper.isDtoValid(dto)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -26,12 +22,7 @@ export class UserController {
         return Response.OkWithoutData()
     }
 
-    /** 
-     * @param {Identified} dto
-     * @param {Datastore} datastore 
-     * @returns {Response}
-     * */
-    deleteUser({id}, datastore) {
+    deleteUser({id}: Identified, datastore: Datastore): Response<null> {
         if(!id) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -43,12 +34,7 @@ export class UserController {
         return Response.OkWithoutData()
     }
 
-    /** 
-     * @param {Identified} dto
-     * @param {Datastore} datastore 
-     * @returns {Response}
-     */
-    retrieveUser({id}, datastore) {
+    retrieveUser({id}: Identified, datastore: Datastore): Response<UserDto|null> {
         if(!id) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -59,12 +45,7 @@ export class UserController {
         return Response.OkWithData(UserMapper.toDto(retrieved))
     }
 
-    /**
-     * @param {UserDto} dto 
-     * @param {Datastore} datastore 
-     * @returns {Response}
-     */
-    updateUser(dto, datastore) {
+    updateUser(dto: UserDto, datastore: Datastore): Response<null> {
         if (!UserMapper.isDtoValid(dto)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -76,4 +57,11 @@ export class UserController {
         return Response.OkWithoutData()
     }
 
+    findByUsername(username: string, datastore: Datastore): Response<User[]> {
+        const result = new UserRepository(datastore).findByUsername(username)
+        if (result.length === 0) {
+            Response.withError(ErrorType.RESOURCE_NOT_FOUND)
+        }
+        return Response.OkWithData<User[]>(result)
+    }
 }

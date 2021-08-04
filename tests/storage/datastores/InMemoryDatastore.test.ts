@@ -193,4 +193,3 @@ datastoreFinder('should return an array whith all the coincidences', () => {
 })
 
 datastoreFinder.run()
-

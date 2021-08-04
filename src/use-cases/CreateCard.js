@@ -7,7 +7,7 @@ export class CreateCardUseCase {
     /**
      * @param {CardDto} dto 
      * @param {Datastore} datastore
-     * @returns {Response}
+     * @returns {Response<null>}
      */
     execute(dto, datastore) {
         return new CardController().storeCard(dto, datastore)

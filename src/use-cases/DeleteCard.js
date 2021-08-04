@@ -7,7 +7,7 @@ export class DeleteCardUseCase {
     /**
      * @param {Identified} dto 
      * @param {Datastore} datastore
-     * @returns {Response}
+     * @returns {Response<null>}
      */
     execute(dto, datastore) {
         return new CardController().deleteCard(dto, datastore)

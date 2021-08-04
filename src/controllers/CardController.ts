@@ -6,10 +6,11 @@ import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
 import { Identified } from '../storage/datastores/Identified.js'
 import { CardDto } from '../models/card/CardDto.js'
+import { Card } from '../models/card/Card.js'
 
 export class CardController {
 
-    storeCard(dto: CardDto, datastore: Datastore): Response {
+    storeCard(dto: CardDto, datastore: Datastore): Response<null> {
         if (!CardMapper.isDtoValid(dto)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -21,7 +22,7 @@ export class CardController {
         return Response.OkWithoutData()
     }
 
-    deleteCard({id}: Identified, datastore: Datastore): Response {
+    deleteCard({id}: Identified, datastore: Datastore): Response<null> {
         if(!id) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -33,7 +34,7 @@ export class CardController {
         return Response.OkWithoutData()
     }
 
-    retrieveCard({id}: Identified, datastore: Datastore): Response {
+    retrieveCard({id}: Identified, datastore: Datastore): Response<CardDto|null> {
         if(!id) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -44,7 +45,7 @@ export class CardController {
         return Response.OkWithData(CardMapper.toDto(retrieved))
     }
 
-    updateCard(dto: CardDto, datastore: Datastore): Response {
+    updateCard(dto: CardDto, datastore: Datastore): Response<null> {
         if (!CardMapper.isDtoValid(dto)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -56,8 +57,14 @@ export class CardController {
         return Response.OkWithoutData()
     }
 
-    findByLabels(labels: string[], datastore: Datastore): Response {
+    findByLabels(labels: string[], datastore: Datastore): Response<Card[]> {
         const result = new CardRepository(datastore).findByLabels(labels)
         return Response.OkWithData(result)
     }
+
+    findByAuthorId(authorId: Identification, datastore: Datastore): Response<Card[]> {
+        const result = new CardRepository(datastore).findByAuthorId(authorId)
+        return Response.OkWithData(result)
+    }
+
 }

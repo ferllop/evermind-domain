@@ -4,28 +4,20 @@ import { CardDto } from '../../models/card/CardDto.js'
 
 export class CardMapper {
     
-    /** 
-     * @param {CardDto} dto
-     * @returns {boolean} 
-     */
-    static isDtoValid(dto) {
+    static isDtoValid(dto: CardDto): boolean {
         return Boolean(dto) && Card.isValid(dto.authorID, dto.question, dto.answer, dto.labelling, dto.id)
     }
 
-    /** 
-     * @param {CardDto} dto
-     * @returns {Card} 
-     */
-    static fromDto(dto) {
+    static fromDto(dto: CardDto): Card {
         precondition(CardMapper.isDtoValid(dto))
         return new Card(dto.authorID, dto.question, dto.answer, dto.labelling, dto.id)
     }
 
-    /**
-     * @param {Card} card 
-     * @returns {CardDto}
-     */
-    static toDto(card) {
+    static fromDtoArray(dtoArray: CardDto[]): Card[] {
+        return dtoArray.map(cardDto => CardMapper.fromDto(cardDto))
+    }
+    
+    static toDto(card: Card): CardDto {
         return {
             id: card.getId().toString(),
             authorID: card.getAuthorID().toString(),

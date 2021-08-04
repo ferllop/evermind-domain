@@ -7,7 +7,7 @@ export class UpdateUserUseCase {
     /**
      * @param {Identified & any} dto 
      * @param {Datastore} datastore
-     * @returns {Response}
+     * @returns {Response<null>}
      */
     execute(dto, datastore) {
         return new UserController().updateUser(dto, datastore)

@@ -1,4 +1,4 @@
-import { Identified } from 'src/storage/datastores/Identified.js'
+import { Identified } from '../../../src/storage/datastores/Identified.js'
 import { Datastore } from '../../../src/storage/datastores/Datastore.js'
 import { IdentificationMother } from '../../models/value/IdentificationMother.js'
 
@@ -7,6 +7,7 @@ interface Mother {
     numberedDto(number: number): Identified & any
     dto(): Identified & any
 }
+
 export class DatastoreMother {
         
     qty: number = 0

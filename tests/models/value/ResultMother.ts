@@ -1,13 +1,13 @@
-import { Response } from 'src/models/value/Response.js'
+import { Response } from '../../../src/models/value/Response.js'
 import { ErrorType } from '../../../src/errors/ErrorType.js'
 
 export class ResultMother {
 
-    static isEmptyOk(result: Response) {
+    static isEmptyOk<T>(result: Response<T>) {
         return result.data === null && result.error === null
     }
 
-    static isOkWithDataStrings(result: Response, data: { [key: string]: any }, propToCheck: string) {
+    static isOkWithDataStrings<T extends { [key: string]: any }>(result: Response<T|null>, data: { [key: string]: any }, propToCheck: string) {
         if (result.error !== null) {
             return false
         }
@@ -24,15 +24,15 @@ export class ResultMother {
         return true
     }
 
-    static isNotFound(result: Response) {
+    static isNotFound<T>(result: Response<T>) {
         return result.data === null && result.error === ErrorType.RESOURCE_NOT_FOUND
     }
 
-    static isRemoved(result: Response) {
+    static isRemoved<T>(result: Response<T>) {
         return this.isNotFound(result)
     }
 
-    static isInputInvalid(result: Response) {
+    static isInputInvalid<T>(result: Response<T>) {
         return result.data === null && result.error === ErrorType.INPUT_DATA_NOT_VALID
     }
 

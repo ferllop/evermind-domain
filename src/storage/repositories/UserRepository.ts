@@ -42,4 +42,15 @@ export class UserRepository {
         return this.dataStore.update(UserRepository.TABLE_NAME, UserMapper.toDto(user))
     }
 
+    findByUsername(username: string): User[] {
+        if (!this.dataStore.hasTable(UserRepository.TABLE_NAME)) {
+            return []
+        }
+        const result = this.dataStore.find<UserDto>(UserRepository.TABLE_NAME, (user) => {
+            return user.username === username
+        })
+
+        return result.map(userDto => UserMapper.fromDto(userDto))
+    }
+
 }

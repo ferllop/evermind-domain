@@ -49,6 +49,10 @@ export class Labelling {
         return this.labels[index]
     }
 
+    includesAllLabels(labels: string[]) {
+        return this.labels.every(label => labels.includes(label))
+    }
+
     static isValid(label: string): boolean {
         return ! (/.*[^-,\w\s].*/.test(label))
     }

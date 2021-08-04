@@ -10,9 +10,9 @@ export class UserMother {
     static dto() {
         return {
             id: IdentificationMother.dto().id,
-            authId: 'validAuthId',
+            authId: IdentificationMother.dto().id,
             name: 'validName',
-            username: 'validUsername',
+            username: 'validusername',
             email: 'valid@email.com',
             status: 0,
             lastLogin: '2020-01-02T00:00:00Z',
