@@ -20,15 +20,15 @@ labelling('wrong labels in comma separated list will be ignored', () => {
 })
 
 labelling('wrong characters in a label throw assert error', () => {
-    assert.throws(() => new Labelling("label#1"), error => error instanceof PreconditionError)
+    assert.throws(() => new Labelling("label#1"), (error: Error) =>  error instanceof PreconditionError)
 })
 
 labelling('wrong characters in a label contained in a comma separated list will throw assert error', () => {
-    assert.throws(() => new Labelling("label1, label2#uyu"), error => error instanceof PreconditionError)
+    assert.throws(() => new Labelling("label1, label2#uyu"), (error: Error) =>  error instanceof PreconditionError)
 })
 
 labelling('wrong characters in a label contained in list object will throw assert error', () => {
-    assert.throws(() => new Labelling(["label#1", "label2"]), error => error instanceof PreconditionError)
+    assert.throws(() => new Labelling(["label#1", "label2"]), (error: Error) =>  error instanceof PreconditionError)
 })
 
 labelling.run()

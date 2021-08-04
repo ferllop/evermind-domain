@@ -11,7 +11,7 @@ const deleteCard = suite("DeleteCard UseCase")
 
 /** @type {Datastore} */
 let datastore
-deleteCard.before.each(context => {
+deleteCard.before.each(() => {
     datastore = new InMemoryDatastore()
 })
 

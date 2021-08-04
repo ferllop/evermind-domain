@@ -1,11 +1,11 @@
-import { PreconditionError } from'preconditions'
+import { PreconditionError } from '../../../src/lib/preconditions.js'
 import { Search } from'../../../src/models/search/Search.js'
 import { assert, suite } from'../../test-config.js'
 
 const search = suite('Search')
 
 search('should accept only queries with at least one character', () => {
-    assert.throws(() => new Search(''), error => error instanceof PreconditionError)
+    assert.throws(() => new Search(''), (error: Error) => error instanceof PreconditionError)
 })
 
 search('should be able to provide the author when a word prefixed with at symbol is provided alone', () => {
@@ -31,6 +31,12 @@ search('should be able to provide a label when a word is not prefixed with at sy
 search('should be able to provide all labels when multiple words withouth at symbol are provided', () => {
     const search = new Search('label1,label2,label3')
     assert.equal(search.getLabels(), ['label1', 'label2', 'label3'])
+})
+
+search('should trim spaces between tokens', () => {
+    const search = new Search('label1, label2, label3, @author')
+    assert.equal(search.getLabels(), ['label1', 'label2', 'label3'])
+    assert.equal(search.getAuthorUsername(), 'author')
 })
 
 search('should be able to provide only labels when an author and labels are provided', () => {

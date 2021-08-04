@@ -1,11 +1,13 @@
 import { UserController } from '../controllers/UserController.js'
+import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
+import { UserDto } from '../models/user/UserDto.js'
 
 export class CreateUserUseCase {
     /**
-     * @param {object} dto 
+     * @param {UserDto} dto 
      * @param {Datastore} datastore
-     * @returns {object}
+     * @returns {Response<null>}
      */
     execute(dto, datastore) {
         return new UserController().storeUser(dto, datastore)

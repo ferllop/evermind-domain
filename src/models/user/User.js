@@ -1,7 +1,8 @@
 import { Email } from '../value/Email.js'
 import { Identification } from '../value/Identification.js'
 import { UserStatus } from './UserStatus.js'
-import { EverDate } from '../../helpers/EverDate.js'
+import { DateEvermind } from '../../helpers/DateEvermind.js'
+import { DateISO } from '../value/DateISO'
 
 export class User {
     
@@ -23,27 +24,40 @@ export class User {
     /** @type  {UserStatus} */
     #status
     
-    /** @type  {EverDate} */
+    /** @type  {DateEvermind} */
     #lastLogin
     
-    /** @type  {EverDate} */
+    /** @type  {DateEvermind} */
     #lastConnection
     
-    /** @type  {EverDate} */
+    /** @type  {DateEvermind} */
     #signedIn
 
     /** @type  {number} */
     #dayStartTime
 
+    /**
+     * 
+     * @param {string} authId 
+     * @param {string} name 
+     * @param {string} username 
+     * @param {string} email 
+     * @param {number} status 
+     * @param {DateISO} lastLogin 
+     * @param {DateISO} lastConnection 
+     * @param {DateISO} signedIn 
+     * @param {number} dayStartTime 
+     * @param {string} id 
+     */
     constructor(authId, name, username, email, status, lastLogin, lastConnection, signedIn, dayStartTime, id) {
         this.#authId = new Identification(authId)
         this.#name = name
         this.#username = username
         this.#email = new Email(email)
         this.#status = UserStatus.getByOrdinal(status)
-        this.#lastLogin = new EverDate(lastLogin)
-        this.#lastConnection = new EverDate(lastConnection)
-        this.#signedIn = new EverDate(signedIn)
+        this.#lastLogin = new DateEvermind(lastLogin)
+        this.#lastConnection = new DateEvermind(lastConnection)
+        this.#signedIn = new DateEvermind(signedIn)
         this.#dayStartTime = dayStartTime
         this.#id = id ? new Identification(id) : new Identification()
     }
@@ -73,17 +87,17 @@ export class User {
         return this.#status
     }
 
-    /** @returns {EverDate} */
+    /** @returns {DateEvermind} */
     getLastLogin() {
         return this.#lastLogin
     }
 
-    /** @returns {EverDate} */
+    /** @returns {DateEvermind} */
     getLastConnection() {
         return this.#lastConnection
     }
 
-    /** @returns {EverDate} */
+    /** @returns {DateEvermind} */
     getSignedIn() {
         return this.#signedIn
     }
@@ -112,8 +126,8 @@ export class User {
      * @returns {Boolean}
      */
     static isValid(authId, name, username, email, status, lastLogin, lastConnection, signedIn, dayStartTime, id) {
-        const lastLoginDate = new EverDate(lastLogin)
-        const lastConnectionDate = new EverDate(lastConnection)
+        const lastLoginDate = new DateEvermind(lastLogin)
+        const lastConnectionDate = new DateEvermind(lastConnection)
         return Identification.isValid(authId) &&
             typeof name === 'string' && name.length > 0 &&
             typeof username === 'string' && username.length > 0 &&
@@ -121,7 +135,7 @@ export class User {
             UserStatus.isValid(status) &&
             lastLoginDate.isSameOrBefore(lastConnectionDate) &&
             lastConnectionDate.isNowOrBefore() &&
-            new EverDate(signedIn).isSameOrBefore(lastLoginDate) &&
+            new DateEvermind(signedIn).isSameOrBefore(lastLoginDate) &&
             dayStartTime >= 0 && dayStartTime <= 23 &&
             (Boolean(id) ? Identification.isValid(id) : true)
     }

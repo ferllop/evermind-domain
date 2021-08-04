@@ -4,15 +4,13 @@ import { Identification } from '../models/value/Identification.js'
 import { ErrorType } from '../errors/ErrorType.js'
 import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
+import { Identified } from '../storage/datastores/Identified.js'
+import { CardDto } from '../models/card/CardDto.js'
+import { Card } from '../models/card/Card.js'
 
 export class CardController {
 
-    /**
-     * @param {object} dto 
-     * @param {Datastore} datastore 
-     * @returns {Response}
-     */
-    storeCard(dto, datastore) {
+    storeCard(dto: CardDto, datastore: Datastore): Response<null> {
         if (!CardMapper.isDtoValid(dto)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -24,11 +22,7 @@ export class CardController {
         return Response.OkWithoutData()
     }
 
-    /** 
-     * @param {object} dto
-     * @returns {Response}
-     * */
-    deleteCard({id}, datastore) {
+    deleteCard({id}: Identified, datastore: Datastore): Response<null> {
         if(!id) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -40,11 +34,7 @@ export class CardController {
         return Response.OkWithoutData()
     }
 
-    /** 
-     * @param {object} dto
-     * @returns {Response}
-     */
-    retrieveCard({id}, datastore) {
+    retrieveCard({id}: Identified, datastore: Datastore): Response<CardDto|null> {
         if(!id) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -55,11 +45,7 @@ export class CardController {
         return Response.OkWithData(CardMapper.toDto(retrieved))
     }
 
-    /**
-     * @param {object} dto 
-     * @returns {Response}
-     */
-    updateCard(dto, datastore) {
+    updateCard(dto: CardDto, datastore: Datastore): Response<null> {
         if (!CardMapper.isDtoValid(dto)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -69,6 +55,16 @@ export class CardController {
             return Response.withError(ErrorType.RESOURCE_NOT_FOUND)
         }
         return Response.OkWithoutData()
+    }
+
+    findByLabels(labels: string[], datastore: Datastore): Response<Card[]> {
+        const result = new CardRepository(datastore).findByLabels(labels)
+        return Response.OkWithData(result)
+    }
+
+    findByAuthorId(authorId: Identification, datastore: Datastore): Response<Card[]> {
+        const result = new CardRepository(datastore).findByAuthorId(authorId)
+        return Response.OkWithData(result)
     }
 
 }

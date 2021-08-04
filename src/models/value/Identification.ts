@@ -2,22 +2,22 @@ import { precondition } from '../../lib/preconditions.js'
 import { uuid } from '../../lib/uuid.js'
 
 export class Identification {
-    /** @type {string} */
-    #value
+    private value: string
 
-    /**
-     * @param {string} [value]
-     */
-    constructor(value) {
+    constructor(value?: string) {
         precondition(value ? Identification.isValid(value) : true)
-        this.#value = value ?? uuid()
+        this.value = value ?? uuid()
     }
 
-    toString() {
-        return this.#value
+    equals(idValue: string): boolean {
+        return this.value === idValue
     }
 
-    static isValid(data) {
+    toString(): string {
+        return this.value
+    }
+
+    static isValid(data: any): boolean {
         return typeof data === 'string' && data.length > 0
     }
 }

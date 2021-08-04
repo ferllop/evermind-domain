@@ -1,4 +1,4 @@
-import { EverDate } from '../../../src/helpers/EverDate.js'
+import { DateEvermind } from '../../../src/helpers/DateEvermind.js'
 import { precondition } from '../../../src/lib/preconditions.js'
 import { User } from '../../../src/models/user/User.js'
 import { UserStatus } from '../../../src/models/user/UserStatus.js'
@@ -54,7 +54,7 @@ user.run()
  * @returns {string}
  */
 function makeAfter(date, seconds) {
-    precondition(date instanceof Date || EverDate.isISOString(date))
+    precondition(date instanceof Date || DateEvermind.isISOString(date))
     date = new Date(date)   
     return new Date(date.getTime() + seconds * 1000).toISOString()
 }

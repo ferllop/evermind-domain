@@ -4,15 +4,13 @@ import { Identification } from '../models/value/Identification.js'
 import { ErrorType } from '../errors/ErrorType.js'
 import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
+import { Identified } from '../storage/datastores/Identified.js'
+import { UserDto } from '../models/user/UserDto.js'
+import { User } from '../models/user/User.js'
 
 export class UserController {
 
-    /**
-     * @param {object} dto 
-     * @param {Datastore} datastore 
-     * @returns {Response}
-     */
-    storeUser(dto, datastore) {
+    storeUser(dto: UserDto, datastore: Datastore): Response<null> {
         if (!UserMapper.isDtoValid(dto)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -24,15 +22,11 @@ export class UserController {
         return Response.OkWithoutData()
     }
 
-    /** 
-     * @param {object} dto
-     * @returns {Response}
-     * */
-    deleteUser({id}, datastore) {
+    deleteUser({id}: Identified, datastore: Datastore): Response<null> {
         if(!id) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
-        const deleted = new UserRepository(datastore).deleteCard(new Identification(id))
+        const deleted = new UserRepository(datastore).deleteUser(new Identification(id))
         if (!deleted) {
             return Response.withError(ErrorType.RESOURCE_NOT_FOUND)
         }
@@ -40,35 +34,34 @@ export class UserController {
         return Response.OkWithoutData()
     }
 
-    /** 
-     * @param {object} dto
-     * @returns {Response}
-     */
-    retrieveUser({id}, datastore) {
+    retrieveUser({id}: Identified, datastore: Datastore): Response<UserDto|null> {
         if(!id) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
-        const retrieved = new UserRepository(datastore).retrieveCard(new Identification(id))
+        const retrieved = new UserRepository(datastore).retrieveUser(new Identification(id))
         if (!retrieved) {
             return Response.withError(ErrorType.RESOURCE_NOT_FOUND)
         }
         return Response.OkWithData(UserMapper.toDto(retrieved))
     }
 
-    /**
-     * @param {object} dto 
-     * @returns {Response}
-     */
-    updateUser(dto, datastore) {
+    updateUser(dto: UserDto, datastore: Datastore): Response<null> {
         if (!UserMapper.isDtoValid(dto)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
         const card = UserMapper.fromDto(dto)
-        const updated = new UserRepository(datastore).updateCard(card)
+        const updated = new UserRepository(datastore).updateUser(card)
         if(!updated) {
             return Response.withError(ErrorType.RESOURCE_NOT_FOUND)
         }
         return Response.OkWithoutData()
     }
 
+    findByUsername(username: string, datastore: Datastore): Response<User[]> {
+        const result = new UserRepository(datastore).findByUsername(username)
+        if (result.length === 0) {
+            Response.withError(ErrorType.RESOURCE_NOT_FOUND)
+        }
+        return Response.OkWithData<User[]>(result)
+    }
 }
