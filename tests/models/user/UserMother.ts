@@ -1,13 +1,13 @@
 import { IdentificationMother } from '../value/IdentificationMother.js'
 import { UserDto } from '../../../src/models/user/UserDto.js'
+import { Identified } from '../../../src/storage/datastores/Identified.js'
+import { Mother } from '../../storage/datastores/DatastoreMother.js'
 
-export class UserMother {
-    static TABLE_NAME = 'users'
+export class UserMother implements Mother<UserDto> {
+    
+    TABLE_NAME = 'users'
 
-    /**
-     * @returns {UserDto}
-     */
-    static dto() {
+    dto(): Identified<UserDto> {
         return {
             id: IdentificationMother.dto().id,
             authId: IdentificationMother.dto().id,
@@ -22,11 +22,7 @@ export class UserMother {
         }
     }
 
-    /**
-     * @param {number} number 
-     * @returns {UserDto}
-     */
-    static numberedDto(number) {
+    numberedDto(number: number): Identified<UserDto> {
         const dto = this.dto()
         return {
             ...dto,
@@ -37,11 +33,8 @@ export class UserMother {
             email: dto.email + number,
         }
     }
-    /**
-     * 
-     * @returns {UserDto}
-     */
-    static invalidDto() {
+
+    invalidDto(): Identified<UserDto> {
         return { ...this.dto(), authId: '' }
     }
 

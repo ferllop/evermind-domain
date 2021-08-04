@@ -46,28 +46,28 @@ searchCard('having 1 card with two coincident labels, return a Result with one e
 })
 
 searchCard('having 0 coincident cards, when searching by author, then return a Result with an empty array as data and null as error', () => {
-    new DatastoreMother(UserMother, datastore).having(1).storedIn()
+    new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
     new DatastoreMother(CardMother, datastore).having(3).storedIn()
     const result = new SearchCardsUseCase().execute({query: '@non-existing-author'}, datastore)
     assert.is(result.data.length, 0)
 })
 
 searchCard('having 1 coincident cards, when searching by author, then return a Result with an empty array as data and null as error', () => {
-    new DatastoreMother(UserMother, datastore).having(1).storedIn()
+    new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
     new DatastoreMother(CardMother, datastore).having(3).storedIn()
     const result = new SearchCardsUseCase().execute({query: '@validUsername1'}, datastore)
     assert.is(result.data.length, 1)
 })
 
 searchCard('having 0 coincident cards, when searching by author and label, then return a Result with an empty array as data and null as error', () => {
-    new DatastoreMother(UserMother, datastore).having(1).storedIn()
+    new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
     new DatastoreMother(CardMother, datastore).having(3).storedIn()
     const result = new SearchCardsUseCase().execute({query: '@validUsername1, non-existing-label'}, datastore)
     assert.is(result.data.length, 0)
 })
 
 searchCard('having 1 coincident cards, when searching by author and label, then return a Result with an empty array as data and null as error', () => {
-    new DatastoreMother(UserMother, datastore).having(1).storedIn()
+    new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
     new DatastoreMother(CardMother, datastore).having(3).storedIn()
     const result = new SearchCardsUseCase().execute({query: '@validUsername1, label0ofCard1'}, datastore)
     assert.is(result.data.length, 1)

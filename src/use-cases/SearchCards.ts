@@ -4,11 +4,12 @@ import { SearchController } from "../controllers/SearchController.js"
 import { Query } from "../models/search/Query.js"
 import { Datastore } from '../storage/datastores/Datastore.js'
 import { CardMapper } from '../storage/storables/CardMapper.js'
+import { ErrorType } from '../errors/ErrorType.js'
 
 
 export class SearchCardsUseCase {
     execute(dto: Query, datastore: Datastore): Response<CardDto[]> {
-        const {error, data} = new SearchController().executeQuery(dto, datastore)
-        return new Response(error, data.map(card => CardMapper.toDto(card)))
+        const cards = new SearchController().executeQuery(dto, datastore)
+        return new Response(ErrorType.NULL, cards.map(card => CardMapper.toDto(card)))
     }
 }

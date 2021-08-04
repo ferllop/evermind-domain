@@ -2,22 +2,22 @@ import { Identified } from '../../../src/storage/datastores/Identified.js'
 import { Datastore } from '../../../src/storage/datastores/Datastore.js'
 import { IdentificationMother } from '../../models/value/IdentificationMother.js'
 
-interface Mother {
+export interface Mother<T> {
     TABLE_NAME: string
-    numberedDto(number: number): Identified & any
-    dto(): Identified & any
+    numberedDto(number: number): Identified<T>
+    dto(): Identified<T>
 }
 
-export class DatastoreMother {
+export class DatastoreMother<T extends {[key:string]: any}> {
         
     qty: number = 0
-    storedDto: Identified & any = {id: ''}
+    storedDto?: Identified<T> | null
     
-    mother: Mother
+    mother: Mother<T>
     datastore: Datastore
     
     /** @param {Datastore} datastore */
-    constructor(mother: Mother, datastore: Datastore) {
+    constructor(mother: Mother<T>, datastore: Datastore) {
         this.mother = mother
         this.datastore = datastore
     }
@@ -35,11 +35,11 @@ export class DatastoreMother {
     }
     
     exists(id: number) {
-        return Boolean(this.datastore.read(this.mother.TABLE_NAME, IdentificationMother.numberedDto(id).id))
+        return Boolean(this.datastore.read<T>(this.mother.TABLE_NAME, IdentificationMother.numberedDto(id).id))
     }
     
     stored(id: number) {
-        this.storedDto = this.datastore.read<Identified>(this.mother.TABLE_NAME, IdentificationMother.numberedDto(id).id)
+        this.storedDto = this.datastore.read<T>(this.mother.TABLE_NAME, IdentificationMother.numberedDto(id).id)
         return this
     }
     
@@ -48,7 +48,7 @@ export class DatastoreMother {
     }
     
     isDataStored(propertyToCheck: string ) {
-        const readed = this.datastore.read<Identified & any>(this.mother.TABLE_NAME, this.mother.dto().id)
+        const readed = this.datastore.read<T>(this.mother.TABLE_NAME, this.mother.dto().id)
         return readed && readed[propertyToCheck] === this.mother.dto()[propertyToCheck]
     }
 

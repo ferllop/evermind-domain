@@ -5,7 +5,7 @@ export class Response<T> {
     data: T
 
     constructor(error: ErrorType | null, data: T) {
-        this.error = error
+        this.error = error === ErrorType.NULL ? null : error
         this.data = data
     }
 
