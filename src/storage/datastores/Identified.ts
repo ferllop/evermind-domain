@@ -1,1 +1,4 @@
-export type Identified = { id: string; };
+import { IdDto } from '../../models/value/IdDto';
+
+export type Identified<T> = IdDto & T
+

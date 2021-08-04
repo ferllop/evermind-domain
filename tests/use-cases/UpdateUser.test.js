@@ -18,16 +18,16 @@ updateUser(
     'given an unexisting table, ' +
     'should return an object with null as data property and ' +
     'RESOURCE_NOT_FOUND DomainError', () => {
-        const result = new UpdateUserUseCase().execute(UserMother.dto(), datastore)
+        const result = new UpdateUserUseCase().execute(new UserMother().dto(), datastore)
         assert.ok(ResultMother.isNotFound(result))
     })
 
 updateUser(
     'given a previously stored user and data to update it, ' +
     'the user should be updated in storage', () => {
-        const dsMother = new DatastoreMother(UserMother, datastore).having(1).storedIn()
+        const dsMother = new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
         const newAuthId = 'newAuthId'
-        new UpdateUserUseCase().execute({ ...UserMother.numberedDto(1), authId: newAuthId }, datastore)
+        new UpdateUserUseCase().execute({ ...new UserMother().numberedDto(1), authId: newAuthId }, datastore)
         assert.ok(dsMother.stored(1).hasPropertyValue('authId', newAuthId))
     })
 
@@ -35,17 +35,8 @@ updateUser(
     'given a previously stored user and data to update it, ' +
     'should return an object with null as error property and ' +
     'null as data property', () => {
-        new DatastoreMother(UserMother, datastore).having(1).storedIn()
-        const result = new UpdateUserUseCase().execute({ ...UserMother.numberedDto(1), authId: 'updatedAuthId' }, datastore)
-        assert.ok(ResultMother.isEmptyOk(result))
-    })
-
-updateUser(
-    'given a previously stored user and data to update it with an inexistent property in the model, ' +
-    'should return an object with null as error property and ' +
-    'null as data property', () => {
-        new DatastoreMother(UserMother, datastore).having(1).storedIn()
-        const result = new UpdateUserUseCase().execute({ ...UserMother.numberedDto(1), inexistent: 'data' }, datastore)
+        new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
+        const result = new UpdateUserUseCase().execute({ ...new UserMother().numberedDto(1), authId: 'updatedAuthId' }, datastore)
         assert.ok(ResultMother.isEmptyOk(result))
     })
 
@@ -53,8 +44,8 @@ updateUser(
     'given an unexisting user in an existing table, ' +
     'should return an object with null as data property and ' +
     'RESOURCE_NOT_FOUND DomainError', () => {
-        new DatastoreMother(UserMother, datastore).having(1).storedIn()
-        const result = new UpdateUserUseCase().execute({ ...UserMother.numberedDto(1), id: 'notExistingId' }, datastore)
+        new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
+        const result = new UpdateUserUseCase().execute({ ...new UserMother().numberedDto(1), id: 'notExistingId' }, datastore)
         assert.ok(ResultMother.isNotFound(result))
     })
 
@@ -62,7 +53,7 @@ updateUser(
     'given wrong user data, ' +
     'should return an object with null as data property and ' +
     'INPUT_DATA_NOT_VALID DomainError', () => {
-        const result = new UpdateUserUseCase().execute(UserMother.invalidDto(), datastore)
+        const result = new UpdateUserUseCase().execute(new UserMother().invalidDto(), datastore)
         assert.ok(ResultMother.isInputInvalid(result))
     })
 

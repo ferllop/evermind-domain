@@ -33,7 +33,7 @@ user('should know that data is invalid when comes with an out of range status', 
 })
 
 user('should know that data is invalid when comes with a lastLogin after lastConnection', () => {
-    const dto = UserMother.dto()
+    const dto = new UserMother().dto()
     assert.not.ok(isUserValidWith({lastLogin: makeAfter(dto.lastConnection, 1)}))
 })
 
@@ -42,7 +42,7 @@ user('should know that data is invalid when comes with a lastConnection placed i
 })
 
 user('should know that data is invalid when comes with a signedIn after lastLogin', () => {
-    const dto = UserMother.dto()
+    const dto = new UserMother().dto()
     assert.not.ok(isUserValidWith({signedIn: makeAfter(dto.lastLogin, 1)}))
 })
 
@@ -65,7 +65,7 @@ function makeAfter(date, seconds) {
  */
 function isUserValidWith(obj) {
     precondition(typeof obj === 'object')
-    const dto = {...UserMother.dto(), ...obj}
+    const dto = {...new UserMother().dto(), ...obj}
     return User.isValid(
         dto.authId, dto.name, dto.username, dto.email, dto.status, 
         dto.lastLogin, dto.lastConnection, dto.signedIn, dto.dayStartTime)

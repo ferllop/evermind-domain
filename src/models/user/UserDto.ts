@@ -1,7 +1,6 @@
-import { Identified } from '../../storage/datastores/Identified'
 import { DateISO } from '../value/DateISO'
 
-export type UserDto = Identified & {
+export type UserDto = {
     authId: string, 
     name: string, 
     username: string, 

@@ -5,28 +5,17 @@ import { UserDto } from '../../models/user/UserDto.js'
 
 export class UserMapper {
     
-    /** 
-     * @param {UserDto} dto
-     * @returns {boolean} 
-     */
-    static isDtoValid(dto) {
-        return Boolean(dto) && User.isValid(dto.authId, dto.name, dto.username, dto.email, dto.status, dto.lastLogin, dto.lastConnection, dto.signedIn, dto.dayStartTime, dto.id)
+    static isDtoValid(dto: UserDto): boolean {
+        return Boolean(dto) && User.isValid(dto.authId, dto.name, dto.username, dto.email, dto.status, dto.lastLogin, dto.lastConnection, dto.signedIn, dto.dayStartTime)
     }
 
-    /** 
-     * @param {UserDto} dto
-     * @returns {User} 
-     */
-    static fromDto(dto) {
+    
+    static fromDto(dto: Identified<UserDto>): User {
         precondition(UserMapper.isDtoValid(dto))
         return new User(dto.authId, dto.name, dto.username, dto.email, dto.status, dto.lastLogin, dto.lastConnection, dto.signedIn, dto.dayStartTime, dto.id)
     }
 
-    /**
-     * @param {User} user 
-     * @returns {Identified & any}
-     */
-    static toDto(user) {
+    static toDto(user: User): Identified<UserDto> {
         return {
             id: user.getId().toString(),
             authId: user.getAuthId().toString(), 

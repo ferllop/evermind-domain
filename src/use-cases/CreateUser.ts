@@ -4,12 +4,10 @@ import { Datastore } from '../storage/datastores/Datastore.js'
 import { UserDto } from '../models/user/UserDto.js'
 
 export class CreateUserUseCase {
-    /**
-     * @param {UserDto} dto 
-     * @param {Datastore} datastore
-     * @returns {Response<null>}
-     */
-    execute(dto, datastore) {
-        return new UserController().storeUser(dto, datastore)
+    
+    execute(dto: UserDto, datastore: Datastore): Response<null> {
+        const error = new UserController().storeUser(dto, datastore)
+        return new Response(error.getType(), null)
     }
+
 }
