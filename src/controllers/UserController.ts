@@ -4,59 +4,32 @@ import { Identification } from '../models/value/Identification.js'
 import { ErrorType } from '../errors/ErrorType.js'
 import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
-import { Identified } from '../storage/datastores/Identified.js'
 import { UserDto } from '../models/user/UserDto.js'
 import { User } from '../models/user/User.js'
 import { DomainError } from '../errors/DomainError.js'
-import { IdDto } from '../models/value/IdDto.js'
+import { UserField } from '../models/user/UserField.js'
+import { CrudController } from './CrudController.js'
 
 export class UserController {
 
-    storeUser(dto: UserDto, datastore: Datastore): DomainError {
-        if (!UserMapper.isDtoValid(dto)) {
-            return new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
-        }
-        const user = UserMapper.fromDto({id: '', ...dto})
-        const result = new UserRepository(datastore).storeUser(user)
-        if (!result) {
-            return new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
-        } 
-        return DomainError.NULL
+    private crudController() {
+        return new CrudController<User, UserDto>(UserField.TABLE_NAME, new UserMapper())
     }
 
-    deleteUser({id}: IdDto, datastore: Datastore): DomainError {
-        if(!id) {
-            return new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
-        }
-        const deleted = new UserRepository(datastore).deleteUser(new Identification(id))
-        if (!deleted) {
-            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
-        }
-
-        return DomainError.NULL
+    storeUser(user: User, datastore: Datastore): DomainError {
+        return this.crudController().store(user, datastore)
     }
 
-    retrieveUser({id}: IdDto, datastore: Datastore): DomainError | User {
-        if(!id) {
-            return new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
-        }
-        const retrievedUser = new UserRepository(datastore).retrieveUser(new Identification(id))
-        if (!retrievedUser) {
-            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
-        }
-        return retrievedUser
+    deleteUser(id: Identification, datastore: Datastore): DomainError {
+        return this.crudController().delete(id, datastore)
     }
 
-    updateUser(dto: Identified<UserDto>, datastore: Datastore): DomainError {
-        if (!UserMapper.isDtoValid(dto)) {
-            return new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
-        }
-        const card = UserMapper.fromDto(dto)
-        const updated = new UserRepository(datastore).updateUser(card)
-        if(!updated) {
-            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
-        }
-        return DomainError.NULL
+    retrieveUser(id: Identification, datastore: Datastore): DomainError | User {
+        return this.crudController().retrieve(id, datastore)
+    }
+
+    updateUser(user: User, datastore: Datastore): DomainError {
+        return this.crudController().update(user, datastore)
     }
 
     findByUsername(username: string, datastore: Datastore): Response<User[]> {

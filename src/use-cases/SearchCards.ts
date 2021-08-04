@@ -10,6 +10,7 @@ import { ErrorType } from '../errors/ErrorType.js'
 export class SearchCardsUseCase {
     execute(dto: Query, datastore: Datastore): Response<CardDto[]> {
         const cards = new SearchController().executeQuery(dto, datastore)
-        return new Response(ErrorType.NULL, cards.map(card => CardMapper.toDto(card)))
+        const mapper = new CardMapper()
+        return new Response(ErrorType.NULL, cards.map(card => mapper.toDto(card)))
     }
 }
