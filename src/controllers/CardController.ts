@@ -1,6 +1,5 @@
 import { CardRepository } from '../storage/repositories/CardRepository.js'
 import { Identification } from '../models/value/Identification.js'
-import { ErrorType } from '../errors/ErrorType.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
 import { Card } from '../models/card/Card.js'
 import { DomainError } from '../errors/DomainError.js'

@@ -1,3 +1,5 @@
+import { CardDto } from '../../../src/models/card/CardDto.js'
+import { Identified } from '../../../src/storage/datastores/Identified.js'
 import { IdentificationMother } from '../value/IdentificationMother.js'
 import { CardBuilder } from './CardBuilder.js'
 import { LabellingMother } from './LabellingMother.js'
@@ -24,8 +26,7 @@ export class CardMother {
         }
     }
 
-    /** @param {number} number */
-    static numberedDto(number) {
+    static numberedDto(number: number): Identified<CardDto> {
         const dto = this.dto()
         return {
             authorID: dto.authorID + number,

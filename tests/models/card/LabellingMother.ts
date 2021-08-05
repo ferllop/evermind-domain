@@ -13,7 +13,7 @@ export class LabellingMother {
         }
     }
 
-    static numberedDto(number: number, labelsQty: number = 1): object {
+    static numberedDto(number: number, labelsQty: number = 1) {
         return {
             labelling: new Labelling(this.dtoWithXLabels(labelsQty).labelling
                 .map(label => label + 'ofCard' + number)).getLabels()
