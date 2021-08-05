@@ -1,4 +1,5 @@
 import { precondition } from '../../lib/preconditions.js'
+import { Entity } from '../Entity.js'
 import { Identification } from '../value/Identification.js'
 import { Answer } from './Answer.js'
 import { Labelling } from './Labelling.js'
@@ -6,20 +7,19 @@ import { Question } from './Question.js'
 import { WrittenAnswer } from './WrittenAnswer.js'
 import { WrittenQuestion } from './WrittenQuestion.js'
 
-export class Card {
-    private id: Identification
+export class Card extends Entity {
     private authorID: Identification
     private question: Question
     private answer: Answer
     private labelling: Labelling
 
     constructor(authorID: string, question: string, answer: string, labels: string[], id?: string) {
+        super(id)
         precondition(Card.isValid(authorID, question, answer, labels))
         this.authorID = new Identification(authorID)
         this.question = new WrittenQuestion(question)
         this.answer = new WrittenAnswer(answer)
         this.labelling = new Labelling(labels)
-        this.id = id ? new Identification(id) : new Identification()
     }
 
     clone(): Card {
@@ -45,10 +45,6 @@ export class Card {
 
     getLabelling(): Labelling {
         return this.labelling
-    }
-
-    getId(): Identification {
-        return this.id
     }
 
     hasSameAuthor(card: Card) {
