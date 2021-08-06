@@ -1,5 +1,6 @@
 export abstract class Question {
 
-    abstract getQuestion(): unknown
+    abstract getValue(): unknown
+    abstract clone(): Question
     
 }

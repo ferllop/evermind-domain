@@ -4,6 +4,10 @@ import { UserDto } from '../../models/user/UserDto.js'
 import { Mapper } from './Mapper.js'
 import { Identification } from '../../models/value/Identification.js'
 import { MayBeIdentified } from './MayBeIdentified.js'
+import { UserStatus } from '../../models/user/UserStatus.js'
+import { Email } from '../../models/value/Email.js'
+import { DateEvermind } from '../../helpers/DateEvermind.js'
+import { DayStartTime } from '../../models/value/DayStartTime.js'
 
 export class UserMapper implements Mapper<User, UserDto> {
 
@@ -25,7 +29,17 @@ export class UserMapper implements Mapper<User, UserDto> {
 
     fromDto(dto: UserDto): User {
         precondition(this.isDtoValid(dto))
-        return new User(dto.authId, dto.name, dto.username, dto.email, dto.status, dto.lastLogin, dto.lastConnection, dto.signedIn, dto.dayStartTime, new Identification(dto.id))
+        return new User(
+            new Identification(dto.authId), 
+            dto.name, 
+            dto.username, 
+            new Email(dto.email), 
+            UserStatus.getByOrdinal(dto.status), 
+            new DateEvermind(dto.lastLogin), 
+            new DateEvermind(dto.lastConnection), 
+            new DateEvermind(dto.signedIn), 
+            new DayStartTime(dto.dayStartTime), 
+            new Identification(dto.id))
     }
 
     toDto(user: User): UserDto {
@@ -39,7 +53,7 @@ export class UserMapper implements Mapper<User, UserDto> {
             lastLogin: user.getLastLogin().toDtoFormat(),
             lastConnection: user.getLastConnection().toDtoFormat(),
             signedIn: user.getSignedIn().toDtoFormat(),
-            dayStartTime: user.getDayStartTime()
+            dayStartTime: user.getDayStartTime().getValue()
         }
     }
 }

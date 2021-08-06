@@ -4,9 +4,10 @@ import { UserStatus } from './UserStatus.js'
 import { DateEvermind } from '../../helpers/DateEvermind.js'
 import { DateISO } from '../value/DateISO'
 import { Entity } from '../Entity.js'
+import { DayStartTime } from '../value/DayStartTime.js'
 
 export class User extends Entity {
-    
+
     private authId: Identification
     private name: string
     private username: string
@@ -14,22 +15,22 @@ export class User extends Entity {
     private status: UserStatus
     private lastLogin: DateEvermind
     private lastConnection: DateEvermind
-    private signedIn:DateEvermind
-    private dayStartTime: number
+    private signedIn: DateEvermind
+    private dayStartTime: DayStartTime
 
-    constructor(authId: string, name: string, username: string, email: string, status: number, lastLogin: DateISO, lastConnection: DateISO, signedIn: DateISO, dayStartTime: number, id: Identification) {
+    constructor(authId: Identification, name: string, username: string, email: Email, status: UserStatus, lastLogin: DateEvermind, lastConnection: DateEvermind, signedIn: DateEvermind, dayStartTime: DayStartTime, id: Identification) {
         super(id)
-        this.authId = new Identification(authId)
+        this.authId = authId
         this.name = name
         this.username = username
-        this.email = new Email(email)
-        this.status = UserStatus.getByOrdinal(status)
-        this.lastLogin = new DateEvermind(lastLogin)
-        this.lastConnection = new DateEvermind(lastConnection)
-        this.signedIn = new DateEvermind(signedIn)
+        this.email = email
+        this.status = status
+        this.lastLogin = lastLogin
+        this.lastConnection = lastConnection
+        this.signedIn = signedIn
         this.dayStartTime = dayStartTime
     }
-    
+
     getAuthId() {
         return this.authId
     }
@@ -77,7 +78,7 @@ export class User extends Entity {
             lastLoginDate.isSameOrBefore(lastConnectionDate) &&
             lastConnectionDate.isNowOrBefore() &&
             new DateEvermind(signedIn).isSameOrBefore(lastLoginDate) &&
-            dayStartTime >= 0 && dayStartTime <= 23 &&
+            DayStartTime.isValid(dayStartTime) &&
             (Boolean(id) ? Identification.isValid(id) : true)
     }
 }

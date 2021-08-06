@@ -3,16 +3,20 @@ import { Answer } from './Answer.js'
 
 export class WrittenAnswer extends Answer {
 
-    private value: string
+    private readonly value: string
 
     constructor(value: string) {
         super()
-        precondition(!!value)
+        precondition(WrittenAnswer.isValid(value))
         this.value = value
     }
 
-    getAnswer() {
+    getValue() {
         return this.value
+    }
+
+    clone(): WrittenAnswer {
+        return new WrittenAnswer(this.value)
     }
 
     static isValid(answer: string) {

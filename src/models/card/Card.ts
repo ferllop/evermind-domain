@@ -1,38 +1,37 @@
-import { precondition } from '../../lib/preconditions.js'
 import { Entity } from '../Entity.js'
 import { Identification } from '../value/Identification.js'
 import { Answer } from './Answer.js'
+import { AuthorIdentification } from './AuthorIdentification.js'
 import { Labelling } from './Labelling.js'
 import { Question } from './Question.js'
 import { WrittenAnswer } from './WrittenAnswer.js'
 import { WrittenQuestion } from './WrittenQuestion.js'
 
 export class Card extends Entity {
-    private authorID: Identification
+    private authorID: AuthorIdentification
     private question: Question
     private answer: Answer
     private labelling: Labelling
 
-    constructor(authorID: string, question: string, answer: string, labels: string[], id: Identification) {
+    constructor(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: Identification) {
         super(id)
-        precondition(Card.isValid(authorID, question, answer, labels))
-        this.authorID = new Identification(authorID)
-        this.question = new WrittenQuestion(question)
-        this.answer = new WrittenAnswer(answer)
-        this.labelling = new Labelling(labels)
+        this.authorID = authorID
+        this.question = question
+        this.answer = answer
+        this.labelling = labels
     }
 
     clone(): Card {
         return new Card(
-            this.getAuthorID().toString(),
-            this.getQuestion().getQuestion() as string,
-            this.getAnswer().getAnswer() as string,
-            this.getLabelling().getLabels(),
+            this.getAuthorID().clone(),
+            this.getQuestion().clone(),
+            this.getAnswer().clone(),
+            this.getLabelling().clone(),
             Identification.create()
         )
     }
 
-    getAuthorID(): Identification {
+    getAuthorID(): AuthorIdentification {
         return this.authorID
     }
 
