@@ -1,23 +1,17 @@
 import { CardDto } from '../../../src/models/card/CardDto.js'
-import { Identified } from '../../../src/storage/datastores/Identified.js'
+import { CardMapper } from '../../../src/storage/storables/CardMapper.js'
 import { Mother } from '../../storage/datastores/DatastoreMother.js'
 import { IdentificationMother } from '../value/IdentificationMother.js'
-import { CardBuilder } from './CardBuilder.js'
 import { LabellingMother } from './LabellingMother.js'
 
-export class CardMother implements Mother<Identified<CardDto>>{
+export class CardMother implements Mother<CardDto>{
     TABLE_NAME = 'cards'
 
     standard() {
-        return new CardBuilder()
-            .setAuthorID(this.dto().authorID)
-            .setQuestion(this.dto().question)
-            .setAnswer(this.dto().answer)
-            .setLabelling(this.dto().labelling)
-            .build()
+        return new CardMapper().fromDto(this.dto())
     }
 
-    dto(): Identified<CardDto> {
+    dto(): CardDto {
         return {
             authorID: IdentificationMother.dto().id,
             question: 'question',
@@ -27,7 +21,7 @@ export class CardMother implements Mother<Identified<CardDto>>{
         }
     }
 
-    numberedDto(number: number): Identified<CardDto> {
+    numberedDto(number: number): CardDto {
         const dto = this.dto()
         return {
             authorID: dto.authorID + number,

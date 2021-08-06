@@ -1,8 +1,8 @@
 import { precondition } from '../../lib/preconditions.js'
+import { IdDto } from '../../models/value/IdDto.js'
 import { Datastore } from './Datastore.js'
-import { Identified } from './Identified.js'
 
-class Table<T extends Identified<unknown>> {
+class Table<T extends IdDto> {
     private rows: Map<string, T>
 
     constructor() {
@@ -56,7 +56,7 @@ export class InMemoryDatastore implements Datastore {
         this.tables = new Map()
     }
     
-    create<T extends Identified<unknown>>(table: string, dto: T): boolean {
+    create<T extends IdDto>(table: string, dto: T): boolean {
         precondition(dto.id)
         if (!this.tables.has(table)) {
             this.tables.set(table, new Table<T>())
@@ -64,12 +64,12 @@ export class InMemoryDatastore implements Datastore {
         return Boolean(this.tables.get(table)?.create(dto))
     }
 
-    read<T extends Identified<unknown>>(table: string, id: string): T | null {
+    read<T extends IdDto>(table: string, id: string): T | null {
         precondition(this.hasTable(table))
         return this.tables.get(table)?.read(id) ?? null
     }
 
-    update<T extends Identified<unknown>>(table: string, dto: T): boolean {
+    update<T extends IdDto>(table: string, dto: T): boolean {
         precondition(this.hasTable(table))
         return Boolean(this.tables.get(table)?.update(dto))
     }
@@ -79,7 +79,7 @@ export class InMemoryDatastore implements Datastore {
         return Boolean(this.tables.get(table)?.delete(id))
     }
 
-    find<T extends Identified<unknown>>(table: string, finder: (dto: T) => boolean): T[] {
+    find<T extends IdDto>(table: string, finder: (dto: T) => boolean): T[] {
         precondition(this.hasTable(table)) 
         return this.tables.get(table)?.find(finder) ?? []
     }

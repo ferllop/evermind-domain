@@ -1,8 +1,7 @@
 import { Enum } from '../../helpers/Enum.js'
 
 export class Level extends Enum {
-    /**@type {Level[]} */
-    static #values = []
+    private static values: Level[] = []
 
     static LEVEL_0 = new Level(0)
     static LEVEL_1 = new Level(1)
@@ -13,45 +12,36 @@ export class Level extends Enum {
     static LEVEL_6 = new Level(60)
     static LEVEL_7 = new Level(120)
 
-    /**@type {number} */
-    #value
-
-    /**@param {number} value */
-    constructor(value) {
+    constructor(private value: number) {
         super(Level.getValues())
-        this.#value = value
+        this.value = value
     }
 
-    /**@returns {number} */
     getValue() {
-        return this.#value
+        return this.value
     }
 
-    /**@returns {Level} */
     next() {
         if (this.isLast()) {
             return this
         }
-        return Level.getValues()[this.ordinal() + 1]
+        return Level.getValues()[this.getOrdinal() + 1]
     }
 
-    /**@returns {Level} */
     previous() {
-        if (this.ordinal() == 0) {
+        if (this.getOrdinal() == 0) {
             return this
         }
-        return Level.getValues()[this.ordinal() - 1]
+        return Level.getValues()[this.getOrdinal() - 1]
     }
 
-    /** @returns {Level[]} */
     static getValues() {
-        return Level.#values
+        return Level.values
     }
 
 
-    /**@returns {boolean} */
     isLast() {
-        return this.ordinal() == Level.getValues().length - 1
+        return this.getOrdinal() == Level.getValues().length - 1
     }
 
 }

@@ -28,7 +28,7 @@ export class Card extends Entity {
             this.getQuestion().getQuestion(),
             this.getAnswer().getAnswer(),
             this.getLabelling().getLabels(),
-            new Identification()
+            Identification.create()
         )
     }
 

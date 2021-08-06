@@ -1,12 +1,12 @@
 import { Entity } from '../../models/Entity.js'
+import { IdDto } from '../../models/value/IdDto.js'
 import { Identification } from '../../models/value/Identification.js'
 import { Datastore } from '../datastores/Datastore.js'
-import { Identified } from '../datastores/Identified.js'
 import { Unidentified } from '../datastores/Unidentified.js'
 import { Mapper } from '../storables/Mapper.js'
 
 
-export class CrudRepository<T extends Entity, TDto> {
+export class CrudRepository<T extends Entity, TDto extends IdDto> {
     
     private tableName: string
     private mapper: Mapper<T, TDto>
@@ -19,7 +19,7 @@ export class CrudRepository<T extends Entity, TDto> {
     }
 
     store(dto: Unidentified<TDto>): boolean {
-        const identifiedDto = {...dto, id: new Identification().toString()}
+        const identifiedDto = {...dto, id: Identification.create().toString()} as TDto
         const entity = this.mapper.fromDto(identifiedDto)
         return this.dataStore.create(this.tableName, this.mapper.toDto(entity))
     }
@@ -35,7 +35,7 @@ export class CrudRepository<T extends Entity, TDto> {
         if (!this.dataStore.hasTable(this.tableName)) {
             return null
         }
-        const result = this.dataStore.read<Identified<TDto>>(this.tableName, id.toString())
+        const result = this.dataStore.read<TDto>(this.tableName, id.toString())
         if (!result || !this.mapper.isDtoValid(result)) {
             return null
         }

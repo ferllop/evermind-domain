@@ -4,9 +4,13 @@ import { uuid } from '../../lib/uuid.js'
 export class Identification {
     private value: string
 
-    constructor(value?: string) {
-        precondition(value ? Identification.isValid(value) : true)
-        this.value = value ?? uuid()
+    constructor(value: string) {
+        precondition(Identification.isValid(value))
+        this.value = value
+    }
+
+    static create(): Identification {
+        return new Identification(uuid())
     }
 
     equals(idValue: string): boolean {

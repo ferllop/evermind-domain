@@ -1,5 +1,5 @@
 export type CardDto = {
-    id?: string,
+    id: string,
     authorID: string,
     question: string,
     answer: string,

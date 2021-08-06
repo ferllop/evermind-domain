@@ -22,7 +22,7 @@ export class ReadUserUseCase {
             return new Response(result.getType(), null)
         }
 
-        return new Response(null, UserMapper.toDto(result))
+        return new Response(null, new UserMapper().toDto(result))
 
     }
 }

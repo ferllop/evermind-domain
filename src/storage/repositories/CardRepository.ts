@@ -5,7 +5,6 @@ import { Identification } from '../../models/value/Identification.js'
 import { Datastore } from '../datastores/Datastore.js'
 import { Labelling } from '../../models/card/Labelling.js'
 import { CardField } from '../../models/card/CardField.js'
-import { Identified } from '../datastores/Identified.js'
 
 export class CardRepository {
 
@@ -20,7 +19,7 @@ export class CardRepository {
             return []
         }
 
-        const result = this.dataStore.find<Identified<CardDto>>(CardField.TABLE_NAME, (cardDto: CardDto) => new Labelling(labels).includesAllLabels(cardDto.labelling))
+        const result = this.dataStore.find<CardDto>(CardField.TABLE_NAME, (cardDto: CardDto) => new Labelling(labels).includesAllLabels(cardDto.labelling))
         return new CardMapper().fromDtoArray(result)
     }
 
@@ -29,7 +28,7 @@ export class CardRepository {
             return []
         }
 
-        const result = this.dataStore.find<Identified<CardDto>>(CardField.TABLE_NAME, (card: CardDto) => {
+        const result = this.dataStore.find<CardDto>(CardField.TABLE_NAME, (card: CardDto) => {
             return authorId.equals(card.authorID)
         }) 
 
