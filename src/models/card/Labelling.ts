@@ -3,18 +3,12 @@ import { precondition } from '../../lib/preconditions.js'
 export class Labelling {
     static LABEL_LIST_SEPARATOR = ','
 
-    private labels: string[]
+    private readonly labels: string[]
 
     constructor(labels: string[] | string) {
-        precondition(labels instanceof Array || typeof labels === 'string')
-        if (labels instanceof Array) {
-            for (const label of labels) {
-                precondition(Labelling.isValid(label))
-            }
-            this.labels = labels.map(label => label.toLowerCase())
-        } else {
-            this.labels = this.toArray(labels)
-        }
+        const labelsArray = this.toArray(labels)
+        precondition(Labelling.areValid(labelsArray))
+        this.labels = labelsArray.map(label => label.toLowerCase())
     }
 
     toString(): string {
@@ -29,7 +23,11 @@ export class Labelling {
         return result.substring(0, result.length - 2)
     }
 
-    toArray(labels: string): string[] {
+    toArray(labels: string|string[]): string[] {
+        if (labels instanceof Array) {
+            return labels
+        }
+
         const result: string[] = []
         for (const label of labels.toLowerCase().split(Labelling.LABEL_LIST_SEPARATOR)) {
             if (label.trim().length > 0) {
@@ -53,11 +51,15 @@ export class Labelling {
         return this.labels.every(label => labels.includes(label))
     }
 
-    static isValid(label: string): boolean {
-        return ! (/.*[^-,\w\s].*/.test(label))
+    clone() {
+        return new Labelling(this.getLabels())
     }
 
-     static areValid(labels: string[]): boolean {
+    static isValid(label: string): boolean {
+        return !(/.*[^-,\w\s].*/.test(label))
+    }
+
+    static areValid(labels: string[]): boolean {
         return labels.length > 0 && labels.every(label => Labelling.isValid(label))
     }
 }

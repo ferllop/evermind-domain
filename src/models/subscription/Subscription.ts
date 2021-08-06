@@ -1,11 +1,12 @@
-import { precondition } from '../../lib/preconditions.js'
+import { DayStartTime } from '../value/DayStartTime.js'
 import { Hour } from '../value/Hour.js'
+import { Identification } from '../value/Identification.js'
 import { Level } from './Level.js'
 
 export class Subscription {
-    private userID: string
+    private userID: Identification
 
-    private cardID: string
+    private cardID: Identification
 
     private level: Level
 
@@ -13,7 +14,7 @@ export class Subscription {
 
     private nextReview: Date
 
-    constructor(userID: string, cardID: string, level: Level, lastReview: Date, nextReview: Date) {
+    constructor(userID: Identification, cardID: Identification, level: Level, lastReview: Date, nextReview: Date) {
         this.userID = userID
         this.cardID = cardID
         this.level = level
@@ -41,13 +42,12 @@ export class Subscription {
         return this.nextReview
     }
 
-    isToReviewToday(dayStartTime: number) {
+    isToReviewToday(dayStartTime: DayStartTime) {
         return this.isToReviewInDate(dayStartTime, new Date())
     }
 
-    isToReviewInDate(dayStartTime: number, date: Date): boolean {
-        precondition(dayStartTime > -1 && dayStartTime < 24)
-        return new Hour(dayStartTime)
+    isToReviewInDate(dayStartTime: DayStartTime, date: Date): boolean {
+        return new Hour(dayStartTime.getValue())
             .reclockDate(this.nextReview).getTime() <= date.getTime()
     }
 

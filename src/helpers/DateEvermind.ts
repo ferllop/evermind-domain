@@ -1,8 +1,12 @@
 import { DateISO } from '../models/value/DateISO'
 
 export class DateEvermind extends Date {
+    constructor(dateString: DateISO) {
+        super(dateString)
+    }
+
     now(): DateEvermind {
-        return new DateEvermind()
+        return new DateEvermind(new Date().toISOString() as DateISO)
     }
 
     isSame(date: Date): boolean {
