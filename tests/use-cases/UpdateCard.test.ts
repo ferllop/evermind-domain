@@ -10,8 +10,7 @@ const updateCard = suite("UpdateCard UseCase")
 
 const cardMother = new CardMother()
 
-/**@type {Datastore} */
-let datastore
+let datastore: Datastore
 updateCard.before.each(() => {
     datastore = new InMemoryDatastore()
 })

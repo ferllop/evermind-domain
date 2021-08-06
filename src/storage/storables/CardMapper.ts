@@ -31,8 +31,8 @@ export class CardMapper implements Mapper<Card, CardDto> {
         return {
             id: card.getId().toString(),
             authorID: card.getAuthorID().toString(),
-            question: card.getQuestion().getQuestion(),
-            answer: card.getAnswer().getAnswer(),
+            question: card.getQuestion().getQuestion() as string,
+            answer: card.getAnswer().getAnswer() as string,
             labelling: card.getLabelling().getLabels()
         }
     }

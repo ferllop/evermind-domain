@@ -48,22 +48,13 @@ user('should know that data is invalid when comes with a signedIn after lastLogi
 
 user.run()
 
-/**
- * @param {Date|string} date 
- * @param {number} seconds 
- * @returns {string}
- */
-function makeAfter(date, seconds) {
+function makeAfter(date: Date|string, seconds: number) {
     precondition(date instanceof Date || DateEvermind.isISOString(date))
     date = new Date(date)   
     return new Date(date.getTime() + seconds * 1000).toISOString()
 }
 
-/**
- * @param {object} obj 
- * @returns {Boolean}
- */
-function isUserValidWith(obj) {
+function isUserValidWith(obj: object) {
     precondition(typeof obj === 'object')
     const dto = {...new UserMother().dto(), ...obj}
     return User.isValid(
