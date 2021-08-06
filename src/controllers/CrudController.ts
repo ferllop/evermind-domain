@@ -4,13 +4,15 @@ import { Datastore } from '../storage/datastores/Datastore.js'
 import { DomainError } from '../errors/DomainError.js'
 import { CrudRepository } from '../storage/repositories/CrudRepository.js'
 import { Mapper } from '../storage/storables/Mapper.js'
+import { Entity } from '../models/Entity.js'
+import { Unidentified } from '../storage/datastores/Unidentified'
 
-export class CrudController<T, TDto> {
+export class CrudController<T extends Entity, TDto> {
 
     constructor(private tableName: string, private mapper: Mapper<T, TDto>){}
 
-    store(entity: T, datastore: Datastore): DomainError {
-        const result = new CrudRepository(this.tableName, this.mapper, datastore).store(entity)
+    store(dto: Unidentified<TDto>, datastore: Datastore): DomainError {
+        const result = new CrudRepository(this.tableName, this.mapper, datastore).store(dto)
         if (!result) {
             return new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
         } 

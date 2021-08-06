@@ -3,7 +3,7 @@ import { UserDto } from '../../../src/models/user/UserDto.js'
 import { Identified } from '../../../src/storage/datastores/Identified.js'
 import { Mother } from '../../storage/datastores/DatastoreMother.js'
 
-export class UserMother implements Mother<UserDto> {
+export class UserMother implements Mother<Identified<UserDto>> {
     
     TABLE_NAME = 'users'
 

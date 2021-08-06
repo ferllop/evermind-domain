@@ -13,7 +13,7 @@ export class Card extends Entity {
     private answer: Answer
     private labelling: Labelling
 
-    constructor(authorID: string, question: string, answer: string, labels: string[], id?: string) {
+    constructor(authorID: string, question: string, answer: string, labels: string[], id: Identification) {
         super(id)
         precondition(Card.isValid(authorID, question, answer, labels))
         this.authorID = new Identification(authorID)
@@ -27,7 +27,8 @@ export class Card extends Entity {
             this.getAuthorID().toString(),
             this.getQuestion().getQuestion(),
             this.getAnswer().getAnswer(),
-            this.getLabelling().getLabels()
+            this.getLabelling().getLabels(),
+            new Identification()
         )
     }
 

@@ -9,6 +9,7 @@ import { User } from '../models/user/User.js'
 import { DomainError } from '../errors/DomainError.js'
 import { UserField } from '../models/user/UserField.js'
 import { CrudController } from './CrudController.js'
+import { Unidentified } from '../storage/datastores/Unidentified.js'
 
 export class UserController {
 
@@ -16,8 +17,8 @@ export class UserController {
         return new CrudController<User, UserDto>(UserField.TABLE_NAME, new UserMapper())
     }
 
-    storeUser(user: User, datastore: Datastore): DomainError {
-        return this.crudController().store(user, datastore)
+    storeUser(userDto: Unidentified<UserDto>, datastore: Datastore): DomainError {
+        return this.crudController().store(userDto, datastore)
     }
 
     deleteUser(id: Identification, datastore: Datastore): DomainError {

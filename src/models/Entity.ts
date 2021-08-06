@@ -4,11 +4,11 @@ export abstract class Entity {
 
     private id: Identification
 
-    constructor(id?: string) {
-        this.id = Boolean(id) ? new Identification(id) : new Identification()
+    constructor(id: Identification) {
+        this.id = id
     }
 
-    getId() {
+    getId(): Identification {
         return this.id
     }
 

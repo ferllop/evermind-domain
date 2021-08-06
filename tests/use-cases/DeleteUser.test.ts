@@ -1,5 +1,6 @@
 import { UserDto } from '../../src/models/user/UserDto.js'
 import { Datastore } from '../../src/storage/datastores/Datastore.js'
+import { Identified } from '../../src/storage/datastores/Identified.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
 import { DeleteUserUseCase } from '../../src/use-cases/DeleteUser.js'
 import { UserMother } from '../models/user/UserMother.js'
@@ -11,11 +12,11 @@ import { assert, suite } from '../test-config.js'
 const deleteUser = suite("DeleteUser UseCase")
 
 let datastore: Datastore
-let datastoreMother: DatastoreMother<UserDto>
+let datastoreMother: DatastoreMother<Identified<UserDto>>
 
 deleteUser.before.each(() => {
     datastore = new InMemoryDatastore()
-    datastoreMother = new DatastoreMother<UserDto>(new UserMother(), datastore)
+    datastoreMother = new DatastoreMother(new UserMother(), datastore)
 })
 
 deleteUser(

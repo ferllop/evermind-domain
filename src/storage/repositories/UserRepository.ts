@@ -3,6 +3,7 @@ import { User } from '../../models/user/User.js'
 import { UserMapper } from '../storables/UserMapper.js'
 import { UserDto } from '../../models/user/UserDto.js'
 import { UserField } from '../../models/user/UserField.js'
+import { Identified } from '../datastores/Identified.js'
 
 export class UserRepository {
 
@@ -16,7 +17,7 @@ export class UserRepository {
         if (!this.dataStore.hasTable(UserField.TABLE_NAME)) {
             return []
         }
-        const result = this.dataStore.find<UserDto>(UserField.TABLE_NAME, (user) => {
+        const result = this.dataStore.find<Identified<UserDto>>(UserField.TABLE_NAME, (user) => {
             return user.username === username
         })
 

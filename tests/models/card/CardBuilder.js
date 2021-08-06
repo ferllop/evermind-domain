@@ -1,4 +1,5 @@
 import { Card } from '../../../src/models/card/Card.js'
+import { Identification } from '../../../src/models/value/Identification.js'
 
 export class CardBuilder {
     /**@type {string} */
@@ -73,6 +74,6 @@ export class CardBuilder {
      * @returns {Card}
      */
     build() {
-        return new Card(this.authorID, this.question, this.answer, this.labelling, this.id)
+        return new Card(this.authorID, this.question, this.answer, this.labelling, new Identification(this.id))
     }
 }

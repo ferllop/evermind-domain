@@ -9,8 +9,9 @@ import { assert, suite } from '../test-config.js'
 
 const deleteCard = suite("DeleteCard UseCase")
 
-/** @type {Datastore} */
-let datastore
+const cardMother = new CardMother()
+
+let datastore: Datastore
 deleteCard.before.each(() => {
     datastore = new InMemoryDatastore()
 })
@@ -19,13 +20,13 @@ deleteCard(
     'given an existing card id, ' +
     'should return an object with either ' +
     'data and error properties as null', () => {
-        new DatastoreMother(CardMother, datastore).having(1).storedIn()
+        new DatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = new DeleteCardUseCase().execute(IdentificationMother.numberedDto(1), datastore)
         assert.ok(ResultMother.isEmptyOk(result))
     })
 
 deleteCard('given an existing card id, should remove it', () => {
-    const dsMother = new DatastoreMother(CardMother, datastore).having(1).storedIn()
+    const dsMother = new DatastoreMother(cardMother, datastore).having(1).storedIn()
     assert.ok(dsMother.exists(1))
     new DeleteCardUseCase().execute(IdentificationMother.numberedDto(1), datastore)
     assert.not.ok(dsMother.exists(1))
@@ -35,7 +36,7 @@ deleteCard(
     'given an unexisting card id into an existing cards table, ' +
     'it should return an object with data property as null and ' +
     'error property as RESOURCE_NOT_FOUND DomainError', () => {
-        new DatastoreMother(CardMother, datastore).having(1).storedIn()
+        new DatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = new DeleteCardUseCase().execute({ id: 'unexistingID' }, datastore)
         assert.ok(ResultMother.isNotFound(result))
     })

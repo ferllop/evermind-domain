@@ -17,7 +17,7 @@ export class User extends Entity {
     private signedIn:DateEvermind
     private dayStartTime: number
 
-    constructor(authId: string, name: string, username: string, email: string, status: number, lastLogin: DateISO, lastConnection: DateISO, signedIn: DateISO, dayStartTime: number, id?: string) {
+    constructor(authId: string, name: string, username: string, email: string, status: number, lastLogin: DateISO, lastConnection: DateISO, signedIn: DateISO, dayStartTime: number, id: Identification) {
         super(id)
         this.authId = new Identification(authId)
         this.name = name

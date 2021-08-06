@@ -16,7 +16,7 @@ export class Identification {
     toString(): string {
         return this.value
     }
-
+    
     static isValid(data: any): boolean {
         return typeof data === 'string' && data.length > 0
     }

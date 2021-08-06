@@ -3,6 +3,7 @@ import { User } from '../../models/user/User.js'
 import { Identified } from '../datastores/Identified.js'
 import { UserDto } from '../../models/user/UserDto.js'
 import { Mapper } from './Mapper.js'
+import { Identification } from '../../models/value/Identification.js'
 
 export class UserMapper implements Mapper<User, UserDto> {
     isDtoValid(dto: UserDto): boolean {
@@ -23,7 +24,7 @@ export class UserMapper implements Mapper<User, UserDto> {
     
     static fromDto(dto: Identified<UserDto>): User {
         precondition(UserMapper.isDtoValid(dto))
-        return new User(dto.authId, dto.name, dto.username, dto.email, dto.status, dto.lastLogin, dto.lastConnection, dto.signedIn, dto.dayStartTime, dto.id)
+        return new User(dto.authId, dto.name, dto.username, dto.email, dto.status, dto.lastLogin, dto.lastConnection, dto.signedIn, dto.dayStartTime, new Identification(dto.id))
     }
 
     static toDto(user: User): Identified<UserDto> {

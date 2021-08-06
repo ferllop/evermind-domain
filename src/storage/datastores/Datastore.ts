@@ -2,15 +2,15 @@ import { Identified } from './Identified';
 
 export interface Datastore {
 
-    create<T>(table: string, dto: T): boolean
+    create<T extends Identified<unknown>>(table: string, dto: T): boolean
 
-    read<T>(table: string, id: string): Identified<T> | null
+    read<T extends Identified<unknown>>(table: string, id: string): T | null
 
-    update<T>(table: string, dto: Identified<T>): boolean
+    update<T extends Identified<unknown>>(table: string, dto: T): boolean
 
     delete(table: string, id: string): boolean
 
-    find<T>(table: string, finder: (dto: T) => boolean): Identified<T>[]
+    find<T extends Identified<unknown>>(table: string, finder: (dto: T) => boolean): T[]
     
     hasTable(table: string): boolean
 
