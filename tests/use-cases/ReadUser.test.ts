@@ -9,8 +9,7 @@ import { assert, suite } from '../test-config.js'
 
 const readUser = suite("ReadUser UseCase")
 
-/**@type {Datastore} */
-let datastore
+let datastore: Datastore
 readUser.before.each(() => {
     datastore = new InMemoryDatastore()
 })

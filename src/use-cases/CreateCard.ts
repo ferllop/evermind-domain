@@ -4,16 +4,16 @@ import { Datastore } from '../storage/datastores/Datastore.js'
 import { CardDto } from '../models/card/CardDto.js'
 import { CardMapper } from '../storage/storables/CardMapper.js'
 import { ErrorType } from '../errors/ErrorType.js'
+import { Unidentified } from '../storage/datastores/Unidentified.js'
 
 export class CreateCardUseCase {
     
-    execute(dto: CardDto, datastore: Datastore): Response<null> {
+    execute(dto: Unidentified<CardDto>, datastore: Datastore): Response<null> {
         const mapper = new CardMapper()
         if (!mapper.isDtoValid(dto)) {
              return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }
-        const card = mapper.fromDto({id: '', ...dto})
-        const error = new CardController().storeCard(card, datastore)
+        const error = new CardController().storeCard(dto, datastore)
         return new Response(error.getType(), null)
     }
     

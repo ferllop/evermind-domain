@@ -8,8 +8,7 @@ import { assert, suite } from '../test-config.js'
 
 const updateUser = suite("Update User UseCase")
 
-/**@type {Datastore} */
-let datastore
+let datastore: Datastore
 updateUser.before.each(() => {
     datastore = new InMemoryDatastore()
 })

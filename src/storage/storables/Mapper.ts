@@ -1,7 +1,7 @@
-import { Identified } from '../datastores/Identified.js';
+import { MayBeIdentified } from './MayBeIdentified';
 
 export interface Mapper<T, TDto> {
-    isDtoValid(dto: TDto): boolean;
-    fromDto(dto: Identified<TDto>): T;
-    toDto(entity: T): Identified<TDto>;
+    isDtoValid(dto: MayBeIdentified<TDto>): boolean;
+    fromDto(dto: TDto): T;
+    toDto(entity: T): TDto;
 }

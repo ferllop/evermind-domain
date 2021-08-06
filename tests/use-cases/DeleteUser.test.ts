@@ -15,7 +15,7 @@ let datastoreMother: DatastoreMother<UserDto>
 
 deleteUser.before.each(() => {
     datastore = new InMemoryDatastore()
-    datastoreMother = new DatastoreMother<UserDto>(new UserMother(), datastore)
+    datastoreMother = new DatastoreMother(new UserMother(), datastore)
 })
 
 deleteUser(

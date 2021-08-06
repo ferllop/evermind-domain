@@ -1,4 +1,3 @@
-import { Identification } from '../../models/value/Identification.js'
 import { Datastore } from '../datastores/Datastore.js'
 import { User } from '../../models/user/User.js'
 import { UserMapper } from '../storables/UserMapper.js'
@@ -21,7 +20,7 @@ export class UserRepository {
             return user.username === username
         })
 
-        return result.map(userDto => UserMapper.fromDto(userDto))
+        return result.map(userDto => new UserMapper().fromDto(userDto))
     }
 
 }

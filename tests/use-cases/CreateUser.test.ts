@@ -5,11 +5,11 @@ import { assert, suite } from '../test-config.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
 import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { Datastore } from '../../src/storage/datastores/Datastore.js'
+import { DatastoreTestClass } from '../storage/datastores/DatastoreTestClass.js'
 
 const createUser = suite("CreateUser UseCase")
 
-/**@type {Datastore} */
-let datastore
+let datastore: Datastore
 createUser.before.each(() => {
     datastore = new InMemoryDatastore()
 })
@@ -26,8 +26,9 @@ createUser(
     'given data representing a user, ' +
     'when execute this use case, ' +
     'the card should remain in storage', () => {
+        const datastore = new DatastoreTestClass()
         new CreateUserUseCase().execute(new UserMother().dto(), datastore)
-        assert.ok(new DatastoreMother(new UserMother(), datastore).isDataStored('authId'))
+        assert.ok(new DatastoreMother(new UserMother(), datastore).isDataStored(datastore.dtoId, 'authId'))
     })
 
 createUser(

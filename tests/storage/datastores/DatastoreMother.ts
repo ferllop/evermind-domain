@@ -1,22 +1,22 @@
-import { Identified } from '../../../src/storage/datastores/Identified.js'
+import { IdDto } from '../../../src/models/value/IdDto.js'
 import { Datastore } from '../../../src/storage/datastores/Datastore.js'
 import { IdentificationMother } from '../../models/value/IdentificationMother.js'
 
-export interface Mother<T> {
+export interface Mother<T extends IdDto> {
     TABLE_NAME: string
-    numberedDto(number: number): Identified<T>
-    dto(): Identified<T>
+    numberedDto(number: number): T
+    dto(): T
 }
 
-export class DatastoreMother<T extends {[key:string]: any}> {
+
+export class DatastoreMother<T extends IdDto> {
         
     qty: number = 0
-    storedDto?: Identified<T> | null
+    storedDto?: T | null
     
     mother: Mother<T>
     datastore: Datastore
     
-    /** @param {Datastore} datastore */
     constructor(mother: Mother<T>, datastore: Datastore) {
         this.mother = mother
         this.datastore = datastore
@@ -44,12 +44,13 @@ export class DatastoreMother<T extends {[key:string]: any}> {
     }
     
     hasPropertyValue(property: string, value: any) {
-        return this.storedDto && this.storedDto[property] === value
+        return this.storedDto && (this.storedDto as Record<string, any>)[property] === value
     }
     
-    isDataStored(propertyToCheck: string ) {
-        const readed = this.datastore.read<T>(this.mother.TABLE_NAME, this.mother.dto().id)
-        return readed && readed[propertyToCheck] === this.mother.dto()[propertyToCheck]
+    isDataStored(id: string, propertyToCheck: string ) {
+        const readed = this.datastore.read<T>(this.mother.TABLE_NAME, id)
+        return readed && (readed as {[key:string]: any})[propertyToCheck] === (this.mother.dto() as Record<string, any>)[propertyToCheck]
     }
 
 }
+

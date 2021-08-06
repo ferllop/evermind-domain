@@ -1,16 +1,16 @@
-import { Identified } from './Identified';
+import { IdDto } from '../../models/value/IdDto';
 
 export interface Datastore {
 
-    create<T>(table: string, dto: T): boolean
+    create<T extends IdDto>(table: string, dto: T): boolean
 
-    read<T>(table: string, id: string): Identified<T> | null
+    read<T extends IdDto>(table: string, id: string): T | null
 
-    update<T>(table: string, dto: Identified<T>): boolean
+    update<T extends IdDto>(table: string, dto: T): boolean
 
     delete(table: string, id: string): boolean
 
-    find<T>(table: string, finder: (dto: T) => boolean): Identified<T>[]
+    find<T extends IdDto>(table: string, finder: (dto: T) => boolean): T[]
     
     hasTable(table: string): boolean
 

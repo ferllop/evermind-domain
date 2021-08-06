@@ -1,20 +1,17 @@
+import { CardDto } from '../../../src/models/card/CardDto.js'
+import { CardMapper } from '../../../src/storage/storables/CardMapper.js'
+import { Mother } from '../../storage/datastores/DatastoreMother.js'
 import { IdentificationMother } from '../value/IdentificationMother.js'
-import { CardBuilder } from './CardBuilder.js'
 import { LabellingMother } from './LabellingMother.js'
 
-export class CardMother {
-    static TABLE_NAME = 'cards'
+export class CardMother implements Mother<CardDto>{
+    TABLE_NAME = 'cards'
 
-    static standard() {
-        return new CardBuilder()
-            .setAuthorID(this.dto().authorID)
-            .setQuestion(this.dto().question)
-            .setAnswer(this.dto().answer)
-            .setLabelling(this.dto().labelling)
-            .build()
+    standard() {
+        return new CardMapper().fromDto(this.dto())
     }
 
-    static dto() {
+    dto(): CardDto {
         return {
             authorID: IdentificationMother.dto().id,
             question: 'question',
@@ -24,8 +21,7 @@ export class CardMother {
         }
     }
 
-    /** @param {number} number */
-    static numberedDto(number) {
+    numberedDto(number: number): CardDto {
         const dto = this.dto()
         return {
             authorID: dto.authorID + number,
@@ -36,8 +32,8 @@ export class CardMother {
         }
     }
 
-    static invalidDto() {
-        return { ...CardMother.dto(), ...IdentificationMother.invalidDto(), authorID:''}
+    invalidDto() {
+        return { ...this.dto(), ...IdentificationMother.invalidDto(), authorID:''}
     }
 
 }

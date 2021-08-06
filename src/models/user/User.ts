@@ -3,10 +3,10 @@ import { Identification } from '../value/Identification.js'
 import { UserStatus } from './UserStatus.js'
 import { DateEvermind } from '../../helpers/DateEvermind.js'
 import { DateISO } from '../value/DateISO'
+import { Entity } from '../Entity.js'
 
-export class User {
+export class User extends Entity {
     
-    private id: Identification
     private authId: Identification
     private name: string
     private username: string
@@ -17,7 +17,8 @@ export class User {
     private signedIn:DateEvermind
     private dayStartTime: number
 
-    constructor(authId: string, name: string, username: string, email: string, status: number, lastLogin: DateISO, lastConnection: DateISO, signedIn: DateISO, dayStartTime: number, id?: string) {
+    constructor(authId: string, name: string, username: string, email: string, status: number, lastLogin: DateISO, lastConnection: DateISO, signedIn: DateISO, dayStartTime: number, id: Identification) {
+        super(id)
         this.authId = new Identification(authId)
         this.name = name
         this.username = username
@@ -27,7 +28,6 @@ export class User {
         this.lastConnection = new DateEvermind(lastConnection)
         this.signedIn = new DateEvermind(signedIn)
         this.dayStartTime = dayStartTime
-        this.id = Boolean(id) ? new Identification(id) : new Identification()
     }
     
     getAuthId() {
@@ -64,10 +64,6 @@ export class User {
 
     getDayStartTime() {
         return this.dayStartTime
-    }
-
-    getId() {
-        return this.id
     }
 
     static isValid(authId: string, name: string, username: string, email: string, status: number, lastLogin: DateISO, lastConnection: DateISO, signedIn: DateISO, dayStartTime: number, id?: string): boolean {

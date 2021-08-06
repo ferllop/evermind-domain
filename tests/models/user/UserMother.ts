@@ -1,13 +1,12 @@
 import { IdentificationMother } from '../value/IdentificationMother.js'
 import { UserDto } from '../../../src/models/user/UserDto.js'
-import { Identified } from '../../../src/storage/datastores/Identified.js'
 import { Mother } from '../../storage/datastores/DatastoreMother.js'
 
 export class UserMother implements Mother<UserDto> {
     
     TABLE_NAME = 'users'
 
-    dto(): Identified<UserDto> {
+    dto(): UserDto {
         return {
             id: IdentificationMother.dto().id,
             authId: IdentificationMother.dto().id,
@@ -22,7 +21,7 @@ export class UserMother implements Mother<UserDto> {
         }
     }
 
-    numberedDto(number: number): Identified<UserDto> {
+    numberedDto(number: number): UserDto {
         const dto = this.dto()
         return {
             ...dto,
@@ -34,7 +33,7 @@ export class UserMother implements Mother<UserDto> {
         }
     }
 
-    invalidDto(): Identified<UserDto> {
+    invalidDto(): UserDto {
         return { ...this.dto(), authId: '' }
     }
 

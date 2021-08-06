@@ -9,8 +9,9 @@ import { assert, suite } from '../test-config.js'
 
 const readCard = suite("ReadCard UseCase")
 
-/**@type {Datastore} */
-let datastore
+const cardMother = new CardMother()
+
+let datastore: Datastore
 readCard.before.each(() => {
     datastore = new InMemoryDatastore()
 })
@@ -27,7 +28,7 @@ readCard(
     'given a non existing id in an existing cards table, ' +
     'should return an object with data property as null ' +
     'and RESOURCE_NOT_FOUND DomainError', () => {
-        new DatastoreMother(CardMother, datastore).having(1).storedIn()
+        new DatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = new ReadCardUseCase().execute({ id: 'nonExistingId' }, datastore)
         assert.ok(ResultMother.isNotFound(result))
     })
@@ -43,9 +44,9 @@ readCard(
 readCard(
     'given an existing id, ' +
     'should return an object with null as error and card as data', () => {
-        new DatastoreMother(CardMother, datastore).having(1).storedIn()
+        new DatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = new ReadCardUseCase().execute(IdentificationMother.numberedDto(1), datastore)
-        ResultMother.isOkWithDataStrings(result, CardMother.numberedDto(1), 'authorID')
+        ResultMother.isOkWithDataStrings(result, cardMother.numberedDto(1), 'authorID')
         assert.ok(true)
     })
 

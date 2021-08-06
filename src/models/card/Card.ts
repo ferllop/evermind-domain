@@ -1,4 +1,5 @@
 import { precondition } from '../../lib/preconditions.js'
+import { Entity } from '../Entity.js'
 import { Identification } from '../value/Identification.js'
 import { Answer } from './Answer.js'
 import { Labelling } from './Labelling.js'
@@ -6,28 +7,28 @@ import { Question } from './Question.js'
 import { WrittenAnswer } from './WrittenAnswer.js'
 import { WrittenQuestion } from './WrittenQuestion.js'
 
-export class Card {
-    private id: Identification
+export class Card extends Entity {
     private authorID: Identification
     private question: Question
     private answer: Answer
     private labelling: Labelling
 
-    constructor(authorID: string, question: string, answer: string, labels: string[], id?: string) {
+    constructor(authorID: string, question: string, answer: string, labels: string[], id: Identification) {
+        super(id)
         precondition(Card.isValid(authorID, question, answer, labels))
         this.authorID = new Identification(authorID)
         this.question = new WrittenQuestion(question)
         this.answer = new WrittenAnswer(answer)
         this.labelling = new Labelling(labels)
-        this.id = id ? new Identification(id) : new Identification()
     }
 
     clone(): Card {
         return new Card(
             this.getAuthorID().toString(),
-            this.getQuestion().getQuestion(),
-            this.getAnswer().getAnswer(),
-            this.getLabelling().getLabels()
+            this.getQuestion().getQuestion() as string,
+            this.getAnswer().getAnswer() as string,
+            this.getLabelling().getLabels(),
+            Identification.create()
         )
     }
 
@@ -45,10 +46,6 @@ export class Card {
 
     getLabelling(): Labelling {
         return this.labelling
-    }
-
-    getId(): Identification {
-        return this.id
     }
 
     hasSameAuthor(card: Card) {
