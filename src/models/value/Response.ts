@@ -20,4 +20,8 @@ export class Response<T> {
     static OkWithData<T>(data: T): Response<T> {
         return new Response<T>(null, data)
     }
+
+    hasError(error: ErrorType) {
+        return this.data === null && this.error === error
+    }
 }

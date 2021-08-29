@@ -58,12 +58,12 @@ export class Subscription extends Entity {
     }
 
     static isValid(userId: string, cardId: string, level: number, lastReview: DateISO) {
-        return this.isNewSubscriptionValid(userId, cardId) &&
+        return this.isDtoValid(userId, cardId) &&
             Level.isValid(level) &&
             new DateEvermind(lastReview).isNowOrBefore()
     }
 
-    static isNewSubscriptionValid(userId: string, cardId: string) {
+    static isDtoValid(userId: string, cardId: string) {
         return Identification.isValid(userId) && Identification.isValid(cardId)
     }
 

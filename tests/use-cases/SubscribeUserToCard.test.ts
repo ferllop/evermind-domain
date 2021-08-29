@@ -1,3 +1,4 @@
+import { ErrorType } from '../../src/errors/ErrorType.js'
 import { precondition } from '../../src/lib/preconditions.js'
 import { Datastore } from '../../src/storage/datastores/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
@@ -45,7 +46,7 @@ subscribeUserToCard('given a non existing user id and an existing cardid, then t
     const subscription = { userId, cardId }
     const result = new SubscribeUserToCardUseCase().execute(subscription, db)
     assert.not.ok(datastore.subscription.withId(userId + '#' + cardId).isPresent())
-    assert.ok(ResultMother.isNotFound(result))
+    assert.ok(result.hasError(ErrorType.USER_NOT_FOUND))
 })
 
 subscribeUserToCard('given an existing user id and non existing cardid, then the subscription is not done and return a RESOURCE_NOT_FOUND error', () => {
@@ -56,9 +57,9 @@ subscribeUserToCard('given an existing user id and non existing cardid, then the
     datastore.subscription.withId('someid').beingStored()
     const cardId = 'nonexistentcardid'
     const subscription = { userId, cardId }
-    const result = new SubscribeUserToCardUseCase().execute(subscription, db)
+    const response = new SubscribeUserToCardUseCase().execute(subscription, db)
     assert.not.ok(datastore.subscription.withId(userId + '#' + cardId).isPresent())
-    assert.ok(ResultMother.isNotFound(result))
+    assert.ok(response.hasError(ErrorType.CARD_NOT_FOUND))
 })
 
 subscribeUserToCard.run()

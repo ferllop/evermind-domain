@@ -21,15 +21,32 @@ export class SubscriptionController {
         const user = new UserController().findById(userId, datastore)
         const userNotExists = user instanceof DomainError
         if (userNotExists) {
-            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+            return new DomainError(ErrorType.USER_NOT_FOUND)
         }
 
         const cardExists = new CardController().exists(cardId, datastore)
         if (!cardExists) {
-            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+            return new DomainError(ErrorType.CARD_NOT_FOUND)
         }
 
         const subscription = Subscription.create(userId, cardId)
+        new SubscriptionRepository(datastore).add(subscription)
+        return DomainError.NULL
+    }
+
+    unsubscribeUserToCard(userId: Identification, cardId: Identification, datastore: Datastore): DomainError {
+        const user = new UserController().findById(userId, datastore)
+        const userNotExists = user instanceof DomainError
+        if (userNotExists) {
+            return new DomainError(ErrorType.USER_NOT_FOUND)
+        }
+
+        const cardExists = new CardController().exists(cardId, datastore)
+        if (!cardExists) {
+            return new DomainError(ErrorType.CARD_NOT_FOUND)
+        }
+
+        user.unsubscribe(card)
         new SubscriptionRepository(datastore).add(subscription)
         return DomainError.NULL
     }
