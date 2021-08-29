@@ -6,6 +6,7 @@ import { Question } from '../../../src/models/card/Question.js'
 import { WrittenAnswer } from '../../../src/models/card/WrittenAnswer.js'
 import { WrittenQuestion } from '../../../src/models/card/WrittenQuestion.js'
 import { Identification } from '../../../src/models/value/Identification.js'
+import { CardMapper } from '../../../src/storage/storables/CardMapper.js'
 
 export class CardBuilder {
 
@@ -17,7 +18,7 @@ export class CardBuilder {
 
     constructor() {
         this.id = Identification.create()
-        this.authorID = new AuthorIdentification(Identification.create())
+        this.authorID = new AuthorIdentification(Identification.create().toString())
         this.question = new WrittenQuestion('question')
         this.answer = new WrittenAnswer('answer')
         this.labelling = new Labelling('labelling')
@@ -50,5 +51,9 @@ export class CardBuilder {
 
     build() {
         return new Card(this.authorID, this.question, this.answer, this.labelling, this.id)
+    }
+
+    buildDto() {
+        return new CardMapper().toDto(this.build())
     }
 }

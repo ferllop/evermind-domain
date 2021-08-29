@@ -84,12 +84,27 @@ export class InMemoryDatastore implements Datastore {
         return this.tables.get(table)?.find(finder) ?? []
     }
 
+    findOne<T extends IdDto>(table: string, finder: (dto: T) => boolean): T | null {
+        precondition(this.hasTable(table)) 
+        const result = this.tables.get(table)?.find(finder)
+        return result && result.length > 0 ? result[0] : null
+        
+    }
+
     hasTable(table: string): boolean {
         return this.tables.has(table)
     }
 
     clean() {
         this.tables = new Map()
+    }
+
+    getTable(table: string) {
+        return this.tables.get(table)
+    }
+
+    getTables() {
+        return this.tables
     }
 
 }

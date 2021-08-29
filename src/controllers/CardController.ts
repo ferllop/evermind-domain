@@ -7,7 +7,6 @@ import { CardMapper } from '../storage/storables/CardMapper.js'
 import { CardDto } from '../models/card/CardDto.js'
 import { CrudController } from './CrudController.js'
 import { CardField } from '../models/card/CardField.js'
-import { Unidentified } from '../storage/datastores/Unidentified.js'
 
 export class CardController {
 
@@ -15,8 +14,8 @@ export class CardController {
         return new CrudController<Card, CardDto>(CardField.TABLE_NAME, new CardMapper())
     }
 
-    storeCard(cardDto: Unidentified<CardDto>, datastore: Datastore): DomainError {
-        return this.crudController().store(cardDto, datastore)
+    storeCard(card: Card, datastore: Datastore): DomainError {
+        return this.crudController().store(card, datastore)
     }
 
     deleteCard(id: Identification, datastore: Datastore): DomainError {
@@ -37,6 +36,10 @@ export class CardController {
 
     findByAuthorId(authorId: Identification, datastore: Datastore): Card[] {
         return new CardRepository(datastore).findByAuthorId(authorId)
+    }
+
+    exists(id: Identification, datastore: Datastore): boolean {
+        return this.retrieveCard(id, datastore) instanceof Card
     }
 
 }

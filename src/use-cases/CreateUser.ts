@@ -1,20 +1,23 @@
 import { UserController } from '../controllers/UserController.js'
 import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
-import { UserDto } from '../models/user/UserDto.js'
-import { UserMapper } from '../storage/storables/UserMapper.js'
+import { User } from '../models/user/User.js'
+import { CreateUserRequest } from './CreateUserRequest'
+import { Username } from '../models/user/Username.js'
+import { PersonName } from '../models/user/PersonName.js'
 import { ErrorType } from '../errors/ErrorType.js'
-import { Unidentified } from '../storage/datastores/Unidentified.js'
 
 export class CreateUserUseCase {
     
-    execute(dto: Unidentified<UserDto>, datastore: Datastore): Response<null> {
-        const mapper = new UserMapper()
-        if (!mapper.isDtoValid(dto)) {
-            return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
+    execute(dto: CreateUserRequest, datastore: Datastore): Response<null> {
+        if (!PersonName.isValid(dto.name) || !Username.isValid(dto.username)) {
+            return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
-        const error = new UserController().storeUser(dto, datastore)
+        const user = User.create(new PersonName(dto.name), new Username(dto.username))
+        const error = new UserController().storeUser(user, datastore)
         return new Response(error.getType(), null)
     }
 
 }
+
+

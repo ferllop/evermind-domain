@@ -5,8 +5,12 @@ export class DateEvermind extends Date {
         super(dateString)
     }
 
+    static fromNow() {
+        return DateEvermind.fromDate(new Date())
+    }
+
     now(): DateEvermind {
-        return new DateEvermind(new Date().toISOString() as DateISO)
+        return DateEvermind.fromNow()   
     }
 
     isSame(date: Date): boolean {
@@ -45,6 +49,11 @@ export class DateEvermind extends Date {
         return this.toISOString() as DateISO
     }
 
+    addDays(days: number) {
+        const MILLISECONDS_IN_A_DAY = 86_400_000
+        return DateEvermind.fromDate(new Date(this.getTime() + MILLISECONDS_IN_A_DAY * days))
+    }
+
     static isISOString(dateString: string): boolean {
         if (! /\dT\d.*Z$/.test(dateString)) {
             return false
@@ -52,4 +61,7 @@ export class DateEvermind extends Date {
         return ! isNaN(new Date(dateString).getTime())
     }
 
+    static fromDate(date: Date) {
+        return new DateEvermind(date.toISOString() as DateISO)
+    }
 }

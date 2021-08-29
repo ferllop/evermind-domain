@@ -1,22 +1,21 @@
 import { IdentificationMother } from '../value/IdentificationMother.js'
 import { UserDto } from '../../../src/models/user/UserDto.js'
-import { Mother } from '../../storage/datastores/DatastoreMother.js'
+import { Mother } from "../../models/Mother.js"
+import { User } from '../../../src/models/user/User.js'
+import { UserBuilder } from './UserBuilder.js'
+import { Identification } from '../../../src/models/value/Identification.js'
+import { UserMapper } from '../../../src/storage/storables/UserMapper.js'
 
 export class UserMother implements Mother<UserDto> {
     
     TABLE_NAME = 'users'
+    user: User = new UserBuilder().build()
 
     dto(): UserDto {
         return {
             id: IdentificationMother.dto().id,
-            authId: IdentificationMother.dto().id,
             name: 'validName',
             username: 'validusername',
-            email: 'valid@email.com',
-            status: 0,
-            lastLogin: '2020-01-02T00:00:00Z',
-            lastConnection: '2020-01-03T00:00:00Z',
-            signedIn: '2020-01-01T00:00:00Z',
             dayStartTime: 9
         }
     }
@@ -26,15 +25,22 @@ export class UserMother implements Mother<UserDto> {
         return {
             ...dto,
             id: dto.id + number,
-            authId: dto.authId + number,
             name: dto.name + number,
             username: dto.username + number,
-            email: dto.email + number,
         }
     }
 
     invalidDto(): UserDto {
-        return { ...this.dto(), authId: '' }
+        return { ...this.dto(), name: '' }
+    }
+
+    withId(id: string) {
+        this.user = new UserBuilder().setId(new Identification(id)).build()
+        return this
+    }
+
+    getDto() {
+       return new UserMapper().toDto(this.user) 
     }
 
 }

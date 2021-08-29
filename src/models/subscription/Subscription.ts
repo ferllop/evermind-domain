@@ -1,33 +1,34 @@
+import { DateEvermind } from '../../helpers/DateEvermind.js'
+import { Entity } from '../Entity.js'
+import { DateISO } from '../value/DateISO.js'
 import { DayStartTime } from '../value/DayStartTime.js'
 import { Hour } from '../value/Hour.js'
 import { Identification } from '../value/Identification.js'
 import { Level } from './Level.js'
 
-export class Subscription {
-    private userID: Identification
+export class Subscription extends Entity {
+    private userId: Identification
 
-    private cardID: Identification
+    private cardId: Identification
 
     private level: Level
 
-    private lastReview: Date
+    private lastReview: DateEvermind
 
-    private nextReview: Date
-
-    constructor(userID: Identification, cardID: Identification, level: Level, lastReview: Date, nextReview: Date) {
-        this.userID = userID
-        this.cardID = cardID
+    constructor(id: Identification, userId: Identification, cardId: Identification, level: Level, lastReview: DateEvermind) {
+        super(id)
+        this.userId = userId
+        this.cardId = cardId
         this.level = level
         this.lastReview = lastReview
-        this.nextReview = nextReview
     }
 
     getUserID() {
-        return this.userID
+        return this.userId
     }
 
     getCardID() {
-        return this.cardID
+        return this.cardId
     }
 
     getLevel() {
@@ -39,7 +40,7 @@ export class Subscription {
     }
 
     getNextReview() {
-        return this.nextReview
+        return this.level.getNextReviewDate(this.lastReview)
     }
 
     isToReviewToday(dayStartTime: DayStartTime) {
@@ -48,7 +49,26 @@ export class Subscription {
 
     isToReviewInDate(dayStartTime: DayStartTime, date: Date): boolean {
         return new Hour(dayStartTime.getValue())
-            .reclockDate(this.nextReview).getTime() <= date.getTime()
+            .reclockDate(this.getNextReview()).getTime() <= date.getTime()
+    }
+
+    equals(subscription: Subscription) {
+        return this.getUserID().equals(subscription.getUserID()) &&
+            this.getCardID().equals(subscription.getCardID())
+    }
+
+    static isValid(userId: string, cardId: string, level: number, lastReview: DateISO) {
+        return this.isNewSubscriptionValid(userId, cardId) &&
+            Level.isValid(level) &&
+            new DateEvermind(lastReview).isNowOrBefore()
+    }
+
+    static isNewSubscriptionValid(userId: string, cardId: string) {
+        return Identification.isValid(userId) && Identification.isValid(cardId)
+    }
+
+    static create(userId: Identification, cardId: Identification) {
+        return new Subscription(userId.merge(cardId), userId, cardId, Level.LEVEL_0, DateEvermind.fromNow())
     }
 
 }

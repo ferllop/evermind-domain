@@ -29,7 +29,7 @@ export class CardRepository {
         }
 
         const result = this.dataStore.find<CardDto>(CardField.TABLE_NAME, (card: CardDto) => {
-            return authorId.equals(card.authorID)
+            return authorId.equals(new Identification(card.authorID))
         }) 
 
         return new CardMapper().fromDtoArray(result)

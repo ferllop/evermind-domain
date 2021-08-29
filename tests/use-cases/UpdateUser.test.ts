@@ -25,9 +25,9 @@ updateUser(
     'given a previously stored user and data to update it, ' +
     'the user should be updated in storage', () => {
         const dsMother = new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
-        const newAuthId = 'newAuthId'
-        new UpdateUserUseCase().execute({ ...new UserMother().numberedDto(1), authId: newAuthId }, datastore)
-        assert.ok(dsMother.stored(1).hasPropertyValue('authId', newAuthId))
+        const newName = 'newName'
+        new UpdateUserUseCase().execute({ ...new UserMother().numberedDto(1), name: newName }, datastore)
+        assert.ok(dsMother.stored(1).hasPropertyValue('name', newName))
     })
 
 updateUser(
@@ -35,7 +35,7 @@ updateUser(
     'should return an object with null as error property and ' +
     'null as data property', () => {
         new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
-        const result = new UpdateUserUseCase().execute({ ...new UserMother().numberedDto(1), authId: 'updatedAuthId' }, datastore)
+        const result = new UpdateUserUseCase().execute({ ...new UserMother().numberedDto(1), name: 'newName' }, datastore)
         assert.ok(ResultMother.isEmptyOk(result))
     })
 
