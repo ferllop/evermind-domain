@@ -3,6 +3,8 @@ import { Entity } from '../Entity.js'
 import { DayStartTime } from '../value/DayStartTime.js'
 import { PersonName } from './PersonName.js'
 import { Username } from './Username.js'
+import { Card } from '../card/Card.js'
+import { Subscription } from '../subscription/Subscription.js'
 
 export class User extends Entity {
 
@@ -24,6 +26,10 @@ export class User extends Entity {
 
     getDayStartTime() {
         return this.dayStartTime
+    }
+
+    subscribe(card: Card) {
+        return Subscription.create(this.getId(), card.getId())        
     }
 
     static isValid(name: string, username: string, dayStartTime: number, id?: string): boolean {

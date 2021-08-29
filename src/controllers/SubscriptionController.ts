@@ -18,11 +18,7 @@ export class SubscriptionController {
     }
 
     subscribeUserToCard(userId: Identification, cardId: Identification, datastore: Datastore): DomainError {
-        const user = new UserController().findById(userId, datastore)
-        const userNotExists = user instanceof DomainError
-        if (userNotExists) {
-            return new DomainError(ErrorType.USER_NOT_FOUND)
-        }
+        
 
         const cardExists = new CardController().exists(cardId, datastore)
         if (!cardExists) {
