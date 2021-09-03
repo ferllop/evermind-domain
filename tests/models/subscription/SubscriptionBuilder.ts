@@ -48,6 +48,6 @@ export class SubscriptionBuilder {
     }
 
     build() {
-        return new Subscription(this.id, this.userId, this.cardId, this.level, this.lastReview)
+        return Subscription.recreate(this.id, this.userId, this.cardId, this.level, this.lastReview)
     }
 }

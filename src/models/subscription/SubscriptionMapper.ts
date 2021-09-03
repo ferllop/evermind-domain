@@ -12,7 +12,7 @@ export class SubscriptionMapper implements Mapper<Subscription, SubscriptionDto>
     }
 
     fromDto(dto: SubscriptionDto): Subscription {
-        return new Subscription(
+        return Subscription.recreate(
             new Identification(dto.id),
             new Identification(dto.userId), 
             new Identification(dto.cardId), 
