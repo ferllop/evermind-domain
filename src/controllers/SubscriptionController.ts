@@ -1,49 +1,53 @@
 import { DomainError } from '../errors/DomainError.js';
 import { ErrorType } from '../errors/ErrorType.js';
-import { Subscription } from '../models/subscription/Subscription.js';
-import { SubscriptionField } from '../models/subscription/SubscriptionField.js';
-import { SubscriptionMapper } from '../models/subscription/SubscriptionMapper.js';
-import { SubscriptionDto } from '../models/subscription/SusbcriptionDto.js';
 import { Identification } from '../models/value/Identification.js';
 import { Datastore } from '../storage/datastores/Datastore.js';
+import { CardRepository } from '../storage/repositories/CardRepository.js';
 import { SubscriptionRepository } from '../storage/repositories/SubscriptionRepository.js';
-import { CardController } from './CardController.js';
-import { CrudController } from './CrudController.js';
-import { UserController } from './UserController.js';
+import { UserRepository } from '../storage/repositories/UserRepository.js';
 
 export class SubscriptionController {
 
-    private crudController() {
-        return new CrudController<Subscription, SubscriptionDto>(SubscriptionField.TABLE_NAME, new SubscriptionMapper())
-    }
-
     subscribeUserToCard(userId: Identification, cardId: Identification, datastore: Datastore): DomainError {
-        
-
-        const cardExists = new CardController().exists(cardId, datastore)
-        if (!cardExists) {
-            return new DomainError(ErrorType.CARD_NOT_FOUND)
-        }
-
-        const subscription = Subscription.create(userId, cardId)
-        new SubscriptionRepository(datastore).add(subscription)
-        return DomainError.NULL
-    }
-
-    unsubscribeUserToCard(userId: Identification, cardId: Identification, datastore: Datastore): DomainError {
-        const user = new UserController().findById(userId, datastore)
-        const userNotExists = user instanceof DomainError
-        if (userNotExists) {
+        const user = new UserRepository(datastore).findById(userId)
+        if (!user) {
             return new DomainError(ErrorType.USER_NOT_FOUND)
         }
-
-        const cardExists = new CardController().exists(cardId, datastore)
-        if (!cardExists) {
+        
+        const card = new CardRepository(datastore).findById(cardId)
+        if (!card) {
             return new DomainError(ErrorType.CARD_NOT_FOUND)
         }
-
-        user.unsubscribe(card)
-        new SubscriptionRepository(datastore).add(subscription)
-        return DomainError.NULL
+        
+        const subscriptionRepository = new SubscriptionRepository(datastore) 
+        const subscriptions = subscriptionRepository.findByUserId(user)
+        const subscription = user.subscribedTo(subscriptions).subscribeTo(card)
+        if(!subscription) {
+            return new DomainError(ErrorType.USER_IS_ALREADY_SUBSCRIBED_TO_CARD)
+        }
+        return subscriptionRepository.add(subscription)
+        
+    }
+    
+    unsubscribeUserToCard(userId: Identification, cardId: Identification, datastore: Datastore): DomainError {
+        const user = new UserRepository(datastore).findById(userId)
+        if (!user) {
+            return new DomainError(ErrorType.USER_NOT_FOUND)
+        }
+        
+        const card = new CardRepository(datastore).findById(cardId)
+        if (!card) {
+            return new DomainError(ErrorType.CARD_NOT_FOUND)
+        }
+        
+        const subscriptionRepository = new SubscriptionRepository(datastore) 
+        const subscriptions = subscriptionRepository.findByUserId(user)
+        
+        const subscription = user.subscribedTo(subscriptions).unsubscribeFrom(card)
+        
+        if (!subscription) {
+            return new DomainError(ErrorType.SUBSCRIPTION_NOT_EXISTS)
+        }
+        return subscriptionRepository.delete(subscription)
     }
 }

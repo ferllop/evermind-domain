@@ -5,8 +5,6 @@ import { Identification } from '../../models/value/Identification.js'
 import { Datastore } from '../datastores/Datastore.js'
 import { Labelling } from '../../models/card/Labelling.js'
 import { CardField } from '../../models/card/CardField.js'
-import { CrudRepository } from './CrudRepository.js'
-import { DatastoreTestClass } from '../../../tests/storage/datastores/DatastoreTestClass.js'
 
 export class CardRepository {
 

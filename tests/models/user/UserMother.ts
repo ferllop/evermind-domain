@@ -11,6 +11,10 @@ export class UserMother implements Mother<UserDto> {
     TABLE_NAME = 'users'
     user: User = new UserBuilder().build()
 
+    standard() {
+        return new UserMapper().fromDto(this.dto())
+    }
+
     dto(): UserDto {
         return {
             id: IdentificationMother.dto().id,

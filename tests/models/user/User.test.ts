@@ -20,7 +20,6 @@ user('should know that data is invalid when comes with an empty username', () =>
 
 user.run()
 
-
 function isUserValidWith(obj: object) {
     precondition(typeof obj === 'object')
     const dto = {...new UserMother().dto(), ...obj}

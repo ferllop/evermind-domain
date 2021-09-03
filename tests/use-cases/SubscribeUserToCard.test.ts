@@ -6,10 +6,9 @@ import { SubscribeUserToCardUseCase } from '../../src/use-cases/SubscribeUserToC
 import { CardMother } from '../models/card/CardMother.js'
 import { SubscriptionMother } from '../models/subscription/SubscriptionMother.js'
 import { UserMother } from '../models/user/UserMother.js'
-import { ResultMother } from '../models/value/ResultMother.js'
 import { suite, assert } from '../test-config.js'
 
-const subscribeUserToCard = suite("Subcribe user to card")
+const subscribeUserToCard = suite("Subscribe user to card")
 
 subscribeUserToCard('given an existing user id and an existing cardid, then create a subscription with id properly formatted', () => {
     const db = new InMemoryDatastore()
@@ -22,6 +21,20 @@ subscribeUserToCard('given an existing user id and an existing cardid, then crea
     new SubscribeUserToCardUseCase().execute(subscription, db)
     assert.ok(datastore.subscription.withId(userId + '#' + cardId).isPresent())
 })
+
+subscribeUserToCard('given a user subscribed to a card, when subscribing again, should return a USER_IS_ALREADY_SUBSCRIBED_TO_CARD error', () => {
+    const db = new InMemoryDatastore()
+    const datastore = new DatastoreMother(db)
+    const userId = 'theuserid'
+    datastore.user.withId(userId).beingStored()
+    const cardId = 'thecardid'
+    datastore.card.withId(cardId).beingStored()
+    const subscription = { userId, cardId }
+    new SubscribeUserToCardUseCase().execute(subscription, db)
+    const result = new SubscribeUserToCardUseCase().execute(subscription, db)
+    assert.ok(result.hasError(ErrorType.USER_IS_ALREADY_SUBSCRIBED_TO_CARD))
+})
+
 
 subscribeUserToCard('given an existing user id and an existing cardid, then create a subscription in Level 0', () => {
     const db = new InMemoryDatastore()
@@ -36,7 +49,7 @@ subscribeUserToCard('given an existing user id and an existing cardid, then crea
     assert.ok(datastore.subscription.hasLevel(0))
 })
 
-subscribeUserToCard('given a non existing user id and an existing cardid, then the subscription is not done and return a RESOURCE_NOT_FOUND error', () => {
+subscribeUserToCard('given a non existing user id and an existing cardid, then the subscription is not done and return a USER_NOT_FOUND error', () => {
     const db = new InMemoryDatastore()
     const datastore = new DatastoreMother(db)
     datastore.subscription.withId('someid').beingStored()
@@ -49,7 +62,7 @@ subscribeUserToCard('given a non existing user id and an existing cardid, then t
     assert.ok(result.hasError(ErrorType.USER_NOT_FOUND))
 })
 
-subscribeUserToCard('given an existing user id and non existing cardid, then the subscription is not done and return a RESOURCE_NOT_FOUND error', () => {
+subscribeUserToCard('given an existing user id and non existing cardid, then the subscription is not done and return a CARD_NOT_FOUND error', () => {
     const db = new InMemoryDatastore()
     const datastore = new DatastoreMother(db)
     const userId = 'theuserid'
@@ -92,6 +105,10 @@ class DatastoreMother {
 
     isPresent() {
         return Boolean(this.datastore.read(this.mother.TABLE_NAME, this.dto.id))
+    }
+
+    isPresentOnlyOnce() {
+        return this.datastore.find(this.mother.TABLE_NAME, dto => dto.id === this.dto.id).length === 1
     }
 
     hasLevel(level: number) {

@@ -24,7 +24,7 @@ export class ResultMother {
         return true
     }
 
-    static isNotFound(result: Response<null>) {
+    static isNotFound<T>(result: Response<T>) {
         return result.hasError(ErrorType.RESOURCE_NOT_FOUND)
     }
 
@@ -32,7 +32,7 @@ export class ResultMother {
         return this.isNotFound(result)
     }
 
-    static isInputInvalid(result: Response<null>) {
+    static isInputInvalid<T>(result: Response<T>) {
         return result.hasError(ErrorType.INPUT_DATA_NOT_VALID)
     }
 

@@ -3,7 +3,6 @@ import { Mapper } from '../../storage/storables/Mapper.js';
 import { MayBeIdentified } from '../../storage/storables/MayBeIdentified.js';
 import { Identification } from '../value/Identification.js';
 import { Level } from './Level.js';
-import { NewSubscriptionDto } from './NewSubscriptionDto.js';
 import { Subscription } from './Subscription.js';
 import { SubscriptionDto } from './SusbcriptionDto.js';
 
@@ -12,23 +11,13 @@ export class SubscriptionMapper implements Mapper<Subscription, SubscriptionDto>
         return Subscription.isValid(dto.userId, dto.cardId, dto.level, dto.lastReview)
     }
 
-    fromDto(dto: SubscriptionDto|NewSubscriptionDto): Subscription {
-        if (this.isNewSubscription(dto)) {
-            return new Subscription(
-                Identification.create(),
-                new Identification(dto.userId), 
-                new Identification(dto.cardId), 
-                Level.LEVEL_0, 
-                DateEvermind.fromDate(new Date())
-            )
-        }
-        const existingSubscription = dto as SubscriptionDto
+    fromDto(dto: SubscriptionDto): Subscription {
         return new Subscription(
-            new Identification(existingSubscription.id),
-            new Identification(existingSubscription.userId), 
-            new Identification(existingSubscription.cardId), 
-            Level.getByOrdinal(existingSubscription.level), 
-            new DateEvermind(existingSubscription.lastReview)
+            new Identification(dto.id),
+            new Identification(dto.userId), 
+            new Identification(dto.cardId), 
+            Level.getByOrdinal(dto.level), 
+            new DateEvermind(dto.lastReview)
         )
     }
 
@@ -42,8 +31,5 @@ export class SubscriptionMapper implements Mapper<Subscription, SubscriptionDto>
         }
     }
 
-    isNewSubscription(dto: SubscriptionDto | NewSubscriptionDto) {
-        return Object.keys(dto).some(key => key !== 'userId' && key !== 'cardId')
-    }
 
 }

@@ -5,5 +5,6 @@ export enum ErrorType {
     DATA_FROM_STORAGE_NOT_VALID = 'Data received from storage is not valid',
     USER_NOT_FOUND = 'User not exists',
     CARD_NOT_FOUND = 'Card not exists',
-    SUBSCRIPTION_NOT_EXISTS = 'Subscription not exists'
+    SUBSCRIPTION_NOT_EXISTS = 'Subscription not exists',
+    USER_IS_ALREADY_SUBSCRIBED_TO_CARD = 'User is already subscribed to card'
 }
