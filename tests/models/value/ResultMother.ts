@@ -25,15 +25,15 @@ export class ResultMother {
     }
 
     static isNotFound<T>(result: Response<T>) {
-        return result.data === null && result.error === ErrorType.RESOURCE_NOT_FOUND
+        return result.hasError(ErrorType.RESOURCE_NOT_FOUND)
     }
 
-    static isRemoved<T>(result: Response<T>) {
+    static isRemoved(result: Response<null>) {
         return this.isNotFound(result)
     }
 
     static isInputInvalid<T>(result: Response<T>) {
-        return result.data === null && result.error === ErrorType.INPUT_DATA_NOT_VALID
+        return result.hasError(ErrorType.INPUT_DATA_NOT_VALID)
     }
 
 }

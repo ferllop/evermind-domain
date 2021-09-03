@@ -1,13 +1,7 @@
 import { IdDto } from '../../../src/models/value/IdDto.js'
 import { Datastore } from '../../../src/storage/datastores/Datastore.js'
 import { IdentificationMother } from '../../models/value/IdentificationMother.js'
-
-export interface Mother<T extends IdDto> {
-    TABLE_NAME: string
-    numberedDto(number: number): T
-    dto(): T
-}
-
+import { Mother } from '../../models/Mother.js'
 
 export class DatastoreMother<T extends IdDto> {
         

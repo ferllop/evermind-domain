@@ -1,3 +1,4 @@
+import { DateEvermind } from '../../helpers/DateEvermind.js'
 import { Enum } from '../../helpers/Enum.js'
 
 export class Level extends Enum {
@@ -35,13 +36,28 @@ export class Level extends Enum {
         return Level.getValues()[this.getOrdinal() - 1]
     }
 
+    getNextReviewDate(date: DateEvermind) {
+        return DateEvermind.fromDate(date).addDays(this.getValue())
+    }
+
     static getValues() {
         return Level.values
     }
 
+    static getLastOrdinal() {
+        return Level.getValues().length - 1
+    }
+
+    static getByOrdinal(ordinal: number) {
+        return Level.values[ordinal]
+    }
 
     isLast() {
         return this.getOrdinal() == Level.getValues().length - 1
+    }
+
+    static isValid(level: number) {
+        return level >= 0 && level <= Level.getLastOrdinal()
     }
 
 }

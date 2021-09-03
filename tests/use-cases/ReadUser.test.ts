@@ -1,3 +1,5 @@
+import { ErrorType } from '../../src/errors/ErrorType.js'
+import { Response } from '../../src/models/value/Response.js'
 import { Datastore } from '../../src/storage/datastores/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
 import { ReadUserUseCase } from '../../src/use-cases/ReadUser.js'
@@ -19,7 +21,7 @@ readUser(
     'should return an object with data property as null and ' +
     'error property as INPUT_DATA_NOT_VALID DomainError', () => {
         const result = new ReadUserUseCase().execute(IdentificationMother.invalidDto(), datastore)
-        assert.ok(ResultMother.isInputInvalid(result))
+        assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
     })
 
 readUser(
@@ -28,7 +30,7 @@ readUser(
     'and RESOURCE_NOT_FOUND DomainError', () => {
         new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
         const result = new ReadUserUseCase().execute({ id: 'nonExistingId' }, datastore)
-        assert.ok(ResultMother.isNotFound(result))
+        assert.equal(result, Response.withError(ErrorType.RESOURCE_NOT_FOUND))
     })
 
 readUser(
@@ -36,7 +38,7 @@ readUser(
     'should return an object with data property as null ' +
     'and RESOURCE_NOT_FOUND DomainError', () => {
         const result = new ReadUserUseCase().execute({ id: 'nonExistingId' }, datastore)
-        assert.ok(ResultMother.isNotFound(result))
+        assert.equal(result, Response.withError(ErrorType.RESOURCE_NOT_FOUND))
     })
 
 readUser(

@@ -4,9 +4,10 @@ export class DayStartTime {
 
     static readonly MIN = 0;
     static readonly MAX = 23;
+    static readonly DEFAULT = 9;
 
-    constructor(private readonly value: number) {
-        precondition(DayStartTime.isValid(value));
+    constructor(private readonly value: number = DayStartTime.DEFAULT) {
+        precondition(DayStartTime.isValid(value))
     }
 
     static isValid(value: number) {

@@ -38,8 +38,8 @@ export class CardMapper implements Mapper<Card, CardDto> {
 
     toDto(card: Card): CardDto {
         return {
-            id: card.getId().toString(),
-            authorID: card.getAuthorID().toString(),
+            id: card.getId().getId(),
+            authorID: card.getAuthorID().getId(),
             question: card.getQuestion().getValue() as string,
             answer: card.getAnswer().getValue() as string,
             labelling: card.getLabelling().getLabels()

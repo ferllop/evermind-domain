@@ -51,8 +51,12 @@ export class Card extends Entity {
         return this.authorID === card.authorID
     }
 
-    hasAuthorId(authorId: string) {
+    hasAuthorId(authorId: AuthorIdentification) {
         return this.authorID.equals(authorId)
+    }
+
+    static create(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling){
+        return new Card(authorID, question, answer, labels, Identification.create())
     }
 
     static isValid(authorID: string, question: string, answer: string, labels: string[], id?: string) {

@@ -1,10 +1,14 @@
+import { Card } from '../../../src/models/card/Card.js'
 import { CardDto } from '../../../src/models/card/CardDto.js'
+import { Identification } from '../../../src/models/value/Identification.js'
 import { CardMapper } from '../../../src/storage/storables/CardMapper.js'
-import { Mother } from '../../storage/datastores/DatastoreMother.js'
+import { Mother } from "../../models/Mother.js"
 import { IdentificationMother } from '../value/IdentificationMother.js'
+import { CardBuilder } from './CardBuilder.js'
 import { LabellingMother } from './LabellingMother.js'
 
 export class CardMother implements Mother<CardDto>{
+    card: Card = new CardBuilder().build()
     TABLE_NAME = 'cards'
 
     standard() {
@@ -34,6 +38,15 @@ export class CardMother implements Mother<CardDto>{
 
     invalidDto() {
         return { ...this.dto(), ...IdentificationMother.invalidDto(), authorID:''}
+    }
+
+    withId(id: string) {
+        this.card = new CardBuilder().setId(new Identification(id)).build()
+        return this
+    }
+
+    getDto() {
+       return new CardMapper().toDto(this.card) 
     }
 
 }
