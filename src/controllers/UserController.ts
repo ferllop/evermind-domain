@@ -16,7 +16,7 @@ export class UserController {
     }
 
     storeUser(user: User, datastore: Datastore): DomainError {
-        return this.crudController().store(user, datastore)
+        return new UserRepository(datastore).store(user)
     }
 
     deleteUser(id: Identification, datastore: Datastore): DomainError {

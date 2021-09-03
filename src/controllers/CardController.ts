@@ -15,7 +15,7 @@ export class CardController {
     }
 
     storeCard(card: Card, datastore: Datastore): DomainError {
-        return this.crudController().store(card, datastore)
+        return new CardRepository(datastore).store(card)
     }
 
     deleteCard(id: Identification, datastore: Datastore): DomainError {

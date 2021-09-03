@@ -1,17 +1,16 @@
 import { Card } from '../../models/card/Card.js'
 import { CardDto } from '../../models/card/CardDto.js'
-import { CardMapper } from '../storables/CardMapper.js'
 import { Identification } from '../../models/value/Identification.js'
 import { Datastore } from '../datastores/Datastore.js'
 import { Labelling } from '../../models/card/Labelling.js'
 import { CardField } from '../../models/card/CardField.js'
+import { Repository } from './Repository.js'
+import { CardMapper } from '../storables/CardMapper.js'
 
-export class CardRepository {
+export class CardRepository extends Repository<Card, CardDto> {
 
-    private datastore: Datastore
-
-    constructor(dataStore: Datastore) {
-        this.datastore = dataStore
+    constructor(datastore: Datastore) {
+        super(CardField.TABLE_NAME, new CardMapper(), datastore)
     }
 
     findByLabels(labels: string[]): Card[] {

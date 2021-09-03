@@ -13,13 +13,7 @@ export class CrudController<T extends Entity, TDto extends IdDto> {
         private tableName: string, 
         private mapper: Mapper<T, TDto>){}
 
-    store(entity: T, datastore: Datastore): DomainError {
-        const result = new CrudRepository(this.tableName, this.mapper, datastore).store(entity)
-        if (!result) {
-            return new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
-        } 
-        return DomainError.NULL
-    }
+    
 
     delete(id: Identification, datastore: Datastore): DomainError {
         const deleted = new CrudRepository(this.tableName, this.mapper, datastore).delete(id)
