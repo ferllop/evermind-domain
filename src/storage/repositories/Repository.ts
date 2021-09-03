@@ -40,22 +40,27 @@ export abstract class Repository<T extends Entity, TDto extends IdDto> {
         return DomainError.NULL
     }
 
-    retrieve(id: Identification): T | null {
+    retrieve(id: Identification): DomainError | T {
         if (!this.datastore.hasTable(this.tableName)) {
-            return null
+            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }
+
         const result = this.datastore.read<TDto>(this.tableName, id.getId())
         if (!result || !this.mapper.isDtoValid(result)) {
-            return null
+            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }
         return this.mapper.fromDto(result)
     }
 
-    update(entity: T): boolean {
+    update(entity: T): DomainError {
         if (!this.datastore.hasTable(this.tableName)) {
-            return false
+            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }
-        return this.datastore.update(this.tableName, this.mapper.toDto(entity))
+        const updated = this.datastore.update(this.tableName, this.mapper.toDto(entity))
+        if(!updated) {
+            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+        }
+        return DomainError.NULL
     }
 
 }

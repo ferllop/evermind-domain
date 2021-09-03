@@ -3,16 +3,8 @@ import { Identification } from '../models/value/Identification.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
 import { Card } from '../models/card/Card.js'
 import { DomainError } from '../errors/DomainError.js'
-import { CardMapper } from '../storage/storables/CardMapper.js'
-import { CardDto } from '../models/card/CardDto.js'
-import { CrudController } from './CrudController.js'
-import { CardField } from '../models/card/CardField.js'
 
 export class CardController {
-
-    private crudController() {
-        return new CrudController<Card, CardDto>(CardField.TABLE_NAME, new CardMapper())
-    }
 
     storeCard(card: Card, datastore: Datastore): DomainError {
         return new CardRepository(datastore).store(card)
@@ -23,11 +15,11 @@ export class CardController {
     }
 
     retrieveCard(id: Identification, datastore: Datastore): DomainError | Card {
-        return this.crudController().retrieve(id, datastore)
+        return new CardRepository(datastore).retrieve(id)
     }
 
     updateCard(card: Card, datastore: Datastore): DomainError {
-        return this.crudController().update(card, datastore)
+        return new CardRepository(datastore).update(card)
     }
 
     findByLabels(labels: string[], datastore: Datastore): Card[] {
