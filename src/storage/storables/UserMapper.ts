@@ -22,7 +22,7 @@ export class UserMapper implements Mapper<User, UserDto> {
 
     fromDto(dto: UserDto): User {
         precondition(this.isDtoValid(dto))
-        return new User(
+        return User.recreate(
             new PersonName(dto.name), 
             new Username(dto.username), 
             new DayStartTime(dto.dayStartTime), 
