@@ -24,7 +24,7 @@ export class CardMapper implements Mapper<Card, CardDto> {
 
     fromDto(dto: CardDto): Card {
         precondition(this.isDtoValid(dto))
-        return new Card(
+        return Card.recreate(
             new AuthorIdentification(dto.authorID), 
             new WrittenQuestion(dto.question), 
             new WrittenAnswer(dto.answer), 

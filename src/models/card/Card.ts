@@ -13,7 +13,7 @@ export class Card extends Entity {
     private answer: Answer
     private labelling: Labelling
 
-    constructor(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: Identification) {
+    private constructor(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: Identification) {
         super(id)
         this.authorID = authorID
         this.question = question
@@ -57,6 +57,10 @@ export class Card extends Entity {
 
     static create(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling){
         return new Card(authorID, question, answer, labels, Identification.create())
+    }
+
+    static recreate(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: Identification){
+        return new Card(authorID, question, answer, labels, id)
     }
 
     static isValid(authorID: string, question: string, answer: string, labels: string[], id?: string) {
