@@ -2,20 +2,20 @@ import { CardController } from '../controllers/CardController.js'
 import { DomainError } from '../errors/DomainError.js'
 import { ErrorType } from '../errors/ErrorType.js'
 import { CardDto } from '../models/card/CardDto.js'
-import { IdDto } from '../models/value/IdDto.js'
 import { Identification } from '../models/value/Identification.js'
 import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
 import { CardMapper } from '../storage/storables/CardMapper.js'
+import { ReadCardRequest } from './ReadCardRequest.js'
 
 export class ReadCardUseCase {
 
-    execute(dto: IdDto, datastore: Datastore): Response<CardDto|null> {
-        if(!Identification.isValid(dto.id)) {
+    execute(request: ReadCardRequest, datastore: Datastore): Response<CardDto|null> {
+        if(!Identification.isValid(request.id)) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }
         
-        const id = new Identification(dto.id) 
+        const id = new Identification(request.id) 
         
         const result = new CardController().retrieveCard(id, datastore)
         if (result instanceof DomainError) {

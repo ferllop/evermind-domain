@@ -3,7 +3,7 @@ import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastor
 import { CardMother } from '../models/card/CardMother.js'
 import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
-import { SearchCardsUseCase } from '../../src/use-cases/SearchCards.js'
+import { SearchCardsUseCase } from '../../src/use-cases/SearchCardsUseCase.js'
 import { UserMother } from '../../tests/models/user/UserMother.js'
 
 const searchCard = suite('SearchCards UseCase')

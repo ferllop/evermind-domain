@@ -1,4 +1,4 @@
-import { CreateUserUseCase } from '../../src/use-cases/CreateUser.js'
+import { CreateUserUseCase } from '../../src/use-cases/CreateUserUseCase.js'
 import { UserMother } from '../models/user/UserMother.js'
 import { ResultMother } from '../models/value/ResultMother.js'
 import { assert, suite } from '../test-config.js'

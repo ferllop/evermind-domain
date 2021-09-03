@@ -1,1 +1,3 @@
-export type IdDto = { id: string; };
+import { Id } from './Id';
+
+export type IdDto = { id: Id; };

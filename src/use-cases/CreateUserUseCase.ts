@@ -9,11 +9,11 @@ import { ErrorType } from '../errors/ErrorType.js'
 
 export class CreateUserUseCase {
     
-    execute(dto: CreateUserRequest, datastore: Datastore): Response<null> {
-        if (!PersonName.isValid(dto.name) || !Username.isValid(dto.username)) {
+    execute(request: CreateUserRequest, datastore: Datastore): Response<null> {
+        if (!PersonName.isValid(request.name) || !Username.isValid(request.username)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
-        const user = User.create(new PersonName(dto.name), new Username(dto.username))
+        const user = User.create(new PersonName(request.name), new Username(request.username))
         const error = new UserController().storeUser(user, datastore)
         return new Response(error.getType(), null)
     }
