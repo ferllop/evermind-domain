@@ -50,7 +50,7 @@ export class CardBuilder {
     }
 
     build() {
-        return new Card(this.authorID, this.question, this.answer, this.labelling, this.id)
+        return Card.recreate(this.authorID, this.question, this.answer, this.labelling, this.id)
     }
 
     buildDto() {

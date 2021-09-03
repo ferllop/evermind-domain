@@ -24,7 +24,7 @@ export class UserBuilder {
     }
 
     build() {
-        return new User(
+        return User.recreate(
             new PersonName(this.name),
             new Username(this.username),
             this.dayStartTime, 

@@ -10,13 +10,17 @@ export class User extends Entity {
 
     subscriptions: Subscription[]
 
-    constructor(private name: PersonName, private username: Username, private dayStartTime: DayStartTime, id: Identification) {
+    private constructor(private name: PersonName, private username: Username, private dayStartTime: DayStartTime, id: Identification) {
         super(id)
         this.subscriptions = []
     }
 
     static create(name: PersonName, username: Username) {
         return new User(name, username, new DayStartTime(), Identification.create())
+    }
+
+    static recreate(name: PersonName, username: Username, dayStartTime: DayStartTime, id: Identification) {
+        return new User(name, username, dayStartTime, id)
     }
 
     getName() {

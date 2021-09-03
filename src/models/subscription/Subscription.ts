@@ -15,7 +15,7 @@ export class Subscription extends Entity {
 
     private lastReview: DateEvermind
 
-    constructor(id: Identification, userId: Identification, cardId: Identification, level: Level, lastReview: DateEvermind) {
+    private constructor(id: Identification, userId: Identification, cardId: Identification, level: Level, lastReview: DateEvermind) {
         super(id)
         this.userId = userId
         this.cardId = cardId
@@ -69,6 +69,10 @@ export class Subscription extends Entity {
 
     static create(userId: Identification, cardId: Identification) {
         return new Subscription(userId.merge(cardId), userId, cardId, Level.LEVEL_0, DateEvermind.fromNow())
+    }
+
+    static recreate(id: Identification, userId: Identification, cardId: Identification, level: Level, lastReview: DateEvermind) {
+        return new Subscription(id, userId, cardId, level, lastReview)
     }
 
 }
