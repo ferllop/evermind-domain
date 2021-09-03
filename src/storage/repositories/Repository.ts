@@ -27,11 +27,17 @@ export abstract class Repository<T extends Entity, TDto extends IdDto> {
         return DomainError.NULL
     }
 
-    delete(id: Identification): boolean {
-        if (! this.datastore.hasTable(this.tableName)) {
-            return false
+    delete(id: Identification): DomainError {
+        if (!this.datastore.hasTable(this.tableName)) {
+            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }
-        return this.datastore.delete(this.tableName, id.getId())
+
+        const deleted = this.datastore.delete(this.tableName, id.getId())
+        if (!deleted) {
+            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+        }
+
+        return DomainError.NULL
     }
 
     retrieve(id: Identification): T | null {

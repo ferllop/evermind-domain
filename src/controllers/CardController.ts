@@ -19,7 +19,7 @@ export class CardController {
     }
 
     deleteCard(id: Identification, datastore: Datastore): DomainError {
-        return this.crudController().delete(id, datastore)
+        return new CardRepository(datastore).delete(id)
     }
 
     retrieveCard(id: Identification, datastore: Datastore): DomainError | Card {

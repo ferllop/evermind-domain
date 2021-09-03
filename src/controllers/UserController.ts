@@ -20,7 +20,7 @@ export class UserController {
     }
 
     deleteUser(id: Identification, datastore: Datastore): DomainError {
-        return this.crudController().delete(id, datastore)
+        return new UserRepository(datastore).delete(id)
     }
 
     retrieveUser(id: Identification, datastore: Datastore): DomainError | User {

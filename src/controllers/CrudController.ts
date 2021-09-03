@@ -15,14 +15,7 @@ export class CrudController<T extends Entity, TDto extends IdDto> {
 
     
 
-    delete(id: Identification, datastore: Datastore): DomainError {
-        const deleted = new CrudRepository(this.tableName, this.mapper, datastore).delete(id)
-        if (!deleted) {
-            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
-        }
-
-        return DomainError.NULL
-    }
+    
 
     retrieve(id: Identification, datastore: Datastore): DomainError | T {
         const entityRetrieved = new CrudRepository(this.tableName, this.mapper, datastore).retrieve(id)
