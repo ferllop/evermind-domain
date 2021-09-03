@@ -1,6 +1,6 @@
 import { Datastore } from '../../src/storage/datastores/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
-import { UpdateUserUseCase } from '../../src/use-cases/UpdateUser.js'
+import { UpdateUserUseCase } from '../../src/use-cases/UpdateUserUseCase.js'
 import { UserMother } from '../models/user/UserMother.js'
 import { ResultMother } from '../models/value/ResultMother.js'
 import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'

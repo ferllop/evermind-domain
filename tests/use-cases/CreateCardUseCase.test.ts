@@ -1,4 +1,4 @@
-import { CreateCardUseCase } from '../../src/use-cases/CreateCard.js'
+import { CreateCardUseCase } from '../../src/use-cases/CreateCardUseCase.js'
 import { CardMother } from '../models/card/CardMother.js'
 import { ResultMother } from '../models/value/ResultMother.js'
 import { assert, suite } from '../test-config.js'

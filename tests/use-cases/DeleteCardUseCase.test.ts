@@ -1,6 +1,6 @@
 import { Datastore } from '../../src/storage/datastores/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
-import { DeleteCardUseCase } from '../../src/use-cases/DeleteCard.js'
+import { DeleteCardUseCase } from '../../src/use-cases/DeleteCardUseCase.js'
 import { CardMother } from '../models/card/CardMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
 import { ResultMother } from '../models/value/ResultMother.js'
