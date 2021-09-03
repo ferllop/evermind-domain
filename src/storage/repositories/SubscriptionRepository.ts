@@ -5,41 +5,35 @@ import { SubscriptionField } from '../../models/subscription/SubscriptionField.j
 import { SubscriptionMapper } from '../../models/subscription/SubscriptionMapper.js';
 import { SubscriptionDto } from '../../models/subscription/SusbcriptionDto.js';
 import { User } from '../../models/user/User.js';
+import { Identification } from '../../models/value/Identification.js';
 import { Datastore } from '../datastores/Datastore.js';
+import { Repository } from './Repository.js';
 
-export class SubscriptionRepository {
+export class SubscriptionRepository extends Repository<Subscription, SubscriptionDto> {
 
-    constructor(private datastore: Datastore) { }
+    constructor(datastore: Datastore) {
+        super(SubscriptionField.TABLE_NAME, new SubscriptionMapper(), datastore)
+    }
 
-    add(subscription: Subscription): DomainError {
-        if (this.has(subscription)) {
+    store(subscription: Subscription): DomainError {
+        if (this.has(subscription.getId())) {
             return new DomainError(ErrorType.USER_IS_ALREADY_SUBSCRIBED_TO_CARD)
         }
-        const dto = new SubscriptionMapper().toDto(subscription)
-        this.datastore.create(SubscriptionField.TABLE_NAME, dto)
-        return DomainError.NULL
+        
+        return super.store(subscription)
     }
 
-    has(subscription: Subscription): boolean {
+    has(subscriptionId: Identification): boolean {
         return this.datastore.hasTable(SubscriptionField.TABLE_NAME) &&
-            Boolean(this.datastore.read(SubscriptionField.TABLE_NAME, subscription.getId().getId()))
+            Boolean(this.datastore.read(SubscriptionField.TABLE_NAME, subscriptionId.getId()))
     }
 
-    retrieve() {
-
-    }
-
-    update() {
-
-    }
-
-    delete(subscription: Subscription) {
-        if (!this.has(subscription)) {
+    delete(id: Identification) {
+        if (!this.has(id)) {
             return new DomainError(ErrorType.SUBSCRIPTION_NOT_EXISTS)
         }
 
-        this.datastore.delete(SubscriptionField.TABLE_NAME, subscription.getId().getId())
-        return DomainError.NULL
+        return super.delete(id)
     }
 
     findByUserId(user: User) {

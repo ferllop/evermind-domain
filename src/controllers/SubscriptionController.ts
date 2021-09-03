@@ -25,7 +25,7 @@ export class SubscriptionController {
         if(!subscription) {
             return new DomainError(ErrorType.USER_IS_ALREADY_SUBSCRIBED_TO_CARD)
         }
-        return subscriptionRepository.add(subscription)
+        return subscriptionRepository.store(subscription)
         
     }
     
@@ -48,6 +48,6 @@ export class SubscriptionController {
         if (!subscription) {
             return new DomainError(ErrorType.SUBSCRIPTION_NOT_EXISTS)
         }
-        return subscriptionRepository.delete(subscription)
+        return subscriptionRepository.delete(subscription.getId())
     }
 }
