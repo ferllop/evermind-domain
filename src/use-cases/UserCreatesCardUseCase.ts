@@ -8,11 +8,11 @@ import { AuthorIdentification } from '../models/card/AuthorIdentification.js'
 import { WrittenQuestion } from '../models/card/WrittenQuestion.js'
 import { WrittenAnswer } from '../models/card/WrittenAnswer.js'
 import { Labelling } from '../models/card/Labelling.js'
-import { UserCreateCardRequest } from './UserCreateCardRequest.js'
+import { UserCreatesCardRequest } from './UserCreatesCardRequest.js'
 
-export class UserCreateCardUseCase {
+export class UserCreatesCardUseCase {
 
-    execute(request: UserCreateCardRequest, datastore: Datastore): Response<null> {
+    execute(request: UserCreatesCardRequest, datastore: Datastore): Response<null> {
         if (!new CardMapper().isDtoValid({...request, authorID: request.userId})) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }
