@@ -1,6 +1,6 @@
-import { Identification } from '../value/Identification.js';
+import { UserIdentification } from '../user/UserIdentification.js'
 
-export class AuthorIdentification extends Identification {
+export class AuthorIdentification extends UserIdentification {
 
     constructor(id: string) {
         super(id)
