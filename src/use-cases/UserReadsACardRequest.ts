@@ -1,3 +1,3 @@
 import { IdDto } from '../models/value/IdDto';
 
-export type ReadUserRequest = IdDto
+export type UserReadsACardRequest = IdDto

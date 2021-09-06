@@ -6,11 +6,11 @@ import { Identification } from '../models/value/Identification.js'
 import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
 import { UserMapper } from '../storage/storables/UserMapper.js'
-import { ReadUserRequest } from './ReadUserRequest.js'
+import { UserGetUserInfoRequest } from './UserGetUserInfoRequest.js'
 
-export class ReadUserUseCase {
+export class UserGetUserInfoUseCase {
 
-    execute(request: ReadUserRequest, datastore: Datastore): Response<UserDto|null> {
+    execute(request: UserGetUserInfoRequest, datastore: Datastore): Response<UserDto|null> {
         if(!Identification.isValid(request.id)) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }

@@ -6,11 +6,11 @@ import { Identification } from '../models/value/Identification.js'
 import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
 import { CardMapper } from '../storage/storables/CardMapper.js'
-import { ReadCardRequest } from './ReadCardRequest.js'
+import { UserReadsACardRequest } from './UserReadsACardRequest.js'
 
-export class ReadCardUseCase {
+export class UserReadsACardUseCase {
 
-    execute(request: ReadCardRequest, datastore: Datastore): Response<CardDto|null> {
+    execute(request: UserReadsACardRequest, datastore: Datastore): Response<CardDto|null> {
         if(!Identification.isValid(request.id)) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }

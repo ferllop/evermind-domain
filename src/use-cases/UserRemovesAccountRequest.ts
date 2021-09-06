@@ -1,3 +1,3 @@
 import { IdDto } from '../models/value/IdDto';
 
-export type DeleteCardRequest = IdDto
+export type UserRemovesAccountRequest = IdDto

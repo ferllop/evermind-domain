@@ -1,4 +1,3 @@
 import { Query } from "../models/search/Query.js";
 
-
-export type SearchCardsRequest = Query;
+export type UserSearchesForCardsRequest = Query;

@@ -1,5 +1,4 @@
-
-export type UnsubscribeUserToCardRequest = {
+export type UserSubscribesToCardRequest = {
     readonly userId: string;
     readonly cardId: string;
 };
