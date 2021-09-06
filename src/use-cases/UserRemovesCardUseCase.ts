@@ -3,11 +3,11 @@ import { ErrorType } from '../errors/ErrorType.js'
 import { Identification } from '../models/value/Identification.js'
 import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
-import { UserDeleteCardRequest } from './UserDeleteCardRequest.js'
+import { UserRemovesCardRequest } from './UserRemovesCardRequest.js'
 
-export class UserDeleteCardUseCase {
+export class UserRemovesCardUseCase {
     
-    execute(request: UserDeleteCardRequest, datastore: Datastore): Response<null> {
+    execute(request: UserRemovesCardRequest, datastore: Datastore): Response<null> {
         if(!Identification.isValid(request.id)) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }

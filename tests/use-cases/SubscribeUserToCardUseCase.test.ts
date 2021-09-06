@@ -2,15 +2,15 @@ import { ErrorType } from '../../src/errors/ErrorType.js'
 import { precondition } from '../../src/lib/preconditions.js'
 import { Datastore } from '../../src/storage/datastores/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
-import { SubscribeUserToCardUseCase } from '../../src/use-cases/SubscribeUserToCardUseCase.js'
+import { UserSubscribesToCardUseCase } from '../../src/use-cases/UserSubscribesToCardUseCase.js'
 import { CardMother } from '../models/card/CardMother.js'
 import { SubscriptionMother } from '../models/subscription/SubscriptionMother.js'
 import { UserMother } from '../models/user/UserMother.js'
 import { suite, assert } from '../test-config.js'
 
-const subscribeUserToCard = suite("Subscribe user to card")
+const userSubscribesToCard = suite("User subscribes to card")
 
-subscribeUserToCard('given an existing user id and an existing cardid, then create a subscription with id properly formatted', () => {
+userSubscribesToCard('given an existing user id and an existing cardid, then create a subscription with id properly formatted', () => {
     const db = new InMemoryDatastore()
     const datastore = new DatastoreMother(db)
     const userId = 'theuserid'
@@ -18,11 +18,11 @@ subscribeUserToCard('given an existing user id and an existing cardid, then crea
     const cardId = 'thecardid'
     datastore.card.withId(cardId).beingStored()
     const subscription = { userId, cardId }
-    new SubscribeUserToCardUseCase().execute(subscription, db)
+    new UserSubscribesToCardUseCase().execute(subscription, db)
     assert.ok(datastore.subscription.withId(userId + '#' + cardId).isPresent())
 })
 
-subscribeUserToCard('given a user subscribed to a card, when subscribing again, should return a USER_IS_ALREADY_SUBSCRIBED_TO_CARD error', () => {
+userSubscribesToCard('given a user subscribed to a card, when subscribing again, should return a USER_IS_ALREADY_SUBSCRIBED_TO_CARD error', () => {
     const db = new InMemoryDatastore()
     const datastore = new DatastoreMother(db)
     const userId = 'theuserid'
@@ -30,13 +30,13 @@ subscribeUserToCard('given a user subscribed to a card, when subscribing again, 
     const cardId = 'thecardid'
     datastore.card.withId(cardId).beingStored()
     const subscription = { userId, cardId }
-    new SubscribeUserToCardUseCase().execute(subscription, db)
-    const result = new SubscribeUserToCardUseCase().execute(subscription, db)
+    new UserSubscribesToCardUseCase().execute(subscription, db)
+    const result = new UserSubscribesToCardUseCase().execute(subscription, db)
     assert.ok(result.hasError(ErrorType.USER_IS_ALREADY_SUBSCRIBED_TO_CARD))
 })
 
 
-subscribeUserToCard('given an existing user id and an existing cardid, then create a subscription in Level 0', () => {
+userSubscribesToCard('given an existing user id and an existing cardid, then create a subscription in Level 0', () => {
     const db = new InMemoryDatastore()
     const datastore = new DatastoreMother(db)
     datastore.user.withId('theuserid').beingStored()
@@ -45,11 +45,11 @@ subscribeUserToCard('given an existing user id and an existing cardid, then crea
         userId: 'theuserid',
         cardId: 'thecardid'
     }
-    new SubscribeUserToCardUseCase().execute(subscription, db)
+    new UserSubscribesToCardUseCase().execute(subscription, db)
     assert.ok(datastore.subscription.hasLevel(0))
 })
 
-subscribeUserToCard('given a non existing user id and an existing cardid, then the subscription is not done and return a USER_NOT_FOUND error', () => {
+userSubscribesToCard('given a non existing user id and an existing cardid, then the subscription is not done and return a USER_NOT_FOUND error', () => {
     const db = new InMemoryDatastore()
     const datastore = new DatastoreMother(db)
     datastore.subscription.withId('someid').beingStored()
@@ -57,12 +57,12 @@ subscribeUserToCard('given a non existing user id and an existing cardid, then t
     datastore.card.withId(cardId).beingStored()
     const userId = 'nonexistentuserid'
     const subscription = { userId, cardId }
-    const result = new SubscribeUserToCardUseCase().execute(subscription, db)
+    const result = new UserSubscribesToCardUseCase().execute(subscription, db)
     assert.not.ok(datastore.subscription.withId(userId + '#' + cardId).isPresent())
     assert.ok(result.hasError(ErrorType.USER_NOT_FOUND))
 })
 
-subscribeUserToCard('given an existing user id and non existing cardid, then the subscription is not done and return a CARD_NOT_FOUND error', () => {
+userSubscribesToCard('given an existing user id and non existing cardid, then the subscription is not done and return a CARD_NOT_FOUND error', () => {
     const db = new InMemoryDatastore()
     const datastore = new DatastoreMother(db)
     const userId = 'theuserid'
@@ -70,12 +70,12 @@ subscribeUserToCard('given an existing user id and non existing cardid, then the
     datastore.subscription.withId('someid').beingStored()
     const cardId = 'nonexistentcardid'
     const subscription = { userId, cardId }
-    const response = new SubscribeUserToCardUseCase().execute(subscription, db)
+    const response = new UserSubscribesToCardUseCase().execute(subscription, db)
     assert.not.ok(datastore.subscription.withId(userId + '#' + cardId).isPresent())
     assert.ok(response.hasError(ErrorType.CARD_NOT_FOUND))
 })
 
-subscribeUserToCard.run()
+userSubscribesToCard.run()
 
 class DatastoreMother {
     private dto?: any

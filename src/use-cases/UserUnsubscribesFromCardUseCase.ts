@@ -6,7 +6,7 @@ import { Response } from '../models/value/Response.js';
 import { Datastore } from '../storage/datastores/Datastore.js';
 import { UserUnsubscribesFromCardRequest } from './UserUnsubscribesFromCardRequest.js';
 
-export class UnsubscribeUserToCardUseCase {
+export class UserUnsubscribesFromCardUseCase {
     execute(request: UserUnsubscribesFromCardRequest, datastore: Datastore) {
         if (!Subscription.isDtoValid(request.userId, request.cardId)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)

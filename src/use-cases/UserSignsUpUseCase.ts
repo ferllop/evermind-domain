@@ -2,14 +2,14 @@ import { UserController } from '../controllers/UserController.js'
 import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
 import { User } from '../models/user/User.js'
-import { CreateUserRequest as UserSignUpRequest } from './UserSignUpRequest.js'
+import { UserSignsUpRequest } from './UserSignsUpRequest.js'
 import { Username } from '../models/user/Username.js'
 import { PersonName } from '../models/user/PersonName.js'
 import { ErrorType } from '../errors/ErrorType.js'
 
-export class UserSignUpUseCase {
+export class UserSignsUpUseCase {
     
-    execute(request: UserSignUpRequest, datastore: Datastore): Response<null> {
+    execute(request: UserSignsUpRequest, datastore: Datastore): Response<null> {
         if (!PersonName.isValid(request.name) || !Username.isValid(request.username)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }

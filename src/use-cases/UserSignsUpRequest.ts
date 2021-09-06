@@ -1,4 +1,4 @@
-export type CreateUserRequest = {
+export type UserSignsUpRequest = {
     name: string;
     username: string;
 };

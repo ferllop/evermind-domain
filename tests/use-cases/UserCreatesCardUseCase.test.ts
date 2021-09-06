@@ -1,4 +1,4 @@
-import { CreateCardUseCase } from '../../src/use-cases/CreateCardUseCase.js'
+import { UserCreatesCardUseCase } from '../../src/use-cases/UserCreatesCardUseCase.js'
 import { CardMother } from '../models/card/CardMother.js'
 import { ResultMother } from '../models/value/ResultMother.js'
 import { assert, suite } from '../test-config.js'
@@ -6,41 +6,50 @@ import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastor
 import { Datastore } from '../../src/storage/datastores/Datastore.js'
 import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { DatastoreTestClass } from '../storage/datastores/DatastoreTestClass.js'
+import { IdentificationMother } from '../models/value/IdentificationMother.js'
 
-const createCard = suite("CreateCard UseCase")
+const userCreatesCardUseCase = suite("User creates a card use case")
 
 const cardMother = new CardMother()
 
 let datastore: Datastore
-createCard.before.each(() => {
+userCreatesCardUseCase.before.each(() => {
     datastore = new InMemoryDatastore()
 })
 
-createCard(
+userCreatesCardUseCase(
     'given data representing a card, ' +
     'when execute this use case, ' +
     'an object should be returned with either error and data properties being null', () => {
-        const result = new CreateCardUseCase().execute(cardMother.dto(), datastore)
+        const result = executeUseCase(datastore)
         assert.ok(ResultMother.isEmptyOk(result))
     })
 
-createCard(
+userCreatesCardUseCase(
     'given data representing a card, ' +
     'when execute this use case, ' +
     'the card should remain in storage', () => {
         const datastore = new DatastoreTestClass()
-        new CreateCardUseCase().execute(cardMother.dto(), datastore)
+        executeUseCase(datastore)
         assert.ok(new DatastoreMother(cardMother, datastore).isDataStored(datastore.dtoId, 'authorId'))
     })
 
-createCard(
+userCreatesCardUseCase(
     'given wrong card data, ' +
     'when execute this use case, ' +
     'it should return an object with a data property as null and ' +
     'error property with a INPUT_DATA_NOT_VALID DomainError', () => {
-        const result = new CreateCardUseCase().execute(cardMother.invalidDto(), datastore)
+        const invalidData = {...cardMother.invalidDto(), userId: ''}
+        const result = new UserCreatesCardUseCase().execute(invalidData, datastore)
         assert.ok(ResultMother.isInputInvalid(result))
     })
 
-createCard.run()
+function executeUseCase(datastore: Datastore) {
+    return new UserCreatesCardUseCase().execute({
+        ...cardMother.dto(), 
+        userId: IdentificationMother.dto().id
+    }, datastore)
+}
+
+userCreatesCardUseCase.run()
 

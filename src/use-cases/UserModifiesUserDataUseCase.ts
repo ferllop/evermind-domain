@@ -5,7 +5,7 @@ import { Datastore } from '../storage/datastores/Datastore.js'
 import { UserMapper } from '../storage/storables/UserMapper.js'
 import { UserModifiesUserDataRequest } from './UserModifiesUserDataRequest.js'
 
-export class UserModifiesCardDataUseCase {
+export class UserModifiesUserDataUseCase {
     
     execute(dto: UserModifiesUserDataRequest, datastore: Datastore): Response<null> {
         const mapper = new UserMapper()
