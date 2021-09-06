@@ -3,11 +3,11 @@ import { ErrorType } from '../errors/ErrorType.js'
 import { Response } from '../models/value/Response.js'
 import { Datastore } from '../storage/datastores/Datastore.js'
 import { CardMapper } from '../storage/storables/CardMapper.js'
-import { UpdateCardRequest } from './UpdateCardRequest'
+import { UserModifiesCardDataRequest } from './UserModifiesCardDataRequest.js'
 
-export class UpdateCardUseCase {
+export class UserModifiesCardDataUseCase {
     
-    execute(request: UpdateCardRequest, datastore: Datastore): Response<null> {
+    execute(request: UserModifiesCardDataRequest, datastore: Datastore): Response<null> {
         const mapper = new CardMapper()
         if (!mapper.isDtoValid(request)) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)

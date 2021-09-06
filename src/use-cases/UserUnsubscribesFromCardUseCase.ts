@@ -4,11 +4,10 @@ import { Subscription } from '../models/subscription/Subscription.js';
 import { Identification } from '../models/value/Identification.js';
 import { Response } from '../models/value/Response.js';
 import { Datastore } from '../storage/datastores/Datastore.js';
-import { UnsubscribeUserToCardRequest } from './UnsubscribeUserToCardRequest.js';
-
+import { UserUnsubscribesFromCardRequest } from './UserUnsubscribesFromCardRequest.js';
 
 export class UnsubscribeUserToCardUseCase {
-    execute(request: UnsubscribeUserToCardRequest, datastore: Datastore) {
+    execute(request: UserUnsubscribesFromCardRequest, datastore: Datastore) {
         if (!Subscription.isDtoValid(request.userId, request.cardId)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
@@ -22,5 +21,3 @@ export class UnsubscribeUserToCardUseCase {
         return new Response(error.getType(), null)
     }
 }
-
-

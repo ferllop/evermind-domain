@@ -8,17 +8,17 @@ import { AuthorIdentification } from '../models/card/AuthorIdentification.js'
 import { WrittenQuestion } from '../models/card/WrittenQuestion.js'
 import { WrittenAnswer } from '../models/card/WrittenAnswer.js'
 import { Labelling } from '../models/card/Labelling.js'
-import { CreateCardRequest } from './CreateCardRequest'
+import { UserCreateCardRequest } from './UserCreateCardRequest.js'
 
-export class CreateCardUseCase {
+export class UserCreateCardUseCase {
 
-    execute(request: CreateCardRequest, datastore: Datastore): Response<null> {
-        const mapper = new CardMapper()
-        if (!mapper.isDtoValid(request)) {
+    execute(request: UserCreateCardRequest, datastore: Datastore): Response<null> {
+        if (!new CardMapper().isDtoValid({...request, authorID: request.userId})) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }
+        
         const card = Card.create(
-            new AuthorIdentification(request.authorID),
+            new AuthorIdentification(request.userId),
             new WrittenQuestion(request.question),
             new WrittenAnswer(request.answer),
             new Labelling(request.labelling)
@@ -29,5 +29,3 @@ export class CreateCardUseCase {
     }
 
 }
-
-

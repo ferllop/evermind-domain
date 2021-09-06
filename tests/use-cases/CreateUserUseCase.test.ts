@@ -1,4 +1,4 @@
-import { CreateUserUseCase } from '../../src/use-cases/CreateUserUseCase.js'
+import { UserSignUpUseCase } from '../../src/use-cases/UserSignUpUseCase.js'
 import { UserMother } from '../models/user/UserMother.js'
 import { ResultMother } from '../models/value/ResultMother.js'
 import { assert, suite } from '../test-config.js'
@@ -18,7 +18,7 @@ createUser(
     'given data representing a user, ' +
     'when execute this use case, ' +
     'an object should be returned with either error and data properties being null', () => {
-        const result = new CreateUserUseCase().execute(new UserMother().dto(), new InMemoryDatastore())
+        const result = new UserSignUpUseCase().execute(new UserMother().dto(), new InMemoryDatastore())
         assert.ok(ResultMother.isEmptyOk(result))
     })
 
@@ -27,7 +27,7 @@ createUser(
     'when execute this use case, ' +
     'the card should remain in storage', () => {
         const datastore = new DatastoreTestClass()
-        new CreateUserUseCase().execute(new UserMother().dto(), datastore)
+        new UserSignUpUseCase().execute(new UserMother().dto(), datastore)
         assert.ok(new DatastoreMother(new UserMother(), datastore).isDataStored(datastore.dtoId, 'authId'))
     })
 
@@ -36,7 +36,7 @@ createUser(
     'when execute this use case, ' +
     'it should return an object with a data property as null and ' +
     'error property with a INPUT_DATA_NOT_VALID DomainError', () => {
-        const result = new CreateUserUseCase().execute(new UserMother().invalidDto(), datastore)
+        const result = new UserSignUpUseCase().execute(new UserMother().invalidDto(), datastore)
         assert.ok(ResultMother.isInputInvalid(result))
     })
 

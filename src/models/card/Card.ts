@@ -55,8 +55,8 @@ export class Card extends Entity {
         return this.authorID.equals(authorId)
     }
 
-    static create(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling){
-        return new Card(authorID, question, answer, labels, Identification.create())
+    static create(userId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling){
+        return new Card(userId, question, answer, labels, Identification.create())
     }
 
     static recreate(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: Identification){
