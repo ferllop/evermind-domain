@@ -5,12 +5,13 @@ import { PersonName } from './PersonName.js'
 import { Username } from './Username.js'
 import { Subscription } from '../subscription/Subscription.js'
 import { Card } from '../card/Card.js'
+import { UserIdentification } from './UserIdentification.js'
 
 export class User extends Entity {
 
     subscriptions: Subscription[]
 
-    private constructor(private name: PersonName, private username: Username, private dayStartTime: DayStartTime, id: Identification) {
+    private constructor(private name: PersonName, private username: Username, private dayStartTime: DayStartTime, id: UserIdentification) {
         super(id)
         this.subscriptions = []
     }

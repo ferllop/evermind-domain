@@ -1,5 +1,7 @@
+import { Id } from '../models/value/Id';
+
 export type UserCreatesCardRequest = {
-    userId: string,
+    userId: Id,
     question: string,
     answer: string,
     labelling: string[]

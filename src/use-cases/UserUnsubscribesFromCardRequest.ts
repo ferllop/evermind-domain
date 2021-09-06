@@ -1,4 +1,6 @@
+import { Id } from '../models/value/Id';
+
 export type UserUnsubscribesFromCardRequest = {
-    readonly userId: string;
-    readonly cardId: string;
+    readonly userId: Id;
+    readonly cardId: Id;
 };

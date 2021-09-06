@@ -5,6 +5,7 @@ import { DayStartTime } from '../value/DayStartTime.js'
 import { Hour } from '../value/Hour.js'
 import { Identification } from '../value/Identification.js'
 import { Level } from './Level.js'
+import { SubscriptionIdentification } from './SubscriptionIdentification.js'
 
 export class Subscription extends Entity {
     private userId: Identification
@@ -15,7 +16,7 @@ export class Subscription extends Entity {
 
     private lastReview: DateEvermind
 
-    private constructor(id: Identification, userId: Identification, cardId: Identification, level: Level, lastReview: DateEvermind) {
+    private constructor(id: SubscriptionIdentification, userId: Identification, cardId: Identification, level: Level, lastReview: DateEvermind) {
         super(id)
         this.userId = userId
         this.cardId = cardId

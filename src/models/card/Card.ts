@@ -2,6 +2,7 @@ import { Entity } from '../Entity.js'
 import { Identification } from '../value/Identification.js'
 import { Answer } from './Answer.js'
 import { AuthorIdentification } from './AuthorIdentification.js'
+import { CardIdentification } from './CardIdentification.js'
 import { Labelling } from './Labelling.js'
 import { Question } from './Question.js'
 import { WrittenAnswer } from './WrittenAnswer.js'
@@ -13,7 +14,7 @@ export class Card extends Entity {
     private answer: Answer
     private labelling: Labelling
 
-    private constructor(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: Identification) {
+    private constructor(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: CardIdentification) {
         super(id)
         this.authorID = authorID
         this.question = question
