@@ -1,5 +1,5 @@
 import { IdDto } from '../../../src/models/value/IdDto.js'
-import { Datastore } from '../../../src/storage/datastores/Datastore.js'
+import { Datastore } from '../../../src/models/Datastore.js'
 import { IdentificationMother } from '../../models/value/IdentificationMother.js'
 import { Mother } from '../../models/Mother.js'
 

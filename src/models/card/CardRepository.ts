@@ -1,11 +1,11 @@
 import { Card } from '../../models/card/Card.js'
 import { CardDto } from '../../models/card/CardDto.js'
 import { Identification } from '../../models/value/Identification.js'
-import { Datastore } from '../datastores/Datastore.js'
+import { Datastore } from '../Datastore.js'
 import { Labelling } from '../../models/card/Labelling.js'
 import { CardField } from '../../models/card/CardField.js'
-import { Repository } from './Repository.js'
-import { CardMapper } from '../storables/CardMapper.js'
+import { Repository } from '../Repository.js'
+import { CardMapper } from './CardMapper.js'
 
 export class CardRepository extends Repository<Card, CardDto> {
 

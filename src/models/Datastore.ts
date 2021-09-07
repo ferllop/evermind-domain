@@ -1,4 +1,4 @@
-import { IdDto } from '../../models/value/IdDto';
+import { IdDto } from './value/IdDto';
 
 export interface Datastore {
 

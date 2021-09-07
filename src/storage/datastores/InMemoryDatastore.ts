@@ -1,6 +1,6 @@
 import { precondition } from '../../lib/preconditions.js'
 import { IdDto } from '../../models/value/IdDto.js'
-import { Datastore } from './Datastore.js'
+import { Datastore } from '../../models/Datastore.js'
 
 class Table<T extends IdDto> {
     private rows: Map<string, T>

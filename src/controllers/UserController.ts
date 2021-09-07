@@ -1,7 +1,7 @@
-import { UserRepository } from '../storage/repositories/UserRepository.js'
+import { UserRepository } from '../models/user/UserRepository.js'
 import { Identification } from '../models/value/Identification.js'
 import { ErrorType } from '../errors/ErrorType.js'
-import { Datastore } from '../storage/datastores/Datastore.js'
+import { Datastore } from '../models/Datastore.js'
 import { User } from '../models/user/User.js'
 import { DomainError } from '../errors/DomainError.js'
 

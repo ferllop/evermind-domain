@@ -4,7 +4,7 @@ import { ResultMother } from '../models/value/ResultMother.js'
 import { assert, suite } from '../test-config.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
 import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
-import { Datastore } from '../../src/storage/datastores/Datastore.js'
+import { Datastore } from '../../src/models/Datastore.js'
 import { DatastoreTestClass } from '../storage/datastores/DatastoreTestClass.js'
 
 const userSignsUpUseCase = suite("User signs up use case")

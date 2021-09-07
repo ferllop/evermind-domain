@@ -4,7 +4,7 @@ import { Mother } from "../../models/Mother.js"
 import { User } from '../../../src/models/user/User.js'
 import { UserBuilder } from './UserBuilder.js'
 import { Identification } from '../../../src/models/value/Identification.js'
-import { UserMapper } from '../../../src/storage/storables/UserMapper.js'
+import { UserMapper } from '../../../src/models/user/UserMapper.js'
 
 export class UserMother implements Mother<UserDto> {
     

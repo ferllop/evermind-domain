@@ -1,10 +1,10 @@
 import { DomainError } from '../errors/DomainError.js';
 import { ErrorType } from '../errors/ErrorType.js';
 import { Identification } from '../models/value/Identification.js';
-import { Datastore } from '../storage/datastores/Datastore.js';
-import { CardRepository } from '../storage/repositories/CardRepository.js';
-import { SubscriptionRepository } from '../storage/repositories/SubscriptionRepository.js';
-import { UserRepository } from '../storage/repositories/UserRepository.js';
+import { Datastore } from '../models/Datastore.js'
+import { CardRepository } from '../models/card/CardRepository.js';
+import { SubscriptionRepository } from '../models/subscription/SubscriptionRepository.js';
+import { UserRepository } from '../models/user/UserRepository.js';
 
 export class SubscriptionController {
 

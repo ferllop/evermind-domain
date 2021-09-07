@@ -6,8 +6,8 @@ import { SubscriptionMapper } from '../../models/subscription/SubscriptionMapper
 import { SubscriptionDto } from '../../models/subscription/SusbcriptionDto.js';
 import { User } from '../../models/user/User.js';
 import { Identification } from '../../models/value/Identification.js';
-import { Datastore } from '../datastores/Datastore.js';
-import { Repository } from './Repository.js';
+import { Datastore } from '../Datastore.js';
+import { Repository } from '../Repository.js';
 
 export class SubscriptionRepository extends Repository<Subscription, SubscriptionDto> {
 

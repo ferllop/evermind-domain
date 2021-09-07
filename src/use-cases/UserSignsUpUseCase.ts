@@ -1,6 +1,6 @@
 import { UserController } from '../controllers/UserController.js'
 import { Response } from '../models/value/Response.js'
-import { Datastore } from '../storage/datastores/Datastore.js'
+import { Datastore } from '../models/Datastore.js';
 import { User } from '../models/user/User.js'
 import { UserSignsUpRequest } from './UserSignsUpRequest.js'
 import { Username } from '../models/user/Username.js'

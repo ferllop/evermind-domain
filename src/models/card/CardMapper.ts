@@ -6,8 +6,8 @@ import { Labelling } from '../../models/card/Labelling.js'
 import { WrittenAnswer } from '../../models/card/WrittenAnswer.js'
 import { WrittenQuestion } from '../../models/card/WrittenQuestion.js'
 import { Identification } from '../../models/value/Identification.js'
-import { Mapper } from './Mapper'
-import { MayBeIdentified } from './MayBeIdentified'
+import { Mapper } from '../Mapper'
+import { MayBeIdentified } from '../value/MayBeIdentified'
 
 export class CardMapper implements Mapper<Card, CardDto> {
 

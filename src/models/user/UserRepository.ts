@@ -1,10 +1,10 @@
-import { Datastore } from '../datastores/Datastore.js'
+import { Datastore } from '../Datastore.js'
 import { User } from '../../models/user/User.js'
-import { UserMapper } from '../storables/UserMapper.js'
+import { UserMapper } from './UserMapper.js'
 import { UserDto } from '../../models/user/UserDto.js'
 import { UserField } from '../../models/user/UserField.js'
 import { Identification } from '../../models/value/Identification.js'
-import { Repository } from './Repository.js'
+import { Repository } from '../Repository.js'
 
 export class UserRepository extends Repository<User, UserDto> {
 

@@ -4,8 +4,8 @@ import { ErrorType } from '../errors/ErrorType.js'
 import { UserDto } from '../models/user/UserDto.js'
 import { Identification } from '../models/value/Identification.js'
 import { Response } from '../models/value/Response.js'
-import { Datastore } from '../storage/datastores/Datastore.js'
-import { UserMapper } from '../storage/storables/UserMapper.js'
+import { Datastore } from '../models/Datastore.js';
+import { UserMapper } from '../models/user/UserMapper.js'
 import { UserGetsUserInfoRequest } from './UserGetsUserInfoRequest.js'
 
 export class UserGetsUserInfoUseCase {

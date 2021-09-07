@@ -4,8 +4,8 @@ import { ErrorType } from '../errors/ErrorType.js'
 import { CardDto } from '../models/card/CardDto.js'
 import { Identification } from '../models/value/Identification.js'
 import { Response } from '../models/value/Response.js'
-import { Datastore } from '../storage/datastores/Datastore.js'
-import { CardMapper } from '../storage/storables/CardMapper.js'
+import { Datastore } from '../models/Datastore.js';
+import { CardMapper } from '../models/card/CardMapper.js'
 import { UserReadsACardRequest } from './UserReadsACardRequest.js'
 
 export class UserReadsACardUseCase {

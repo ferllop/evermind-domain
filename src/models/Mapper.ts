@@ -1,4 +1,4 @@
-import { MayBeIdentified } from './MayBeIdentified';
+import { MayBeIdentified } from './value/MayBeIdentified';
 
 export interface Mapper<T, TDto> {
     isDtoValid(dto: MayBeIdentified<TDto>): boolean;

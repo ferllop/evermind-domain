@@ -1,10 +1,10 @@
-import { DomainError } from '../../errors/DomainError.js'
-import { ErrorType } from '../../errors/ErrorType.js'
-import { Entity } from '../../models/Entity.js'
-import { IdDto } from '../../models/value/IdDto.js'
-import { Identification } from '../../models/value/Identification.js'
-import { Datastore } from '../datastores/Datastore.js'
-import { Mapper } from '../storables/Mapper.js'
+import { DomainError } from '../errors/DomainError.js'
+import { ErrorType } from '../errors/ErrorType.js'
+import { Entity } from '../models/Entity.js'
+import { IdDto } from '../models/value/IdDto.js'
+import { Identification } from '../models/value/Identification.js'
+import { Datastore } from './Datastore.js'
+import { Mapper } from './Mapper.js'
 
 
 export abstract class Repository<T extends Entity, TDto extends IdDto> {

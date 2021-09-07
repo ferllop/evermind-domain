@@ -6,7 +6,7 @@ import { Question } from '../../../src/models/card/Question.js'
 import { WrittenAnswer } from '../../../src/models/card/WrittenAnswer.js'
 import { WrittenQuestion } from '../../../src/models/card/WrittenQuestion.js'
 import { Identification } from '../../../src/models/value/Identification.js'
-import { CardMapper } from '../../../src/storage/storables/CardMapper.js'
+import { CardMapper } from '../../../src/models/card/CardMapper.js'
 
 export class CardBuilder {
 

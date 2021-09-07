@@ -1,4 +1,4 @@
-import { Datastore } from '../../src/storage/datastores/Datastore.js'
+import { Datastore } from '../../src/models/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
 import { UserModifiesCardDataUseCase } from '../../src/use-cases/UserModifiesCardDataUseCase.js'
 import { CardMother } from '../models/card/CardMother.js'

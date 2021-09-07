@@ -1,6 +1,6 @@
 import { DateEvermind } from '../../helpers/DateEvermind.js';
-import { Mapper } from '../../storage/storables/Mapper.js';
-import { MayBeIdentified } from '../../storage/storables/MayBeIdentified.js';
+import { Mapper } from '../Mapper.js';
+import { MayBeIdentified } from '../value/MayBeIdentified.js';
 import { Identification } from '../value/Identification.js';
 import { Level } from './Level.js';
 import { Subscription } from './Subscription.js';

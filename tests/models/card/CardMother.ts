@@ -1,7 +1,7 @@
 import { Card } from '../../../src/models/card/Card.js'
 import { CardDto } from '../../../src/models/card/CardDto.js'
 import { Identification } from '../../../src/models/value/Identification.js'
-import { CardMapper } from '../../../src/storage/storables/CardMapper.js'
+import { CardMapper } from '../../../src/models/card/CardMapper.js'
 import { Mother } from "../../models/Mother.js"
 import { IdentificationMother } from '../value/IdentificationMother.js'
 import { CardBuilder } from './CardBuilder.js'

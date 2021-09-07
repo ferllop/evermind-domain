@@ -3,7 +3,7 @@ import { User } from '../../../src/models/user/User.js';
 import { Username } from '../../../src/models/user/Username.js';
 import { DayStartTime } from '../../../src/models/value/DayStartTime.js';
 import { Identification } from '../../../src/models/value/Identification.js';
-import { UserMapper } from '../../../src/storage/storables/UserMapper.js';
+import { UserMapper } from '../../../src/models/user/UserMapper.js';
 
 export class UserBuilder {
     private id: Identification

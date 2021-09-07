@@ -2,7 +2,7 @@ import { DomainError } from '../errors/DomainError.js'
 import { Card } from '../models/card/Card.js'
 import { Query } from '../models/search/Query.js'
 import { Search } from '../models/search/Search.js'
-import { Datastore } from '../storage/datastores/Datastore.js'
+import { Datastore } from '../models/Datastore.js'
 import { CardController } from './CardController.js'
 import { UserController } from './UserController.js'
 
