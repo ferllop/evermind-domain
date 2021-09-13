@@ -6,9 +6,12 @@ export class DomainError extends Error {
     private code: ErrorType
 
     constructor(errorType: ErrorType){
-        super(ErrorEnglish.get(errorType))
+        super(ErrorEnglish.get(errorType) ?? DomainError.getUndocumentedErrorMessage(errorType))
         this.code = errorType
+    }
 
+    private static getUndocumentedErrorMessage(errorType: ErrorType) {
+        return `Error with code ${errorType} not documented`
     }
 
     getCode() {
