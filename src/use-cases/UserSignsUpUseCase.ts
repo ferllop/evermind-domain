@@ -15,7 +15,7 @@ export class UserSignsUpUseCase {
         }
         const user = User.create(new PersonName(request.name), new Username(request.username))
         const error = new UserController().storeUser(user, datastore)
-        return new Response(error.getType(), null)
+        return new Response(error.getCode(), null)
     }
 
 }

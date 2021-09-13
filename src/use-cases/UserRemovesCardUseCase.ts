@@ -14,7 +14,7 @@ export class UserRemovesCardUseCase {
         
         const id = new Identification(request.id) 
         const error = new CardController().deleteCard(id, datastore)
-        return new Response(error.getType(), null)
+        return new Response(error.getCode(), null)
     }
     
 }

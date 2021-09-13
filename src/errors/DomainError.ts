@@ -1,17 +1,18 @@
-import { ErrorType } from './ErrorType.js'
+import { ErrorEnglish, ErrorType } from './ErrorType.js'
 
 export class DomainError extends Error {
     static NULL = new DomainError(ErrorType.NULL)
     
-    private type: ErrorType
+    private code: ErrorType
 
     constructor(errorType: ErrorType){
-        super()
-        this.type = errorType
+        super(ErrorEnglish.get(errorType))
+        this.code = errorType
+
     }
 
-    getType() {
-        return this.type
+    getCode() {
+        return this.code
     }
 
 }

@@ -19,7 +19,7 @@ export class UserReadsACardUseCase {
         
         const result = new CardController().retrieveCard(id, datastore)
         if (result instanceof DomainError) {
-            return new Response(result.getType(), null)
+            return new Response(result.getCode(), null)
         }
 
         return new Response(ErrorType.NULL, new CardMapper().toDto(result))

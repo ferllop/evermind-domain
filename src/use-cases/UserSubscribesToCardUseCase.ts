@@ -18,6 +18,6 @@ export class UserSubscribesToCardUseCase {
             datastore
         )
         
-        return new Response(error.getType(), null)
+        return new Response(error.getCode(), null)
     }
 }

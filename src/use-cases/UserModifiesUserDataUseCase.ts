@@ -13,7 +13,7 @@ export class UserModifiesUserDataUseCase {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }
         const error = new UserController().updateUser(dto, datastore)
-        return new Response(error.getType(), null)
+        return new Response(error.getCode(), null)
     }
 
 }
