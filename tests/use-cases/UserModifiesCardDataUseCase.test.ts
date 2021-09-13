@@ -1,4 +1,6 @@
 import { ErrorType } from '../../src/errors/ErrorType.js'
+import { CardDto } from '../../src/models/card/CardDto.js'
+import { CardField } from '../../src/models/card/CardField.js'
 import { Datastore } from '../../src/models/Datastore.js'
 import { Response } from '../../src/models/value/Response.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
@@ -32,7 +34,17 @@ userModifiesCardDataUseCase(
         const dsMother = new DatastoreMother(cardMother, datastore).having(1).storedIn()
         const newAuthorID = 'newAuthorId'
         new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.numberedDto(1), authorID: newAuthorID }, datastore)
-        assert.ok(dsMother.stored(1).hasPropertyValue('authorID', newAuthorID))
+        assert.equal(newAuthorID, dsMother.stored(1).storedDto?.authorID)
+    })
+
+userModifiesCardDataUseCase(
+    'given a previously stored card and data to update it, ' +
+    'when provided a different labelling, the card should be updated in storage', () => {
+        const dsMother = new DatastoreMother(cardMother, datastore).having(1).storedIn()
+        const {id} = dsMother.stored(1).storedDto as CardDto
+        const labelling = ['newlabelling']
+        new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.numberedDto(1), labelling }, datastore)
+        assert.equal(labelling, datastore.read<CardDto>(CardField.TABLE_NAME, id)!.labelling)    
     })
 
 userModifiesCardDataUseCase(
