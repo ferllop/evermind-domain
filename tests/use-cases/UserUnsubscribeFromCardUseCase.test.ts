@@ -113,7 +113,7 @@ userUnsubscribesFromCard('given a non existing userid, then return a USER_NOT_FO
     assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
 })
 
-userUnsubscribesFromCard('given a non existing userid, then return a CARD_NOT_FOUND', () => {
+userUnsubscribesFromCard('given a non existing cardid, then return a CARD_NOT_FOUND', () => {
     const datastore = new InMemoryDatastore()
     const mum = new DatastoreMother(datastore)
     const user = new UserMother().standard()

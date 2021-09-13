@@ -20,7 +20,7 @@ export class CardMother implements Mother<CardDto>{
             authorID: IdentificationMother.dto().id,
             question: 'question',
             answer: 'answer',
-            labelling: LabellingMother.dto().labelling,
+            ...LabellingMother.dto(),
             ...IdentificationMother.dto()
         }
     }

@@ -1,8 +1,13 @@
 import { precondition } from '../../lib/preconditions.js'
-import { Labelling } from '../card/Labelling.js'
-import { Token } from './Token.js'
+import { Token } from './token/Token.js'
+import { NullToken } from "./token/NullToken.js"
+import { TokenFactory } from "./token/TokenFactory.js"
+import { AuthorToken } from './token/AuthorToken.js'
+import { LabelToken } from './token/LabelToken.js'
 
 export class Search {
+    static TOKEN_LIST_SEPARATOR = ','
+
     private tokens: Token[]
 
     constructor(query: string){
@@ -11,27 +16,19 @@ export class Search {
     }
 
     private extractTokens(query: string): Token[] {
-        return this.parseQuery(query).map((queryPart: string) => new Token(queryPart))
+        return this.parseQuery(query).map((queryPart: string) => TokenFactory.getToken(queryPart))
     }
 
     private parseQuery(query: string): string[] {
-        return query.trim().replace(/\s/g, '').split(Labelling.LABEL_LIST_SEPARATOR)
+        return query.trim().replace(/\s/g, '').split(Search.TOKEN_LIST_SEPARATOR)
     }
 
-    private getFirstAuthorUsernameToken(): Token {
-        return this.tokens.find(token => token.isAuthorUsername()) || Token.EMPTY
+    getAuthorUsername(): AuthorToken {
+        return this.tokens.find(token => token.isAuthorUsername()) || new NullToken()
     }
 
-    private getLabelTokens(): Token[] {
+    getLabels(): LabelToken[] {
         return this.tokens.filter(token => token.isLabel())
-    }
-
-    getLabels(): string[] {
-        return this.getLabelTokens().map(token => token.toString())
-    }
-
-    getAuthorUsername(): string {
-        return this.getFirstAuthorUsernameToken().clean()
     }
 
     hasLabels(): boolean {
@@ -39,6 +36,6 @@ export class Search {
     }
 
     hasAuthor(): boolean {
-        return this.getFirstAuthorUsernameToken() !== Token.EMPTY
+        return this.getAuthorUsername().isAuthorUsername()
     }
 }

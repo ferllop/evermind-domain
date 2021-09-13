@@ -1,4 +1,6 @@
 export class PersonName {
+    static NULL = new PersonName('')
+
     constructor(private value: string) {}
 
     getValue() {

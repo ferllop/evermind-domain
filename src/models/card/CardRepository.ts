@@ -13,12 +13,16 @@ export class CardRepository extends Repository<Card, CardDto> {
         super(CardField.TABLE_NAME, new CardMapper(), datastore)
     }
 
-    findByLabels(labels: string[]): Card[] {
+    findByLabelling(labelling: Labelling): Card[] {
         if (!this.datastore.hasTable(CardField.TABLE_NAME)) {
             return []
         }
 
-        const result = this.datastore.find<CardDto>(CardField.TABLE_NAME, (cardDto: CardDto) => new Labelling(labels).includesAllLabels(cardDto.labelling))
+        const result = this.datastore.find<CardDto>(CardField.TABLE_NAME, 
+            (cardDto: CardDto) => {
+                const labelsInDto = Labelling.fromStringLabels(cardDto.labelling)
+                return labelling.isIncluded(labelsInDto)
+            })
         return new CardMapper().fromDtoArray(result)
     }
 

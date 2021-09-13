@@ -1,13 +1,16 @@
 import { DateEvermind } from '../../../src/helpers/DateEvermind.js'
 import { Level } from '../../../src/models/subscription/Level.js'
 import { Subscription } from '../../../src/models/subscription/Subscription.js'
+import { SubscriptionIdentification } from '../../../src/models/subscription/SubscriptionIdentification.js'
 import { DayStartTime } from '../../../src/models/value/DayStartTime.js'
 import { Identification } from '../../../src/models/value/Identification.js'
 import { assert, suite } from '../../test-config.js'
 
 class SubscriptionMother {
     forDay(day: Date) {
-        return Subscription.recreate(Identification.create(), Identification.create(), Identification.create(), Level.LEVEL_0, DateEvermind.fromDate(day))
+        const userId = Identification.create()
+        const cardId = Identification.create()
+        return Subscription.recreate(new SubscriptionIdentification(userId, cardId), userId, cardId, Level.LEVEL_0, DateEvermind.fromDate(day))
     }
 }
 const toReview = new Date('Mon Jul 12 2021 10:00:00 GMT+0200')

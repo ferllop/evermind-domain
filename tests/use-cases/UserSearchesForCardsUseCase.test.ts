@@ -68,7 +68,7 @@ userSearchesForCards('having 0 coincident cards, when searching by author and la
     assert.is(result.data.length, 0)
 })
 
-userSearchesForCards('having 1 coincident cards, when searching by author and label, then return a Result with an empty array as data and null as error', () => {
+userSearchesForCards('having 1 coincident cards, when searching by author and label, then return a Result with a one elemnt array as data and null as error', () => {
     new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
     new DatastoreMother(cardMother, datastore).having(3).storedIn()
     const result = new UserSearchesForCardsUseCase().execute({query: '@validUsername1, label0ofCard1'}, datastore)

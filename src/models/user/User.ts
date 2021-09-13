@@ -8,6 +8,7 @@ import { Card } from '../card/Card.js'
 import { UserIdentification } from './UserIdentification.js'
 
 export class User extends Entity {
+    static NULL = new User(PersonName.NULL, Username.NULL, new DayStartTime(9), Identification.NULL)
 
     subscriptions: Subscription[]
 
@@ -57,6 +58,10 @@ export class User extends Entity {
         return this.subscriptions.find(
             subscription => subscription.getCardID().equals(card.getId())
         )
+    }
+
+    isNull() {
+        return this.getId().isNull()
     }
 
     static isValid(name: string, username: string, dayStartTime: number, id?: string): boolean {

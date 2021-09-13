@@ -5,6 +5,7 @@ import { Identification } from '../value/Identification.js';
 import { Level } from './Level.js';
 import { Subscription } from './Subscription.js';
 import { SubscriptionDto } from './SusbcriptionDto.js';
+import { SubscriptionIdentification } from './SubscriptionIdentification.js';
 
 export class SubscriptionMapper implements Mapper<Subscription, SubscriptionDto> {
     isDtoValid(dto: MayBeIdentified<SubscriptionDto>): boolean {
@@ -12,10 +13,12 @@ export class SubscriptionMapper implements Mapper<Subscription, SubscriptionDto>
     }
 
     fromDto(dto: SubscriptionDto): Subscription {
+        const userId = new Identification(dto.userId)
+        const cardId = new Identification(dto.cardId)
         return Subscription.recreate(
-            new Identification(dto.id),
-            new Identification(dto.userId), 
-            new Identification(dto.cardId), 
+            new SubscriptionIdentification(userId, cardId),
+            userId, 
+            cardId, 
             Level.getByOrdinal(dto.level), 
             new DateEvermind(dto.lastReview)
         )

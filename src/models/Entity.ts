@@ -8,7 +8,7 @@ export abstract class Entity {
         this.id = id
     }
 
-    getId(): Identification {
+    getId() {
         return this.id
     }
 

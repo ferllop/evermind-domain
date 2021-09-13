@@ -10,7 +10,7 @@ export class SubscriptionController {
 
     subscribeUserToCard(userId: Identification, cardId: Identification, datastore: Datastore): DomainError {
         const user = new UserRepository(datastore).findById(userId)
-        if (!user) {
+        if (user.isNull()) {
             return new DomainError(ErrorType.USER_NOT_FOUND)
         }
         
@@ -31,7 +31,7 @@ export class SubscriptionController {
     
     unsubscribeUserToCard(userId: Identification, cardId: Identification, datastore: Datastore): DomainError {
         const user = new UserRepository(datastore).findById(userId)
-        if (!user) {
+        if (user.isNull()) {
             return new DomainError(ErrorType.USER_NOT_FOUND)
         }
         
@@ -42,7 +42,6 @@ export class SubscriptionController {
         
         const subscriptionRepository = new SubscriptionRepository(datastore) 
         const subscriptions = subscriptionRepository.findByUserId(user)
-        
         const subscription = user.subscribedTo(subscriptions).unsubscribeFrom(card)
         
         if (!subscription) {

@@ -1,5 +1,7 @@
 import { DateEvermind } from '../../helpers/DateEvermind.js'
+import { CardIdentification } from '../card/CardIdentification.js'
 import { Entity } from '../Entity.js'
+import { UserIdentification } from '../user/UserIdentification.js'
 import { DateISO } from '../value/DateISO.js'
 import { DayStartTime } from '../value/DayStartTime.js'
 import { Hour } from '../value/Hour.js'
@@ -68,11 +70,12 @@ export class Subscription extends Entity {
         return Identification.isValid(userId) && Identification.isValid(cardId)
     }
 
-    static create(userId: Identification, cardId: Identification) {
-        return new Subscription(userId.merge(cardId), userId, cardId, Level.LEVEL_0, DateEvermind.fromNow())
+    static create(userId: UserIdentification, cardId: CardIdentification) {
+        const id  = new SubscriptionIdentification(userId, cardId)
+        return new Subscription(id, userId, cardId, Level.LEVEL_0, DateEvermind.fromNow())
     }
 
-    static recreate(id: Identification, userId: Identification, cardId: Identification, level: Level, lastReview: DateEvermind) {
+    static recreate(id: SubscriptionIdentification, userId: UserIdentification, cardId: CardIdentification, level: Level, lastReview: DateEvermind) {
         return new Subscription(id, userId, cardId, level, lastReview)
     }
 

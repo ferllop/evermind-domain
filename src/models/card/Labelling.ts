@@ -1,14 +1,15 @@
 import { precondition } from '../../lib/preconditions.js'
+import { Label } from './Label.js'
 
 export class Labelling {
     static LABEL_LIST_SEPARATOR = ','
+    
+    constructor(
+        private readonly labels: Label[]
+    ) {}
 
-    private readonly labels: string[]
-
-    constructor(labels: string[] | string) {
-        const labelsArray = this.toArray(labels)
-        precondition(Labelling.areValid(labelsArray))
-        this.labels = labelsArray.map(label => label.toLowerCase())
+    static fromStringLabels(labels: string[]) {
+        return new Labelling(labels.map(stringLabel => new Label(stringLabel)))
     }
 
     toString(): string {
@@ -23,43 +24,28 @@ export class Labelling {
         return result.substring(0, result.length - 2)
     }
 
-    toArray(labels: string|string[]): string[] {
-        if (labels instanceof Array) {
-            return labels
-        }
-
-        const result: string[] = []
-        for (const label of labels.toLowerCase().split(Labelling.LABEL_LIST_SEPARATOR)) {
-            if (label.trim().length > 0) {
-                precondition(Labelling.isValid(label.trim()))
-                result.push(label.trim())
-            }
-        }
-        return result
-    }
-
-    getLabels(): string[] {
+    getLabels() {
         return this.labels
     }
 
-    getLabel(index: number): string {
+    getLabel(index: number) {
         precondition(index > -1 && index < this.labels.length)
         return this.labels[index]
     }
 
-    includesAllLabels(labels: string[]) {
-        return this.labels.every(label => labels.includes(label))
+    isIncluded(labelling: Labelling) {
+        return this.labels.every(label => labelling.includes(label))
+    }
+
+    includes(label: Label) {
+        return this.labels.some(ownLabel => label.equals(ownLabel))
     }
 
     clone() {
         return new Labelling(this.getLabels())
     }
 
-    static isValid(label: string): boolean {
-        return !(/.*[^-,\w\s].*/.test(label))
-    }
-
-    static areValid(labels: string[]): boolean {
-        return labels.length > 0 && labels.every(label => Labelling.isValid(label))
+    static isValid(labels: string[]): boolean {
+        return labels.length > 0 && labels.every(label => Label.isValid(label))
     }
 }

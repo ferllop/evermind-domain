@@ -8,15 +8,18 @@ import { UserModifiesCardDataRequest } from './UserModifiesCardDataRequest.js'
 export class UserModifiesCardDataUseCase {
     
     execute(request: UserModifiesCardDataRequest, datastore: Datastore): Response<null> {
-        const mapper = new CardMapper()
-        if (!mapper.isDtoValid(request)) {
+        
+        const {userId, ...cardData} = request
+        if (!new CardMapper().arePropertiesValid(cardData)) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }
-        const card = mapper.fromDto(request)
-        const error = new CardController().updateCard(card, datastore)
+        
+        const error = new CardController().updateCard(cardData, datastore)
         return new Response(error.getType(), null)
     }
-
+    
 }
+
+
 
 

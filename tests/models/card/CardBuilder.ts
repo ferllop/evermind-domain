@@ -7,6 +7,7 @@ import { WrittenAnswer } from '../../../src/models/card/WrittenAnswer.js'
 import { WrittenQuestion } from '../../../src/models/card/WrittenQuestion.js'
 import { Identification } from '../../../src/models/value/Identification.js'
 import { CardMapper } from '../../../src/models/card/CardMapper.js'
+import { Label } from '../../../src/models/card/Label.js'
 
 export class CardBuilder {
 
@@ -21,7 +22,7 @@ export class CardBuilder {
         this.authorID = new AuthorIdentification(Identification.create().toString())
         this.question = new WrittenQuestion('question')
         this.answer = new WrittenAnswer('answer')
-        this.labelling = new Labelling('labelling')
+        this.labelling = new Labelling([new Label('labelling')])
     }
 
     setId(id: Identification) {

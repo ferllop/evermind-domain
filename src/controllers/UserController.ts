@@ -25,7 +25,7 @@ export class UserController {
 
     findByUsername(username: string, datastore: Datastore): DomainError | User {
         const user = new UserRepository(datastore).findByUsername(username)
-        if (!user) {
+        if (user.isNull()) {
             return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }
         return user

@@ -21,7 +21,7 @@ export class UserCreatesCardUseCase {
             new AuthorIdentification(request.userId),
             new WrittenQuestion(request.question),
             new WrittenAnswer(request.answer),
-            new Labelling(request.labelling)
+            Labelling.fromStringLabels(request.labelling)
         )
 
         const error = new CardController().storeCard(card, datastore)

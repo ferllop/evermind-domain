@@ -12,23 +12,23 @@ export class UserRepository extends Repository<User, UserDto> {
         super(UserField.TABLE_NAME, new UserMapper(), datastore)
     }
 
-    findByUsername(username: string): User|null {
+    findByUsername(username: string): User {
         if (!this.datastore.hasTable(UserField.TABLE_NAME)) {
-            return null
+            return User.NULL
         }
         const result = this.datastore.findOne<UserDto>(UserField.TABLE_NAME, (user) => {
             return user.username === username
         })
-        return result ? new UserMapper().fromDto(result) : null
+        return result ? new UserMapper().fromDto(result) : User.NULL
     }
 
-    findById(id: Identification): User|null {
+    findById(id: Identification): User {
         if (!this.datastore.hasTable(UserField.TABLE_NAME)) {
-            return null
+            return User.NULL
         }
         const result = this.datastore.read<UserDto>(UserField.TABLE_NAME, id.getId())
 
-        return result ? new UserMapper().fromDto(result) : null
+        return result ? new UserMapper().fromDto(result) : User.NULL
     }
 
 

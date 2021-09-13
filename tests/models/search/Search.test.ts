@@ -1,5 +1,7 @@
 import { PreconditionError } from '../../../src/lib/preconditions.js'
 import { Search } from'../../../src/models/search/Search.js'
+import { LabelToken } from "../../../src/models/search/token/LabelToken.js"
+import { AuthorToken } from "../../../src/models/search/token/AuthorToken.js"
 import { assert, suite } from'../../test-config.js'
 
 const search = suite('Search')
@@ -10,38 +12,45 @@ search('should accept only queries with at least one character', () => {
 
 search('should be able to provide the author when a word prefixed with at symbol is provided alone', () => {
     const search = new Search('@author')
-    assert.equal(search.getAuthorUsername(),'author')
+    assert.ok(search.getAuthorUsername().equals(new AuthorToken('author')))
 })
 
 search('should be able to provide the author when a word prefixed with at symbol is provided in a comma separated list', () => {
     const search = new Search('@author,label1')
-    assert.equal(search.getAuthorUsername(), 'author')
+    assert.ok(search.getAuthorUsername().equals(new AuthorToken('author')))
 })
 
 search('should be able to provide only the first author when multiple authors are provided', () => {
     const search = new Search('@author1,@author2')
-    assert.equal(search.getAuthorUsername(), 'author1')
+    assert.ok(search.getAuthorUsername().equals(new AuthorToken('author1')))
+    assert.not.ok(search.getAuthorUsername().equals(new AuthorToken('author2')))
 })
 
 search('should be able to provide a label when a word is not prefixed with at symbol', () => {
     const search = new Search('label')
-    assert.equal(search.getLabels()[0], 'label')
+    assert.equal(search.getLabels()[0], new LabelToken('label'))
 })
 
 search('should be able to provide all labels when multiple words withouth at symbol are provided', () => {
-    const search = new Search('label1,label2,label3')
-    assert.equal(search.getLabels(), ['label1', 'label2', 'label3'])
+    const search = new Search('label1,label2')
+    assert.equal(search.getLabels()[0], new LabelToken('label1'))
+    assert.equal(search.getLabels()[1], new LabelToken('label2'))
 })
 
 search('should trim spaces between tokens', () => {
     const search = new Search('label1, label2, label3, @author')
-    assert.equal(search.getLabels(), ['label1', 'label2', 'label3'])
-    assert.equal(search.getAuthorUsername(), 'author')
+    assert.equal(search.getLabels()[1], new LabelToken('label2'))
+    assert.equal(search.getAuthorUsername(), new AuthorToken('author'))
 })
 
 search('should be able to provide only labels when an author and labels are provided', () => {
     const search = new Search('label1,@author,label2')
-    assert.equal(search.getLabels(), ['label1', 'label2'])
+    assert.equal(
+        search.getLabels(), 
+        [
+            new LabelToken('label1'), 
+            new LabelToken('label2')
+        ])
 })
 
 search('should confirm that has labels', () => {

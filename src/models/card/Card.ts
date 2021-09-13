@@ -2,7 +2,9 @@ import { Entity } from '../Entity.js'
 import { Identification } from '../value/Identification.js'
 import { Answer } from './Answer.js'
 import { AuthorIdentification } from './AuthorIdentification.js'
+import { CardDto } from './CardDto.js'
 import { CardIdentification } from './CardIdentification.js'
+import { CardMapper } from './CardMapper.js'
 import { Labelling } from './Labelling.js'
 import { Question } from './Question.js'
 import { WrittenAnswer } from './WrittenAnswer.js'
@@ -56,6 +58,10 @@ export class Card extends Entity {
         return this.authorID.equals(authorId)
     }
 
+    equals(card: Card) {
+        return this.getId().equals(card.getId())
+    }
+
     static create(userId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling){
         return new Card(userId, question, answer, labels, Identification.create())
     }
@@ -64,11 +70,17 @@ export class Card extends Entity {
         return new Card(authorID, question, answer, labels, id)
     }
 
+    apply(card: Omit<Partial<CardDto>, 'id'>) {
+        const thisAsDto = new CardMapper().toDto(this)
+        const modifedCard = { ...thisAsDto, ...card}
+        return new CardMapper().fromDto(modifedCard)
+    }
+
     static isValid(authorID: string, question: string, answer: string, labels: string[], id?: string) {
         return Identification.isValid(authorID) &&
             WrittenQuestion.isValid(question) &&
             WrittenAnswer.isValid(answer) &&
-            Labelling.areValid(labels) &&
+            Labelling.isValid(labels) &&
             (Boolean(id) ? Identification.isValid(id) : true)
     }
 
