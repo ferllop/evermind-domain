@@ -23,5 +23,4 @@ export abstract class Mapper<T, TDto> {
     abstract isDtoValid(dto: MayBeIdentified<TDto>): boolean;
     abstract fromDto(dto: TDto): T;
     abstract toDto(entity: T): TDto;
-    abstract getNull(): T
 }

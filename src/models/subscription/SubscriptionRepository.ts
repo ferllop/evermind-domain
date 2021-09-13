@@ -8,6 +8,7 @@ import { User } from '../../models/user/User.js';
 import { Identification } from '../../models/value/Identification.js';
 import { Datastore } from '../Datastore.js';
 import { Repository } from '../Repository.js';
+import { NullSubscription } from './NullSubscription.js';
 
 export class SubscriptionRepository extends Repository<Subscription, SubscriptionDto> {
 
@@ -50,4 +51,7 @@ export class SubscriptionRepository extends Repository<Subscription, Subscriptio
         return subscriptions.map( subscription => new SubscriptionMapper().fromDto(subscription))
     }
 
+    getNull() {
+        return NullSubscription.getInstance()
+    }
 }

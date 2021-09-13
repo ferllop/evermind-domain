@@ -15,7 +15,7 @@ export class SubscriptionController {
         }
         
         const card = new CardRepository(datastore).findById(cardId)
-        if (!card) {
+        if (card.isNull()) {
             return new DomainError(ErrorType.CARD_NOT_FOUND)
         }
         
@@ -36,7 +36,7 @@ export class SubscriptionController {
         }
         
         const card = new CardRepository(datastore).findById(cardId)
-        if (!card) {
+        if (card.isNull()) {
             return new DomainError(ErrorType.CARD_NOT_FOUND)
         }
         

@@ -6,6 +6,7 @@ import { Labelling } from '../../models/card/Labelling.js'
 import { CardField } from '../../models/card/CardField.js'
 import { Repository } from '../Repository.js'
 import { CardMapper } from './CardMapper.js'
+import { NullCard } from './NullCard.js'
 
 export class CardRepository extends Repository<Card, CardDto> {
 
@@ -38,11 +39,16 @@ export class CardRepository extends Repository<Card, CardDto> {
         return new CardMapper().fromDtoArray(result)
     }
 
-    findById(id: Identification): Card | null {
+    findById(id: Identification): Card {
         if (!this.datastore.hasTable(CardField.TABLE_NAME)) {
-            return null
+            return this.getNull()
         }
         const card = this.datastore.read<CardDto>(CardField.TABLE_NAME, id.getId())
-        return card && new CardMapper().fromDto(card)
+        return card ? new CardMapper().fromDto(card) : this.getNull()
     } 
+
+
+    getNull() {
+        return NullCard.getInstance()
+    }
 }

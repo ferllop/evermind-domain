@@ -5,6 +5,7 @@ import { UserDto } from '../../models/user/UserDto.js'
 import { UserField } from '../../models/user/UserField.js'
 import { Identification } from '../../models/value/Identification.js'
 import { Repository } from '../Repository.js'
+import { NullUser } from './NullUser.js'
 
 export class UserRepository extends Repository<User, UserDto> {
 
@@ -14,22 +15,25 @@ export class UserRepository extends Repository<User, UserDto> {
 
     findByUsername(username: string): User {
         if (!this.datastore.hasTable(UserField.TABLE_NAME)) {
-            return User.NULL
+            return this.getNull()
         }
         const result = this.datastore.findOne<UserDto>(UserField.TABLE_NAME, (user) => {
             return user.username === username
         })
-        return result ? new UserMapper().fromDto(result) : User.NULL
+        return result ? new UserMapper().fromDto(result) : this.getNull()
     }
 
     findById(id: Identification): User {
         if (!this.datastore.hasTable(UserField.TABLE_NAME)) {
-            return User.NULL
+            return this.getNull()
         }
         const result = this.datastore.read<UserDto>(UserField.TABLE_NAME, id.getId())
 
-        return result ? new UserMapper().fromDto(result) : User.NULL
+        return result ? new UserMapper().fromDto(result) : this.getNull()
     }
 
-
+    getNull() {
+        return NullUser.getInstance()
+    }
+    
 }

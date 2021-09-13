@@ -57,8 +57,4 @@ export class CardMapper extends Mapper<Card, CardDto> {
         }
     }
 
-    getNull() {
-        return Card.NULL
-    }
-
 }

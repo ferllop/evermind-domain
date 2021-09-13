@@ -10,11 +10,10 @@ import { UserDto } from './UserDto.js'
 import { UserMapper } from './UserMapper.js'
 
 export class User extends Entity {
-    static NULL = new User(PersonName.NULL, Username.NULL, new DayStartTime(9), Identification.NULL)
 
     subscriptions: Subscription[]
 
-    private constructor(private name: PersonName, private username: Username, private dayStartTime: DayStartTime, id: UserIdentification) {
+    protected constructor(private name: PersonName, private username: Username, private dayStartTime: DayStartTime, id: UserIdentification) {
         super(id)
         this.subscriptions = []
     }
@@ -64,12 +63,8 @@ export class User extends Entity {
 
     apply(user: Omit<Partial<UserDto>, 'id'>) {
         const thisAsDto = new UserMapper().toDto(this)
-        const modifedCard = { ...thisAsDto, ...user}
+        const modifedCard = { ...thisAsDto, ...user }
         return new UserMapper().fromDto(modifedCard)
-    }
-
-    getNull() {
-        return User.NULL
     }
 
     static isValid(name: string, username: string, dayStartTime: number, id?: string): boolean {

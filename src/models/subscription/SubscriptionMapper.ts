@@ -46,9 +46,4 @@ export class SubscriptionMapper extends Mapper<Subscription, SubscriptionDto> {
         }
     }
 
-
-    getNull() {
-        return Subscription.NULL
-    }
-
 }

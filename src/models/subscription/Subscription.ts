@@ -10,7 +10,6 @@ import { Level } from './Level.js'
 import { SubscriptionIdentification } from './SubscriptionIdentification.js'
 
 export class Subscription extends Entity {
-    static NULL = new Subscription(new SubscriptionIdentification(Identification.NULL, Identification.NULL), Identification.NULL, Identification.NULL, new Level(0), new DateEvermind(new Date().toISOString() as DateISO))
     
     private userId: Identification
 
@@ -20,7 +19,7 @@ export class Subscription extends Entity {
 
     private lastReview: DateEvermind
 
-    private constructor(id: SubscriptionIdentification, userId: Identification, cardId: Identification, level: Level, lastReview: DateEvermind) {
+    protected constructor(id: SubscriptionIdentification, userId: Identification, cardId: Identification, level: Level, lastReview: DateEvermind) {
         super(id)
         this.userId = userId
         this.cardId = cardId
@@ -60,10 +59,6 @@ export class Subscription extends Entity {
     equals(subscription: Subscription) {
         return this.getUserID().equals(subscription.getUserID()) &&
             this.getCardID().equals(subscription.getCardID())
-    }
-
-    getNull() {
-        return Subscription.NULL
     }
 
     static isValid(userId: string, cardId: string, level: number, lastReview: DateISO) {
