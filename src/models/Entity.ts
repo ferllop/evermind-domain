@@ -12,4 +12,11 @@ export abstract class Entity {
         return this.id
     }
 
+
+    isNull() {
+        return this.getId().isNull()
+    }
+
+    abstract getNull(): unknown
+
 }

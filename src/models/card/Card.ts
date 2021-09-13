@@ -9,8 +9,13 @@ import { Labelling } from './Labelling.js'
 import { Question } from './Question.js'
 import { WrittenAnswer } from './WrittenAnswer.js'
 import { WrittenQuestion } from './WrittenQuestion.js'
+import { NullQuestion } from "./NullQuestion.js"
+import { NullAnswer } from './NullAnswer.js'
 
 export class Card extends Entity {
+
+    static NULL = new Card(new AuthorIdentification(''), new NullQuestion(), new NullAnswer(), Labelling.NULL, CardIdentification.NULL )
+
     private authorID: AuthorIdentification
     private question: Question
     private answer: Answer
@@ -60,6 +65,10 @@ export class Card extends Entity {
 
     equals(card: Card) {
         return this.getId().equals(card.getId())
+    }
+
+    getNull() {
+        return Card.NULL
     }
 
     static create(userId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling){

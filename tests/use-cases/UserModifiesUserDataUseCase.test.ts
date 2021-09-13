@@ -1,8 +1,9 @@
+import { ErrorType } from '../../src/errors/ErrorType.js'
 import { Datastore } from '../../src/models/Datastore.js'
+import { Response } from '../../src/models/value/Response.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
 import { UserModifiesUserDataUseCase } from '../../src/use-cases/UserModifiesUserDataUseCase.js'
 import { UserMother } from '../models/user/UserMother.js'
-import { ResultMother } from '../models/value/ResultMother.js'
 import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
 
@@ -18,7 +19,7 @@ userModifiesUserDataUseCase(
     'should return an object with null as data property and ' +
     'RESOURCE_NOT_FOUND DomainError', () => {
         const result = new UserModifiesUserDataUseCase().execute(new UserMother().dto(), datastore)
-        assert.ok(ResultMother.isNotFound(result))
+        assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
 
 userModifiesUserDataUseCase(
@@ -36,7 +37,7 @@ userModifiesUserDataUseCase(
     'null as data property', () => {
         new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
         const result = new UserModifiesUserDataUseCase().execute({ ...new UserMother().numberedDto(1), name: 'newName' }, datastore)
-        assert.ok(ResultMother.isEmptyOk(result))
+        assert.equal(result, Response.OkWithoutData())
     })
 
 userModifiesUserDataUseCase(
@@ -45,7 +46,7 @@ userModifiesUserDataUseCase(
     'RESOURCE_NOT_FOUND DomainError', () => {
         new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
         const result = new UserModifiesUserDataUseCase().execute({ ...new UserMother().numberedDto(1), id: 'notExistingId' }, datastore)
-        assert.ok(ResultMother.isNotFound(result))
+        assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
 
 userModifiesUserDataUseCase(
@@ -53,7 +54,7 @@ userModifiesUserDataUseCase(
     'should return an object with null as data property and ' +
     'INPUT_DATA_NOT_VALID DomainError', () => {
         const result = new UserModifiesUserDataUseCase().execute(new UserMother().invalidDto(), datastore)
-        assert.ok(ResultMother.isInputInvalid(result))
+        assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
     })
 
 userModifiesUserDataUseCase.run()

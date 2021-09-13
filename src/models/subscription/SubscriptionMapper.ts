@@ -6,8 +6,20 @@ import { Level } from './Level.js';
 import { Subscription } from './Subscription.js';
 import { SubscriptionDto } from './SusbcriptionDto.js';
 import { SubscriptionIdentification } from './SubscriptionIdentification.js';
+import { Validator } from '../Validator.js';
+import { UserIdentification } from '../user/UserIdentification.js';
+import { CardIdentification } from '../card/CardIdentification.js';
 
-export class SubscriptionMapper implements Mapper<Subscription, SubscriptionDto> {
+export class SubscriptionMapper extends Mapper<Subscription, SubscriptionDto> {
+    getValidators(): Map<string, Validator> {
+        return new Map()
+            .set('id', SubscriptionIdentification.isValid)
+            .set('userId', UserIdentification.isValid)
+            .set('cardId', CardIdentification.isValid)
+            .set('level', Level.isValid)
+            .set('lastReview', DateEvermind.isISOString)
+    }
+    
     isDtoValid(dto: MayBeIdentified<SubscriptionDto>): boolean {
         return Subscription.isValid(dto.userId, dto.cardId, dto.level, dto.lastReview)
     }
@@ -34,5 +46,9 @@ export class SubscriptionMapper implements Mapper<Subscription, SubscriptionDto>
         }
     }
 
+
+    getNull() {
+        return Subscription.NULL
+    }
 
 }

@@ -3,6 +3,7 @@ import { Label } from './Label.js'
 
 export class Labelling {
     static LABEL_LIST_SEPARATOR = ','
+    static NULL = new Labelling([])
     
     constructor(
         private readonly labels: Label[]

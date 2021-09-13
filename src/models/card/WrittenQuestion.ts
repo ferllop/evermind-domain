@@ -2,6 +2,7 @@ import { precondition } from '../../lib/preconditions.js'
 import { Question } from './Question.js'
 
 export class WrittenQuestion extends Question {
+    
     private readonly value: string
 
     constructor(value: string) {

@@ -9,11 +9,10 @@ export class UserModifiesUserDataUseCase {
     
     execute(dto: UserModifiesUserDataRequest, datastore: Datastore): Response<null> {
         const mapper = new UserMapper()
-        if (!mapper.isDtoValid(dto)) {
+        if (!mapper.arePropertiesValid(dto)) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }
-        const user = mapper.fromDto(dto)
-        const error = new UserController().updateUser(user, datastore)
+        const error = new UserController().updateUser(dto, datastore)
         return new Response(error.getType(), null)
     }
 

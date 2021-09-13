@@ -4,6 +4,9 @@ import { ErrorType } from '../errors/ErrorType.js'
 import { Datastore } from '../models/Datastore.js'
 import { User } from '../models/user/User.js'
 import { DomainError } from '../errors/DomainError.js'
+import { UserDto } from '../models/user/UserDto.js'
+import { OnlyRequired } from '../helpers/OnlyRequired.js'
+import { UserIdentification } from '../models/user/UserIdentification.js'
 
 export class UserController {
 
@@ -16,11 +19,20 @@ export class UserController {
     }
 
     retrieveUser(id: Identification, datastore: Datastore): DomainError | User {
-        return new UserRepository(datastore).retrieve(id)
+        const user = new UserRepository(datastore).retrieve(id)
+        return user.isNull() ? new DomainError(ErrorType.USER_NOT_FOUND) : user
     }
 
-    updateUser(user: User, datastore: Datastore): DomainError {
-        return new UserRepository(datastore).update(user)
+    updateUser(userDto: OnlyRequired<UserDto, 'id'>, datastore: Datastore): DomainError {
+        const {id, ...userData} = userDto
+        const userRepository = new UserRepository(datastore)
+        const user = userRepository.retrieve(new UserIdentification(id))
+        
+        if(user.isNull()) {
+            return new DomainError(ErrorType.USER_NOT_FOUND)
+        }
+
+        return userRepository.update(user.apply(userData))
     }
 
     findByUsername(username: string, datastore: Datastore): DomainError | User {

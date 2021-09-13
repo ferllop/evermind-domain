@@ -6,6 +6,8 @@ import { Username } from './Username.js'
 import { Subscription } from '../subscription/Subscription.js'
 import { Card } from '../card/Card.js'
 import { UserIdentification } from './UserIdentification.js'
+import { UserDto } from './UserDto.js'
+import { UserMapper } from './UserMapper.js'
 
 export class User extends Entity {
     static NULL = new User(PersonName.NULL, Username.NULL, new DayStartTime(9), Identification.NULL)
@@ -60,8 +62,14 @@ export class User extends Entity {
         )
     }
 
-    isNull() {
-        return this.getId().isNull()
+    apply(user: Omit<Partial<UserDto>, 'id'>) {
+        const thisAsDto = new UserMapper().toDto(this)
+        const modifedCard = { ...thisAsDto, ...user}
+        return new UserMapper().fromDto(modifedCard)
+    }
+
+    getNull() {
+        return User.NULL
     }
 
     static isValid(name: string, username: string, dayStartTime: number, id?: string): boolean {

@@ -7,8 +7,17 @@ import { MayBeIdentified } from '../value/MayBeIdentified.js'
 import { DayStartTime } from '../../models/value/DayStartTime.js'
 import { PersonName } from '../../models/user/PersonName.js'
 import { Username } from '../../models/user/Username.js'
+import { Validator } from '../Validator.js'
+import { UserIdentification } from './UserIdentification.js'
 
-export class UserMapper implements Mapper<User, UserDto> {
+export class UserMapper extends Mapper<User, UserDto> {
+    getValidators(): Map<string, Validator> {
+        return new Map()
+            .set('id', UserIdentification.isValid)
+            .set('name', PersonName.isValid)
+            .set('username', Username.isValid)
+            .set('dayStartTime', DayStartTime.isValid)
+    }
 
     isDtoValid(dto: MayBeIdentified<UserDto>): boolean {
         return Boolean(dto) &&
@@ -36,5 +45,10 @@ export class UserMapper implements Mapper<User, UserDto> {
             username: user.getUsername().toString(),
             dayStartTime: user.getDayStartTime().getValue()
         }
+    }
+
+
+    getNull() {
+        return User.NULL
     }
 }

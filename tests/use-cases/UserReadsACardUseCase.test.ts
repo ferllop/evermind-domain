@@ -29,18 +29,18 @@ userReadsACardUseCase(
 userReadsACardUseCase(
     'given a non existing id in an existing cards table, ' +
     'should return an object with data property as null ' +
-    'and RESOURCE_NOT_FOUND DomainError', () => {
+    'and CARD_NOT_FOUND DomainError', () => {
         new DatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = new UserReadsACardUseCase().execute({ id: 'nonExistingId' }, datastore)
-        assert.equal(result, Response.withError(ErrorType.RESOURCE_NOT_FOUND))
+        assert.equal(result, Response.withError(ErrorType.CARD_NOT_FOUND))
     })
 
 userReadsACardUseCase(
     'given a non existing cards table, ' +
     'should return an object with data property as null ' +
-    'and RESOURCE_NOT_FOUND DomainError', () => {
+    'and CARD_NOT_FOUND DomainError', () => {
         const result = new UserReadsACardUseCase().execute({ id: 'nonExistingId' }, datastore)
-        assert.equal(result, Response.withError(ErrorType.RESOURCE_NOT_FOUND))
+        assert.equal(result, Response.withError(ErrorType.CARD_NOT_FOUND))
     })
 
 userReadsACardUseCase(

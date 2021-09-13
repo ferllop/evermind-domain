@@ -27,18 +27,18 @@ userGetsUserInfoUseCase(
 userGetsUserInfoUseCase(
     'given a non existing id in an existing users table, ' +
     'should return an object with data property as null ' +
-    'and RESOURCE_NOT_FOUND DomainError', () => {
+    'and USER_NOT_FOUND DomainError', () => {
         new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
         const result = new UserGetsUserInfoUseCase().execute({ id: 'nonExistingId' }, datastore)
-        assert.equal(result, Response.withError(ErrorType.RESOURCE_NOT_FOUND))
+        assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
 
 userGetsUserInfoUseCase(
     'given a non existing users table, ' +
     'should return an object with data property as null ' +
-    'and RESOURCE_NOT_FOUND DomainError', () => {
+    'and USER_NOT_FOUND DomainError', () => {
         const result = new UserGetsUserInfoUseCase().execute({ id: 'nonExistingId' }, datastore)
-        assert.equal(result, Response.withError(ErrorType.RESOURCE_NOT_FOUND))
+        assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
 
 userGetsUserInfoUseCase(

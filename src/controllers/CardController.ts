@@ -20,14 +20,15 @@ export class CardController {
     }
 
     retrieveCard(id: Identification, datastore: Datastore): DomainError | Card {
-        return new CardRepository(datastore).retrieve(id)
+        const card = new CardRepository(datastore).retrieve(id)
+        return card.isNull() ? new DomainError(ErrorType.CARD_NOT_FOUND) : card
     }
 
     updateCard(cardDto: OnlyRequired<CardDto, 'id'>, datastore: Datastore): DomainError {
         const cardRepository = new CardRepository(datastore)
         const {id, ...data} = cardDto
         const card = cardRepository.retrieve(new CardIdentification(id))
-        if (card instanceof DomainError) {
+        if (card.isNull()) {
             return new DomainError(ErrorType.CARD_NOT_FOUND)
         }
 

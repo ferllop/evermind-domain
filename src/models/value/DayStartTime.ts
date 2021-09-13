@@ -11,7 +11,7 @@ export class DayStartTime {
     }
 
     static isValid(value: number) {
-        const isInRange = value >= this.MIN && value <= this.MAX
+        const isInRange = value >= DayStartTime.MIN && value <= DayStartTime.MAX
         return Number.isInteger(value) && isInRange
     }
 
