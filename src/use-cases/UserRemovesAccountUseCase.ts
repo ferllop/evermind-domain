@@ -1,9 +1,9 @@
 import { UserController } from '../controllers/UserController.js'
 import { ErrorType } from '../errors/ErrorType.js'
 import { Identification } from '../models/value/Identification.js'
-import { Response } from '../models/value/Response.js'
 import { Datastore } from '../models/Datastore.js';
 import { UserRemovesAccountRequest } from './UserRemovesAccountRequest.js'
+import { Response } from './Response.js';
 
 export class UserRemovesAccountUseCase {
     

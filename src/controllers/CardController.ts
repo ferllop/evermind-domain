@@ -16,7 +16,11 @@ export class CardController {
     }
 
     deleteCard(id: Identification, datastore: Datastore): DomainError {
-        return new CardRepository(datastore).delete(id)
+        const error = new CardRepository(datastore).delete(id)
+        if(error.getCode() === ErrorType.RESOURCE_NOT_FOUND) {
+            return new DomainError(ErrorType.CARD_NOT_FOUND)
+        }
+        return error
     }
 
     retrieveCard(id: Identification, datastore: Datastore): DomainError | Card {

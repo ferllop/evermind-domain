@@ -15,7 +15,11 @@ export class UserController {
     }
 
     deleteUser(id: Identification, datastore: Datastore): DomainError {
-        return new UserRepository(datastore).delete(id)
+        const error = new UserRepository(datastore).delete(id)
+        if (error.getCode() === ErrorType.RESOURCE_NOT_FOUND) {
+            return new DomainError(ErrorType.USER_NOT_FOUND)
+        }
+        return error
     }
 
     retrieveUser(id: Identification, datastore: Datastore): DomainError | User {
@@ -38,7 +42,7 @@ export class UserController {
     findByUsername(username: string, datastore: Datastore): DomainError | User {
         const user = new UserRepository(datastore).findByUsername(username)
         if (user.isNull()) {
-            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+            return new DomainError(ErrorType.USER_NOT_FOUND)
         }
         return user
     }
@@ -46,7 +50,7 @@ export class UserController {
     findById(id: Identification, datastore: Datastore): DomainError | User {
         const user = new UserRepository(datastore).findById(id)
         if (!user) {
-            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+            return new DomainError(ErrorType.USER_NOT_FOUND)
         }
         return user
     }

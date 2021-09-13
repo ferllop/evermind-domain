@@ -1,11 +1,10 @@
 import { ErrorType } from '../../src/errors/ErrorType.js'
-import { Response } from '../../src/models/value/Response.js'
 import { Datastore } from '../../src/models/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
+import { Response } from '../../src/use-cases/Response.js'
 import { UserReadsACardUseCase } from '../../src/use-cases/UserReadsACardUseCase.js'
 import { CardMother } from '../models/card/CardMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
-import { ResultMother } from '../models/value/ResultMother.js'
 import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
 
@@ -48,8 +47,7 @@ userReadsACardUseCase(
     'should return an object with null as error and card as data', () => {
         new DatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = new UserReadsACardUseCase().execute(IdentificationMother.numberedDto(1), datastore)
-        ResultMother.isOkWithDataStrings(result, cardMother.numberedDto(1), 'authorID')
-        assert.ok(true)
+        assert.equal(result, Response.OkWithData(cardMother.numberedDto(1)))
     })
 
 userReadsACardUseCase.run()

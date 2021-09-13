@@ -3,10 +3,10 @@ import { DomainError } from '../errors/DomainError.js'
 import { ErrorType } from '../errors/ErrorType.js'
 import { UserDto } from '../models/user/UserDto.js'
 import { Identification } from '../models/value/Identification.js'
-import { Response } from '../models/value/Response.js'
 import { Datastore } from '../models/Datastore.js';
 import { UserMapper } from '../models/user/UserMapper.js'
 import { UserGetsUserInfoRequest } from './UserGetsUserInfoRequest.js'
+import { Response } from './Response.js'
 
 export class UserGetsUserInfoUseCase {
 
@@ -22,7 +22,7 @@ export class UserGetsUserInfoUseCase {
             return new Response(result.getCode(), null)
         }
 
-        return new Response(null, new UserMapper().toDto(result))
+        return Response.OkWithData(new UserMapper().toDto(result))
 
     }
 }

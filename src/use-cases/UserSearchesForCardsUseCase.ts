@@ -1,10 +1,10 @@
 import { CardDto } from '../models/card/CardDto.js'
-import { Response } from '../models/value/Response.js'
 import { SearchController } from "../controllers/SearchController.js"
 import { Datastore } from '../models/Datastore.js';
 import { CardMapper } from '../models/card/CardMapper.js'
 import { ErrorType } from '../errors/ErrorType.js'
 import { UserSearchesForCardsRequest } from './UserSearchesForCardsRequest.js'
+import { Response } from './Response.js';
 
 export class UserSearchesForCardsUseCase {
     execute(request: UserSearchesForCardsRequest, datastore: Datastore): Response<CardDto[]> {

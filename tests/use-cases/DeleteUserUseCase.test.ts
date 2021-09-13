@@ -4,9 +4,10 @@ import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastor
 import { UserRemovesAccountUseCase } from '../../src/use-cases/UserRemovesAccountUseCase.js'
 import { UserMother } from '../models/user/UserMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
-import { ResultMother } from '../models/value/ResultMother.js'
 import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
+import { Response } from '../../src/use-cases/Response.js'
+import { ErrorType } from '../../src/errors/ErrorType.js'
 
 const userRemovesAccountUseCase = suite("User removes account use case")
 
@@ -24,7 +25,7 @@ userRemovesAccountUseCase(
     'data and error properties as null', () => {
         datastoreMother.having(1).storedIn()
         const result = new UserRemovesAccountUseCase().execute(IdentificationMother.numberedDto(1), datastore)
-        assert.ok(ResultMother.isEmptyOk(result))
+        assert.equal(result, Response.OkWithoutData())
     })
 
 userRemovesAccountUseCase('given an existing user id, should remove it', () => {
@@ -40,7 +41,7 @@ userRemovesAccountUseCase(
     'error property as RESOURCE_NOT_FOUND DomainError', () => {
         datastoreMother.having(1).storedIn()
         const result = new UserRemovesAccountUseCase().execute({ id: 'unexistingID' }, datastore)
-        assert.ok(ResultMother.isNotFound(result))
+        assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
 
 userRemovesAccountUseCase(
@@ -48,7 +49,7 @@ userRemovesAccountUseCase(
     'it should return an object with data property as null and ' +
     'error property as RESOURCE_NOT_FOUND DomainError', () => {
         const result = new UserRemovesAccountUseCase().execute({ id: 'unexistingIDnorTable' }, datastore)
-        assert.ok(ResultMother.isNotFound(result))
+        assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
 
 userRemovesAccountUseCase(
@@ -56,7 +57,7 @@ userRemovesAccountUseCase(
     'should return an object with data property as null ' +
     'and error property as INPUT_DATA_NOT_VALID DomainError', () => {
         const result = new UserRemovesAccountUseCase().execute(IdentificationMother.invalidDto(), datastore)
-        assert.ok(ResultMother.isInputInvalid(result))
+        assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
     })
 
 userRemovesAccountUseCase.run()

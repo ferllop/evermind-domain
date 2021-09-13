@@ -1,11 +1,11 @@
 import { UserController } from '../controllers/UserController.js'
-import { Response } from '../models/value/Response.js'
 import { Datastore } from '../models/Datastore.js';
 import { User } from '../models/user/User.js'
 import { UserSignsUpRequest } from './UserSignsUpRequest.js'
 import { Username } from '../models/user/Username.js'
 import { PersonName } from '../models/user/PersonName.js'
 import { ErrorType } from '../errors/ErrorType.js'
+import { Response } from './Response.js';
 
 export class UserSignsUpUseCase {
     

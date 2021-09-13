@@ -1,5 +1,4 @@
 import { CardController } from '../controllers/CardController.js'
-import { Response } from '../models/value/Response.js'
 import { Datastore } from '../models/Datastore.js';
 import { CardMapper } from '../models/card/CardMapper.js'
 import { ErrorType } from '../errors/ErrorType.js'
@@ -9,6 +8,7 @@ import { WrittenQuestion } from '../models/card/WrittenQuestion.js'
 import { WrittenAnswer } from '../models/card/WrittenAnswer.js'
 import { Labelling } from '../models/card/Labelling.js'
 import { UserCreatesCardRequest } from './UserCreatesCardRequest.js'
+import { Response } from './Response.js';
 
 export class UserCreatesCardUseCase {
 

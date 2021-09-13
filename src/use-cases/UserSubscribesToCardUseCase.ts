@@ -2,9 +2,9 @@ import { SubscriptionController } from '../controllers/SubscriptionController.js
 import { ErrorType } from '../errors/ErrorType.js';
 import { Subscription } from '../models/subscription/Subscription.js';
 import { Identification } from '../models/value/Identification.js';
-import { Response } from '../models/value/Response.js';
 import { Datastore } from '../models/Datastore.js';
 import { UserSubscribesToCardRequest } from './UserSubscribesToCardRequest.js';
+import { Response } from './Response.js';
 
 export class UserSubscribesToCardUseCase {
     execute(request: UserSubscribesToCardRequest, datastore: Datastore) {

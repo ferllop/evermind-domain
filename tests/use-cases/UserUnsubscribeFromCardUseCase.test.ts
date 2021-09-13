@@ -3,7 +3,6 @@ import { ErrorType } from '../../src/errors/ErrorType.js'
 import { precondition } from '../../src/lib/preconditions.js'
 import { Card } from '../../src/models/card/Card.js'
 import { User } from '../../src/models/user/User.js'
-import { Response } from '../../src/models/value/Response.js'
 import { Datastore } from '../../src/models/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
 import { CardMapper } from '../../src/models/card/CardMapper.js'
@@ -12,6 +11,7 @@ import { UserUnsubscribesFromCardUseCase } from '../../src/use-cases/UserUnsubsc
 import { CardMother } from '../models/card/CardMother.js'
 import { UserMother } from '../models/user/UserMother.js'
 import { suite, assert } from '../test-config.js'
+import { Response } from '../../src/use-cases/Response.js'
 
 const userUnsubscribesFromCard = suite("User unsubscribes from card")
 

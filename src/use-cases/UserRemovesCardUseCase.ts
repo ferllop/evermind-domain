@@ -1,9 +1,9 @@
 import { CardController } from '../controllers/CardController.js'
 import { ErrorType } from '../errors/ErrorType.js'
 import { Identification } from '../models/value/Identification.js'
-import { Response } from '../models/value/Response.js'
 import { Datastore } from '../models/Datastore.js';
 import { UserRemovesCardRequest } from './UserRemovesCardRequest.js'
+import { Response } from './Response.js';
 
 export class UserRemovesCardUseCase {
     

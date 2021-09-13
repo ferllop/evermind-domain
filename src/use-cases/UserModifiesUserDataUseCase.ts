@@ -1,8 +1,8 @@
 import { UserController } from '../controllers/UserController.js'
 import { ErrorType } from '../errors/ErrorType.js'
-import { Response } from '../models/value/Response.js'
 import { Datastore } from '../models/Datastore.js';
 import { UserMapper } from '../models/user/UserMapper.js'
+import { Response } from './Response.js';
 import { UserModifiesUserDataRequest } from './UserModifiesUserDataRequest.js'
 
 export class UserModifiesUserDataUseCase {

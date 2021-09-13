@@ -1,11 +1,10 @@
 import { ErrorType } from '../../src/errors/ErrorType.js'
-import { Response } from '../../src/models/value/Response.js'
 import { Datastore } from '../../src/models/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
+import { Response } from '../../src/use-cases/Response.js'
 import { UserGetsUserInfoUseCase } from '../../src/use-cases/UserGetsUserInfoUseCase.js'
 import { UserMother } from '../models/user/UserMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
-import { ResultMother } from '../models/value/ResultMother.js'
 import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
 
@@ -46,7 +45,7 @@ userGetsUserInfoUseCase(
     'should return an object with null as error and user as data', () => {
         new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
         const result = new UserGetsUserInfoUseCase().execute(IdentificationMother.numberedDto(1), datastore)
-        assert.ok(ResultMother.isOkWithDataStrings(result, new UserMother().numberedDto(1), 'authId'))
+        assert.equal(result, Response.OkWithData(new UserMother().numberedDto(1)))
     })
 
 userGetsUserInfoUseCase.run()
