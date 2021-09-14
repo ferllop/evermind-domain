@@ -43,6 +43,21 @@ datastoreCreating('should store a dto with an id property', () => {
     assert.is(sutDatastore.read('a-table', dto.id), dto)
 })
 
+datastoreCreating('should return false when duplicating an entity', () => {
+    const dto = { id: 'someId', data: 'someData' }
+    sutDatastore.create('a-table', dto)
+    const result = sutDatastore.create('a-table', dto)
+    assert.not.ok(result)
+})
+
+datastoreCreating('should not modify the stored entity when duplicating the storage', () => {
+    const table = 'aTable'
+    const dto = { id: 'theId', data: 'firstData' }
+    sutDatastore.create(table, dto)
+    sutDatastore.create(table, { ...dto, data: 'modified' })
+    assert.equal(sutDatastore.read(table, dto.id), dto)
+})
+
 datastoreCreating.run()
 
 const datastoreRetrieving = suite('InMemory Datastore When Retrieving')

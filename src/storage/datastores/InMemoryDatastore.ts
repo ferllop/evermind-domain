@@ -15,7 +15,6 @@ class Table<T extends IdDto> {
         this.rows.set(dto.id, dto)
         return this.rows.size === previousSize + 1
     }
-
     
     read(id: string): T | null {
         precondition(Boolean(id))
@@ -60,6 +59,10 @@ export class InMemoryDatastore implements Datastore {
         precondition(dto.id)
         if (!this.tables.has(table)) {
             this.tables.set(table, new Table<T>())
+        }
+        const exists = this.tables.get(table)?.read(dto.id)
+        if(exists){
+            return false
         }
         return Boolean(this.tables.get(table)?.create(dto))
     }
