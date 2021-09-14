@@ -14,17 +14,10 @@ export class SubscriptionRepository extends Repository<Subscription, Subscriptio
     }
 
     findByUserId(user: User) {
-        const finder = (subscription: SubscriptionDto) => {
+        const criteria = (subscription: SubscriptionDto) => {
             return subscription.userId === user.getId().getId()
         }
-
-        if (!this.datastore.hasTable(SubscriptionField.TABLE_NAME)) {
-            return []
-        }
-
-        const subscriptions = this.datastore.find(SubscriptionField.TABLE_NAME, finder)
-        
-        return subscriptions.map( subscription => new SubscriptionMapper().fromDto(subscription))
+        return this.find(criteria)
     }
 
     getNull() {

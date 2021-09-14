@@ -15,38 +15,19 @@ export class CardRepository extends Repository<Card, CardDto> {
     }
 
     findByLabelling(labelling: Labelling): Card[] {
-        if (!this.datastore.hasTable(CardField.TABLE_NAME)) {
-            return []
+        const criteria = (cardDto: CardDto) => {
+            const labelsInDto = Labelling.fromStringLabels(cardDto.labelling)
+            return labelling.isIncluded(labelsInDto)
         }
-
-        const result = this.datastore.find<CardDto>(CardField.TABLE_NAME, 
-            (cardDto: CardDto) => {
-                const labelsInDto = Labelling.fromStringLabels(cardDto.labelling)
-                return labelling.isIncluded(labelsInDto)
-            })
-        return new CardMapper().fromDtoArray(result)
+        return this.find(criteria)
     }
 
     findByAuthorId(authorId: Identification): Card[] {
-        if (!this.datastore.hasTable(CardField.TABLE_NAME)) {
-            return []
-        }
-
-        const result = this.datastore.find<CardDto>(CardField.TABLE_NAME, (card: CardDto) => {
+        const criteria = (card: CardDto) => {
             return authorId.equals(new Identification(card.authorID))
-        }) 
-
-        return new CardMapper().fromDtoArray(result)
-    }
-
-    findById(id: Identification): Card {
-        if (!this.datastore.hasTable(CardField.TABLE_NAME)) {
-            return this.getNull()
         }
-        const card = this.datastore.read<CardDto>(CardField.TABLE_NAME, id.getId())
-        return card ? new CardMapper().fromDto(card) : this.getNull()
-    } 
-
+        return this.find(criteria)
+    }
 
     getNull() {
         return NullCard.getInstance()

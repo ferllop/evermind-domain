@@ -14,7 +14,7 @@ export class SubscriptionController {
             return new DomainError(ErrorType.USER_NOT_FOUND)
         }
         
-        const card = new CardRepository(datastore).findById(cardId)
+        const card = new CardRepository(datastore).retrieve(cardId)
         if (card.isNull()) {
             return new DomainError(ErrorType.CARD_NOT_FOUND)
         }
@@ -35,7 +35,7 @@ export class SubscriptionController {
             return new DomainError(ErrorType.USER_NOT_FOUND)
         }
         
-        const card = new CardRepository(datastore).findById(cardId)
+        const card = new CardRepository(datastore).retrieve(cardId)
         if (card.isNull()) {
             return new DomainError(ErrorType.CARD_NOT_FOUND)
         }
