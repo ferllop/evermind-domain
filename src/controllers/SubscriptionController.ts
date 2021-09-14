@@ -47,6 +47,6 @@ export class SubscriptionController {
         if (!subscription) {
             return new DomainError(ErrorType.SUBSCRIPTION_NOT_EXISTS)
         }
-        return subscriptionRepository.delete(subscription.getId())
+        return subscriptionRepository.delete(subscription)
     }
 }

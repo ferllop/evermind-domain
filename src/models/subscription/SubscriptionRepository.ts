@@ -29,12 +29,12 @@ export class SubscriptionRepository extends Repository<Subscription, Subscriptio
             Boolean(this.datastore.read(SubscriptionField.TABLE_NAME, subscriptionId.getId()))
     }
 
-    delete(id: Identification) {
-        if (!this.has(id)) {
+    delete(subscription: Subscription) {
+        if (!this.has(subscription.getId())) {
             return new DomainError(ErrorType.SUBSCRIPTION_NOT_EXISTS)
         }
 
-        return super.delete(id)
+        return super.delete(subscription)
     }
 
     findByUserId(user: User) {

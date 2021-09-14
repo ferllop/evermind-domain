@@ -15,10 +15,12 @@ export class UserController {
     }
 
     deleteUser(id: Identification, datastore: Datastore): DomainError {
-        const error = new UserRepository(datastore).delete(id)
-        if (error.getCode() === ErrorType.RESOURCE_NOT_FOUND) {
+        const userRepository = new UserRepository(datastore)
+        const user = userRepository.retrieve(id)
+        if (user.isNull()) {
             return new DomainError(ErrorType.USER_NOT_FOUND)
         }
+        const error = new UserRepository(datastore).delete(user)
         return error
     }
 
