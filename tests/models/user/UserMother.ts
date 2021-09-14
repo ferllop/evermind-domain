@@ -3,7 +3,6 @@ import { UserDto } from '../../../src/models/user/UserDto.js'
 import { Mother } from "../../models/Mother.js"
 import { User } from '../../../src/models/user/User.js'
 import { UserBuilder } from './UserBuilder.js'
-import { Identification } from '../../../src/models/value/Identification.js'
 import { UserMapper } from '../../../src/models/user/UserMapper.js'
 
 export class UserMother implements Mother<UserDto> {
@@ -39,7 +38,7 @@ export class UserMother implements Mother<UserDto> {
     }
 
     withId(id: string) {
-        this.user = new UserBuilder().setId(new Identification(id)).build()
+        this.user = new UserBuilder().setId(id).build()
         return this
     }
 

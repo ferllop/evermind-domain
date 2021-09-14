@@ -14,7 +14,9 @@ export class SearchController {
         let cardsWithLabels: Card[]
 
         if (search.hasAuthor() && search.hasLabels()) {
-            const user = new UserRepository(datastore).findByUsername(search.getAuthorUsername().toString())
+            const user = new UserRepository(datastore).findOne(user => {
+                return search.getAuthorUsername().toString() === user.username
+            })
             if (user.isNull()) {
                 return []
             }
@@ -30,7 +32,9 @@ export class SearchController {
         }
 
         if (search.hasAuthor()) {
-            const user = new UserRepository(datastore).findByUsername(search.getAuthorUsername().toString())
+            const user = new UserRepository(datastore).findOne(user => {
+                return search.getAuthorUsername().toString() === user.username
+            })
             if (user.isNull()) {
                 return []
             }
@@ -40,28 +44,5 @@ export class SearchController {
             const labels: Label[] = search.getLabels().map(token => new Label(token.getValue()))
             cardsWithLabels = new CardRepository(datastore).findByLabelling(new Labelling(labels))
             return cardsWithLabels
-        
-
-
-
-
-
-        // console.log('aqui', search.getLabels())
-        // const labelling = new Labelling(search.getLabels().map(label => new Label(label.toString())))
-        // if (!search.hasAuthor()) {
-        //     return new CardController().findByLabelling(labelling, datastore)
-        // }
-
-        // const user = new UserController().findByUsername(search.getAuthorUsername().toString(), datastore)
-        // if(user instanceof DomainError) {
-        //     return []
-        // }
-
-        // if(!search.hasLabels()) {
-        //     return new CardController().findByAuthorId(user.getId(), datastore)
-        // }
-
-        // const cards = new CardController().findByAuthorId(user.getId(), datastore)
-        // return cards.filter( card => card.getLabelling().isIncluded(labelling))
     }
 }

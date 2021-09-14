@@ -91,7 +91,6 @@ export class InMemoryDatastore implements Datastore {
         precondition(this.hasTable(table)) 
         const result = this.tables.get(table)?.find(finder)
         return result && result.length > 0 ? result[0] : null
-        
     }
 
     hasTable(table: string): boolean {

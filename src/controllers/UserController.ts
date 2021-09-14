@@ -42,7 +42,7 @@ export class UserController {
     }
 
     findByUsername(username: string, datastore: Datastore): DomainError | User {
-        const user = new UserRepository(datastore).findByUsername(username)
+        const user = new UserRepository(datastore).findOne(user => user.username === username)
         if (user.isNull()) {
             return new DomainError(ErrorType.USER_NOT_FOUND)
         }
@@ -50,7 +50,7 @@ export class UserController {
     }
 
     findById(id: Identification, datastore: Datastore): DomainError | User {
-        const user = new UserRepository(datastore).findById(id)
+        const user = new UserRepository(datastore).findOne(user => id.equalsString(user.id))
         if (!user) {
             return new DomainError(ErrorType.USER_NOT_FOUND)
         }

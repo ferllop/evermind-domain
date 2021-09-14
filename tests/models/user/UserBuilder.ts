@@ -6,20 +6,35 @@ import { Identification } from '../../../src/models/value/Identification.js';
 import { UserMapper } from '../../../src/models/user/UserMapper.js';
 
 export class UserBuilder {
-    private id: Identification
+    private id: string
     private name: string;
     private username: string;
-    private dayStartTime: DayStartTime;
+    private dayStartTime: number;
 
     constructor() { 
-            this.id = Identification.create()
-            this.name = 'name'
-            this.username = 'username'
-            this.dayStartTime = new DayStartTime(9)
+            this.id = 'anId'
+            this.name = 'aName'
+            this.username = 'aUsername'
+            this.dayStartTime = 9
     }
 
-    setId(id: Identification) {
+    setId(id: string) {
         this.id = id
+        return this
+    }
+
+    setName(name: string) {
+        this.name = name
+        return this
+    }
+
+    setUsername(username: string) {
+        this.username = username
+        return this
+    }
+
+    setDayStartTime(number: number) {
+        this.dayStartTime = number
         return this
     }
 
@@ -27,8 +42,8 @@ export class UserBuilder {
         return User.recreate(
             new PersonName(this.name),
             new Username(this.username),
-            this.dayStartTime, 
-            this.id
+            new DayStartTime(this.dayStartTime), 
+            Identification.recreate(this.id)
         )
     }
 

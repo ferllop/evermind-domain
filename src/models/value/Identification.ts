@@ -24,6 +24,10 @@ export class Identification {
         return this.id === identification.id
     }
 
+    equalsString(identification: string) {
+        return this.equals(new Identification(identification))
+    }
+
     getId(): string {
         return this.id
     }

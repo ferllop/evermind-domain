@@ -9,7 +9,7 @@ import { UserRepository } from '../models/user/UserRepository.js';
 export class SubscriptionController {
 
     subscribeUserToCard(userId: Identification, cardId: Identification, datastore: Datastore): DomainError {
-        const user = new UserRepository(datastore).findById(userId)
+        const user = new UserRepository(datastore).findOne(user => userId.equalsString(user.id))
         if (user.isNull()) {
             return new DomainError(ErrorType.USER_NOT_FOUND)
         }
@@ -30,7 +30,7 @@ export class SubscriptionController {
     }
     
     unsubscribeUserToCard(userId: Identification, cardId: Identification, datastore: Datastore): DomainError {
-        const user = new UserRepository(datastore).findById(userId)
+        const user = new UserRepository(datastore).findOne(user => userId.equalsString(user.id))
         if (user.isNull()) {
             return new DomainError(ErrorType.USER_NOT_FOUND)
         }

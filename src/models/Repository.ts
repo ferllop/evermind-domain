@@ -3,6 +3,7 @@ import { ErrorType } from '../errors/ErrorType.js'
 import { Entity } from '../models/Entity.js'
 import { IdDto } from '../models/value/IdDto.js'
 import { Identification } from '../models/value/Identification.js'
+import { Criteria } from './Criteria'
 import { Datastore } from './Datastore.js'
 import { Mapper } from './Mapper.js'
 
@@ -68,6 +69,32 @@ export abstract class Repository<T extends Entity, TDto extends IdDto> {
         return DomainError.NULL
     }
 
+    find(criteria: Criteria<TDto>): T[] {
+        if (!this.datastore.hasTable(this.tableName)) {
+            return []
+        }
+        
+        return this.datastore
+            .find(this.tableName, criteria)
+            .map(dto => this.mapper.fromDto(dto))
+    }
+
+    findOne(criteria: Criteria<TDto>): T {
+        if (!this.datastore.hasTable(this.tableName)) {
+            return this.getNull()
+        }
+        
+        const result = this.datastore.findOne(this.tableName, criteria)
+
+        if (!result) {
+            return this.getNull()
+        }
+
+        return this.mapper.fromDto(result)
+    }
+
     abstract getNull(): T
 
 }
+
+
