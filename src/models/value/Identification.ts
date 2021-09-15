@@ -1,5 +1,5 @@
 import { precondition } from '../../implementations/preconditions.js'
-import { uuid } from '../../implementations/uuid.js'
+import { NodeNativeUuid } from '../../implementations/NodeNativeUuidGenerator.js'
 
 export class Identification {
     static NULL = new Identification('')
@@ -11,7 +11,7 @@ export class Identification {
     }
     
     static create(): Identification {
-        return new Identification(uuid())
+        return new Identification(new NodeNativeUuid().getUuid())
     }
     
     static recreate(value: string) {
