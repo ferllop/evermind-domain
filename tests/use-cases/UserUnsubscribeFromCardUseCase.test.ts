@@ -1,4 +1,3 @@
-import { SubscriptionController } from '../../src/controllers/SubscriptionController.js'
 import { ErrorType } from '../../src/errors/ErrorType.js'
 import { precondition } from '../../src/lib/preconditions.js'
 import { Card } from '../../src/models/card/Card.js'
@@ -7,6 +6,7 @@ import { Datastore } from '../../src/models/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
 import { CardMapper } from '../../src/models/card/CardMapper.js'
 import { UserMapper } from '../../src/models/user/UserMapper.js'
+import { UserSubscribesToCardUseCase } from '../../src/use-cases/UserSubscribesToCardUseCase.js'
 import { UserUnsubscribesFromCardUseCase } from '../../src/use-cases/UserUnsubscribesFromCardUseCase.js'
 import { CardMother } from '../models/card/CardMother.js'
 import { UserMother } from '../models/user/UserMother.js'
@@ -23,13 +23,11 @@ userUnsubscribesFromCard('given an existing user id subscribed to an existing ca
     const card = new CardMother().standard()
     mum.with(card).beingStored()
     
-    new SubscriptionController().subscribeUserToCard(user.getId(), card.getId(), datastore)
-
     const request = {
         userId: user.getId().getId(),
         cardId: card.getId().getId()
     }
-
+    new UserSubscribesToCardUseCase().execute(request, datastore)
     new UserUnsubscribesFromCardUseCase().execute(request, datastore)
 
     assert.not.ok(datastore.read('subscriptions', request.userId + '#' + request.cardId))
@@ -43,12 +41,11 @@ userUnsubscribesFromCard('given an existing user id subscribed to an existing ca
     const card = new CardMother().standard()
     mum.with(card).beingStored()
     
-    new SubscriptionController().subscribeUserToCard(user.getId(), card.getId(), datastore)
-
     const request = {
         userId: user.getId().getId(),
         cardId: card.getId().getId()
     }
+    new UserSubscribesToCardUseCase().execute(request, datastore)
 
     const result = new UserUnsubscribesFromCardUseCase().execute(request, datastore)
 
@@ -63,12 +60,11 @@ userUnsubscribesFromCard('given a previous unsubscription, when unsubscribing ag
     const card = new CardMother().standard()
     mum.with(card).beingStored()
     
-    new SubscriptionController().subscribeUserToCard(user.getId(), card.getId(), datastore)
-
     const request = {
         userId: user.getId().getId(),
         cardId: card.getId().getId()
     }
+    new UserSubscribesToCardUseCase().execute(request, datastore)
 
     new UserUnsubscribesFromCardUseCase().execute(request, datastore)
     const result = new UserUnsubscribesFromCardUseCase().execute(request, datastore)
