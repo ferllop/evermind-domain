@@ -1,4 +1,4 @@
-import { PreconditionError } from '../../../src/lib/preconditions.js'
+import { PreconditionError } from '../../../src/implementations/preconditions.js'
 import { Hour } from '../../../src/models/value/Hour.js'
 import { assert, suite } from '../../test-config.js'
 

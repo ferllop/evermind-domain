@@ -1,5 +1,5 @@
-import { precondition } from '../../lib/preconditions.js'
-import { uuid } from '../../lib/uuid.js'
+import { precondition } from '../../implementations/preconditions.js'
+import { uuid } from '../../implementations/uuid.js'
 
 export class Identification {
     static NULL = new Identification('')

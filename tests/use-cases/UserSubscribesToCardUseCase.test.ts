@@ -1,5 +1,5 @@
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
-import { precondition } from '../../src/lib/preconditions.js'
+import { precondition } from '../../src/implementations/preconditions.js'
 import { Datastore } from '../../src/models/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
 import { UserSubscribesToCardUseCase } from '../../src/use-cases/UserSubscribesToCardUseCase.js'

@@ -1,5 +1,5 @@
+import { precondition, PreconditionError } from '../../src/implementations/preconditions.js'
 import { suite, assert } from '../test-config.js'
-import { precondition, PreconditionError } from '../../src/lib/preconditions.js'
 
 const preconditions = suite('Preconditions')
 

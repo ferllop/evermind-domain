@@ -1,8 +1,8 @@
-import { PreconditionError } from '../../../src/lib/preconditions.js'
 import { Search } from'../../../src/models/search/Search.js'
 import { LabelToken } from "../../../src/models/search/token/LabelToken.js"
 import { AuthorToken } from "../../../src/models/search/token/AuthorToken.js"
 import { assert, suite } from'../../test-config.js'
+import { PreconditionError } from '../../../src/implementations/preconditions.js'
 
 const search = suite('Search')
 

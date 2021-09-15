@@ -1,4 +1,4 @@
-import { precondition } from '../../lib/preconditions.js'
+import { precondition } from '../../implementations/preconditions.js'
 import { Label } from './Label.js'
 
 export class Labelling {

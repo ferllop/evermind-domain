@@ -1,4 +1,3 @@
-import { precondition } from '../../lib/preconditions.js'
 import { User } from './User.js'
 import { Mapper } from '../Mapper.js'
 import { Validator } from '../Validator.js'
@@ -9,6 +8,7 @@ import { PersonName } from './PersonName.js'
 import { UserDto } from './UserDto.js'
 import { UserIdentification } from './UserIdentification.js'
 import { Username } from './Username.js'
+import { precondition } from '../../implementations/preconditions.js'
 
 export class UserMapper extends Mapper<User, UserDto> {
 

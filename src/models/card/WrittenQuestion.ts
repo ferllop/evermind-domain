@@ -1,4 +1,4 @@
-import { precondition } from '../../lib/preconditions.js'
+import { precondition } from '../../implementations/preconditions.js'
 import { Question } from './Question.js'
 
 export class WrittenQuestion extends Question {

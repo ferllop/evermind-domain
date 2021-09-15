@@ -1,4 +1,4 @@
-import { PreconditionError } from '../../../src/lib/preconditions.js'
+import { PreconditionError } from '../../../src/implementations/preconditions.js'
 import { Label } from '../../../src/models/card/Label.js'
 import { assert, suite } from '../../test-config.js'
 

@@ -1,5 +1,4 @@
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
-import { precondition } from '../../src/lib/preconditions.js'
 import { Card } from '../../src/models/card/Card.js'
 import { User } from '../../src/models/user/User.js'
 import { Datastore } from '../../src/models/Datastore.js'
@@ -12,6 +11,7 @@ import { CardMother } from '../models/card/CardMother.js'
 import { UserMother } from '../models/user/UserMother.js'
 import { suite, assert } from '../test-config.js'
 import { Response } from '../../src/use-cases/Response.js'
+import { precondition } from '../../src/implementations/preconditions.js'
 
 const userUnsubscribesFromCard = suite("User unsubscribes from card")
 

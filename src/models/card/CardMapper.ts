@@ -1,4 +1,4 @@
-import { precondition } from '../../lib/preconditions.js'
+import { precondition } from '../../implementations/preconditions.js'
 import { AuthorIdentification } from '../../models/card/AuthorIdentification.js'
 import { Card } from '../../models/card/Card.js'
 import { CardDto } from '../../models/card/CardDto.js'

@@ -1,9 +1,9 @@
-import { precondition } from '../../lib/preconditions.js'
 import { Token } from './token/Token.js'
 import { NullToken } from "./token/NullToken.js"
 import { TokenFactory } from "./token/TokenFactory.js"
 import { AuthorToken } from './token/AuthorToken.js'
 import { LabelToken } from './token/LabelToken.js'
+import { precondition } from '../../implementations/preconditions.js'
 
 export class Search {
     static TOKEN_LIST_SEPARATOR = ','
