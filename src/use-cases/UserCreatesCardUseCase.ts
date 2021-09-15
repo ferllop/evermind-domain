@@ -1,18 +1,17 @@
-import { Datastore } from '../models/Datastore.js';
-import { CardMapper } from '../models/card/CardMapper.js'
-import { ErrorType } from '../models/errors/ErrorType.js'
-import { Card } from '../models/card/Card.js'
-import { AuthorIdentification } from '../models/card/AuthorIdentification.js'
-import { WrittenQuestion } from '../models/card/WrittenQuestion.js'
-import { WrittenAnswer } from '../models/card/WrittenAnswer.js'
-import { Labelling } from '../models/card/Labelling.js'
-import { UserCreatesCardRequest } from './UserCreatesCardRequest.js'
-import { Response } from './Response.js';
+import { AuthorIdentification } from '../models/card/AuthorIdentification.js';
+import { Card } from '../models/card/Card.js';
+import { CardMapper } from '../models/card/CardMapper.js';
 import { CardRepository } from '../models/card/CardRepository.js';
+import { Labelling } from '../models/card/Labelling.js';
+import { WrittenAnswer } from '../models/card/WrittenAnswer.js';
+import { WrittenQuestion } from '../models/card/WrittenQuestion.js';
+import { ErrorType } from '../models/errors/ErrorType.js';
+import { Response } from './Response.js';
+import { UserCreatesCardRequest } from './UserCreatesCardRequest.js';
 
 export class UserCreatesCardUseCase {
 
-    execute(request: UserCreatesCardRequest, datastore: Datastore): Response<null> {
+    execute(request: UserCreatesCardRequest): Response<null> {
         if (!new CardMapper().isDtoValid({...request, authorID: request.userId})) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }
@@ -24,7 +23,7 @@ export class UserCreatesCardUseCase {
             Labelling.fromStringLabels(request.labelling)
         )
 
-        const error = new CardRepository(datastore).store(card)
+        const error = new CardRepository().store(card)
         return new Response(error.getCode(), null)
     }
 

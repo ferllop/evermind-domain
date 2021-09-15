@@ -6,19 +6,21 @@ import { UserModifiesUserDataUseCase } from '../../src/use-cases/UserModifiesUse
 import { UserMother } from '../models/user/UserMother.js'
 import { DatastoreMother } from '../models/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
+import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
 
 const userModifiesUserDataUseCase = suite("User modifies user data use case")
 
 let datastore: Datastore
 userModifiesUserDataUseCase.before.each(() => {
-    datastore = new InMemoryDatastore()
+    ImplementationsContainer.set('datastore', new InMemoryDatastore())
+    datastore = ImplementationsContainer.get('datastore') as Datastore
 })
 
 userModifiesUserDataUseCase(
     'given an unexisting table, ' +
     'should return an object with null as data property and ' +
     'RESOURCE_NOT_FOUND DomainError', () => {
-        const result = new UserModifiesUserDataUseCase().execute(new UserMother().dto(), datastore)
+        const result = new UserModifiesUserDataUseCase().execute(new UserMother().dto())
         assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
 
@@ -27,7 +29,7 @@ userModifiesUserDataUseCase(
     'the user should be updated in storage', () => {
         const dsMother = new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
         const newName = 'newName'
-        new UserModifiesUserDataUseCase().execute({ ...new UserMother().numberedDto(1), name: newName }, datastore)
+        new UserModifiesUserDataUseCase().execute({ ...new UserMother().numberedDto(1), name: newName })
         assert.ok(dsMother.stored(1).hasPropertyValue('name', newName))
     })
 
@@ -36,7 +38,7 @@ userModifiesUserDataUseCase(
     'should return an object with null as error property and ' +
     'null as data property', () => {
         new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
-        const result = new UserModifiesUserDataUseCase().execute({ ...new UserMother().numberedDto(1), name: 'newName' }, datastore)
+        const result = new UserModifiesUserDataUseCase().execute({ ...new UserMother().numberedDto(1), name: 'newName' })
         assert.equal(result, Response.OkWithoutData())
     })
 
@@ -45,7 +47,7 @@ userModifiesUserDataUseCase(
     'should return an object with null as data property and ' +
     'RESOURCE_NOT_FOUND DomainError', () => {
         new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
-        const result = new UserModifiesUserDataUseCase().execute({ ...new UserMother().numberedDto(1), id: 'notExistingId' }, datastore)
+        const result = new UserModifiesUserDataUseCase().execute({ ...new UserMother().numberedDto(1), id: 'notExistingId' })
         assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
 
@@ -53,7 +55,7 @@ userModifiesUserDataUseCase(
     'given wrong user data, ' +
     'should return an object with null as data property and ' +
     'INPUT_DATA_NOT_VALID DomainError', () => {
-        const result = new UserModifiesUserDataUseCase().execute(new UserMother().invalidDto(), datastore)
+        const result = new UserModifiesUserDataUseCase().execute(new UserMother().invalidDto())
         assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
     })
 

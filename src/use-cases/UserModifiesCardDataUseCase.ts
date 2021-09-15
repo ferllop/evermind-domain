@@ -1,14 +1,13 @@
-import { ErrorType } from '../models/errors/ErrorType.js'
-import { Datastore } from '../models/Datastore.js';
-import { CardMapper } from '../models/card/CardMapper.js'
-import { UserModifiesCardDataRequest } from './UserModifiesCardDataRequest.js'
-import { Response } from './Response.js';
-import { CardRepository } from '../models/card/CardRepository.js';
 import { CardIdentification } from '../models/card/CardIdentification.js';
+import { CardMapper } from '../models/card/CardMapper.js';
+import { CardRepository } from '../models/card/CardRepository.js';
+import { ErrorType } from '../models/errors/ErrorType.js';
+import { Response } from './Response.js';
+import { UserModifiesCardDataRequest } from './UserModifiesCardDataRequest.js';
 
 export class UserModifiesCardDataUseCase {
     
-    execute(request: UserModifiesCardDataRequest, datastore: Datastore): Response<null> {
+    execute(request: UserModifiesCardDataRequest): Response<null> {
         
         const {userId, ...cardData} = request
         if (!new CardMapper().arePropertiesValid(cardData)) {
@@ -16,7 +15,7 @@ export class UserModifiesCardDataUseCase {
         }
         
         const {id, ...data} = cardData
-        const cardRepository = new CardRepository(datastore)
+        const cardRepository = new CardRepository()
         const card = cardRepository.retrieve(new CardIdentification(id))
         if (card.isNull()) {
             return Response.withError(ErrorType.CARD_NOT_FOUND)

@@ -12,11 +12,13 @@ import { UserMother } from '../models/user/UserMother.js'
 import { suite, assert } from '../test-config.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { precondition } from '../../src/implementations/preconditions.js'
+import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
 
 const userUnsubscribesFromCard = suite("User unsubscribes from card")
 
 userUnsubscribesFromCard('given an existing user id subscribed to an existing cardid, then unsubscribe', () => {
-    const datastore = new InMemoryDatastore()
+    ImplementationsContainer.set('datastore', new InMemoryDatastore())
+    const datastore = ImplementationsContainer.get('datastore') as Datastore
     const mum = new DatastoreMother(datastore)
     const user = new UserMother().standard()
     mum.with(user).beingStored()
@@ -27,14 +29,15 @@ userUnsubscribesFromCard('given an existing user id subscribed to an existing ca
         userId: user.getId().getId(),
         cardId: card.getId().getId()
     }
-    new UserSubscribesToCardUseCase().execute(request, datastore)
-    new UserUnsubscribesFromCardUseCase().execute(request, datastore)
+    new UserSubscribesToCardUseCase().execute(request)
+    new UserUnsubscribesFromCardUseCase().execute(request)
 
     assert.not.ok(datastore.read('subscriptions', request.userId + '#' + request.cardId))
 })
 
 userUnsubscribesFromCard('given an existing user id subscribed to an existing cardid, then return a ok withouth data response', () => {
-    const datastore = new InMemoryDatastore()
+    ImplementationsContainer.set('datastore', new InMemoryDatastore())
+    const datastore = ImplementationsContainer.get('datastore') as Datastore
     const mum = new DatastoreMother(datastore)
     const user = new UserMother().standard()
     mum.with(user).beingStored()
@@ -45,15 +48,16 @@ userUnsubscribesFromCard('given an existing user id subscribed to an existing ca
         userId: user.getId().getId(),
         cardId: card.getId().getId()
     }
-    new UserSubscribesToCardUseCase().execute(request, datastore)
+    new UserSubscribesToCardUseCase().execute(request)
 
-    const result = new UserUnsubscribesFromCardUseCase().execute(request, datastore)
+    const result = new UserUnsubscribesFromCardUseCase().execute(request)
 
     assert.equal(result, Response.OkWithoutData())
 })
 
 userUnsubscribesFromCard('given a previous unsubscription, when unsubscribing again, then return a SUBCRIPTION_NOT_EXISTS error', () => {
-    const datastore = new InMemoryDatastore()
+    ImplementationsContainer.set('datastore', new InMemoryDatastore())
+    const datastore = ImplementationsContainer.get('datastore') as Datastore
     const mum = new DatastoreMother(datastore)
     const user = new UserMother().standard()
     mum.with(user).beingStored()
@@ -64,16 +68,17 @@ userUnsubscribesFromCard('given a previous unsubscription, when unsubscribing ag
         userId: user.getId().getId(),
         cardId: card.getId().getId()
     }
-    new UserSubscribesToCardUseCase().execute(request, datastore)
+    new UserSubscribesToCardUseCase().execute(request)
 
-    new UserUnsubscribesFromCardUseCase().execute(request, datastore)
-    const result = new UserUnsubscribesFromCardUseCase().execute(request, datastore)
+    new UserUnsubscribesFromCardUseCase().execute(request)
+    const result = new UserUnsubscribesFromCardUseCase().execute(request)
 
     assert.equal(result, Response.withError(ErrorType.SUBSCRIPTION_NOT_EXISTS))
 })
 
 userUnsubscribesFromCard('given an existing user id not subscribed to an existing cardid, then return a SUBSCRIPTION_NOT_EXISTS', () => {
-    const datastore = new InMemoryDatastore()
+    ImplementationsContainer.set('datastore', new InMemoryDatastore())
+    const datastore = ImplementationsContainer.get('datastore') as Datastore
     const mum = new DatastoreMother(datastore)
     const user = new UserMother().standard()
     mum.with(user).beingStored()
@@ -85,14 +90,15 @@ userUnsubscribesFromCard('given an existing user id not subscribed to an existin
         cardId: card.getId().getId()
     }
 
-    const result = new UserUnsubscribesFromCardUseCase().execute(request, datastore)
+    const result = new UserUnsubscribesFromCardUseCase().execute(request)
 
     assert.equal(result, Response.withError(ErrorType.SUBSCRIPTION_NOT_EXISTS))
 })
 
 
 userUnsubscribesFromCard('given a non existing userid, then return a USER_NOT_FOUND', () => {
-    const datastore = new InMemoryDatastore()
+    ImplementationsContainer.set('datastore', new InMemoryDatastore())
+    const datastore = ImplementationsContainer.get('datastore') as Datastore
     const mum = new DatastoreMother(datastore)
     const user = new UserMother().standard()
     mum.with(user).beingStored()
@@ -104,13 +110,14 @@ userUnsubscribesFromCard('given a non existing userid, then return a USER_NOT_FO
         cardId: card.getId().getId()
     }
 
-    const result = new UserUnsubscribesFromCardUseCase().execute(request, datastore)
+    const result = new UserUnsubscribesFromCardUseCase().execute(request)
 
     assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
 })
 
 userUnsubscribesFromCard('given a non existing cardid, then return a CARD_NOT_FOUND', () => {
-    const datastore = new InMemoryDatastore()
+    ImplementationsContainer.set('datastore', new InMemoryDatastore())
+    const datastore = ImplementationsContainer.get('datastore') as Datastore
     const mum = new DatastoreMother(datastore)
     const user = new UserMother().standard()
     mum.with(user).beingStored()
@@ -122,7 +129,7 @@ userUnsubscribesFromCard('given a non existing cardid, then return a CARD_NOT_FO
         cardId: 'nonexistingcard'
     }
 
-    const result = new UserUnsubscribesFromCardUseCase().execute(request, datastore)
+    const result = new UserUnsubscribesFromCardUseCase().execute(request)
 
     assert.equal(result, Response.withError(ErrorType.CARD_NOT_FOUND))
 })

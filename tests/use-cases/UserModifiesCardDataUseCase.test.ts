@@ -1,3 +1,4 @@
+import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
 import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
 import { CardDto } from '../../src/models/card/CardDto.js'
 import { CardField } from '../../src/models/card/CardField.js'
@@ -16,7 +17,8 @@ const cardMother = new CardMother()
 
 let datastore: Datastore
 userModifiesCardDataUseCase.before.each(() => {
-    datastore = new InMemoryDatastore()
+    ImplementationsContainer.set('datastore', new InMemoryDatastore())
+    datastore = ImplementationsContainer.get('datastore') as Datastore
 })
 
 
@@ -24,7 +26,7 @@ userModifiesCardDataUseCase(
     'given an unexisting table, ' +
     'should return an object with null as data property and ' +
     'RESOURCE_NOT_FOUND DomainError', () => {
-        const result = new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.dto() }, datastore)
+        const result = new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.dto() })
         assert.equal(result, Response.withError(ErrorType.CARD_NOT_FOUND))
     })
 
@@ -33,7 +35,7 @@ userModifiesCardDataUseCase(
     'the card should be updated in storage', () => {
         const dsMother = new DatastoreMother(cardMother, datastore).having(1).storedIn()
         const newAuthorID = 'newAuthorId'
-        new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.numberedDto(1), authorID: newAuthorID }, datastore)
+        new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.numberedDto(1), authorID: newAuthorID })
         assert.equal(newAuthorID, dsMother.stored(1).storedDto?.authorID)
     })
 
@@ -43,7 +45,7 @@ userModifiesCardDataUseCase(
         const dsMother = new DatastoreMother(cardMother, datastore).having(1).storedIn()
         const {id} = dsMother.stored(1).storedDto as CardDto
         const labelling = ['newlabelling']
-        new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.numberedDto(1), labelling }, datastore)
+        new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.numberedDto(1), labelling })
         assert.equal(labelling, datastore.read<CardDto>(CardField.TABLE_NAME, id)!.labelling)    
     })
 
@@ -54,7 +56,7 @@ userModifiesCardDataUseCase(
         new DatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = new UserModifiesCardDataUseCase().execute(
             { userId: '', ...cardMother.numberedDto(1), authorID: 'updatedAuthor' },
-            datastore)
+        )
         assert.equal(result, Response.OkWithoutData())
     })
 
@@ -63,7 +65,7 @@ userModifiesCardDataUseCase(
     'should return an object with null as data property and ' +
     'CARD_NOT_FOUND DomainError as error', () => {
         new DatastoreMother(cardMother, datastore).having(1).storedIn()
-        const result = new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.numberedDto(1), id: 'notExistingId' }, datastore)
+        const result = new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.numberedDto(1), id: 'notExistingId' })
         assert.equal(result, Response.withError(ErrorType.CARD_NOT_FOUND))
     })
 
@@ -71,7 +73,7 @@ userModifiesCardDataUseCase(
     'given wrong card data, ' +
     'should return an object with null as data property and ' +
     'INPUT_DATA_NOT_VALID DomainError', () => {
-        const result = new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.invalidDto() }, datastore)
+        const result = new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.invalidDto() })
         assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
     })
 
@@ -84,7 +86,7 @@ userModifiesCardDataUseCase(
             ...cardMother.dto(),
             ...LabellingMother.invalidDto()
         }
-        const result = new UserModifiesCardDataUseCase().execute(data, datastore)
+        const result = new UserModifiesCardDataUseCase().execute(data)
         assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
     })
 

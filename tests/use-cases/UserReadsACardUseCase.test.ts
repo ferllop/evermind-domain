@@ -7,6 +7,7 @@ import { CardMother } from '../models/card/CardMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
 import { DatastoreMother } from '../models/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
+import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
 
 const userReadsACardUseCase = suite("User reads a card use case")
 
@@ -14,14 +15,15 @@ const cardMother = new CardMother()
 
 let datastore: Datastore
 userReadsACardUseCase.before.each(() => {
-    datastore = new InMemoryDatastore()
+    ImplementationsContainer.set('datastore', new InMemoryDatastore())
+    datastore = ImplementationsContainer.get('datastore') as Datastore
 })
 
 userReadsACardUseCase(
     'given invalid id, ' +
     'should return an object with data property as null and ' +
     'error property as INPUT_DATA_NOT_VALID DomainError', () => {
-        const result = new UserReadsACardUseCase().execute(IdentificationMother.invalidDto(), datastore)
+        const result = new UserReadsACardUseCase().execute(IdentificationMother.invalidDto())
         assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
     })
 
@@ -30,7 +32,7 @@ userReadsACardUseCase(
     'should return an object with data property as null ' +
     'and CARD_NOT_FOUND DomainError', () => {
         new DatastoreMother(cardMother, datastore).having(1).storedIn()
-        const result = new UserReadsACardUseCase().execute({ id: 'nonExistingId' }, datastore)
+        const result = new UserReadsACardUseCase().execute({ id: 'nonExistingId' })
         assert.equal(result, Response.withError(ErrorType.CARD_NOT_FOUND))
     })
 
@@ -38,7 +40,7 @@ userReadsACardUseCase(
     'given a non existing cards table, ' +
     'should return an object with data property as null ' +
     'and CARD_NOT_FOUND DomainError', () => {
-        const result = new UserReadsACardUseCase().execute({ id: 'nonExistingId' }, datastore)
+        const result = new UserReadsACardUseCase().execute({ id: 'nonExistingId' })
         assert.equal(result, Response.withError(ErrorType.CARD_NOT_FOUND))
     })
 
@@ -46,7 +48,7 @@ userReadsACardUseCase(
     'given an existing id, ' +
     'should return an object with null as error and card as data', () => {
         new DatastoreMother(cardMother, datastore).having(1).storedIn()
-        const result = new UserReadsACardUseCase().execute(IdentificationMother.numberedDto(1), datastore)
+        const result = new UserReadsACardUseCase().execute(IdentificationMother.numberedDto(1))
         assert.equal(result, Response.OkWithData(cardMother.numberedDto(1)))
     })
 

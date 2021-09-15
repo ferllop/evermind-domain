@@ -6,6 +6,7 @@ import { Identification } from '../models/value/Identification.js'
 import { Criteria } from './Criteria'
 import { Datastore } from './Datastore.js'
 import { Mapper } from './Mapper.js'
+import { ImplementationsContainer } from '../implementations/ImplementationsContainer.js'
 
 
 export abstract class Repository<T extends Entity, TDto extends IdDto> {
@@ -14,10 +15,10 @@ export abstract class Repository<T extends Entity, TDto extends IdDto> {
     private mapper: Mapper<T, TDto>
     protected datastore: Datastore
 
-    constructor(tableName: string, mapper: Mapper<T, TDto>, dataStore: Datastore) {
+    constructor(tableName: string, mapper: Mapper<T, TDto>) {
         this.tableName = tableName
         this.mapper = mapper
-        this.datastore = dataStore
+        this.datastore = ImplementationsContainer.get('datastore') as Datastore
     }
 
     store(entity: T): DomainError {

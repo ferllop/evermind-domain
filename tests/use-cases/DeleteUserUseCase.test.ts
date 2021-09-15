@@ -8,6 +8,7 @@ import { assert, suite } from '../test-config.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { DatastoreMother } from '../models/DatastoreMother.js'
+import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
 
 const userRemovesAccountUseCase = suite("User removes account use case")
 
@@ -15,7 +16,8 @@ let datastore: Datastore
 let datastoreMother: DatastoreMother<UserDto>
 
 userRemovesAccountUseCase.before.each(() => {
-    datastore = new InMemoryDatastore()
+    ImplementationsContainer.set('datastore', new InMemoryDatastore())
+    datastore = ImplementationsContainer.get('datastore') as Datastore
     datastoreMother = new DatastoreMother(new UserMother(), datastore)
 })
 
@@ -24,14 +26,14 @@ userRemovesAccountUseCase(
     'should return an object with either ' +
     'data and error properties as null', () => {
         datastoreMother.having(1).storedIn()
-        const result = new UserRemovesAccountUseCase().execute(IdentificationMother.numberedDto(1), datastore)
+        const result = new UserRemovesAccountUseCase().execute(IdentificationMother.numberedDto(1))
         assert.equal(result, Response.OkWithoutData())
     })
 
 userRemovesAccountUseCase('given an existing user id, should remove it', () => {
     datastoreMother.having(1).storedIn()
     assert.ok(datastoreMother.exists(1))
-    new UserRemovesAccountUseCase().execute(IdentificationMother.numberedDto(1), datastore)
+    new UserRemovesAccountUseCase().execute(IdentificationMother.numberedDto(1))
     assert.not.ok(datastoreMother.exists(1))
 })
 
@@ -40,7 +42,7 @@ userRemovesAccountUseCase(
     'it should return an object with data property as null and ' +
     'error property as RESOURCE_NOT_FOUND DomainError', () => {
         datastoreMother.having(1).storedIn()
-        const result = new UserRemovesAccountUseCase().execute({ id: 'unexistingID' }, datastore)
+        const result = new UserRemovesAccountUseCase().execute({ id: 'unexistingID' })
         assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
 
@@ -48,7 +50,7 @@ userRemovesAccountUseCase(
     'given an unexisting table, ' +
     'it should return an object with data property as null and ' +
     'error property as RESOURCE_NOT_FOUND DomainError', () => {
-        const result = new UserRemovesAccountUseCase().execute({ id: 'unexistingIDnorTable' }, datastore)
+        const result = new UserRemovesAccountUseCase().execute({ id: 'unexistingIDnorTable' })
         assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
 
@@ -56,7 +58,7 @@ userRemovesAccountUseCase(
     'given an invalid id, ' +
     'should return an object with data property as null ' +
     'and error property as INPUT_DATA_NOT_VALID DomainError', () => {
-        const result = new UserRemovesAccountUseCase().execute(IdentificationMother.invalidDto(), datastore)
+        const result = new UserRemovesAccountUseCase().execute(IdentificationMother.invalidDto())
         assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
     })
 

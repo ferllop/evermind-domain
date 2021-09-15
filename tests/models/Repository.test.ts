@@ -10,6 +10,7 @@ import { Identification } from '../../src/models/value/Identification.js'
 import { MayBeIdentified } from '../../src/models/value/MayBeIdentified.js'
 import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
 import { assert, suite } from '../test-config.js'
+import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
 
 type Context = {
     table: string;
@@ -20,9 +21,10 @@ type Context = {
 const repository = suite<Context>('Repository')
 
 repository.before.each((context: Context) => {
+    ImplementationsContainer.set('datastore', new InMemoryDatastore())
     context.table = 'testTable'
-    context.db = new InMemoryDatastore()
-    context.sut = new TestRepository(context.table, new TestMapper(), context.db)
+    context.db = ImplementationsContainer.get('datastore') as Datastore
+    context.sut = new TestRepository(context.table, new TestMapper())
 })
 
 repository(
