@@ -3,7 +3,7 @@ import { User } from '../models/user/User.js'
 import { UserSignsUpRequest } from './UserSignsUpRequest.js'
 import { Username } from '../models/user/Username.js'
 import { PersonName } from '../models/user/PersonName.js'
-import { ErrorType } from '../errors/ErrorType.js'
+import { ErrorType } from '../models/errors/ErrorType.js'
 import { Response } from './Response.js';
 import { UserRepository } from '../models/user/UserRepository.js';
 

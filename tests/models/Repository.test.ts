@@ -1,5 +1,5 @@
-import { DomainError } from '../../src/errors/DomainError.js'
-import { ErrorType } from '../../src/errors/ErrorType.js'
+import { DomainError } from '../../src/models/errors/DomainError.js'
+import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { Datastore } from '../../src/models/Datastore.js'
 import { Entity } from '../../src/models/Entity.js'
 import { Mapper } from '../../src/models/Mapper.js'

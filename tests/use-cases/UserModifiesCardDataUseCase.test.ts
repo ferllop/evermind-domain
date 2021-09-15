@@ -1,4 +1,4 @@
-import { ErrorType } from '../../src/errors/ErrorType.js'
+import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { CardDto } from '../../src/models/card/CardDto.js'
 import { CardField } from '../../src/models/card/CardField.js'
 import { Datastore } from '../../src/models/Datastore.js'

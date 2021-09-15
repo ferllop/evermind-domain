@@ -1,6 +1,6 @@
 import { Datastore } from '../models/Datastore.js';
 import { CardMapper } from '../models/card/CardMapper.js'
-import { ErrorType } from '../errors/ErrorType.js'
+import { ErrorType } from '../models/errors/ErrorType.js'
 import { Card } from '../models/card/Card.js'
 import { AuthorIdentification } from '../models/card/AuthorIdentification.js'
 import { WrittenQuestion } from '../models/card/WrittenQuestion.js'

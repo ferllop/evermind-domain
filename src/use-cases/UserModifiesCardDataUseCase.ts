@@ -1,4 +1,4 @@
-import { ErrorType } from '../errors/ErrorType.js'
+import { ErrorType } from '../models/errors/ErrorType.js'
 import { Datastore } from '../models/Datastore.js';
 import { CardMapper } from '../models/card/CardMapper.js'
 import { UserModifiesCardDataRequest } from './UserModifiesCardDataRequest.js'

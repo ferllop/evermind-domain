@@ -6,7 +6,7 @@ import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { Datastore } from '../../src/models/Datastore.js'
 import { DatastoreTestClass } from '../storage/datastores/DatastoreTestClass.js'
 import { Response } from '../../src/use-cases/Response.js'
-import { ErrorType } from '../../src/errors/ErrorType.js'
+import { ErrorType } from '../../src/models/errors/ErrorType.js'
 
 const userSignsUpUseCase = suite("User signs up use case")
 

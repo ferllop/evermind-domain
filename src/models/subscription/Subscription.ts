@@ -1,7 +1,7 @@
-import { DateEvermind } from '../../helpers/DateEvermind.js'
 import { CardIdentification } from '../card/CardIdentification.js'
 import { Entity } from '../Entity.js'
 import { UserIdentification } from '../user/UserIdentification.js'
+import { DateEvermind } from '../value/DateEvermind.js'
 import { DateISO } from '../value/DateISO.js'
 import { DayStartTime } from '../value/DayStartTime.js'
 import { Hour } from '../value/Hour.js'

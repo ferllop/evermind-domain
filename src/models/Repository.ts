@@ -1,5 +1,5 @@
-import { DomainError } from '../errors/DomainError.js'
-import { ErrorType } from '../errors/ErrorType.js'
+import { DomainError } from './errors/DomainError.js'
+import { ErrorType } from './errors/ErrorType.js'
 import { Entity } from '../models/Entity.js'
 import { IdDto } from '../models/value/IdDto.js'
 import { Identification } from '../models/value/Identification.js'

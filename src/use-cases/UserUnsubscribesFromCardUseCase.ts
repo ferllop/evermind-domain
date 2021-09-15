@@ -1,4 +1,4 @@
-import { ErrorType } from '../errors/ErrorType.js';
+import { ErrorType } from '../models/errors/ErrorType.js';
 import { Subscription } from '../models/subscription/Subscription.js';
 import { Datastore } from '../models/Datastore.js';
 import { UserUnsubscribesFromCardRequest } from './UserUnsubscribesFromCardRequest.js';

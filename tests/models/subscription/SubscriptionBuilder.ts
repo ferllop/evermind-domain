@@ -1,7 +1,7 @@
-import { DateEvermind } from '../../../src/helpers/DateEvermind.js'
 import { Level } from '../../../src/models/subscription/Level.js'
 import { Subscription } from '../../../src/models/subscription/Subscription.js'
 import { SubscriptionIdentification } from '../../../src/models/subscription/SubscriptionIdentification.js'
+import { DateEvermind } from '../../../src/models/value/DateEvermind.js'
 import { DateISO } from '../../../src/models/value/DateISO.js'
 import { Identification } from '../../../src/models/value/Identification.js'
 

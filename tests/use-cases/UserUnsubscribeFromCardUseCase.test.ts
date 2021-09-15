@@ -1,4 +1,4 @@
-import { ErrorType } from '../../src/errors/ErrorType.js'
+import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { precondition } from '../../src/lib/preconditions.js'
 import { Card } from '../../src/models/card/Card.js'
 import { User } from '../../src/models/user/User.js'

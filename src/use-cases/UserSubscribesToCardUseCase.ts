@@ -1,4 +1,4 @@
-import { ErrorType } from '../errors/ErrorType.js';
+import { ErrorType } from '../models/errors/ErrorType.js';
 import { Subscription } from '../models/subscription/Subscription.js';
 import { Identification } from '../models/value/Identification.js';
 import { Datastore } from '../models/Datastore.js';

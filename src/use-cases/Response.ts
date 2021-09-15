@@ -1,5 +1,5 @@
-import { DomainError } from '../errors/DomainError.js'
-import { ErrorType } from '../errors/ErrorType.js'
+import { DomainError } from '../models/errors/DomainError.js'
+import { ErrorType } from '../models/errors/ErrorType.js'
 import { ErrorDto } from './ErrorDto.js'
 
 export class Response<T> {

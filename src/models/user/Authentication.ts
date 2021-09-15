@@ -1,4 +1,4 @@
-import { DateEvermind } from '../../helpers/DateEvermind';
+import { DateEvermind } from '../value/DateEvermind';
 import { DateISO } from '../value/DateISO';
 import { Identification } from '../value/Identification';
 import { AuthenticationStatus } from './AuthenticationStatus';

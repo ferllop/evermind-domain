@@ -1,4 +1,4 @@
-import { ErrorType } from '../errors/ErrorType.js'
+import { ErrorType } from '../models/errors/ErrorType.js'
 import { UserDto } from '../models/user/UserDto.js'
 import { Identification } from '../models/value/Identification.js'
 import { Datastore } from '../models/Datastore.js';

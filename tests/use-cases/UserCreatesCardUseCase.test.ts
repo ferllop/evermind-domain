@@ -7,7 +7,7 @@ import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { DatastoreTestClass } from '../storage/datastores/DatastoreTestClass.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
 import { Response } from '../../src/use-cases/Response.js'
-import { ErrorType } from '../../src/errors/ErrorType.js'
+import { ErrorType } from '../../src/models/errors/ErrorType.js'
 
 const userCreatesCardUseCase = suite("User creates a card use case")
 

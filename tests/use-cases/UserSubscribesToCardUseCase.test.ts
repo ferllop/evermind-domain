@@ -1,4 +1,4 @@
-import { ErrorType } from '../../src/errors/ErrorType.js'
+import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { precondition } from '../../src/lib/preconditions.js'
 import { Datastore } from '../../src/models/Datastore.js'
 import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'

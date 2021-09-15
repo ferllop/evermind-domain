@@ -1,7 +1,7 @@
 import { CardDto } from '../models/card/CardDto.js'
 import { Datastore } from '../models/Datastore.js';
 import { CardMapper } from '../models/card/CardMapper.js'
-import { ErrorType } from '../errors/ErrorType.js'
+import { ErrorType } from '../models/errors/ErrorType.js'
 import { UserSearchesForCardsRequest } from './UserSearchesForCardsRequest.js'
 import { Response } from './Response.js';
 import { SearchService } from '../models/search/SearchService.js';
