@@ -1,13 +1,13 @@
-import { Card } from '../models/card/Card.js'
-import { Query } from '../models/search/Query.js'
-import { Search } from '../models/search/Search.js'
-import { Datastore } from '../models/Datastore.js'
-import { Labelling } from '../models/card/Labelling.js'
-import { Label } from '../models/card/Label.js'
-import { UserRepository } from '../models/user/UserRepository.js'
-import { CardRepository } from '../models/card/CardRepository.js'
+import { Card } from '../card/Card.js'
+import { CardRepository } from '../card/CardRepository.js'
+import { Label } from '../card/Label.js'
+import { Labelling } from '../card/Labelling.js'
+import { Datastore } from '../Datastore.js'
+import { UserRepository } from '../user/UserRepository.js'
+import { Query } from './Query.js'
+import { Search } from './Search.js'
 
-export class SearchController {
+export class SearchService {
     executeQuery(query: Query, datastore: Datastore): Card[] {
         const search = new Search(query.query)
         let userCards!: Card[]
