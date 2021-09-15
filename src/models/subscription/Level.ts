@@ -1,5 +1,5 @@
-import { Enum } from '../../helpers/Enum.js'
 import { DateEvermind } from '../value/DateEvermind.js'
+import { Enum } from '../value/Enum.js'
 
 export class Level extends Enum {
     private static values: Level[] = []
