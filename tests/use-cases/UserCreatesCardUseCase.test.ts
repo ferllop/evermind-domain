@@ -3,11 +3,11 @@ import { CardMother } from '../models/card/CardMother.js'
 import { assert, suite } from '../test-config.js'
 import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
 import { Datastore } from '../../src/models/Datastore.js'
-import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
-import { DatastoreTestClass } from '../storage/datastores/DatastoreTestClass.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
+import { DatastoreTestClass } from '../models/DatastoreTestClass.js'
+import { DatastoreMother } from '../models/DatastoreMother.js'
 
 const userCreatesCardUseCase = suite("User creates a card use case")
 

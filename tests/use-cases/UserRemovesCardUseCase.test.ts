@@ -5,8 +5,8 @@ import { Response } from '../../src/use-cases/Response.js'
 import { UserRemovesCardUseCase } from '../../src/use-cases/UserRemovesCardUseCase.js'
 import { CardMother } from '../models/card/CardMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
-import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
+import { DatastoreMother } from '../models/DatastoreMother.js'
 
 const userRemovesCardUseCase = suite("User removes card use case")
 

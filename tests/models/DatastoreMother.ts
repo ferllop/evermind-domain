@@ -1,7 +1,7 @@
-import { IdDto } from '../../../src/models/value/IdDto.js'
-import { Datastore } from '../../../src/models/Datastore.js'
-import { IdentificationMother } from '../../models/value/IdentificationMother.js'
-import { Mother } from '../../models/Mother.js'
+import { Datastore } from '../../src/models/Datastore.js'
+import { IdDto } from '../../src/models/value/IdDto.js'
+import { Mother } from './Mother.js'
+import { IdentificationMother } from './value/IdentificationMother.js'
 
 export class DatastoreMother<T extends IdDto> {
         

@@ -1,13 +1,13 @@
-import { ErrorType } from '../../src/models/errors/ErrorType.js'
+import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
 import { CardDto } from '../../src/models/card/CardDto.js'
 import { CardField } from '../../src/models/card/CardField.js'
 import { Datastore } from '../../src/models/Datastore.js'
+import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { Response } from '../../src/use-cases/Response.js'
-import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
 import { UserModifiesCardDataUseCase } from '../../src/use-cases/UserModifiesCardDataUseCase.js'
 import { CardMother } from '../models/card/CardMother.js'
 import { LabellingMother } from '../models/card/LabellingMother.js'
-import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
+import { DatastoreMother } from '../models/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
 
 const userModifiesCardDataUseCase = suite("User modifies card data use case")

@@ -4,10 +4,10 @@ import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.j
 import { UserRemovesAccountUseCase } from '../../src/use-cases/UserRemovesAccountUseCase.js'
 import { UserMother } from '../models/user/UserMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
-import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
+import { DatastoreMother } from '../models/DatastoreMother.js'
 
 const userRemovesAccountUseCase = suite("User removes account use case")
 

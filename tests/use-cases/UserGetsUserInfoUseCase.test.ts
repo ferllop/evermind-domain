@@ -1,11 +1,11 @@
-import { ErrorType } from '../../src/models/errors/ErrorType.js'
-import { Datastore } from '../../src/models/Datastore.js'
 import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
+import { Datastore } from '../../src/models/Datastore.js'
+import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { UserGetsUserInfoUseCase } from '../../src/use-cases/UserGetsUserInfoUseCase.js'
+import { DatastoreMother } from '../models/DatastoreMother.js'
 import { UserMother } from '../models/user/UserMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
-import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
 
 const userGetsUserInfoUseCase = suite("User gets user info use case")
