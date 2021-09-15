@@ -1,4 +1,3 @@
-import { CardController } from '../controllers/CardController.js'
 import { Datastore } from '../models/Datastore.js';
 import { CardMapper } from '../models/card/CardMapper.js'
 import { ErrorType } from '../errors/ErrorType.js'
@@ -9,6 +8,7 @@ import { WrittenAnswer } from '../models/card/WrittenAnswer.js'
 import { Labelling } from '../models/card/Labelling.js'
 import { UserCreatesCardRequest } from './UserCreatesCardRequest.js'
 import { Response } from './Response.js';
+import { CardRepository } from '../models/card/CardRepository.js';
 
 export class UserCreatesCardUseCase {
 
@@ -24,7 +24,7 @@ export class UserCreatesCardUseCase {
             Labelling.fromStringLabels(request.labelling)
         )
 
-        const error = new CardController().storeCard(card, datastore)
+        const error = new CardRepository(datastore).store(card)
         return new Response(error.getCode(), null)
     }
 
