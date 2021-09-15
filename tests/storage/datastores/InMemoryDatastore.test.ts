@@ -1,6 +1,6 @@
 import { PreconditionError } from '../../../src/implementations/preconditions.js'
 import { Datastore } from '../../../src/models/Datastore.js'
-import { InMemoryDatastore } from '../../../src/storage/datastores/InMemoryDatastore.js'
+import { InMemoryDatastore } from '../../../src/implementations/InMemoryDatastore.js'
 import { assert, suite } from '../../test-config.js'
 
 const datastore = suite('Datastore')

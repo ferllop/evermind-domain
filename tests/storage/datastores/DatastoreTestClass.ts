@@ -1,5 +1,5 @@
 import { IdDto } from '../../../src/models/value/IdDto.js';
-import { InMemoryDatastore } from '../../../src/storage/datastores/InMemoryDatastore.js';
+import { InMemoryDatastore } from '../../../src/implementations/InMemoryDatastore.js';
 
 export class DatastoreTestClass extends InMemoryDatastore {
     dtoId!: string;

@@ -1,7 +1,7 @@
 import { UserSignsUpUseCase } from '../../src/use-cases/UserSignsUpUseCase.js'
 import { UserMother } from '../models/user/UserMother.js'
 import { assert, suite } from '../test-config.js'
-import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
+import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
 import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { Datastore } from '../../src/models/Datastore.js'
 import { DatastoreTestClass } from '../storage/datastores/DatastoreTestClass.js'

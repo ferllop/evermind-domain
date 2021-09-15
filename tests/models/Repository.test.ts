@@ -8,7 +8,7 @@ import { Validator } from '../../src/models/Validator.js'
 import { IdDto } from '../../src/models/value/IdDto.js'
 import { Identification } from '../../src/models/value/Identification.js'
 import { MayBeIdentified } from '../../src/models/value/MayBeIdentified.js'
-import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
+import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
 import { assert, suite } from '../test-config.js'
 
 type Context = {

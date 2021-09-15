@@ -1,7 +1,7 @@
 import { UserCreatesCardUseCase } from '../../src/use-cases/UserCreatesCardUseCase.js'
 import { CardMother } from '../models/card/CardMother.js'
 import { assert, suite } from '../test-config.js'
-import { InMemoryDatastore } from '../../src/storage/datastores/InMemoryDatastore.js'
+import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
 import { Datastore } from '../../src/models/Datastore.js'
 import { DatastoreMother } from '../storage/datastores/DatastoreMother.js'
 import { DatastoreTestClass } from '../storage/datastores/DatastoreTestClass.js'
