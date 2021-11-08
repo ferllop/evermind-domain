@@ -1,6 +1,6 @@
 import { UserDto } from '../../src/models/user/UserDto.js'
 import { Datastore } from '../../src/models/Datastore.js'
-import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
+import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { UserRemovesAccountUseCase } from '../../src/use-cases/UserRemovesAccountUseCase.js'
 import { UserMother } from '../models/user/UserMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'

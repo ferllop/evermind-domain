@@ -1,6 +1,6 @@
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { Datastore } from '../../src/models/Datastore.js'
-import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
+import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { UserRemovesCardUseCase } from '../../src/use-cases/UserRemovesCardUseCase.js'
 import { CardMother } from '../models/card/CardMother.js'

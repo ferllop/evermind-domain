@@ -1,7 +1,7 @@
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { precondition } from '../../src/implementations/preconditions.js'
 import { Datastore } from '../../src/models/Datastore.js'
-import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
+import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { UserSubscribesToCardUseCase } from '../../src/use-cases/UserSubscribesToCardUseCase.js'
 import { CardMother } from '../models/card/CardMother.js'
 import { SubscriptionMother } from '../models/subscription/SubscriptionMother.js'

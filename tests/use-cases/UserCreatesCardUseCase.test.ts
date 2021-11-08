@@ -1,5 +1,5 @@
 import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
-import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
+import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { UserCreatesCardUseCase } from '../../src/use-cases/UserCreatesCardUseCase.js'

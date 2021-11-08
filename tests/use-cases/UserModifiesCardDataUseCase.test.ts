@@ -1,5 +1,5 @@
 import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
-import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
+import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { CardDto } from '../../src/models/card/CardDto.js'
 import { CardField } from '../../src/models/card/CardField.js'
 import { Datastore } from '../../src/models/Datastore.js'

@@ -1,5 +1,5 @@
 import { Datastore } from '../../src/models/Datastore.js'
-import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
+import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { CardMother } from '../models/card/CardMother.js'
 import { assert, suite } from '../test-config.js'
 import { UserSearchesForCardsUseCase } from '../../src/use-cases/UserSearchesForCardsUseCase.js'

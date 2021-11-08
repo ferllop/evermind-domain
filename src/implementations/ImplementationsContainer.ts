@@ -1,4 +1,4 @@
-import { InMemoryDatastore } from './InMemoryDatastore.js'
+import { InMemoryDatastore } from './persistence/in-memory/InMemoryDatastore.js'
 import { NodeNativeUuid } from './NodeNativeUuidGenerator.js'
 import { precondition, PreconditionError } from './preconditions.js'
 

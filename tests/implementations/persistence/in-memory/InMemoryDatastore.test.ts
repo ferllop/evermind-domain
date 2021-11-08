@@ -1,7 +1,7 @@
-import { InMemoryDatastore } from '../../src/implementations/InMemoryDatastore.js'
-import { PreconditionError } from '../../src/implementations/preconditions.js'
-import { Datastore } from '../../src/models/Datastore.js'
-import { assert, suite } from '../test-config.js'
+import { InMemoryDatastore } from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import { PreconditionError } from '../../../../src/implementations/preconditions.js'
+import { Datastore } from '../../../../src/models/Datastore.js'
+import { assert, suite } from '../../../test-config.js'
 
 const datastore = suite('Datastore')
 
@@ -10,7 +10,7 @@ datastore.before.each( () => {
     sutDatastore = new InMemoryDatastore()
 })
 
-datastore('should not bebe capable of clean itself', () => {
+datastore('should not be capable of clean itself', () => {
     const dto = { id: 'someId', data: 'someData' }
     sutDatastore.create<typeof dto>('a-table', dto)
     sutDatastore.clean()
