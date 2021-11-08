@@ -114,7 +114,7 @@ class DatastoreMother {
     }
 
     isPresentOnlyOnce() {
-        return this.datastore.find(this.mother.TABLE_NAME, dto => dto.id === this.dto.id).length === 1
+        return this.datastore.findMany(this.mother.TABLE_NAME, dto => dto.id === this.dto.id).length === 1
     }
 
     hasLevel(level: number) {

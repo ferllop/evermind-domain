@@ -183,14 +183,14 @@ datastoreFinder.before.each(() => {
 datastoreFinder('should return an empty array where there are no coincidences', () => {
     const table = 'aTable'
     sutDatastore.create(table, {id:'a'})
-    const result = sutDatastore.find('aTable', () => false)
+    const result = sutDatastore.findMany('aTable', () => false)
     assert.is(result.length, 0)
 })
 
 datastoreFinder('should return an array whith one coincidence', () => {
     const table = 'aTable'
     sutDatastore.create(table, {id:'a', data: 'thing'})
-    const result = sutDatastore.find('aTable', (row: any) => row.data === 'thing')
+    const result = sutDatastore.findMany('aTable', (row: any) => row.data === 'thing')
     assert.is(result.length, 1)
 })
 
@@ -202,7 +202,7 @@ datastoreFinder('should return an array whith all the coincidences', () => {
     sutDatastore.create(table, dtoA)
     sutDatastore.create(table, dtoB)
     sutDatastore.create(table, dtoC)
-    const result = sutDatastore.find('aTable', (row: any) => row.label === 'labelA')
+    const result = sutDatastore.findMany('aTable', (row: any) => row.label === 'labelA')
     assert.is(result.length, 2)
     assert.ok(result.some(dto => dto.id === 'a') && result.some(dto => dto.id === 'b') && !result.some(dto => dto.id === 'c'))
 })

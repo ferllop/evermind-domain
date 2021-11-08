@@ -82,7 +82,7 @@ export class InMemoryDatastore implements Datastore {
         return Boolean(this.tables.get(table)?.delete(id))
     }
 
-    find<T extends IdDto>(table: string, finder: (dto: T) => boolean): T[] {
+    findMany<T extends IdDto>(table: string, finder: (dto: T) => boolean): T[] {
         precondition(this.hasTable(table)) 
         return this.tables.get(table)?.find(finder) ?? []
     }

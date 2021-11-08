@@ -10,7 +10,7 @@ export interface Datastore {
 
     delete(table: string, id: string): boolean
 
-    find<T extends IdDto>(table: string, finder: (dto: T) => boolean): T[]
+    findMany<T extends IdDto>(table: string, finder: (dto: T) => boolean): T[]
 
     findOne<T extends IdDto>(table: string, finder: (dto: T) => boolean): T | null
     
