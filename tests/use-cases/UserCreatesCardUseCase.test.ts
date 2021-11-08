@@ -1,4 +1,4 @@
-import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
+import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { Response } from '../../src/use-cases/Response.js'
@@ -8,13 +8,14 @@ import { DatastoreMother } from '../models/DatastoreMother.js'
 import { DatastoreTestClass } from '../models/DatastoreTestClass.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
 import { assert, suite } from '../test-config.js'
+import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 
 const userCreatesCardUseCase = suite("User creates a card use case")
 
 const cardMother = new CardMother()
 
 userCreatesCardUseCase.before.each(() => {
-    ImplementationsContainer.set('datastore', new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
 })
 
 userCreatesCardUseCase(
@@ -29,8 +30,8 @@ userCreatesCardUseCase(
     'given data representing a card, ' +
     'when execute this use case, ' +
     'the card should remain in storage', () => {
-    ImplementationsContainer.set('datastore', new DatastoreTestClass())
-    const datastore = ImplementationsContainer.get('datastore') as DatastoreTestClass
+    ImplementationsContainer.set(Dependency.DATASTORE, new DatastoreTestClass())
+    const datastore = ImplementationsContainer.get(Dependency.DATASTORE) as DatastoreTestClass
         executeUseCase()
         assert.ok(new DatastoreMother(cardMother, datastore).isDataStored(datastore.dtoId, 'authorId'))
     })

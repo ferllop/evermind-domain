@@ -8,7 +8,8 @@ import { assert, suite } from '../test-config.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { DatastoreMother } from '../models/DatastoreMother.js'
-import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
+import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
+import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 
 const userRemovesAccountUseCase = suite("User removes account use case")
 
@@ -16,8 +17,8 @@ let datastore: Datastore
 let datastoreMother: DatastoreMother<UserDto>
 
 userRemovesAccountUseCase.before.each(() => {
-    ImplementationsContainer.set('datastore', new InMemoryDatastore())
-    datastore = ImplementationsContainer.get('datastore') as Datastore
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
+    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     datastoreMother = new DatastoreMother(new UserMother(), datastore)
 })
 

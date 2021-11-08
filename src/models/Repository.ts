@@ -1,12 +1,13 @@
-import { DomainError } from './errors/DomainError.js'
-import { ErrorType } from './errors/ErrorType.js'
-import { Entity } from './Entity.js'
-import { IdDto } from './value/IdDto.js'
-import { Identification } from './value/Identification.js'
-import { Criteria } from './Criteria'
-import { Datastore } from './Datastore.js'
-import { Mapper } from './Mapper.js'
-import { ImplementationsContainer } from '../implementations/ImplementationsContainer.js'
+import {DomainError} from './errors/DomainError.js'
+import {ErrorType} from './errors/ErrorType.js'
+import {Entity} from './Entity.js'
+import {IdDto} from './value/IdDto.js'
+import {Identification} from './value/Identification.js'
+import {Criteria} from './Criteria'
+import {Datastore} from './Datastore.js'
+import {Mapper} from './Mapper.js'
+import {ImplementationsContainer} from '../implementations/implementations-container/ImplementationsContainer.js'
+import {Dependency} from '../implementations/implementations-container/Dependency.js'
 
 
 export abstract class Repository<T extends Entity, TDto extends IdDto> {
@@ -18,7 +19,7 @@ export abstract class Repository<T extends Entity, TDto extends IdDto> {
     constructor(tableName: string, mapper: Mapper<T, TDto>) {
         this.tableName = tableName
         this.mapper = mapper
-        this.datastore = ImplementationsContainer.get('datastore') as Datastore
+        this.datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     }
 
     store(entity: T): DomainError {

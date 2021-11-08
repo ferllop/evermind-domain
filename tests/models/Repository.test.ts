@@ -10,7 +10,8 @@ import { Identification } from '../../src/models/value/Identification.js'
 import { MayBeIdentified } from '../../src/models/value/MayBeIdentified.js'
 import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { assert, suite } from '../test-config.js'
-import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
+import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
+import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 
 type Context = {
     table: string;
@@ -21,9 +22,9 @@ type Context = {
 const repository = suite<Context>('Repository')
 
 repository.before.each((context: Context) => {
-    ImplementationsContainer.set('datastore', new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
     context.table = 'testTable'
-    context.db = ImplementationsContainer.get('datastore') as Datastore
+    context.db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     context.sut = new TestRepository(context.table, new TestMapper())
 })
 

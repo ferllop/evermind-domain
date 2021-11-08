@@ -6,12 +6,13 @@ import { DatastoreMother } from '../models/DatastoreMother.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { DatastoreTestClass } from '../models/DatastoreTestClass.js'
-import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
+import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
+import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 
 const userSignsUpUseCase = suite("User signs up use case")
 
 userSignsUpUseCase.before.each(() => {
-    ImplementationsContainer.set('datastore', new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
 })
 
 userSignsUpUseCase(
@@ -26,8 +27,8 @@ userSignsUpUseCase(
     'given data representing a user, ' +
     'when execute this use case, ' +
     'the card should remain in storage', () => {
-        ImplementationsContainer.set('datastore', new DatastoreTestClass())
-        const datastore = ImplementationsContainer.get('datastore') as DatastoreTestClass
+        ImplementationsContainer.set(Dependency.DATASTORE, new DatastoreTestClass())
+        const datastore = ImplementationsContainer.get(Dependency.DATASTORE) as DatastoreTestClass
         new UserSignsUpUseCase().execute(new UserMother().dto())
         assert.ok(new DatastoreMother(new UserMother(), datastore).isDataStored(datastore.dtoId, 'authId'))
     })

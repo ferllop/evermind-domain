@@ -1,4 +1,4 @@
-import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
+import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { CardDto } from '../../src/models/card/CardDto.js'
 import { CardField } from '../../src/models/card/CardField.js'
@@ -10,6 +10,7 @@ import { CardMother } from '../models/card/CardMother.js'
 import { LabellingMother } from '../models/card/LabellingMother.js'
 import { DatastoreMother } from '../models/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
+import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 
 const userModifiesCardDataUseCase = suite("User modifies card data use case")
 
@@ -17,8 +18,8 @@ const cardMother = new CardMother()
 
 let datastore: Datastore
 userModifiesCardDataUseCase.before.each(() => {
-    ImplementationsContainer.set('datastore', new InMemoryDatastore())
-    datastore = ImplementationsContainer.get('datastore') as Datastore
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
+    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
 })
 
 

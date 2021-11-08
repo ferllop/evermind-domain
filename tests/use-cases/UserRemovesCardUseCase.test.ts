@@ -7,7 +7,8 @@ import { CardMother } from '../models/card/CardMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
 import { assert, suite } from '../test-config.js'
 import { DatastoreMother } from '../models/DatastoreMother.js'
-import { ImplementationsContainer } from '../../src/implementations/ImplementationsContainer.js'
+import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
+import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 
 const userRemovesCardUseCase = suite("User removes card use case")
 
@@ -15,8 +16,8 @@ const cardMother = new CardMother()
 
 let datastore: Datastore
 userRemovesCardUseCase.before.each(() => {
-    ImplementationsContainer.set('datastore', new InMemoryDatastore())
-    datastore = ImplementationsContainer.get('datastore') as Datastore
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
+    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
 })
 
 userRemovesCardUseCase(
