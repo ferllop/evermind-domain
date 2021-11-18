@@ -33,6 +33,7 @@
     "uvu": "0.5.1"
   },
   "dependencies": {
+    "in-memory-database": "github:ferllop/in-memory-typescript-database#semver:1.x.x",
     "node-postgres": "0.6.2",
     "preconditions": "github:ferllop/preconditions#semver:2.x.x"
   }
