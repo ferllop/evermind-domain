@@ -2,6 +2,7 @@ import {InMemoryDatastore} from '../persistence/in-memory/InMemoryDatastore.js'
 import {NodeNativeUuid} from '../NodeNativeUuidGenerator.js'
 import {precondition, PreconditionError} from '../preconditions.js'
 import {Dependency} from './Dependency.js'
+import {AsyncInMemoryDatastore} from '../persistence/in-memory/AsyncInMemoryDatastore.js'
 
 export class ImplementationsContainer {
     static instance = new ImplementationsContainer()
@@ -16,6 +17,7 @@ export class ImplementationsContainer {
     initWithDefaultImplementations() {
         this.container.set(Dependency.UUID, new NodeNativeUuid())
             .set(Dependency.DATASTORE, new InMemoryDatastore())
+            .set(Dependency.ASYNC_DATASTORE, new AsyncInMemoryDatastore())
             .set(Dependency.PRECONDITIONS, {precondition, PreconditionError})
     }
 
