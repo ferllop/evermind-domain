@@ -1,7 +1,6 @@
-import { AsyncDatabase } from 'in-memory-database'
-import { AsyncDatastore } from '../../../models/AsyncDatastore.js'
-import { IdDto } from '../../../models/value/IdDto.js'
-import {DatabaseError} from 'in-memory-database/build/DatabaseError.js'
+import {AsyncDatabase} from 'in-memory-database'
+import {AsyncDatastore} from '../../../models/AsyncDatastore.js'
+import {IdDto} from '../../../models/value/IdDto.js'
 
 export class AsyncInMemoryDatastore implements AsyncDatastore {
     private db: AsyncDatabase
