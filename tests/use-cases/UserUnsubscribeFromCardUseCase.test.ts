@@ -2,7 +2,6 @@ import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { Card } from '../../src/models/card/Card.js'
 import { User } from '../../src/models/user/User.js'
 import { Datastore } from '../../src/models/Datastore.js'
-import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { CardMapper } from '../../src/models/card/CardMapper.js'
 import { UserMapper } from '../../src/models/user/UserMapper.js'
 import { UserSubscribesToCardUseCase } from '../../src/use-cases/UserSubscribesToCardUseCase.js'
@@ -14,11 +13,12 @@ import { Response } from '../../src/use-cases/Response.js'
 import { precondition } from '../../src/implementations/preconditions.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
+import { NewInMemoryDatastore } from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
 
 const userUnsubscribesFromCard = suite("User unsubscribes from card")
 
 userUnsubscribesFromCard('given an existing user id subscribed to an existing cardid, then unsubscribe', () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
     const datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     const mum = new DatastoreMother(datastore)
     const user = new UserMother().standard()
@@ -37,7 +37,7 @@ userUnsubscribesFromCard('given an existing user id subscribed to an existing ca
 })
 
 userUnsubscribesFromCard('given an existing user id subscribed to an existing cardid, then return a ok withouth data response', () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
     const datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     const mum = new DatastoreMother(datastore)
     const user = new UserMother().standard()
@@ -57,7 +57,7 @@ userUnsubscribesFromCard('given an existing user id subscribed to an existing ca
 })
 
 userUnsubscribesFromCard('given a previous unsubscription, when unsubscribing again, then return a SUBCRIPTION_NOT_EXISTS error', () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
     const datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     const mum = new DatastoreMother(datastore)
     const user = new UserMother().standard()
@@ -78,7 +78,7 @@ userUnsubscribesFromCard('given a previous unsubscription, when unsubscribing ag
 })
 
 userUnsubscribesFromCard('given an existing user id not subscribed to an existing cardid, then return a SUBSCRIPTION_NOT_EXISTS', () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
     const datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     const mum = new DatastoreMother(datastore)
     const user = new UserMother().standard()
@@ -98,7 +98,7 @@ userUnsubscribesFromCard('given an existing user id not subscribed to an existin
 
 
 userUnsubscribesFromCard('given a non existing userid, then return a USER_NOT_FOUND', () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
     const datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     const mum = new DatastoreMother(datastore)
     const user = new UserMother().standard()
@@ -117,7 +117,7 @@ userUnsubscribesFromCard('given a non existing userid, then return a USER_NOT_FO
 })
 
 userUnsubscribesFromCard('given a non existing cardid, then return a CARD_NOT_FOUND', () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
     const datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     const mum = new DatastoreMother(datastore)
     const user = new UserMother().standard()

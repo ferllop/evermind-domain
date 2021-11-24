@@ -1,5 +1,4 @@
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { Datastore } from '../../src/models/Datastore.js'
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { Response } from '../../src/use-cases/Response.js'
@@ -9,12 +8,13 @@ import { UserMother } from '../models/user/UserMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
 import { assert, suite } from '../test-config.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
+import {NewInMemoryDatastore} from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
 
 const userGetsUserInfoUseCase = suite("User gets user info use case")
 
 let datastore: Datastore
 userGetsUserInfoUseCase.before.each(() => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
     datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
 })
 

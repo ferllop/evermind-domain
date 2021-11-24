@@ -1,6 +1,5 @@
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
 import { Datastore } from '../../src/models/Datastore.js'
-import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { UserRemovesCardUseCase } from '../../src/use-cases/UserRemovesCardUseCase.js'
 import { CardMother } from '../models/card/CardMother.js'
@@ -9,6 +8,7 @@ import { assert, suite } from '../test-config.js'
 import { DatastoreMother } from '../models/DatastoreMother.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
+import {NewInMemoryDatastore} from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
 
 const userRemovesCardUseCase = suite("User removes card use case")
 
@@ -16,7 +16,7 @@ const cardMother = new CardMother()
 
 let datastore: Datastore
 userRemovesCardUseCase.before.each(() => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
     datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
 })
 
