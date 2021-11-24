@@ -14,6 +14,8 @@
     "noUnusedLocals": true,                      /* Report errors on unused locals. */
     "noUnusedParameters": true,                  /* Report errors on unused parameters. */
     "noFallthroughCasesInSwitch": true,          /* Report errors for fallthrough cases in switch statement. */
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true
   }
 }
