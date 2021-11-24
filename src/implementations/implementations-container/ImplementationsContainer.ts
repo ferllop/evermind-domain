@@ -17,12 +17,15 @@ export class ImplementationsContainer {
 
     initWithDefaultImplementations() {
         this.container.set(Dependency.UUID, new NodeNativeUuid())
-            .set(Dependency.DATASTORE,
-                process.env.NEW_DATASTORE === 'true'
-                    ? new NewInMemoryDatastore()
-                    : new InMemoryDatastore())
+            .set(Dependency.DATASTORE, this.chooseDatastore())
             .set(Dependency.ASYNC_DATASTORE, new AsyncInMemoryDatastore())
             .set(Dependency.PRECONDITIONS, {precondition, PreconditionError})
+    }
+
+    private chooseDatastore() {
+        return process.env.NEW_DATASTORE === 'true'
+                    ? new NewInMemoryDatastore()
+                    : new InMemoryDatastore()
     }
 
     static get(dependency: Dependency) {
