@@ -8,7 +8,7 @@ import { UserMother } from '../models/user/UserMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
 import { assert, suite } from '../test-config.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
+import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 
 const userGetsUserInfoUseCase = suite("User gets user info use case")
 

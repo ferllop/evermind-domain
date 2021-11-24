@@ -13,7 +13,7 @@ import { Response } from '../../src/use-cases/Response.js'
 import { precondition } from '../../src/implementations/preconditions.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
+import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 
 const userUnsubscribesFromCard = suite("User unsubscribes from card")
 

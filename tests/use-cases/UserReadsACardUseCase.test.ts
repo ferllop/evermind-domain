@@ -8,7 +8,7 @@ import { DatastoreMother } from '../models/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
+import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 
 const userReadsACardUseCase = suite("User reads a card use case")
 

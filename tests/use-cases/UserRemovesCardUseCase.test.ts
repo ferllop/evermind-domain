@@ -8,7 +8,7 @@ import { assert, suite } from '../test-config.js'
 import { DatastoreMother } from '../models/DatastoreMother.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
+import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 
 const userRemovesCardUseCase = suite("User removes card use case")
 

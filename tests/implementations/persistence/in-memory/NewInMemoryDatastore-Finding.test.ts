@@ -1,6 +1,6 @@
 import {Datastore} from '../../../../src/models/Datastore.js'
 import {assert, suite} from '../../../test-config.js'
-import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
+import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 
 let sutDatastore: Datastore
 
