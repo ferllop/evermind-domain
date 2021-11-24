@@ -1,4 +1,4 @@
-import {User} from '../../models/user/User.js'
+import {User} from './User.js'
 import {UserDto} from './UserDto.js'
 import {UserField} from './UserField.js'
 import {NullUser} from './NullUser.js'
@@ -13,7 +13,7 @@ export class AsyncUserRepository extends AsyncRepository<User, UserDto> {
         super(UserField.TABLE_NAME, new UserMapper())
     }
 
-    async delete(entity: User) {
+    override async delete(entity: User) {
         const result = await super.delete(entity)
         if (result.getCode() === ErrorType.RESOURCE_NOT_FOUND) {
             return new DomainError(ErrorType.USER_NOT_FOUND)

@@ -169,7 +169,7 @@ class TestEntity extends Entity {
 
 class NullTestEntity extends TestEntity {
     static instance = new NullTestEntity(Identification.NULL)
-    isNull() {
+    override isNull() {
         return true
     }
 }

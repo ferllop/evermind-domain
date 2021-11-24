@@ -4,7 +4,7 @@ import {AsyncInMemoryDatastore} from '../../src/implementations/persistence/in-m
 export class AsyncDatastoreTestClass extends AsyncInMemoryDatastore {
     dtoId!: string;
 
-    async create<T extends IdDto>(table: string, dto: T) {
+    override async create<T extends IdDto>(table: string, dto: T) {
         this.dtoId = dto.id;
         return super.create(table, dto);
     }
