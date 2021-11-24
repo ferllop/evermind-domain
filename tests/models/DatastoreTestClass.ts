@@ -1,7 +1,7 @@
-import { NewInMemoryDatastore } from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js';
+import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js';
 import { IdDto } from '../../src/models/value/IdDto.js';
 
-export class DatastoreTestClass extends NewInMemoryDatastore {
+export class DatastoreTestClass extends InMemoryDatastore {
     dtoId!: string;
 
     create<T extends IdDto>(table: string, dto: T): boolean {

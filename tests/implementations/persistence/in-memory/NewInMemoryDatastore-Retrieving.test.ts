@@ -1,14 +1,14 @@
 import {PreconditionError} from '../../../../src/implementations/preconditions.js'
 import {Datastore} from '../../../../src/models/Datastore.js'
 import {assert, suite} from '../../../test-config.js'
-import {NewInMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
+import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
 
 let sutDatastore: Datastore
 
 const datastoreRetrieving = suite('New in-memory datastore when retrieving')
 
 datastoreRetrieving.before.each(() => {
-    sutDatastore = new NewInMemoryDatastore()
+    sutDatastore = new InMemoryDatastore()
 })
 
 datastoreRetrieving('should require a not empty id when retrieving', () => {

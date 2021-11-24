@@ -1,13 +1,13 @@
 import {Datastore} from '../../../../src/models/Datastore.js'
 import {assert, suite} from '../../../test-config.js'
-import {NewInMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
+import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
 
 const datastore = suite('New in-memory datastore')
 
 let sutDatastore: Datastore
 
 datastore.before.each( () => {
-    sutDatastore = new NewInMemoryDatastore()
+    sutDatastore = new InMemoryDatastore()
 })
 
 datastore('should be capable of clean itself', () => {

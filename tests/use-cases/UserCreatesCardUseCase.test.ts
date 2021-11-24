@@ -8,14 +8,14 @@ import {DatastoreTestClass} from '../models/DatastoreTestClass.js'
 import {IdentificationMother} from '../models/value/IdentificationMother.js'
 import {assert, suite} from '../test-config.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import {NewInMemoryDatastore} from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
+import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
 
 const userCreatesCardUseCase = suite("User creates a card use case")
 
 const cardMother = new CardMother()
 
 userCreatesCardUseCase.before.each(() => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
 })
 
 userCreatesCardUseCase(

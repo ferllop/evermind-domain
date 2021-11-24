@@ -7,13 +7,13 @@ import { DatastoreMother } from '../models/DatastoreMother.js'
 import { assert, suite } from '../test-config.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import {NewInMemoryDatastore} from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
+import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
 
 const userModifiesUserDataUseCase = suite("User modifies user data use case")
 
 let datastore: Datastore
 userModifiesUserDataUseCase.before.each(() => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
     datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
 })
 

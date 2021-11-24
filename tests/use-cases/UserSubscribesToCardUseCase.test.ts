@@ -8,12 +8,12 @@ import { UserMother } from '../models/user/UserMother.js'
 import { suite, assert } from '../test-config.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import { NewInMemoryDatastore } from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
+import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
 
 const userSubscribesToCard = suite("User subscribes to card")
 
 userSubscribesToCard('given an existing user id and an existing cardid, then create a subscription with id properly formatted', () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
     const db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     const datastore = new DatastoreMother(db)
     const userId = 'theuserid'
@@ -26,7 +26,7 @@ userSubscribesToCard('given an existing user id and an existing cardid, then cre
 })
 
 userSubscribesToCard('given a user subscribed to a card, when subscribing again, should return a USER_IS_ALREADY_SUBSCRIBED_TO_CARD error', () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
     const db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     const datastore = new DatastoreMother(db)
     const userId = 'theuserid'
@@ -41,7 +41,7 @@ userSubscribesToCard('given a user subscribed to a card, when subscribing again,
 
 
 userSubscribesToCard('given an existing user id and an existing cardid, then create a subscription in Level 0', () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
     const db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     const datastore = new DatastoreMother(db)
     datastore.user.withId('theuserid').beingStored()
@@ -55,7 +55,7 @@ userSubscribesToCard('given an existing user id and an existing cardid, then cre
 })
 
 userSubscribesToCard('given a non existing user id and an existing cardid, then the subscription is not done and return a USER_NOT_FOUND error', () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
     const db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     const datastore = new DatastoreMother(db)
     datastore.subscription.withId('someid').beingStored()
@@ -69,7 +69,7 @@ userSubscribesToCard('given a non existing user id and an existing cardid, then 
 })
 
 userSubscribesToCard('given an existing user id and non existing cardid, then the subscription is not done and return a CARD_NOT_FOUND error', () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new NewInMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
     const db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     const datastore = new DatastoreMother(db)
     const userId = 'theuserid'

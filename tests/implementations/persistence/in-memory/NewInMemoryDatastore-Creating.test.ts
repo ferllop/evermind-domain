@@ -1,14 +1,14 @@
 import {PreconditionError} from '../../../../src/implementations/preconditions.js'
 import {Datastore} from '../../../../src/models/Datastore.js'
 import {assert, suite} from '../../../test-config.js'
-import {NewInMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
+import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
 
 const datastoreCreating = suite('New in-memory datastore when creating')
 
 let sutDatastore: Datastore
 
 datastoreCreating.before.each( () => {
-    sutDatastore = new NewInMemoryDatastore()
+    sutDatastore = new InMemoryDatastore()
 })
 
 datastoreCreating('should require a dto with an id property when storing', () => {

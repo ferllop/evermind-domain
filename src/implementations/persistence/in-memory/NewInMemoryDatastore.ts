@@ -3,7 +3,7 @@ import {Datastore} from '../../../models/Datastore.js'
 import {precondition} from '../../preconditions.js'
 import {SyncDatabase} from 'in-memory-database'
 
-export class NewInMemoryDatastore implements Datastore {
+export class InMemoryDatastore implements Datastore {
 
     private db: SyncDatabase
 

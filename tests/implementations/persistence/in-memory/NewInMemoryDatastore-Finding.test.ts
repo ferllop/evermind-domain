@@ -1,13 +1,13 @@
 import {Datastore} from '../../../../src/models/Datastore.js'
 import {assert, suite} from '../../../test-config.js'
-import {NewInMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
+import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/NewInMemoryDatastore.js'
 
 let sutDatastore: Datastore
 
 const datastoreFinder = suite('New in-memory datastore finder')
 
 datastoreFinder.before.each(() => {
-    sutDatastore = new NewInMemoryDatastore()
+    sutDatastore = new InMemoryDatastore()
 })
 
 datastoreFinder('should return an empty array where there are no coincidences', () => {
