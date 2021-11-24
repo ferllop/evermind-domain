@@ -15,7 +15,7 @@ export class UserModifiesUserDataUseCase {
 
         const {id, ...userData} = dto
         const userRepository = new UserRepository()
-        const user = userRepository.retrieve(new UserIdentification(id))
+        const user = userRepository.findById(new UserIdentification(id))
         
         if(user.isNull()) {
             return Response.withError(ErrorType.USER_NOT_FOUND)

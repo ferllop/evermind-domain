@@ -11,7 +11,7 @@ export class UserRemovesAccountUseCase {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }
         const userRepository = new UserRepository()
-        const user = userRepository.retrieve(new Identification(request.id))
+        const user = userRepository.findById(new Identification(request.id))
         if (user.isNull()) {
             return Response.withError(ErrorType.USER_NOT_FOUND)
         }

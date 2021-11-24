@@ -12,7 +12,7 @@ export class UserRemovesCardUseCase {
         }
         
         const cardRepository = new CardRepository()
-        const card = cardRepository.retrieve(new Identification(request.id))
+        const card = cardRepository.findById(new Identification(request.id))
 
         if (card.isNull()) {
             return Response.withError(ErrorType.CARD_NOT_FOUND)

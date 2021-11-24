@@ -23,7 +23,7 @@ export class UserCreatesCardUseCase {
             Labelling.fromStringLabels(request.labelling)
         )
 
-        const error = new CardRepository().store(card)
+        const error = new CardRepository().add(card)
         return new Response(error.getCode(), null)
     }
 

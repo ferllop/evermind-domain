@@ -13,7 +13,7 @@ export class UserReadsACardUseCase {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }
         
-        const card = new CardRepository().retrieve(new Identification(request.id))
+        const card = new CardRepository().findById(new Identification(request.id))
         if(card.isNull()) {
             return Response.withError(ErrorType.CARD_NOT_FOUND)
         }

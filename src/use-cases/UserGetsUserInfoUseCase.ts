@@ -13,7 +13,7 @@ export class UserGetsUserInfoUseCase {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }
         
-        const user = new UserRepository().retrieve(new Identification(request.id))
+        const user = new UserRepository().findById(new Identification(request.id))
         
         if (user.isNull()) {
             return Response.withError(ErrorType.USER_NOT_FOUND)

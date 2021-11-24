@@ -16,7 +16,7 @@ export class UserModifiesCardDataUseCase {
         
         const {id, ...data} = cardData
         const cardRepository = new CardRepository()
-        const card = cardRepository.retrieve(new CardIdentification(id))
+        const card = cardRepository.findById(new CardIdentification(id))
         if (card.isNull()) {
             return Response.withError(ErrorType.CARD_NOT_FOUND)
         }

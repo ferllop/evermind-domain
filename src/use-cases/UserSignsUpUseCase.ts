@@ -13,7 +13,7 @@ export class UserSignsUpUseCase {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
         const user = User.create(new PersonName(request.name), new Username(request.username))
-        const error = new UserRepository().store(user)
+        const error = new UserRepository().add(user)
         return new Response(error.getCode(), null)
     }
 

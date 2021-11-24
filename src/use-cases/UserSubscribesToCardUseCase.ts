@@ -13,12 +13,12 @@ export class UserSubscribesToCardUseCase {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
 
-        const user = new UserRepository().retrieve(new Identification(request.userId))
+        const user = new UserRepository().findById(new Identification(request.userId))
         if (user.isNull()) {
             return Response.withError(ErrorType.USER_NOT_FOUND)
         }
         
-        const card = new CardRepository().retrieve(new Identification(request.cardId))
+        const card = new CardRepository().findById(new Identification(request.cardId))
         if (card.isNull()) {
             return Response.withError(ErrorType.CARD_NOT_FOUND)
         }
@@ -29,7 +29,7 @@ export class UserSubscribesToCardUseCase {
         if(!subscription) {
             return Response.withError(ErrorType.USER_IS_ALREADY_SUBSCRIBED_TO_CARD)
         }
-        const error = subscriptionRepository.store(subscription)
+        const error = subscriptionRepository.add(subscription)
         
         return new Response(error.getCode(), null)
     }

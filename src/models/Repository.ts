@@ -22,7 +22,7 @@ export abstract class Repository<T extends Entity, TDto extends IdDto> {
         this.datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     }
 
-    store(entity: T): DomainError {
+    add(entity: T): DomainError {
         const result = this.datastore.create(this.tableName, this.mapper.toDto(entity))
         if (!result) {
             return new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
@@ -47,7 +47,7 @@ export abstract class Repository<T extends Entity, TDto extends IdDto> {
         return DomainError.NULL
     }
 
-    retrieve(id: Identification): T {
+    findById(id: Identification): T {
         if (!this.datastore.hasTable(this.tableName)) {
             return this.getNull()
         }

@@ -14,12 +14,12 @@ export class UserUnsubscribesFromCardUseCase {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
 
-        const user = new UserRepository().retrieve(new UserIdentification(request.userId))
+        const user = new UserRepository().findById(new UserIdentification(request.userId))
         if (user.isNull()) {
             return Response.withError(ErrorType.USER_NOT_FOUND)
         }
 
-        const card = new CardRepository().retrieve(new CardIdentification(request.cardId))
+        const card = new CardRepository().findById(new CardIdentification(request.cardId))
         if (card.isNull()) {
             return Response.withError(ErrorType.CARD_NOT_FOUND)
         }
