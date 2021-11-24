@@ -5,7 +5,7 @@ import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-
 
 let sutDatastore: Datastore
 
-const datastoreRetrieving = suite('New in-memory datastore when retrieving')
+const datastoreRetrieving = suite('In-memory datastore when retrieving')
 
 datastoreRetrieving.before.each(() => {
     sutDatastore = new InMemoryDatastore()

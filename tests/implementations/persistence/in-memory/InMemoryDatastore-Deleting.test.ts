@@ -5,7 +5,7 @@ import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-
 
 let sutDatastore: Datastore
 
-const datastoreDeleting = suite('New in-memory datastore when deleting')
+const datastoreDeleting = suite('In-memory datastore when deleting')
 
 datastoreDeleting.before.each(() => {
     sutDatastore = new InMemoryDatastore()
