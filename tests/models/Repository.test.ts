@@ -1,87 +1,86 @@
 import { DomainError } from '../../src/models/errors/DomainError.js'
 import { ErrorType } from '../../src/models/errors/ErrorType.js'
-import { Datastore } from '../../src/models/Datastore.js'
 import { Entity } from '../../src/models/Entity.js'
 import { Mapper } from '../../src/models/Mapper.js'
-import { Repository } from '../../src/models/Repository.js'
 import { Validator } from '../../src/models/Validator.js'
 import { IdDto } from '../../src/models/value/IdDto.js'
 import { Identification } from '../../src/models/value/Identification.js'
 import { MayBeIdentified } from '../../src/models/value/MayBeIdentified.js'
 import { assert, suite } from '../test-config.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import { AsyncInMemoryDatastore } from '../../src/implementations/persistence/in-memory/AsyncInMemoryDatastore.js'
+import { AsyncRepository } from '../../src/models/AsyncRepository.js'
+import { Dependency } from '../../src/implementations/implementations-container/Dependency.js'
+import { AsyncDatastore } from '../../src/models/AsyncDatastore.js'
 
 type Context = {
     table: string;
-    db: Datastore;
+    db: AsyncDatastore;
     sut: TestRepository;
 }
 
 const repository = suite<Context>('Repository')
 
 repository.before.each((context: Context) => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.ASYNC_DATASTORE, new AsyncInMemoryDatastore())
     context.table = 'testTable'
-    context.db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
+    context.db = ImplementationsContainer.get(Dependency.ASYNC_DATASTORE) as AsyncDatastore
     context.sut = new TestRepository(context.table, new TestMapper())
 })
 
 repository(
     'given a non existing entity ' +
     'when executing this use case ' +
-    'then return a RESOURCE_NOT_FOUND error', context => {
-        const response = context.sut.delete(new TestEntity())
+    'then return a RESOURCE_NOT_FOUND error', async ({sut}) => {
+        const response = await sut.delete(new TestEntity())
         assert.equal(response, new DomainError(ErrorType.RESOURCE_NOT_FOUND))
     })
 
 repository(
     'given a null entity ' +
     'when deleting it ' +
-    'then return a INVALID_INPU_DATA error', context => {
-        const sut = context.sut
-        const response = sut.delete(sut.getNull())
+    'then return a INVALID_INPU_DATA error', async ({sut}) => {
+        const response = await sut.delete(sut.getNull())
         assert.equal(response, new DomainError(ErrorType.INPUT_DATA_NOT_VALID))
     })
 
 repository(
     'given a non-existing table and a criteria ' +
     'when any valid scenario ' +
-    'returns an empty array', context => {
+    'returns an empty array', async ({sut}) => {
         const criteria = (dto: TestEntityDto) => dto.id === 'non-existing'
-        const response = context.sut.find(criteria)
+        const response = await sut.find(criteria)
         assert.equal(response, [])
     })
 
 repository(
     'given a populated table and a criteria ' +
     'when does not finds any entity matching the criteria ' +
-    'returns an empty array', context => {
-        givenAPopulatedDatabase(context.table, context.db)
+    'returns an empty array', async ({sut, table, db}) => {
+        await givenAPopulatedDatabase(table, db)
         const criteria = (dto: TestEntityDto) => dto.id === 'non-existing'
-        const response = context.sut.find(criteria)
+        const response = await sut.find(criteria)
         assert.equal(response, [])
     })
 
 repository(
     'given a populated table and a criteria ' +
     'when does find an entity matching the criteria ' +
-    'returns an array with the element', context => {
-        givenAPopulatedDatabase(context.table, context.db)
+    'returns an array with the element', async ({sut, table, db}) => {
+        await givenAPopulatedDatabase(table, db)
         const existingEntity = givenAnEntity(1)
         const criteria = (dto: TestEntityDto) => {
             return existingEntity.getId().equals(new Identification(dto.id))
         }
-        const response = context.sut.find(criteria)
+        const response = await sut.find(criteria)
         assert.equal(response, [existingEntity])
     })
 
 repository(
     'given a populated table and two criterias ' +
     'when trying to find entities matching either two criterias ' +
-    'returns an array with the elements matching any of the two criterias', context => {
-        givenAPopulatedDatabase(context.table, context.db)
+    'returns an array with the elements matching any of the two criterias', async ({sut, table, db}) => {
+        await givenAPopulatedDatabase(table, db)
         const existingEntity1 = givenAnEntity(1)
         const existingEntity2 = givenAnEntity(2)
         const criteriaA = (dto: TestEntityDto) => {
@@ -90,15 +89,15 @@ repository(
         const criteriaB = (dto: TestEntityDto) => {
             return existingEntity2.getId().equals(new Identification(dto.id))
         }
-        const response = context.sut.find((dto) => criteriaA(dto) || criteriaB(dto))
+        const response = await sut.find((dto) => criteriaA(dto) || criteriaB(dto))
         assert.equal(response, [existingEntity1, existingEntity2])
     })
 
 repository(
     'given a populated table and two criterias ' +
     'when trying to find entities matching two criterias ' +
-    'returns an array with the elements matching the two criterias at the same time', context => {
-        givenAPopulatedDatabase(context.table, context.db)
+    'returns an array with the elements matching the two criterias at the same time', async ({sut, table, db}) => {
+        await givenAPopulatedDatabase(table, db)
         const existingEntity1 = givenAnEntity(1)
         const criteriaA = (dto: TestEntityDto) => {
             return existingEntity1.getId().equals(new Identification(dto.id))
@@ -106,50 +105,50 @@ repository(
         const criteriaB = (dto: TestEntityDto) => {
             return dto.id.startsWith('someid#')
         }
-        const response = context.sut.find((dto) => criteriaA(dto) && criteriaB(dto))
+        const response = await sut.find((dto) => criteriaA(dto) && criteriaB(dto))
         assert.equal(response, [existingEntity1])
     })
 
 repository(
     'given a non existing table  ' +
     'when trying to find one entity ' +
-    'returns the null entity', context => {
+    'returns the null entity', async ({sut}) => {
         const criteria = (dto: TestEntityDto) => {
             return dto === dto
         }
-        const response = context.sut.findOne(criteria)
-        assert.equal(response, context.sut.getNull())
+        const response = await sut.findOne(criteria)
+        assert.equal(response, sut.getNull())
     })
 
 repository(
     'given a populated table and a criteria ' +
     'when searching and not finding any matching entity ' +
-    'returns the null entity', context => {
-        givenAPopulatedDatabase(context.table, context.db)
+    'returns the null entity', async ({sut, table, db}) => {
+        await givenAPopulatedDatabase(table, db)
         const criteria = (dto: TestEntityDto) => {
             return dto !== dto
         }
-        const response = context.sut.findOne(criteria)
-        assert.equal(response, context.sut.getNull())
+        const response = await sut.findOne(criteria)
+        assert.equal(response, sut.getNull())
     })
 
 repository(
     'given a populated table and a criteria ' +
     'when searching and finding the matching entity ' +
-    'returns the entity', context => {
-        givenAPopulatedDatabase(context.table, context.db)
+    'returns the entity', async ({sut, table, db}) => {
+        await givenAPopulatedDatabase(table, db)
         const criteria = (dto: TestEntityDto) => {
             return dto.id === 'someid#1'
         }
-        const response = context.sut.findOne(criteria)
+        const response = await sut.findOne(criteria)
         assert.equal(response, givenAnEntity(1))
     })
 
 repository.run()
 
-function givenAPopulatedDatabase(table: string, db: Datastore) {
+async function givenAPopulatedDatabase(table: string, db: AsyncDatastore) {
     for (let i = 0; i < 10; i++) {
-        db.create(table, givenAnEntityDto(i))
+        await db.create(table, givenAnEntityDto(i))
     }
 }
 
@@ -174,7 +173,7 @@ class NullTestEntity extends TestEntity {
     }
 }
 
-class TestRepository extends Repository<TestEntity, IdDto> {
+class TestRepository extends AsyncRepository<TestEntity, IdDto> {
     getNull(): TestEntity {
         return NullTestEntity.instance
     }
