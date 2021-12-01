@@ -38,20 +38,20 @@ userRemovesAccountUseCase('given an existing user id, should remove it', async (
     assert.is(await datastoreMother.exists(1), false)
 })
 
-userRemovesAccountUseCase(
-    'given an unexisting user id into an existing users table, ' +
+userRemovesAccountUseCase.only(
+    'given an non-existing user id into an existing users table, ' +
     'it should return an object with data property as null and ' +
     'error property as USER_NOT_FOUND DomainError', async () => {
         await datastoreMother.having(1).storedIn()
-        const result = await new AsyncUserRemovesAccountUseCase().execute({ id: 'unexistingID' })
+        const result = await new AsyncUserRemovesAccountUseCase().execute({ id: 'non-existingId' })
         assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
 
 userRemovesAccountUseCase(
-    'given an unexisting table, ' +
+    'given an non-existing table, ' +
     'it should return an object with data property as null and ' +
     'error property as USER_NOT_FOUND DomainError', async () => {
-        const result = await new AsyncUserRemovesAccountUseCase().execute({ id: 'unexistingIDnorTable' })
+        const result = await new AsyncUserRemovesAccountUseCase().execute({ id: 'non-existingIdNorTable' })
         assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
 

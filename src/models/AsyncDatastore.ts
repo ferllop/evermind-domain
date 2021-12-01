@@ -3,11 +3,11 @@ import { Id } from './value/Id.js'
 
 export interface AsyncDatastore {
 
-    create(table: string, dto: IdDto): Promise<boolean>
+    create<T extends IdDto>(table: string, dto: T): Promise<boolean>
 
     read<T extends IdDto>(table: string, id: Id): Promise<T | null>
 
-    update(table: string, dto: IdDto): Promise<boolean>
+    update<T extends IdDto>(table: string, dto: T): Promise<boolean>
 
     delete(table: string, id: Id): Promise<boolean>
 

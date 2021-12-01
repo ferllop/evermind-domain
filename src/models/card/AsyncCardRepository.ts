@@ -1,8 +1,8 @@
-import {Card} from '../../models/card/Card.js'
-import {CardDto} from '../../models/card/CardDto.js'
-import {CardField} from '../../models/card/CardField.js'
-import {Labelling} from '../../models/card/Labelling.js'
-import {Identification} from '../../models/value/Identification.js'
+import {Card} from './Card.js'
+import {CardDto} from './CardDto.js'
+import {CardField} from './CardField.js'
+import {Labelling} from './Labelling.js'
+import {Identification} from '../value/Identification.js'
 import {CardMapper} from './CardMapper.js'
 import {NullCard} from './NullCard.js'
 import {AsyncRepository} from '../AsyncRepository.js'
@@ -13,7 +13,7 @@ export class AsyncCardRepository extends AsyncRepository<Card, CardDto> {
         super(CardField.TABLE_NAME, new CardMapper())
     }
 
-    findByLabelling(labelling: Labelling): Card[] {
+    async findByLabelling(labelling: Labelling): Promise<Card[]> {
         const criteria = (cardDto: CardDto) => {
             const labelsInDto = Labelling.fromStringLabels(cardDto.labelling)
             return labelling.isIncluded(labelsInDto)
@@ -21,7 +21,7 @@ export class AsyncCardRepository extends AsyncRepository<Card, CardDto> {
         return this.find(criteria)
     }
 
-    findByAuthorId(authorId: Identification): Card[] {
+    async findByAuthorId(authorId: Identification): Promise<Card[]> {
         const criteria = (card: CardDto) => {
             return authorId.equals(new Identification(card.authorID))
         }

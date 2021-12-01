@@ -13,8 +13,12 @@ export class AsyncUserRepository extends AsyncRepository<User, UserDto> {
         super(UserField.TABLE_NAME, new UserMapper())
     }
 
-    override async delete(entity: User) {
-        const result = await super.delete(entity)
+    override async delete(user: User) {
+        if (user.isNull()) {
+            return new DomainError(ErrorType.USER_NOT_FOUND)
+        }
+
+        const result = await super.delete(user)
         if (result.getCode() === ErrorType.RESOURCE_NOT_FOUND) {
             return new DomainError(ErrorType.USER_NOT_FOUND)
         }

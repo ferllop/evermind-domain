@@ -23,7 +23,7 @@ export class AsyncUserCreatesCardUseCase {
             Labelling.fromStringLabels(request.labelling)
         )
 
-        const error = await new AsyncCardRepository().store(card)
+        const error = await new AsyncCardRepository().add(card)
         return new Response(error.getCode(), null)
     }
 

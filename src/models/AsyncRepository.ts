@@ -22,7 +22,7 @@ export abstract class AsyncRepository<T extends Entity, TDto extends IdDto> {
         this.datastore = ImplementationsContainer.get(Dependency.ASYNC_DATASTORE) as AsyncDatastore
     }
 
-    async store(entity: T) {
+    async add(entity: T) {
         const result = await this.datastore.create(this.tableName, this.mapper.toDto(entity))
         if (!result) {
             return new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
@@ -31,9 +31,9 @@ export abstract class AsyncRepository<T extends Entity, TDto extends IdDto> {
     }
 
     async delete(entity: T) {
-        // if (entity.isNull()) {
-        //     return new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
-        // }
+        if (entity.isNull()) {
+            return new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
+        }
 
         if (!await this.datastore.hasTable(this.tableName)) {
             return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
@@ -47,7 +47,7 @@ export abstract class AsyncRepository<T extends Entity, TDto extends IdDto> {
         return DomainError.NULL
     }
 
-    async retrieve(id: Identification): Promise<T> {
+    async findById(id: Identification): Promise<T> {
         if (!await this.datastore.hasTable(this.tableName)) {
             return this.getNull()
         }
@@ -60,8 +60,8 @@ export abstract class AsyncRepository<T extends Entity, TDto extends IdDto> {
         return this.mapper.fromDto(result)
     }
 
-    update(entity: T): DomainError {
-        if (!this.datastore.hasTable(this.tableName)) {
+    async update(entity: T) {
+        if (!await this.datastore.hasTable(this.tableName)) {
             return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }
         const updated = this.datastore.update(this.tableName, this.mapper.toDto(entity))
@@ -71,22 +71,20 @@ export abstract class AsyncRepository<T extends Entity, TDto extends IdDto> {
         return DomainError.NULL
     }
 
-    find(criteria: Criteria<TDto>): T[] {
-        if (!this.datastore.hasTable(this.tableName)) {
+    async find(criteria: Criteria<TDto>): Promise<T[]> {
+        if (!await this.datastore.hasTable(this.tableName)) {
             return []
         }
-        
-        return this.datastore
-            .findMany(this.tableName, criteria)
-            .map(dto => this.mapper.fromDto(dto))
+        const result = await this.datastore.findMany(this.tableName, criteria)
+        return result.map(dto => this.mapper.fromDto(dto))
     }
 
-    findOne(criteria: Criteria<TDto>): T {
-        if (!this.datastore.hasTable(this.tableName)) {
+    async findOne(criteria: Criteria<TDto>) {
+        if (!await this.datastore.hasTable(this.tableName)) {
             return this.getNull()
         }
         
-        const result = this.datastore.findOne(this.tableName, criteria)
+        const result = await this.datastore.findOne(this.tableName, criteria)
 
         if (!result) {
             return this.getNull()
