@@ -12,6 +12,7 @@ export class AsyncInMemoryDatastore implements AsyncDatastore {
     }
 
     async create<T extends IdDto>(table: string, dto: T): Promise<boolean> {
+        precondition(Boolean(dto.id))
         const result = await this.db.insert(table, dto)
         return result.error.code === 0
     }
@@ -29,7 +30,7 @@ export class AsyncInMemoryDatastore implements AsyncDatastore {
     }
 
     async delete(table: string, id: string): Promise<boolean> {
-        precondition(await this.hasTable(table) && Boolean(id))
+        precondition(Boolean(id) && await this.hasTable(table))
         const result = await this.db.delete(table, id)
         return result.error.code === 0
     }

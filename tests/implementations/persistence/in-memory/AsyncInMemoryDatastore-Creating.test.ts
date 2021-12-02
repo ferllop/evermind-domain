@@ -1,4 +1,5 @@
 import { AsyncInMemoryDatastore } from '../../../../src/implementations/persistence/in-memory/AsyncInMemoryDatastore.js'
+import { PreconditionError } from '../../../../src/implementations/preconditions.js'
 import { AsyncDatastore } from '../../../../src/models/AsyncDatastore.js'
 import { assert, suite } from '../../../test-config.js'
 
@@ -8,6 +9,16 @@ let sutDatastore: AsyncDatastore
 
 datastoreCreating.before.each( () => {
     sutDatastore = new AsyncInMemoryDatastore()
+})
+
+datastoreCreating('should require a dto with an id property when creating', async () => {
+    const dto = {id: '', data: 'someData'}
+    try {
+        await sutDatastore.create('aTable', dto)
+        assert.unreachable()
+    } catch (error) {
+        assert.instance(error, PreconditionError)
+    }
 })
 
 datastoreCreating('should return true when storing a dto with an id property', async () => {
