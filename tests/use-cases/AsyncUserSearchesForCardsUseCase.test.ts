@@ -2,11 +2,11 @@ import { CardMother } from '../models/card/CardMother.js'
 import { assert, suite } from '../test-config.js'
 import { UserMother } from '../models/user/UserMother.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { AsyncDatastore } from '../../src/models/AsyncDatastore.js'
 import { AsyncDatastoreMother } from '../models/AsyncDatastoreMother.js'
 import { AsyncUserSearchesForCardsUseCase } from '../../src/use-cases/AsyncUserSearchesForCardsUseCase.js'
+import { AsyncInMemoryDatastore } from '../../src/implementations/persistence/in-memory/AsyncInMemoryDatastore.js'
+import { Dependency } from '../../src/implementations/implementations-container/Dependency.js'
 
 const userSearchesForCards = suite('User searches for cards use case')
 
@@ -14,7 +14,7 @@ const cardMother = new CardMother()
 
 let datastore: AsyncDatastore
 userSearchesForCards.before.each(() => {
-    ImplementationsContainer.set(Dependency.ASYNC_DATASTORE, new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.ASYNC_DATASTORE, new AsyncInMemoryDatastore())
     datastore = ImplementationsContainer.get(Dependency.ASYNC_DATASTORE) as AsyncDatastore
 })
 

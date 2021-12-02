@@ -4,11 +4,11 @@ import { CardMother } from '../models/card/CardMother.js'
 import { IdentificationMother } from '../models/value/IdentificationMother.js'
 import { assert, suite } from '../test-config.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import { Dependency } from '../../src/implementations/implementations-container/Dependency.js'
 import { AsyncDatastore } from '../../src/models/AsyncDatastore.js'
 import { AsyncDatastoreMother } from '../models/AsyncDatastoreMother.js'
 import { AsyncUserRemovesCardUseCase } from '../../src/use-cases/AsyncUserRemovesCardUseCase.js'
+import { AsyncInMemoryDatastore } from '../../src/implementations/persistence/in-memory/AsyncInMemoryDatastore.js'
 
 const userRemovesCardUseCase = suite("User removes card use case")
 
@@ -16,7 +16,7 @@ const cardMother = new CardMother()
 
 let datastore: AsyncDatastore
 userRemovesCardUseCase.before.each(() => {
-    ImplementationsContainer.set(Dependency.ASYNC_DATASTORE, new InMemoryDatastore())
+    ImplementationsContainer.set(Dependency.ASYNC_DATASTORE, new AsyncInMemoryDatastore())
     datastore = ImplementationsContainer.get(Dependency.ASYNC_DATASTORE) as AsyncDatastore
 })
 
