@@ -8,23 +8,23 @@ import { Identification } from '../../src/models/value/Identification.js'
 import { MayBeIdentified } from '../../src/models/value/MayBeIdentified.js'
 import { assert, suite } from '../test-config.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import { AsyncInMemoryDatastore } from '../../src/implementations/persistence/in-memory/AsyncInMemoryDatastore.js'
-import { AsyncRepository } from '../../src/models/AsyncRepository.js'
+import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import { Repository } from '../../src/models/Repository.js'
 import { Dependency } from '../../src/implementations/implementations-container/Dependency.js'
-import { AsyncDatastore } from '../../src/models/AsyncDatastore.js'
+import { Datastore } from '../../src/models/Datastore.js'
 
 type Context = {
     table: string;
-    db: AsyncDatastore;
+    db: Datastore;
     sut: TestRepository;
 }
 
 const repository = suite<Context>('Repository')
 
 repository.before.each((context: Context) => {
-    ImplementationsContainer.set(Dependency.ASYNC_DATASTORE, new AsyncInMemoryDatastore())
+    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
     context.table = 'testTable'
-    context.db = ImplementationsContainer.get(Dependency.ASYNC_DATASTORE) as AsyncDatastore
+    context.db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
     context.sut = new TestRepository(context.table, new TestMapper())
 })
 
@@ -146,7 +146,7 @@ repository(
 
 repository.run()
 
-async function givenAPopulatedDatabase(table: string, db: AsyncDatastore) {
+async function givenAPopulatedDatabase(table: string, db: Datastore) {
     for (let i = 0; i < 10; i++) {
         await db.create(table, givenAnEntityDto(i))
     }
@@ -173,7 +173,7 @@ class NullTestEntity extends TestEntity {
     }
 }
 
-class TestRepository extends AsyncRepository<TestEntity, IdDto> {
+class TestRepository extends Repository<TestEntity, IdDto> {
     getNull(): TestEntity {
         return NullTestEntity.instance
     }

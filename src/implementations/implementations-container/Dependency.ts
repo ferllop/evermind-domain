@@ -1,5 +1,5 @@
 export enum Dependency {
     UUID,
-    ASYNC_DATASTORE,
+    DATASTORE,
     PRECONDITIONS,
 }
