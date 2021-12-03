@@ -1,9 +1,9 @@
-import { ErrorType } from '../models/errors/ErrorType.js';
-import { UserRepository } from '../models/user/UserRepository.js';
-import { PersonName } from '../models/user/PersonName.js';
-import { User } from '../models/user/User.js';
-import { Username } from '../models/user/Username.js';
-import { UserRepository } from '../models/user/UserRepository.js';
+import { ErrorType } from '../domain/errors/ErrorType.js';
+import { UserRepository } from '../domain/user/UserRepository.js';
+import { PersonName } from '../domain/user/PersonName.js';
+import { User } from '../domain/user/User.js';
+import { Username } from '../domain/user/Username.js';
+import { UserRepository } from '../domain/user/UserRepository.js';
 import { Response } from './Response.js';
 import { UserSignsUpRequest } from './UserSignsUpRequest.js';
 

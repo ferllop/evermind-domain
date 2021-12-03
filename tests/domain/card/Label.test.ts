@@ -1,5 +1,5 @@
 import { PreconditionError } from '../../../src/implementations/preconditions.js'
-import { Label } from '../../../src/models/card/Label.js'
+import { Label } from '../../../src/domain/card/Label.js'
 import { assert, suite } from '../../test-config.js'
 
 const label = suite('Label')

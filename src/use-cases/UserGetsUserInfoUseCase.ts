@@ -1,10 +1,10 @@
-import { ErrorType } from '../models/errors/ErrorType.js';
-import { UserDto } from '../models/user/UserDto.js';
-import { UserMapper } from '../models/user/UserMapper.js';
-import { Identification } from '../models/value/Identification.js';
+import { ErrorType } from '../domain/errors/ErrorType.js';
+import { UserDto } from '../domain/user/UserDto.js';
+import { UserMapper } from '../domain/user/UserMapper.js';
+import { Identification } from '../domain/value/Identification.js';
 import { Response } from './Response.js';
 import { UserGetsUserInfoRequest } from './UserGetsUserInfoRequest.js';
-import {UserRepository} from '../models/user/UserRepository.js'
+import {UserRepository} from '../domain/user/UserRepository.js'
 
 export class UserGetsUserInfoUseCase {
 

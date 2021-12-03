@@ -1,6 +1,6 @@
 import { InMemoryDatastore } from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { PreconditionError } from '../../../../src/implementations/preconditions.js'
-import { Datastore } from '../../../../src/models/Datastore.js'
+import { Datastore } from '../../../../src/domain/Datastore.js'
 import { assert, suite } from '../../../test-config.js'
 
 const datastoreCreating = suite('InMemory Datastore When Creating')

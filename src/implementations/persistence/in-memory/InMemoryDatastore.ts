@@ -1,6 +1,6 @@
 import {AsyncDatabase} from 'in-memory-database'
-import {Datastore} from '../../../models/Datastore.js'
-import {IdDto} from '../../../models/value/IdDto.js'
+import {Datastore} from '../../../domain/Datastore.js'
+import {IdDto} from '../../../domain/value/IdDto.js'
 import { precondition } from '../../preconditions.js'
 
 export class InMemoryDatastore implements Datastore {

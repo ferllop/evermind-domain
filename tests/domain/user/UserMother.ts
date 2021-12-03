@@ -1,9 +1,9 @@
 import { IdentificationMother } from '../value/IdentificationMother.js'
-import { UserDto } from '../../../src/models/user/UserDto.js'
-import { Mother } from "../../models/Mother.js"
-import { User } from '../../../src/models/user/User.js'
+import { UserDto } from '../../../src/domain/user/UserDto.js'
+import { Mother } from "../Mother.js"
+import { User } from '../../../src/domain/user/User.js'
 import { UserBuilder } from './UserBuilder.js'
-import { UserMapper } from '../../../src/models/user/UserMapper.js'
+import { UserMapper } from '../../../src/domain/user/UserMapper.js'
 
 export class UserMother implements Mother<UserDto> {
     

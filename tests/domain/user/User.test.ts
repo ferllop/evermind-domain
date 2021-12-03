@@ -1,5 +1,5 @@
 import { precondition } from '../../../src/implementations/preconditions.js'
-import { User } from '../../../src/models/user/User.js'
+import { User } from '../../../src/domain/user/User.js'
 import { assert, suite } from '../../test-config.js'
 import { UserMother } from './UserMother.js'
 

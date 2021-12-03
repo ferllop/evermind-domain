@@ -1,14 +1,14 @@
-import { ErrorType } from '../../src/models/errors/ErrorType.js'
+import { ErrorType } from '../../src/domain/errors/ErrorType.js'
 import { Response } from '../../src/use-cases/Response.js'
-import { CardMother } from '../models/card/CardMother.js'
-import { IdentificationMother } from '../models/value/IdentificationMother.js'
+import { CardMother } from '../domain/card/CardMother.js'
+import { IdentificationMother } from '../domain/value/IdentificationMother.js'
 import { assert, suite } from '../test-config.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import { Dependency } from '../../src/implementations/implementations-container/Dependency.js'
 import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { UserReadsACardUseCase } from '../../src/use-cases/UserReadsACardUseCase.js'
-import { DatastoreMother } from '../models/DatastoreMother.js'
-import { Datastore } from '../../src/models/Datastore.js'
+import { DatastoreMother } from '../domain/DatastoreMother.js'
+import { Datastore } from '../../src/domain/Datastore.js'
 
 const userReadsACardUseCase = suite("User reads a card use case")
 

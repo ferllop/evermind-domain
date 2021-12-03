@@ -1,4 +1,4 @@
-import {IdDto} from '../../src/models/value/IdDto.js'
+import {IdDto} from '../../src/domain/value/IdDto.js'
 import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 
 export class DatastoreTestClass extends InMemoryDatastore {

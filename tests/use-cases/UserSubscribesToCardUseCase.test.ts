@@ -1,13 +1,13 @@
-import { ErrorType } from '../../src/models/errors/ErrorType.js'
+import { ErrorType } from '../../src/domain/errors/ErrorType.js'
 import { precondition } from '../../src/implementations/preconditions.js'
-import { CardMother } from '../models/card/CardMother.js'
-import { SubscriptionMother } from '../models/subscription/SubscriptionMother.js'
-import { UserMother } from '../models/user/UserMother.js'
+import { CardMother } from '../domain/card/CardMother.js'
+import { SubscriptionMother } from '../domain/subscription/SubscriptionMother.js'
+import { UserMother } from '../domain/user/UserMother.js'
 import { suite, assert } from '../test-config.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import { Datastore } from '../../src/models/Datastore.js'
+import { Datastore } from '../../src/domain/Datastore.js'
 import { UserSubscribesToCardUseCase } from '../../src/use-cases/UserSubscribesToCardUseCase.js'
 
 const userSubscribesToCard = suite("User subscribes to card")

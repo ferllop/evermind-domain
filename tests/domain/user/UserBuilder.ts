@@ -1,9 +1,9 @@
-import { PersonName } from '../../../src/models/user/PersonName.js';
-import { User } from '../../../src/models/user/User.js';
-import { Username } from '../../../src/models/user/Username.js';
-import { DayStartTime } from '../../../src/models/value/DayStartTime.js';
-import { Identification } from '../../../src/models/value/Identification.js';
-import { UserMapper } from '../../../src/models/user/UserMapper.js';
+import { PersonName } from '../../../src/domain/user/PersonName.js';
+import { User } from '../../../src/domain/user/User.js';
+import { Username } from '../../../src/domain/user/Username.js';
+import { DayStartTime } from '../../../src/domain/value/DayStartTime.js';
+import { Identification } from '../../../src/domain/value/Identification.js';
+import { UserMapper } from '../../../src/domain/user/UserMapper.js';
 
 export class UserBuilder {
     private id: string

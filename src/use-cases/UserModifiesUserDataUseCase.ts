@@ -1,8 +1,8 @@
-import { ErrorType } from '../models/errors/ErrorType.js';
-import { UserRepository } from '../models/user/UserRepository.js';
-import { UserIdentification } from '../models/user/UserIdentification.js';
-import { UserMapper } from '../models/user/UserMapper.js';
-import { UserRepository } from '../models/user/UserRepository.js';
+import { ErrorType } from '../domain/errors/ErrorType.js';
+import { UserRepository } from '../domain/user/UserRepository.js';
+import { UserIdentification } from '../domain/user/UserIdentification.js';
+import { UserMapper } from '../domain/user/UserMapper.js';
+import { UserRepository } from '../domain/user/UserRepository.js';
 import { Response } from './Response.js';
 import { UserModifiesUserDataRequest } from './UserModifiesUserDataRequest.js';
 

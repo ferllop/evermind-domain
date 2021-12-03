@@ -1,10 +1,10 @@
-import { CardRepository } from '../models/card/CardRepository.js';
-import { CardIdentification } from '../models/card/CardIdentification.js';
-import { ErrorType } from '../models/errors/ErrorType.js';
-import { SubscriptionRepository } from '../models/subscription/SubscriptionRepository.js';
-import { Subscription } from '../models/subscription/Subscription.js';
-import { UserRepository } from '../models/user/UserRepository.js';
-import { UserIdentification } from '../models/user/UserIdentification.js';
+import { CardRepository } from '../domain/card/CardRepository.js';
+import { CardIdentification } from '../domain/card/CardIdentification.js';
+import { ErrorType } from '../domain/errors/ErrorType.js';
+import { SubscriptionRepository } from '../domain/subscription/SubscriptionRepository.js';
+import { Subscription } from '../domain/subscription/Subscription.js';
+import { UserRepository } from '../domain/user/UserRepository.js';
+import { UserIdentification } from '../domain/user/UserIdentification.js';
 import { Response } from './Response.js';
 import { UserUnsubscribesFromCardRequest } from './UserUnsubscribesFromCardRequest.js';
 

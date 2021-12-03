@@ -1,8 +1,8 @@
-import { Card } from '../../../src/models/card/Card.js'
-import { CardDto } from '../../../src/models/card/CardDto.js'
-import { Identification } from '../../../src/models/value/Identification.js'
-import { CardMapper } from '../../../src/models/card/CardMapper.js'
-import { Mother } from "../../models/Mother.js"
+import { Card } from '../../../src/domain/card/Card.js'
+import { CardDto } from '../../../src/domain/card/CardDto.js'
+import { Identification } from '../../../src/domain/value/Identification.js'
+import { CardMapper } from '../../../src/domain/card/CardMapper.js'
+import { Mother } from "../Mother.js"
 import { IdentificationMother } from '../value/IdentificationMother.js'
 import { CardBuilder } from './CardBuilder.js'
 import { LabellingMother } from './LabellingMother.js'

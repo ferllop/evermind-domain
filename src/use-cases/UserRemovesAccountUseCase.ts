@@ -1,7 +1,7 @@
-import { ErrorType } from '../models/errors/ErrorType.js';
-import { UserRepository } from '../models/user/UserRepository.js';
-import { UserRepository } from '../models/user/UserRepository.js';
-import { Identification } from '../models/value/Identification.js';
+import { ErrorType } from '../domain/errors/ErrorType.js';
+import { UserRepository } from '../domain/user/UserRepository.js';
+import { UserRepository } from '../domain/user/UserRepository.js';
+import { Identification } from '../domain/value/Identification.js';
 import { Response } from './Response.js';
 import { UserRemovesAccountRequest } from './UserRemovesAccountRequest.js';
 

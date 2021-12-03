@@ -1,13 +1,13 @@
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import { ErrorType } from '../../src/models/errors/ErrorType.js'
+import { ErrorType } from '../../src/domain/errors/ErrorType.js'
 import { Response } from '../../src/use-cases/Response.js'
-import { UserMother } from '../models/user/UserMother.js'
-import { IdentificationMother } from '../models/value/IdentificationMother.js'
+import { UserMother } from '../domain/user/UserMother.js'
+import { IdentificationMother } from '../domain/value/IdentificationMother.js'
 import { assert, suite } from '../test-config.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 import {UserGetsUserInfoUseCase} from '../../src/use-cases/UserGetsUserInfoUseCase.js'
-import {DatastoreMother} from '../models/DatastoreMother.js'
-import {Datastore} from '../../src/models/Datastore.js'
+import {DatastoreMother} from '../domain/DatastoreMother.js'
+import {Datastore} from '../../src/domain/Datastore.js'
 
 const userGetsUserInfoUseCase = suite("User gets user info use case")
 

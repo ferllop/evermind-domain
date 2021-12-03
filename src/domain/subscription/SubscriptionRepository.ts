@@ -1,8 +1,8 @@
-import { Subscription } from '../../models/subscription/Subscription.js';
-import { SubscriptionField } from '../../models/subscription/SubscriptionField.js';
-import { SubscriptionMapper } from '../../models/subscription/SubscriptionMapper.js';
-import { SubscriptionDto } from '../../models/subscription/SusbcriptionDto.js';
-import { User } from '../../models/user/User.js';
+import { Subscription } from '../subscription/Subscription.js';
+import { SubscriptionField } from '../subscription/SubscriptionField.js';
+import { SubscriptionMapper } from '../subscription/SubscriptionMapper.js';
+import { SubscriptionDto } from '../subscription/SusbcriptionDto.js';
+import { User } from '../user/User.js';
 import { Repository } from '../Repository.js';
 import { NullSubscription } from './NullSubscription.js';
 

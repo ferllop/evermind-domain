@@ -1,5 +1,5 @@
-import { Label } from '../../../src/models/card/Label.js'
-import { Labelling } from '../../../src/models/card/Labelling.js'
+import { Label } from '../../../src/domain/card/Label.js'
+import { Labelling } from '../../../src/domain/card/Labelling.js'
 import { assert, suite } from '../../test-config.js'
 
 const labelling = suite('Labelling')

@@ -1,4 +1,4 @@
-import { IdDto } from '../../../src/models/value/IdDto'
+import { IdDto } from '../../../src/domain/value/IdDto'
 
 export class IdentificationMother {
     

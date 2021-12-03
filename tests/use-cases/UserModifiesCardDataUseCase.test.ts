@@ -1,16 +1,16 @@
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import { CardDto } from '../../src/models/card/CardDto.js'
-import { CardField } from '../../src/models/card/CardField.js'
-import { ErrorType } from '../../src/models/errors/ErrorType.js'
+import { CardDto } from '../../src/domain/card/CardDto.js'
+import { CardField } from '../../src/domain/card/CardField.js'
+import { ErrorType } from '../../src/domain/errors/ErrorType.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { UserModifiesCardDataUseCase } from '../../src/use-cases/UserModifiesCardDataUseCase.js'
-import { CardMother } from '../models/card/CardMother.js'
-import { LabellingMother } from '../models/card/LabellingMother.js'
+import { CardMother } from '../domain/card/CardMother.js'
+import { LabellingMother } from '../domain/card/LabellingMother.js'
 import { assert, suite } from '../test-config.js'
 import { Dependency } from '../../src/implementations/implementations-container/Dependency.js'
 import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import { DatastoreMother } from '../models/DatastoreMother.js'
-import { Datastore } from '../../src/models/Datastore.js'
+import { DatastoreMother } from '../domain/DatastoreMother.js'
+import { Datastore } from '../../src/domain/Datastore.js'
 
 const userModifiesCardDataUseCase = suite("User modifies card data use case")
 

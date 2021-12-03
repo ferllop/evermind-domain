@@ -1,4 +1,4 @@
-import { Id } from '../models/value/Id';
+import { Id } from '../domain/value/Id';
 
 export type UserSubscribesToCardRequest = {
     readonly userId: Id;

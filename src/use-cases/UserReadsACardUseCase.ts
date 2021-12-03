@@ -1,8 +1,8 @@
-import { CardRepository } from '../models/card/CardRepository.js';
-import { CardDto } from '../models/card/CardDto.js';
-import { CardMapper } from '../models/card/CardMapper.js';
-import { ErrorType } from '../models/errors/ErrorType.js';
-import { Identification } from '../models/value/Identification.js';
+import { CardRepository } from '../domain/card/CardRepository.js';
+import { CardDto } from '../domain/card/CardDto.js';
+import { CardMapper } from '../domain/card/CardMapper.js';
+import { ErrorType } from '../domain/errors/ErrorType.js';
+import { Identification } from '../domain/value/Identification.js';
 import { Response } from './Response.js';
 import { UserReadsACardRequest } from './UserReadsACardRequest.js';
 

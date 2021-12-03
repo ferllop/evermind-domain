@@ -1,4 +1,4 @@
-import { Level } from '../../../src/models/subscription/Level.js'
+import { Level } from '../../../src/domain/subscription/Level.js'
 import { assert, suite } from '../../test-config.js'
 
 const level = suite('Level')

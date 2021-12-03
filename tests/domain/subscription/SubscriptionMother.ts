@@ -1,5 +1,5 @@
-import { Subscription } from '../../../src/models/subscription/Subscription.js';
-import { SubscriptionMapper } from '../../../src/models/subscription/SubscriptionMapper.js';
+import { Subscription } from '../../../src/domain/subscription/Subscription.js';
+import { SubscriptionMapper } from '../../../src/domain/subscription/SubscriptionMapper.js';
 import { SubscriptionBuilder } from './SubscriptionBuilder.js';
 
 export class SubscriptionMother {

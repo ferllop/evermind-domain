@@ -1,13 +1,13 @@
-import {AuthorIdentification} from '../models/card/AuthorIdentification.js'
-import {Card} from '../models/card/Card.js'
-import {CardMapper} from '../models/card/CardMapper.js'
-import {Labelling} from '../models/card/Labelling.js'
-import {WrittenAnswer} from '../models/card/WrittenAnswer.js'
-import {WrittenQuestion} from '../models/card/WrittenQuestion.js'
-import {ErrorType} from '../models/errors/ErrorType.js'
+import {AuthorIdentification} from '../domain/card/AuthorIdentification.js'
+import {Card} from '../domain/card/Card.js'
+import {CardMapper} from '../domain/card/CardMapper.js'
+import {Labelling} from '../domain/card/Labelling.js'
+import {WrittenAnswer} from '../domain/card/WrittenAnswer.js'
+import {WrittenQuestion} from '../domain/card/WrittenQuestion.js'
+import {ErrorType} from '../domain/errors/ErrorType.js'
 import {Response} from './Response.js'
 import {UserCreatesCardRequest} from './UserCreatesCardRequest.js'
-import {CardRepository} from '../models/card/CardRepository.js'
+import {CardRepository} from '../domain/card/CardRepository.js'
 
 export class UserCreatesCardUseCase {
 

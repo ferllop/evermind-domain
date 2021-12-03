@@ -1,3 +1,3 @@
-import { IdDto } from '../models/value/IdDto';
+import { IdDto } from '../domain/value/IdDto';
 
 export type UserGetsUserInfoRequest = IdDto

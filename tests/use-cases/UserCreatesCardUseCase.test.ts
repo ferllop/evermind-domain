@@ -1,13 +1,13 @@
 import {ImplementationsContainer} from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import {ErrorType} from '../../src/models/errors/ErrorType.js'
+import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Response} from '../../src/use-cases/Response.js'
-import {CardMother} from '../models/card/CardMother.js'
-import {IdentificationMother} from '../models/value/IdentificationMother.js'
+import {CardMother} from '../domain/card/CardMother.js'
+import {IdentificationMother} from '../domain/value/IdentificationMother.js'
 import {assert, suite} from '../test-config.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import {DatastoreTestClass} from '../models/DatastoreTestClass.js'
-import {DatastoreMother} from '../models/DatastoreMother.js'
+import {DatastoreTestClass} from '../domain/DatastoreTestClass.js'
+import {DatastoreMother} from '../domain/DatastoreMother.js'
 import {UserCreatesCardUseCase} from '../../src/use-cases/UserCreatesCardUseCase.js'
 
 const userCreatesCardUseCase = suite("User creates a card use case")

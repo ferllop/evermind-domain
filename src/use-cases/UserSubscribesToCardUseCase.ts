@@ -1,12 +1,12 @@
-import { CardRepository } from '../models/card/CardRepository.js';
-import { CardRepository } from '../models/card/CardRepository.js';
-import { ErrorType } from '../models/errors/ErrorType.js';
-import { SubscriptionRepository } from '../models/subscription/SubscriptionRepository.js';
-import { Subscription } from '../models/subscription/Subscription.js';
-import { SubscriptionRepository } from '../models/subscription/SubscriptionRepository.js';
-import { UserRepository } from '../models/user/UserRepository.js';
-import { UserRepository } from '../models/user/UserRepository.js';
-import { Identification } from '../models/value/Identification.js';
+import { CardRepository } from '../domain/card/CardRepository.js';
+import { CardRepository } from '../domain/card/CardRepository.js';
+import { ErrorType } from '../domain/errors/ErrorType.js';
+import { SubscriptionRepository } from '../domain/subscription/SubscriptionRepository.js';
+import { Subscription } from '../domain/subscription/Subscription.js';
+import { SubscriptionRepository } from '../domain/subscription/SubscriptionRepository.js';
+import { UserRepository } from '../domain/user/UserRepository.js';
+import { UserRepository } from '../domain/user/UserRepository.js';
+import { Identification } from '../domain/value/Identification.js';
 import { Response } from './Response.js';
 import { UserSubscribesToCardRequest } from './UserSubscribesToCardRequest.js';
 
