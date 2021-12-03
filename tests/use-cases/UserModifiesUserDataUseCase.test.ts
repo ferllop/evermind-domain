@@ -1,12 +1,12 @@
 import { ErrorType } from '../../src/domain/errors/ErrorType.js'
-import { Datastore } from '../../src/domain/Datastore.js'
+import { Datastore } from '../../src/domain/shared/Datastore.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { UserMother } from '../domain/user/UserMother.js'
 import { assert, suite } from '../test-config.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 import { UserModifiesUserDataUseCase } from '../../src/use-cases/UserModifiesUserDataUseCase.js'
-import { DatastoreMother } from '../domain/DatastoreMother.js'
+import { DatastoreMother } from '../domain/shared/DatastoreMother.js'
 import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 
 const userModifiesUserDataUseCase = suite("User modifies user data use case")

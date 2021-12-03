@@ -1,6 +1,6 @@
 import { CardIdentification } from '../card/CardIdentification.js';
 import { UserIdentification } from '../user/UserIdentification.js';
-import { Identification } from '../value/Identification.js';
+import { Identification } from '../shared/value/Identification.js';
 
 export class SubscriptionIdentification extends Identification {
     SEPARATOR = '#'

@@ -1,6 +1,6 @@
 import { IdentificationMother } from '../value/IdentificationMother.js'
 import { UserDto } from '../../../src/domain/user/UserDto.js'
-import { Mother } from "../Mother.js"
+import { Mother } from "../shared/Mother.js"
 import { User } from '../../../src/domain/user/User.js'
 import { UserBuilder } from './UserBuilder.js'
 import { UserMapper } from '../../../src/domain/user/UserMapper.js'

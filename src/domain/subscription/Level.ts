@@ -1,5 +1,5 @@
-import { DateEvermind } from '../value/DateEvermind.js'
-import { Enum } from '../value/Enum.js'
+import { DateEvermind } from '../shared/value/DateEvermind.js'
+import { Enum } from '../shared/value/Enum.js'
 
 export class Level extends Enum {
     private static values: Level[] = []

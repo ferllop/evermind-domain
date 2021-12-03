@@ -5,7 +5,7 @@ import { Labelling } from '../../../src/domain/card/Labelling.js'
 import { Question } from '../../../src/domain/card/Question.js'
 import { WrittenAnswer } from '../../../src/domain/card/WrittenAnswer.js'
 import { WrittenQuestion } from '../../../src/domain/card/WrittenQuestion.js'
-import { Identification } from '../../../src/domain/value/Identification.js'
+import { Identification } from '../../../src/domain/shared/value/Identification.js'
 import { CardMapper } from '../../../src/domain/card/CardMapper.js'
 import { Label } from '../../../src/domain/card/Label.js'
 

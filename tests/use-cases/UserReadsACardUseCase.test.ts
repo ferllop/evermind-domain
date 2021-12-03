@@ -7,8 +7,8 @@ import { ImplementationsContainer } from '../../src/implementations/implementati
 import { Dependency } from '../../src/implementations/implementations-container/Dependency.js'
 import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { UserReadsACardUseCase } from '../../src/use-cases/UserReadsACardUseCase.js'
-import { DatastoreMother } from '../domain/DatastoreMother.js'
-import { Datastore } from '../../src/domain/Datastore.js'
+import { DatastoreMother } from '../domain/shared/DatastoreMother.js'
+import { Datastore } from '../../src/domain/shared/Datastore.js'
 
 const userReadsACardUseCase = suite("User reads a card use case")
 

@@ -3,7 +3,7 @@ import { SubscriptionField } from '../subscription/SubscriptionField.js';
 import { SubscriptionMapper } from '../subscription/SubscriptionMapper.js';
 import { SubscriptionDto } from '../subscription/SusbcriptionDto.js';
 import { User } from '../user/User.js';
-import { Repository } from '../Repository.js';
+import { Repository } from '../shared/Repository.js';
 import { NullSubscription } from './NullSubscription.js';
 
 export class SubscriptionRepository extends Repository<Subscription, SubscriptionDto> {

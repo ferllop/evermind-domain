@@ -5,8 +5,8 @@ import { ErrorType } from '../../src/domain/errors/ErrorType.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import { DatastoreTestClass } from '../domain/DatastoreTestClass.js'
-import { DatastoreMother } from '../domain/DatastoreMother.js'
+import { DatastoreTestClass } from '../domain/shared/DatastoreTestClass.js'
+import { DatastoreMother } from '../domain/shared/DatastoreMother.js'
 import { UserSignsUpUseCase } from '../../src/use-cases/UserSignsUpUseCase.js'
 
 const userSignsUpUseCase = suite("User signs up use case")

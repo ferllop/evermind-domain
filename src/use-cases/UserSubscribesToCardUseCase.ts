@@ -6,7 +6,7 @@ import { Subscription } from '../domain/subscription/Subscription.js';
 import { SubscriptionRepository } from '../domain/subscription/SubscriptionRepository.js';
 import { UserRepository } from '../domain/user/UserRepository.js';
 import { UserRepository } from '../domain/user/UserRepository.js';
-import { Identification } from '../domain/value/Identification.js';
+import { Identification } from '../domain/shared/value/Identification.js';
 import { Response } from './Response.js';
 import { UserSubscribesToCardRequest } from './UserSubscribesToCardRequest.js';
 

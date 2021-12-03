@@ -1,9 +1,9 @@
 import { Level } from '../../../src/domain/subscription/Level.js'
 import { Subscription } from '../../../src/domain/subscription/Subscription.js'
 import { SubscriptionIdentification } from '../../../src/domain/subscription/SubscriptionIdentification.js'
-import { DateEvermind } from '../../../src/domain/value/DateEvermind.js'
-import { DateISO } from '../../../src/domain/value/DateISO.js'
-import { Identification } from '../../../src/domain/value/Identification.js'
+import { DateEvermind } from '../../../src/domain/shared/value/DateEvermind.js'
+import { DateISO } from '../../../src/domain/shared/value/DateISO.js'
+import { Identification } from '../../../src/domain/shared/value/Identification.js'
 
 export class SubscriptionBuilder {
     private id: SubscriptionIdentification

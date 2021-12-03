@@ -1,12 +1,12 @@
-import {DomainError} from './errors/DomainError.js'
-import {ErrorType} from './errors/ErrorType.js'
+import {DomainError} from '../errors/DomainError.js'
+import {ErrorType} from '../errors/ErrorType.js'
 import {Entity} from './Entity.js'
 import {IdDto} from './value/IdDto.js'
 import {Identification} from './value/Identification.js'
-import {Criteria} from './Criteria'
+import {Criteria} from './Criteria.js'
 import {Mapper} from './Mapper.js'
-import {ImplementationsContainer} from '../implementations/implementations-container/ImplementationsContainer.js'
-import {Dependency} from '../implementations/implementations-container/Dependency.js'
+import {ImplementationsContainer} from '../../implementations/implementations-container/ImplementationsContainer.js'
+import {Dependency} from '../../implementations/implementations-container/Dependency.js'
 import {Datastore} from './Datastore.js'
 
 

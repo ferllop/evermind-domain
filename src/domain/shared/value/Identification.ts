@@ -1,7 +1,7 @@
-import {precondition} from '../../implementations/preconditions.js'
-import {ImplementationsContainer} from '../../implementations/implementations-container/ImplementationsContainer.js'
+import {precondition} from '../../../implementations/preconditions.js'
+import {ImplementationsContainer} from '../../../implementations/implementations-container/ImplementationsContainer.js'
 import {UuidGenerator} from './UuidGenerator.js'
-import {Dependency} from '../../implementations/implementations-container/Dependency.js'
+import {Dependency} from '../../../implementations/implementations-container/Dependency.js'
 
 export class Identification {
     static NULL = new Identification('')

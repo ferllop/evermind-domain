@@ -1,9 +1,9 @@
 import { Level } from '../../../src/domain/subscription/Level.js'
 import { Subscription } from '../../../src/domain/subscription/Subscription.js'
 import { SubscriptionIdentification } from '../../../src/domain/subscription/SubscriptionIdentification.js'
-import { DateEvermind } from '../../../src/domain/value/DateEvermind.js'
-import { DayStartTime } from '../../../src/domain/value/DayStartTime.js'
-import { Identification } from '../../../src/domain/value/Identification.js'
+import { DateEvermind } from '../../../src/domain/shared/value/DateEvermind.js'
+import { DayStartTime } from '../../../src/domain/shared/value/DayStartTime.js'
+import { Identification } from '../../../src/domain/shared/value/Identification.js'
 import { assert, suite } from '../../test-config.js'
 
 class SubscriptionMother {

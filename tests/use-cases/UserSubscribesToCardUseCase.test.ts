@@ -7,7 +7,7 @@ import { suite, assert } from '../test-config.js'
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import { Datastore } from '../../src/domain/Datastore.js'
+import { Datastore } from '../../src/domain/shared/Datastore.js'
 import { UserSubscribesToCardUseCase } from '../../src/use-cases/UserSubscribesToCardUseCase.js'
 
 const userSubscribesToCard = suite("User subscribes to card")

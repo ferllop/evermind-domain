@@ -1,4 +1,4 @@
-import { DayStartTime } from '../value/DayStartTime.js';
+import { DayStartTime } from '../shared/value/DayStartTime.js';
 import { PersonName } from './PersonName.js';
 import { Username } from './Username.js';
 import { User } from './User.js';

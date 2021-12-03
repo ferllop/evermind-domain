@@ -1,6 +1,6 @@
-import { DateEvermind } from '../value/DateEvermind';
-import { DateISO } from '../value/DateISO';
-import { Identification } from '../value/Identification';
+import { DateEvermind } from '../shared/value/DateEvermind';
+import { DateISO } from '../shared/value/DateISO';
+import { Identification } from '../shared/value/Identification';
 import { AuthenticationStatus } from './AuthenticationStatus';
 import { Email } from './Email';
 import { Password } from './Password';

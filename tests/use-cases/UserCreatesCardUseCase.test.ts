@@ -6,8 +6,8 @@ import {IdentificationMother} from '../domain/value/IdentificationMother.js'
 import {assert, suite} from '../test-config.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import {DatastoreTestClass} from '../domain/DatastoreTestClass.js'
-import {DatastoreMother} from '../domain/DatastoreMother.js'
+import {DatastoreTestClass} from '../domain/shared/DatastoreTestClass.js'
+import {DatastoreMother} from '../domain/shared/DatastoreMother.js'
 import {UserCreatesCardUseCase} from '../../src/use-cases/UserCreatesCardUseCase.js'
 
 const userCreatesCardUseCase = suite("User creates a card use case")

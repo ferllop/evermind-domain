@@ -1,8 +1,8 @@
 import { PersonName } from '../../../src/domain/user/PersonName.js';
 import { User } from '../../../src/domain/user/User.js';
 import { Username } from '../../../src/domain/user/Username.js';
-import { DayStartTime } from '../../../src/domain/value/DayStartTime.js';
-import { Identification } from '../../../src/domain/value/Identification.js';
+import { DayStartTime } from '../../../src/domain/shared/value/DayStartTime.js';
+import { Identification } from '../../../src/domain/shared/value/Identification.js';
 import { UserMapper } from '../../../src/domain/user/UserMapper.js';
 
 export class UserBuilder {

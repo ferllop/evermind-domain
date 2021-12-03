@@ -1,4 +1,4 @@
-import { IdDto } from '../../../src/domain/value/IdDto'
+import { IdDto } from '../../../src/domain/shared/value/IdDto'
 
 export class IdentificationMother {
     

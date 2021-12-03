@@ -1,7 +1,7 @@
 import { CardRepository } from '../domain/card/CardRepository.js';
 import { CardRepository } from '../domain/card/CardRepository.js';
 import { ErrorType } from '../domain/errors/ErrorType.js';
-import { Identification } from '../domain/value/Identification.js';
+import { Identification } from '../domain/shared/value/Identification.js';
 import { Response } from './Response.js';
 import { UserRemovesCardRequest } from './UserRemovesCardRequest.js';
 

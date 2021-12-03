@@ -1,4 +1,4 @@
-import { DateISO } from '../value/DateISO';
+import { DateISO } from '../shared/value/DateISO';
 
 export type SubscriptionDto = {
     id: string;

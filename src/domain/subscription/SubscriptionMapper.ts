@@ -1,14 +1,14 @@
-import { Mapper } from '../Mapper.js';
-import { MayBeIdentified } from '../value/MayBeIdentified.js';
-import { Identification } from '../value/Identification.js';
+import { Mapper } from '../shared/Mapper.js';
+import { MayBeIdentified } from '../shared/value/MayBeIdentified.js';
+import { Identification } from '../shared/value/Identification.js';
 import { Level } from './Level.js';
 import { Subscription } from './Subscription.js';
 import { SubscriptionDto } from './SusbcriptionDto.js';
 import { SubscriptionIdentification } from './SubscriptionIdentification.js';
-import { Validator } from '../Validator.js';
+import { Validator } from '../shared/Validator.js';
 import { UserIdentification } from '../user/UserIdentification.js';
 import { CardIdentification } from '../card/CardIdentification.js';
-import { DateEvermind } from '../value/DateEvermind.js';
+import { DateEvermind } from '../shared/value/DateEvermind.js';
 
 export class SubscriptionMapper extends Mapper<Subscription, SubscriptionDto> {
     getValidators(): Map<string, Validator> {

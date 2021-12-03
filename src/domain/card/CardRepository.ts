@@ -2,10 +2,10 @@ import {Card} from './Card.js'
 import {CardDto} from './CardDto.js'
 import {CardField} from './CardField.js'
 import {Labelling} from './Labelling.js'
-import {Identification} from '../value/Identification.js'
+import {Identification} from '../shared/value/Identification.js'
 import {CardMapper} from './CardMapper.js'
 import {NullCard} from './NullCard.js'
-import {Repository} from '../Repository.js'
+import {Repository} from '../shared/Repository.js'
 
 export class CardRepository extends Repository<Card, CardDto> {
 

@@ -1,4 +1,4 @@
-import { Id } from '../domain/value/Id';
+import { Id } from '../domain/shared/value/Id';
 
 export type UserCreatesCardRequest = {
     userId: Id,

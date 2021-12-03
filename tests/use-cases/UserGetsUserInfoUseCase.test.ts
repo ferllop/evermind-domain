@@ -6,8 +6,8 @@ import { IdentificationMother } from '../domain/value/IdentificationMother.js'
 import { assert, suite } from '../test-config.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 import {UserGetsUserInfoUseCase} from '../../src/use-cases/UserGetsUserInfoUseCase.js'
-import {DatastoreMother} from '../domain/DatastoreMother.js'
-import {Datastore} from '../../src/domain/Datastore.js'
+import {DatastoreMother} from '../domain/shared/DatastoreMother.js'
+import {Datastore} from '../../src/domain/shared/Datastore.js'
 
 const userGetsUserInfoUseCase = suite("User gets user info use case")
 

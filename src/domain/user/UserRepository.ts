@@ -3,7 +3,7 @@ import {UserDto} from './UserDto.js'
 import {UserField} from './UserField.js'
 import {NullUser} from './NullUser.js'
 import {UserMapper} from './UserMapper.js'
-import {Repository} from '../Repository.js'
+import {Repository} from '../shared/Repository.js'
 import {ErrorType} from '../errors/ErrorType.js'
 import {DomainError} from '../errors/DomainError.js'
 

@@ -1,5 +1,5 @@
-import { Entity } from '../Entity.js'
-import { Identification } from '../value/Identification.js'
+import { Entity } from '../shared/Entity.js'
+import { Identification } from '../shared/value/Identification.js'
 import { Answer } from './Answer.js'
 import { AuthorIdentification } from './AuthorIdentification.js'
 import { CardDto } from './CardDto.js'
