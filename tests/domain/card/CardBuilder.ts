@@ -8,6 +8,7 @@ import { WrittenQuestion } from '../../../src/domain/card/WrittenQuestion.js'
 import { Identification } from '../../../src/domain/shared/value/Identification.js'
 import { CardMapper } from '../../../src/domain/card/CardMapper.js'
 import { Label } from '../../../src/domain/card/Label.js'
+import { CardIdentification } from '../../../src/domain/card/CardIdentification.js'
 
 export class CardBuilder {
 
@@ -19,7 +20,7 @@ export class CardBuilder {
 
     constructor() {
         this.id = Identification.create()
-        this.authorID = new AuthorIdentification(Identification.create().toString())
+        this.authorID = AuthorIdentification.create() as AuthorIdentification
         this.question = new WrittenQuestion('question')
         this.answer = new WrittenAnswer('answer')
         this.labelling = new Labelling([new Label('labelling')])
@@ -47,6 +48,21 @@ export class CardBuilder {
 
     setLabelling(labelling: Labelling) {
         this.labelling = labelling
+        return this
+    }
+
+    withId(id: string) {
+        this.id = new CardIdentification(id)
+        return this
+    }
+
+    withAuthorId(id: string) {
+        this.authorID = new AuthorIdentification(id)
+        return this
+    }
+
+    withLabels(labels: string[]) {
+        this.labelling = Labelling.fromStringLabels(labels)
         return this
     }
 

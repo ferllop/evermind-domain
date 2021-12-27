@@ -85,5 +85,12 @@ export class Card extends Entity {
             (Boolean(id) ? Identification.isValid(id) : true)
     }
 
+    toDto(){
+        return new CardMapper().toDto(this)
+    }
+
+    static fromDto(dto: CardDto){
+        return new CardMapper().fromDto(dto)
+    }
 
 }
