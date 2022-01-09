@@ -10,5 +10,6 @@ postgresDatastore('should connect to testing database', async () => {
 })
 
 if(process.env.WITH_POSTGRES){
+    process.env.PGPASSWORD = 'testing_evermind'
     postgresDatastore.run()
 }
