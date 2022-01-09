@@ -38,6 +38,6 @@
     "node-postgres": "0.6.2",
     "pg": "8.7.1",
     "pg-format": "1.0.4",
-    "preconditions": "github:ferllop/preconditions#semver:2.x.x"
+    "preconditions": "github:ferllop/preconditions#semver:2.0.1"
   }
 }
