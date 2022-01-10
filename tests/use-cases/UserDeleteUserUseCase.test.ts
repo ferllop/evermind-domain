@@ -38,7 +38,7 @@ userRemovesAccountUseCase('given an existing user id, should remove it', async (
     assert.is(await datastoreMother.exists(1), false)
 })
 
-userRemovesAccountUseCase.only(
+userRemovesAccountUseCase(
     'given an non-existing user id into an existing users table, ' +
     'it should return an object with data property as null and ' +
     'error property as USER_NOT_FOUND DomainError', async () => {
