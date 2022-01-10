@@ -1,7 +1,7 @@
 import { QueryResult } from 'node-postgres'
 import { AuthorIdentification } from '../../../../src/domain/card/AuthorIdentification.js'
 import { CardIdentification } from '../../../../src/domain/card/CardIdentification.js'
-import { CardDao } from '../../../../src/domain/card/CardDao.js'
+import { CardDao } from '../../../../src/implementations/persistence/postgres/CardDao.js'
 import { DomainError } from '../../../../src/domain/errors/DomainError.js'
 import { ErrorType } from '../../../../src/domain/errors/ErrorType.js'
 import { PostgresDatastore } from '../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
@@ -19,7 +19,7 @@ cardDao('should throw a CARD_ALREADY_EXISTS error when the provided card already
     const id = CardIdentification.create().getId()
     const card = new CardBuilder().withId(id).build()
     try {
-        await sut.add(card)
+        await sut.insert(card)
         assert.unreachable()
     } catch (error) {
         if(error instanceof DomainError){
@@ -52,7 +52,7 @@ cardDao('should send the correct insert query to datastore', async () => {
         card.getId().getId()}','label2');
     COMMIT;`
     mock.expectQuery(query)
-    await sut.add(card)
+    await sut.insert(card)
 })
 
 cardDao('should throw a CARD_NOT_FOUND error when no card is found to be deleted', async () => {
@@ -162,7 +162,7 @@ class PostgresDatastoreMock extends PostgresDatastore {
 
     override async query(query: string) {
         if (this.errorToThrow) {
-            return this.errorToThrow
+            throw this.errorToThrow
         }
         if (this.expectedQuery) {
             this.assertMultiLine(query, this.expectedQuery)
