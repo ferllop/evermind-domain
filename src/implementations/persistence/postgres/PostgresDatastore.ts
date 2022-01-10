@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import {Pool} from "pg";
 
 export class PostgresDatastore {
     private pool: Pool
@@ -8,17 +8,13 @@ export class PostgresDatastore {
     }
 
     async query(query: string) {
-        try {
-            const result = await this.pool.query(query)
-            this.pool.end()
-            return result
-        } catch (error) {
-            return error
-        }
+        const result = await this.pool.query(query)
+        await this.pool.end()
+        return result
     }
 }
 
-export enum PostgresError {
+export enum PostgresErrorType {
     NOT_UNIQUE_FIELD = '23505',
     TABLE_DOES_NOT_EXISTS = '42P01',
 }
