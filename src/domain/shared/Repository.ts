@@ -12,7 +12,7 @@ import {Datastore} from './Datastore.js'
 
 export abstract class Repository<T extends Entity, TDto extends IdDto> {
     
-    private tableName: string
+    private readonly tableName: string
     private mapper: Mapper<T, TDto>
     protected datastore: Datastore
 
@@ -60,13 +60,12 @@ export abstract class Repository<T extends Entity, TDto extends IdDto> {
 
     async update(entity: T) {
         if (!await this.datastore.hasTable(this.tableName)) {
-            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+            throw new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }
         const updated = this.datastore.update(this.tableName, this.mapper.toDto(entity))
         if(!updated) {
-            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+            throw new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }
-        return DomainError.NULL
     }
 
     async find(criteria: Criteria<TDto>): Promise<T[]> {

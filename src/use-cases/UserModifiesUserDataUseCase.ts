@@ -2,7 +2,6 @@ import { ErrorType } from '../domain/errors/ErrorType.js';
 import { UserRepository } from '../domain/user/UserRepository.js';
 import { UserIdentification } from '../domain/user/UserIdentification.js';
 import { UserMapper } from '../domain/user/UserMapper.js';
-import { UserRepository } from '../domain/user/UserRepository.js';
 import { Response } from './Response.js';
 import { UserModifiesUserDataRequest } from './UserModifiesUserDataRequest.js';
 
@@ -23,8 +22,12 @@ export class UserModifiesUserDataUseCase {
             return Response.withError(ErrorType.USER_NOT_FOUND)
         }
 
-        const error = await userRepository.update(user.apply(userData))
-        return new Response(error.getCode(), null)
+        try {
+            await userRepository.update(user.apply(userData))
+            return Response.OkWithoutData()
+        } catch(error) {
+            return Response.withError(error)
+        }
     }
 
 }

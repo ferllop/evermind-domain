@@ -21,8 +21,12 @@ export class UserModifiesCardDataUseCase {
             return Response.withError(ErrorType.CARD_NOT_FOUND)
         }
 
-        const error = await cardRepository.update(card.apply(data))
-        return new Response(error.getCode(), null)
+        try {
+            await cardRepository.update(card.apply(data))
+            return Response.OkWithoutData()
+        } catch(error) {
+            return Response.withError(error)
+        }
     }
     
 }
