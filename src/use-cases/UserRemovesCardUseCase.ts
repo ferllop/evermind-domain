@@ -1,5 +1,4 @@
 import { CardRepository } from '../domain/card/CardRepository.js';
-import { CardRepository } from '../domain/card/CardRepository.js';
 import { ErrorType } from '../domain/errors/ErrorType.js';
 import { Identification } from '../domain/shared/value/Identification.js';
 import { Response } from './Response.js';
@@ -19,8 +18,12 @@ export class UserRemovesCardUseCase {
             return Response.withError(ErrorType.CARD_NOT_FOUND)
         }
 
-        const error = await cardRepository.delete(card)
-        return new Response(error.getCode(), null)
+        try {
+            await cardRepository.delete(card)
+            return Response.OkWithoutData()
+        } catch(error) {
+            return Response.withError(error)
+        }
     }
     
 }

@@ -31,7 +31,12 @@ export class UserUnsubscribesFromCardUseCase {
         if (!subscription) {
             return Response.withError(ErrorType.SUBSCRIPTION_NOT_EXISTS)
         }
-        const error = await subscriptionRepository.delete(subscription)
-        return new Response(error.getCode(), null)
+
+        try {
+            await subscriptionRepository.delete(subscription)
+            return Response.OkWithoutData()
+        } catch(error) {
+            return Response.withError(error)
+        }
     }
 }

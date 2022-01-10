@@ -30,18 +30,26 @@ repository.before.each((context: Context) => {
 
 repository(
     'given a non existing entity ' +
-    'when executing this use case ' +
+    'when deleting it ' +
     'then return a RESOURCE_NOT_FOUND error', async ({sut}) => {
-        const response = await sut.delete(new TestEntity())
-        assert.equal(response, new DomainError(ErrorType.RESOURCE_NOT_FOUND))
+        try {
+            await sut.delete(new TestEntity())
+            assert.unreachable()
+        } catch (error) {
+            assert.equal(error, new DomainError(ErrorType.RESOURCE_NOT_FOUND))
+        }
     })
 
 repository(
     'given a null entity ' +
     'when deleting it ' +
     'then return a INVALID_INPU_DATA error', async ({sut}) => {
-        const response = await sut.delete(sut.getNull())
-        assert.equal(response, new DomainError(ErrorType.INPUT_DATA_NOT_VALID))
+        try {
+            await sut.delete(sut.getNull())
+            assert.unreachable()
+        } catch (error) {
+            assert.equal(error, new DomainError(ErrorType.INPUT_DATA_NOT_VALID))
+        }
     })
 
 repository(

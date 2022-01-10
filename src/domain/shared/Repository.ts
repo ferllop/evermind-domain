@@ -31,19 +31,18 @@ export abstract class Repository<T extends Entity, TDto extends IdDto> {
 
     async delete(entity: T) {
         if (entity.isNull()) {
-            return new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
+            throw new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
         }
 
         if (!await this.datastore.hasTable(this.tableName)) {
-            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+            throw new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }
 
         const deleted = await this.datastore.delete(this.tableName, entity.getId().getId())
         if (!deleted) {
-            return new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+            throw new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }
 
-        return DomainError.NULL
     }
 
     async findById(id: Identification): Promise<T> {

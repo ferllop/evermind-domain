@@ -15,18 +15,21 @@ export class UserRepository extends Repository<User, UserDto> {
 
     override async delete(user: User) {
         if (user.isNull()) {
-            return new DomainError(ErrorType.USER_NOT_FOUND)
+            throw new DomainError(ErrorType.USER_NOT_FOUND)
         }
 
-        const result = await super.delete(user)
-        if (result.getCode() === ErrorType.RESOURCE_NOT_FOUND) {
-            return new DomainError(ErrorType.USER_NOT_FOUND)
+        try {
+            return await super.delete(user)
+        } catch (error) {
+            if (error.code() === ErrorType.RESOURCE_NOT_FOUND) {
+                throw new DomainError(ErrorType.USER_NOT_FOUND)
+            }
+            throw error
         }
-        return result
     }
 
     getNull() {
         return NullUser.getInstance()
     }
-    
+
 }
