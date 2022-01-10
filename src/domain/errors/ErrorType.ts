@@ -8,6 +8,7 @@ export enum ErrorType {
     SUBSCRIPTION_NOT_EXISTS,
     USER_IS_ALREADY_SUBSCRIBED_TO_CARD,
     CARD_ALREADY_EXISTS,
+    USER_ALREADY_EXISTS,
 }
 
 export const ErrorEnglish = new Map()
