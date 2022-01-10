@@ -9,7 +9,9 @@ export class PostgresDatastore {
 
     async query(query: string) {
         try {
-            return await this.pool.query(query)
+            const result = await this.pool.query(query)
+            this.pool.end()
+            return result
         } catch (error) {
             return error
         }
