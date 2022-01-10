@@ -15,7 +15,7 @@ export class UserCreatesCardUseCase {
         if (!new CardMapper().isDtoValid({...request, authorID: request.userId})) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }
-        
+
         const card = Card.create(
             new AuthorIdentification(request.userId),
             new WrittenQuestion(request.question),
@@ -23,8 +23,12 @@ export class UserCreatesCardUseCase {
             Labelling.fromStringLabels(request.labelling)
         )
 
-        const error = await new CardRepository().add(card)
-        return new Response(error.getCode(), null)
+        try {
+            await new CardRepository().add(card)
+            return Response.OkWithoutData()
+        } catch(error) {
+            return Response.withError(error)
+        }
     }
 
 }

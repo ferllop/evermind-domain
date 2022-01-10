@@ -25,9 +25,8 @@ export abstract class Repository<T extends Entity, TDto extends IdDto> {
     async add(entity: T) {
         const result = await this.datastore.create(this.tableName, this.mapper.toDto(entity))
         if (!result) {
-            return new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
-        } 
-        return DomainError.NULL
+            throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
+        }
     }
 
     async delete(entity: T) {

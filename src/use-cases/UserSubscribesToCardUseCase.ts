@@ -1,10 +1,7 @@
 import { CardRepository } from '../domain/card/CardRepository.js';
-import { CardRepository } from '../domain/card/CardRepository.js';
 import { ErrorType } from '../domain/errors/ErrorType.js';
 import { SubscriptionRepository } from '../domain/subscription/SubscriptionRepository.js';
 import { Subscription } from '../domain/subscription/Subscription.js';
-import { SubscriptionRepository } from '../domain/subscription/SubscriptionRepository.js';
-import { UserRepository } from '../domain/user/UserRepository.js';
 import { UserRepository } from '../domain/user/UserRepository.js';
 import { Identification } from '../domain/shared/value/Identification.js';
 import { Response } from './Response.js';
@@ -32,8 +29,13 @@ export class UserSubscribesToCardUseCase {
         if(!subscription) {
             return Response.withError(ErrorType.USER_IS_ALREADY_SUBSCRIBED_TO_CARD)
         }
-        const error = await subscriptionRepository.add(subscription)
-        
-        return new Response(error.getCode(), null)
+
+        try {
+            await subscriptionRepository.add(subscription)
+            return Response.OkWithoutData()
+        } catch(error) {
+            return Response.withError(error)
+        }
+
     }
 }
