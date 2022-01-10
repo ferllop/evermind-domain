@@ -39,7 +39,7 @@ export class CardDao {
             const result = `('${cardId.getId()}','${label}')`
             return accum.concat(result)
         }, [])
-        return `INSERT INTO ${CardLabelDatabaseMap.TABLE_NAME} VALUES ${labelsValuesString.join(',')}`
+        return `INSERT INTO ${LabellingDatabaseMap.TABLE_NAME} VALUES ${labelsValuesString.join(',')}`
     }
 
     async delete(id: CardIdentification) {
@@ -56,7 +56,7 @@ export class CardDao {
             ${CardDatabaseMap.QUESTION} = '${card.getQuestion().getValue()}',
             ${CardDatabaseMap.ANSWER} = '${card.getAnswer().getValue()}'
             WHERE ${CardDatabaseMap.ID} = '${card.getId().getId()}';
-            DELETE FROM ${CardLabelDatabaseMap.TABLE_NAME} WHERE ${CardLabelDatabaseMap.CARD_ID} = '${card.getId().getId()}';
+            DELETE FROM ${LabellingDatabaseMap.TABLE_NAME} WHERE ${LabellingDatabaseMap.CARD_ID} = '${card.getId().getId()}';
             ${this.getInsertLabellingQuery(card.getId(), card.getLabelling())};
             COMMIT;`
         const result = await this.datastore.query(query)
@@ -78,7 +78,7 @@ export class CardDao {
         return cards
     }
 
-    getCreateTableQuery() {
+    getCreateCardTableQuery() {
         return `
             CREATE TABLE ${CardDatabaseMap.TABLE_NAME}(
                 ${CardDatabaseMap.ID} UUID PRIMARY KEY,
@@ -89,11 +89,12 @@ export class CardDao {
     }
 
     getCreateCardLabelRelationTableQuery() {
-        return `CREATE TABLE card_label (
-                    card_id UUID NOT NULL,
-                    label TEXT NOT NULL,
-                    FOREIGN KEY (card_id) REFERENCES cards (id) ON DELETE CASCADE,
-                    PRIMARY KEY (card_id, label)
+        return `CREATE TABLE ${LabellingDatabaseMap.TABLE_NAME} (
+                    ${LabellingDatabaseMap.CARD_ID} UUID NOT NULL,
+                    ${LabellingDatabaseMap.LABEL} TEXT NOT NULL,
+                    FOREIGN KEY (${LabellingDatabaseMap.CARD_ID}) 
+                        REFERENCES ${CardDatabaseMap.TABLE_NAME} (${CardDatabaseMap.ID}) ON DELETE CASCADE,
+                    PRIMARY KEY (${LabellingDatabaseMap.CARD_ID}, ${LabellingDatabaseMap.LABEL})
                 );`
     }
 
@@ -107,8 +108,8 @@ enum CardDatabaseMap {
     ANSWER = 'answer',
 }
 
-enum CardLabelDatabaseMap {
-    TABLE_NAME = 'card_label',
+enum LabellingDatabaseMap {
+    TABLE_NAME = 'labelling',
     CARD_ID = 'card_id',
     LABEL = 'label',
 }

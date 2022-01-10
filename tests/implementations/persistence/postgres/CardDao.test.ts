@@ -46,7 +46,7 @@ cardDao('should send the correct insert query to datastore', async () => {
         '${authorID}',
         '${question}',
         '${answer}');
-    INSERT INTO card_label 
+    INSERT INTO labelling 
     VALUES 
         ('${card.getId().getId()}','label1'),('${
         card.getId().getId()}','label2');
@@ -110,8 +110,8 @@ cardDao('shoùld send the proper card update query to the sql datastore', async 
         question = '${card.getQuestion().getValue()}',
         answer = '${card.getAnswer().getValue()}'
         WHERE id = '${card.getId().getId()}';
-        DELETE FROM card_label WHERE card_id = '${card.getId().getId()}';
-        INSERT INTO card_label VALUES ('${card.getId().getId()}','${card.getLabelling().getLabels()[0]}');
+        DELETE FROM labelling WHERE card_id = '${card.getId().getId()}';
+        INSERT INTO labelling VALUES ('${card.getId().getId()}','${card.getLabelling().getLabels()[0]}');
         COMMIT;`)
     await sut.update(card)
 })
