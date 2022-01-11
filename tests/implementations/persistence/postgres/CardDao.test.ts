@@ -30,31 +30,6 @@ cardDao('should throw a CARD_ALREADY_EXISTS error when the provided card already
     }
 })
 
-cardDao('should send the correct insert query to datastore', async () => {
-    const card = new CardBuilder().withLabels(['label1','label2']).build()
-    const mock = new PostgresDatastoreMock()
-    const sut = new CardDao(mock)
-    const {id, authorID, question, answer} = card.toDto()
-    const query = `BEGIN;
-    INSERT INTO cards(
-        id, 
-        author_id, 
-        question, 
-        answer
-        ) VALUES (
-        '${id}',
-        '${authorID}',
-        '${question}',
-        '${answer}');
-    INSERT INTO labelling 
-    VALUES 
-        ('${card.getId().getId()}','label1'),('${
-        card.getId().getId()}','label2');
-    COMMIT;`
-    mock.expectQuery(query)
-    await sut.insert(card)
-})
-
 cardDao('should throw a CARD_NOT_FOUND error when no card is found to be deleted', async () => {
     const mock = new PostgresDatastoreMock()
     const repo = new CardDao(mock)
@@ -74,15 +49,6 @@ cardDao('should throw a CARD_NOT_FOUND error when no card is found to be deleted
     }
 })
 
-cardDao('should send the correct query to delete the provided card', async () => {
-    const mock = new PostgresDatastoreMock()
-    const sut = new CardDao(mock)
-    const id = CardIdentification.create()
-    mock.expectQuery(`DELETE FROM cards WHERE id = '${id.getId()}'`)
-    mock.returnResult(new QueryResultBuilder().withRowCount(1).build())
-    await sut.delete(id)
-})
-
 cardDao('should throw a CARD_NOT_FOUND error when no card is found to be updated', async () => {
     const mock = new PostgresDatastoreMock()
     const sut = new CardDao(mock)
@@ -98,32 +64,6 @@ cardDao('should throw a CARD_NOT_FOUND error when no card is found to be updated
             throw error
         }
     }
-})
-
-cardDao('shoùld send the proper card update query to the sql datastore', async () => {
-    const mock = new PostgresDatastoreMock()
-    const sut = new CardDao(mock)
-    const card = new CardBuilder().build()
-    mock.returnResult(new QueryResultBuilder().withRowCount(1).build())
-    mock.expectQuery(`BEGIN;
-        UPDATE cards SET
-        question = '${card.getQuestion().getValue()}',
-        answer = '${card.getAnswer().getValue()}'
-        WHERE id = '${card.getId().getId()}';
-        DELETE FROM labelling WHERE card_id = '${card.getId().getId()}';
-        INSERT INTO labelling VALUES ('${card.getId().getId()}','${card.getLabelling().getLabels()[0]}');
-        COMMIT;`)
-    await sut.update(card)
-})
-
-cardDao('should send the proper query to find a card by it\'s author', async () => {
-    const mock = new PostgresDatastoreMock()
-    const sut = new CardDao(mock)
-    const authorId = AuthorIdentification.create()
-    mock.expectQuery(`SELECT id, author_id, question, answer 
-        FROM cards 
-        WHERE author_id = '${authorId.getId()}'`)
-    await sut.findByAuthorId(authorId)
 })
 
 cardDao('should return the found cards', async () => {

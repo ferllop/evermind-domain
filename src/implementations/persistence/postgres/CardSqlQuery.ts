@@ -58,14 +58,37 @@ export class CardSqlQuery {
         return `INSERT INTO ${LabellingDatabaseMap.TABLE_NAME} VALUES ${labelsValuesString.join(',')}`
     }
 
-    selectByAuthorId(id: AuthorIdentification) {
+    selectCardById(id: CardIdentification) {
         return `SELECT 
         ${CardDatabaseMap.ID}, 
         ${CardDatabaseMap.AUTHOR},
         ${CardDatabaseMap.QUESTION},
-        ${CardDatabaseMap.ANSWER}
-            FROM ${CardDatabaseMap.TABLE_NAME}
-            WHERE ${CardDatabaseMap.AUTHOR} = '${id.getId()}'`
+        ${CardDatabaseMap.ANSWER},
+        array(SELECT ${LabellingDatabaseMap.LABEL}
+            FROM labelling
+            WHERE ${LabellingDatabaseMap.CARD_ID} = ${CardDatabaseMap.ID}) as labelling
+        FROM ${CardDatabaseMap.TABLE_NAME}
+        WHERE ${CardDatabaseMap.ID} = '${id.getId()}'`
+    }
+
+    selectCardByAuthorId(id: AuthorIdentification) {
+        return `SELECT 
+        ${CardDatabaseMap.ID}, 
+        ${CardDatabaseMap.AUTHOR},
+        ${CardDatabaseMap.QUESTION},
+        ${CardDatabaseMap.ANSWER},
+        array(SELECT ${LabellingDatabaseMap.LABEL}
+            FROM labelling
+            WHERE ${LabellingDatabaseMap.CARD_ID} = ${CardDatabaseMap.ID}) as labelling
+        FROM ${CardDatabaseMap.TABLE_NAME}
+        WHERE ${CardDatabaseMap.AUTHOR} = '${id.getId()}'`
+    }
+
+    selectLabellingByCardId(id: CardIdentification) {
+        return `SELECT 
+        ${LabellingDatabaseMap.LABEL}
+            FROM ${LabellingDatabaseMap.TABLE_NAME}
+            WHERE ${LabellingDatabaseMap.CARD_ID} = '${id.getId()}'`
     }
 
     createCardsTable() {

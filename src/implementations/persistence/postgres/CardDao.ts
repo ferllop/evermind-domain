@@ -3,10 +3,10 @@ import {DomainError} from '../../../domain/errors/DomainError'
 import {ErrorType} from '../../../domain/errors/ErrorType'
 import {AuthorIdentification} from '../../../domain/card/AuthorIdentification'
 import {Card} from '../../../domain/card/Card'
-import {CardDto} from '../../../domain/card/CardDto'
 import {CardIdentification} from '../../../domain/card/CardIdentification'
 import {CardMapper} from '../../../domain/card/CardMapper'
 import {CardSqlQuery} from './CardSqlQuery'
+import {NullCard} from "../../../domain/card/NullCard";
 
 export class CardDao {
 
@@ -46,9 +46,18 @@ export class CardDao {
     }
 
     async findByAuthorId(id: AuthorIdentification): Promise<Card[]> {
-        const query = this.sqlQuery.selectByAuthorId(id)
+        const query = this.sqlQuery.selectCardByAuthorId(id)
         const result = await this.datastore.query(query)
-        return result.rows.map((cardDto: CardDto) => new CardMapper().fromDto(cardDto))
+        return new CardMapper().fromDtoArray(result.rows)
+    }
+
+    async findById(id: CardIdentification): Promise<Card> {
+        const query = this.sqlQuery.selectCardById(id)
+        const result = await this.datastore.query(query)
+        if (result.rowCount > 1) {
+            throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
+        }
+        return result.rowCount === 1 ? new CardMapper().fromDto(result.rows[0]) : NullCard.getInstance()
     }
 
 }
