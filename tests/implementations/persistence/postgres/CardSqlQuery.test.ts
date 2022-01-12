@@ -1,6 +1,6 @@
 import {AuthorIdentification} from '../../../../src/domain/card/AuthorIdentification.js'
 import {CardIdentification} from '../../../../src/domain/card/CardIdentification.js'
-import {CardDao} from '../../../../src/implementations/persistence/postgres/CardDao.js'
+import {CardPostgresDao} from '../../../../src/implementations/persistence/postgres/CardPostgresDao.js'
 import {PostgresDatastore} from '../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
 import {CardBuilder} from '../../../domain/card/CardBuilder.js'
 import {assert, suite} from '../../../test-config.js'
@@ -160,7 +160,7 @@ async function givenTheExistingCardWithId(id: CardIdentification) {
         .setId(id)
         .setAuthorID(user.getId() as AuthorIdentification)
         .build()
-    await new CardDao().insert(card)
+    await new CardPostgresDao().insert(card)
     return card
 }
 
@@ -169,7 +169,7 @@ async function givenAnExistingCard() {
     const card = new CardBuilder()
         .setAuthorID(user.getId() as AuthorIdentification)
         .build()
-    await new CardDao().insert(card)
+    await new CardPostgresDao().insert(card)
     return card
 }
 
@@ -179,7 +179,7 @@ async function givenSomeExistingCardsFromSameUser(quantity: number) {
         const card = new CardBuilder()
             .setAuthorID(user.getId() as AuthorIdentification)
             .build()
-        await new CardDao().insert(card)
+        await new CardPostgresDao().insert(card)
     }
     return user
 }

@@ -8,7 +8,7 @@ import {CardMapper} from '../../../domain/card/CardMapper'
 import {CardSqlQuery} from './CardSqlQuery'
 import {NullCard} from "../../../domain/card/NullCard";
 
-export class CardDao {
+export class CardPostgresDao {
 
     private sqlQuery = new CardSqlQuery()
 

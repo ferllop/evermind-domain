@@ -1,7 +1,7 @@
 import { QueryResult } from 'node-postgres'
 import { AuthorIdentification } from '../../../../src/domain/card/AuthorIdentification.js'
 import { CardIdentification } from '../../../../src/domain/card/CardIdentification.js'
-import { CardDao } from '../../../../src/implementations/persistence/postgres/CardDao.js'
+import { CardPostgresDao } from '../../../../src/implementations/persistence/postgres/CardPostgresDao.js'
 import { DomainError } from '../../../../src/domain/errors/DomainError.js'
 import { ErrorType } from '../../../../src/domain/errors/ErrorType.js'
 import { PostgresDatastore } from '../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
@@ -15,7 +15,7 @@ const cardDao = suite('Card DAO')
 cardDao('should throw a CARD_ALREADY_EXISTS error when the provided card already exists', async () => {
     const mock = new PostgresDatastoreMock()
     mock.throwError({code: '23505'})
-    const sut = new CardDao(mock)
+    const sut = new CardPostgresDao(mock)
     const id = CardIdentification.create().getId()
     const card = new CardBuilder().withId(id).build()
     try {
@@ -32,7 +32,7 @@ cardDao('should throw a CARD_ALREADY_EXISTS error when the provided card already
 
 cardDao('should throw a CARD_NOT_FOUND error when no card is found to be deleted', async () => {
     const mock = new PostgresDatastoreMock()
-    const repo = new CardDao(mock)
+    const repo = new CardPostgresDao(mock)
     const deletedCards = 0
     mock.returnResult(new QueryResultBuilder().withRowCount(deletedCards).build())
 
@@ -51,7 +51,7 @@ cardDao('should throw a CARD_NOT_FOUND error when no card is found to be deleted
 
 cardDao('should throw a CARD_NOT_FOUND error when no card is found to be updated', async () => {
     const mock = new PostgresDatastoreMock()
-    const sut = new CardDao(mock)
+    const sut = new CardPostgresDao(mock)
     mock.returnResult(new QueryResultBuilder().withRowCount(0).build())
     const card = new CardBuilder().build()
     try {
@@ -68,7 +68,7 @@ cardDao('should throw a CARD_NOT_FOUND error when no card is found to be updated
 
 cardDao('should return the found cards', async () => {
     const mock = new PostgresDatastoreMock()
-    const sut = new CardDao(mock)
+    const sut = new CardPostgresDao(mock)
     const authorId = AuthorIdentification.create()
     const cards: Card[] = [
        new CardBuilder().withAuthorId(authorId.getId()).build() 
