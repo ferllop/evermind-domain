@@ -8,6 +8,7 @@ import {CardMapper} from '../../../domain/card/CardMapper'
 import {CardSqlQuery} from './CardSqlQuery'
 import {NullCard} from "../../../domain/card/NullCard";
 import {CardDao} from "../../../domain/card/CardDao";
+import {Labelling} from "../../../domain/card/Labelling";
 
 export class CardPostgresDao implements CardDao {
 
@@ -59,6 +60,10 @@ export class CardPostgresDao implements CardDao {
             throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
         }
         return result.rowCount === 1 ? new CardMapper().fromDto(result.rows[0]) : NullCard.getInstance()
+    }
+
+    findByLabelling(labelling: Labelling): Promise<Card[]> {
+        throw new Error('Finding by labelling ' + labelling.getLabels().join() + ' feature not implemented')
     }
 
 }

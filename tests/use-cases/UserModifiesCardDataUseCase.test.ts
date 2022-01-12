@@ -26,7 +26,7 @@ userModifiesCardDataUseCase.before.each(() => {
 userModifiesCardDataUseCase(
     'given an unexisting table, ' +
     'should return an object with null as data property and ' +
-    'RESOURCE_NOT_FOUND DomainError', async () => {
+    'CARD_NOT_FOUND DomainError', async () => {
         const result = await new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.dto() })
         assert.equal(result, Response.withError(ErrorType.CARD_NOT_FOUND))
     })
