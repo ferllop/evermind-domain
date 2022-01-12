@@ -53,7 +53,7 @@ export class Subscription extends Entity {
 
     isToReviewInDate(dayStartTime: DayStartTime, date: Date): boolean {
         return new Hour(dayStartTime.getValue())
-            .reclockDate(this.getNextReview()).getTime() <= date.getTime()
+            .setIntoDate(this.getNextReview()).getTime() <= date.getTime()
     }
 
     equals(subscription: Subscription) {

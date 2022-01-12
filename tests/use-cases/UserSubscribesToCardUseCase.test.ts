@@ -21,11 +21,11 @@ userSubscribesToCard.before.each( (context) => {
     context.db = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
 })
 
-userSubscribesToCard('given an existing user id and an existing cardid, then create a subscription with id properly formatted', async ({db}) => {
+userSubscribesToCard('given an existing user id and an existing card id, then create a subscription with id properly formatted', async ({db}) => {
     const datastore = new AsyncDatastoreMother(db)
-    const userId = 'theuserid'
+    const userId = 'the-userid'
     await datastore.user.withId(userId).beingStored()
-    const cardId = 'thecardid'
+    const cardId = 'the-card-id'
     await datastore.card.withId(cardId).beingStored()
     const subscription = { userId, cardId }
     await new UserSubscribesToCardUseCase().execute(subscription)
@@ -34,9 +34,9 @@ userSubscribesToCard('given an existing user id and an existing cardid, then cre
 
 userSubscribesToCard('given a user subscribed to a card, when subscribing again, should return a USER_IS_ALREADY_SUBSCRIBED_TO_CARD error', async ({db}) => {
     const datastore = new AsyncDatastoreMother(db)
-    const userId = 'theuserid'
+    const userId = 'the-userid'
     await datastore.user.withId(userId).beingStored()
-    const cardId = 'thecardid'
+    const cardId = 'the-card-id'
     await datastore.card.withId(cardId).beingStored()
     const subscription = { userId, cardId }
     await new UserSubscribesToCardUseCase().execute(subscription)
@@ -45,36 +45,36 @@ userSubscribesToCard('given a user subscribed to a card, when subscribing again,
 })
 
 
-userSubscribesToCard('given an existing user id and an existing cardid, then create a subscription in Level 0', async ({db}) => {
+userSubscribesToCard('given an existing user id and an existing card id, then create a subscription in Level 0', async ({db}) => {
     const datastore = new AsyncDatastoreMother(db)
-    await datastore.user.withId('theuserid').beingStored()
-    await datastore.card.withId('thecardid').beingStored()
+    await datastore.user.withId('the-user-id').beingStored()
+    await datastore.card.withId('the-card-id').beingStored()
     const subscription = {
-        userId: 'theuserid',
-        cardId: 'thecardid'
+        userId: 'the-user-id',
+        cardId: 'the-card-id'
     }
     await new UserSubscribesToCardUseCase().execute(subscription)
     assert.ok(await datastore.subscription.hasLevel(0))
 })
 
-userSubscribesToCard('given a non existing user id and an existing cardid, then the subscription is not done and return a USER_NOT_FOUND error', async ({db}) => {
+userSubscribesToCard('given a non existing user id and an existing card id, then the subscription is not done and return a USER_NOT_FOUND error', async ({db}) => {
     const datastore = new AsyncDatastoreMother(db)
-    await datastore.subscription.withId('someid').beingStored()
-    const cardId = 'thecardid'
+    await datastore.subscription.withId('some-id').beingStored()
+    const cardId = 'the-card-id'
     await datastore.card.withId(cardId).beingStored()
-    const userId = 'nonexistentuserid'
+    const userId = 'non-existent-user-id'
     const subscription = { userId, cardId }
     const result = await new UserSubscribesToCardUseCase().execute(subscription)
     assert.not.ok(await datastore.subscription.withId(userId + '#' + cardId).isPresent())
     assert.ok(result.hasError(ErrorType.USER_NOT_FOUND))
 })
 
-userSubscribesToCard('given an existing user id and non existing cardid, then the subscription is not done and return a CARD_NOT_FOUND error', async ({db}) => {
+userSubscribesToCard('given an existing user id and non existing card id, then the subscription is not done and return a CARD_NOT_FOUND error', async ({db}) => {
     const datastore = new AsyncDatastoreMother(db)
-    const userId = 'theuserid'
+    const userId = 'the-userid'
     await datastore.user.withId(userId).beingStored()
-    await datastore.subscription.withId('someid').beingStored()
-    const cardId = 'nonexistentcardid'
+    await datastore.subscription.withId('some-id').beingStored()
+    const cardId = 'non-existent-card-id'
     const subscription = { userId, cardId }
     const response = await new UserSubscribesToCardUseCase().execute(subscription)
     assert.not.ok(await datastore.subscription.withId(userId + '#' + cardId).isPresent())
@@ -114,8 +114,8 @@ class AsyncDatastoreMother {
     }
 
     async isPresentOnlyOnce() {
-        const dtos = await this.datastore.findMany(this.mother.TABLE_NAME, dto => dto.id === this.dto.id)
-        return dtos.length === 1
+        const found = await this.datastore.findMany(this.mother.TABLE_NAME, dto => dto.id === this.dto.id)
+        return found.length === 1
     }
 
     async hasLevel(level: number) {

@@ -5,12 +5,12 @@ import { SubscriptionBuilder } from './SubscriptionBuilder.js';
 export class SubscriptionMother {
     TABLE_NAME = 'subscriptions'
     subscription: Subscription = new SubscriptionBuilder().build()
-    userId = 'theuserid'
-    cardId = 'thecardid'
+    userId = 'the-user-id'
+    cardId = 'the-card-id'
     id = this.userId + '#' + this.cardId
 
     newDto() {
-        return { cardId: 'thecardId', userId: 'theuserId' }
+        return { cardId: 'the-card-Id', userId: 'the-user-Id' }
     }
 
     withId(id: string) {

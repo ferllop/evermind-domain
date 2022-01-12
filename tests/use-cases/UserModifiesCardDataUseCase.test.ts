@@ -45,7 +45,7 @@ userModifiesCardDataUseCase(
     'when provided a different labelling, the card should be updated in storage', async () => {
         const dsMother = await new DatastoreMother(cardMother, datastore).having(1).storedIn()
         const {id} = (await dsMother.stored(1)).storedDto as CardDto
-        const labelling = ['newlabelling']
+        const labelling = ['new-labelling']
         await new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.numberedDto(1), labelling })
         assert.equal(labelling, (await datastore.read<CardDto>(CardField.TABLE_NAME, id))!.labelling)    
     })

@@ -42,8 +42,8 @@ export class DatastoreMother<T extends IdDto> {
     }
     
     async isDataStored(id: string, propertyToCheck: string ) {
-        const readed = await this.datastore.read<T>(this.mother.TABLE_NAME, id)
-        return readed && (readed as Record<string, any>)[propertyToCheck] === (this.mother.dto() as Record<string, any>)[propertyToCheck]
+        const found = await this.datastore.read<T>(this.mother.TABLE_NAME, id)
+        return found && (found as Record<string, any>)[propertyToCheck] === (this.mother.dto() as Record<string, any>)[propertyToCheck]
     }
 
 }

@@ -63,8 +63,8 @@ export class User extends Entity {
 
     apply(user: Omit<Partial<UserDto>, 'id'>) {
         const thisAsDto = new UserMapper().toDto(this)
-        const modifedCard = { ...thisAsDto, ...user }
-        return new UserMapper().fromDto(modifedCard)
+        const modifiedCard = { ...thisAsDto, ...user }
+        return new UserMapper().fromDto(modifiedCard)
     }
 
     static isValid(name: string, username: string, dayStartTime: number, id?: string): boolean {

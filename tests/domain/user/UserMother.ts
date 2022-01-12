@@ -18,7 +18,7 @@ export class UserMother implements Mother<UserDto> {
         return {
             id: IdentificationMother.dto().id,
             name: 'validName',
-            username: 'validusername',
+            username: 'valid-username',
             dayStartTime: 9
         }
     }

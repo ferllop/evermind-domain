@@ -57,10 +57,10 @@ userSearchesForCards('having 0 coincident cards, when searching by author, then 
     assert.is(result.data.length, 0)
 })
 
-userSearchesForCards('having 1 coincident cards, when searching by author, then return a Result with an empty array as data and null as error', async () => {
+userSearchesForCards('having 1 coincident cards, when searching by author, then return a Result with with a one element array  as data and null as error', async () => {
     await new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
     await new DatastoreMother(cardMother, datastore).having(3).storedIn()
-    const result = await new UserSearchesForCardsUseCase().execute({query: '@validUsername1'})
+    const result = await new UserSearchesForCardsUseCase().execute({query: '@valid-username1'})
     assert.is(result.data.length, 1)
 })
 
@@ -71,10 +71,10 @@ userSearchesForCards('having 0 coincident cards, when searching by author and la
     assert.is(result.data.length, 0)
 })
 
-userSearchesForCards('having 1 coincident cards, when searching by author and label, then return a Result with a one elemnt array as data and null as error', async () => {
+userSearchesForCards('having 1 coincident cards, when searching by author and label, then return a Result with a one element array as data and null as error', async () => {
     await new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
     await new DatastoreMother(cardMother, datastore).having(3).storedIn()
-    const result = await new UserSearchesForCardsUseCase().execute({query: '@validUsername1, label0ofCard1'})
+    const result = await new UserSearchesForCardsUseCase().execute({query: '@valid-username1, label0ofCard1'})
     assert.is(result.data.length, 1)
 })
 

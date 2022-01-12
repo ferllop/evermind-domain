@@ -26,13 +26,18 @@ userUnsubscribesFromCard.before.each( (context) => {
     context.datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
 })
 
-userUnsubscribesFromCard('given an existing user id subscribed to an existing cardid, then unsubscribe', async ({datastore}) => {
+async function givenAStoredCard(datastore: InMemoryDatastore) {
     const mum = new AsyncDatastoreMother(datastore)
     const user = new UserMother().standard()
     await mum.with(user).beingStored()
     const card = new CardMother().standard()
     await mum.with(card).beingStored()
-    
+    return {user, card};
+}
+
+userUnsubscribesFromCard('given an existing user id subscribed to an existing card id, then unsubscribe', async ({datastore}) => {
+    const {user, card} = await givenAStoredCard(datastore);
+
     const request = {
         userId: user.getId().getId(),
         cardId: card.getId().getId()
@@ -43,12 +48,8 @@ userUnsubscribesFromCard('given an existing user id subscribed to an existing ca
     assert.not.ok(await datastore.read('subscriptions', request.userId + '#' + request.cardId))
 })
 
-userUnsubscribesFromCard('given an existing user id subscribed to an existing cardid, then return a ok withouth data response', async ({datastore}) => {
-    const mum = new AsyncDatastoreMother(datastore)
-    const user = new UserMother().standard()
-    await mum.with(user).beingStored()
-    const card = new CardMother().standard()
-    await mum.with(card).beingStored()
+userUnsubscribesFromCard('given an existing user id subscribed to an existing card id, then return a ok without data response', async ({datastore}) => {
+    const {user, card} = await givenAStoredCard(datastore);
     
     const request = {
         userId: user.getId().getId(),
@@ -61,12 +62,8 @@ userUnsubscribesFromCard('given an existing user id subscribed to an existing ca
     assert.equal(result, Response.OkWithoutData())
 })
 
-userUnsubscribesFromCard('given a previous unsubscription, when unsubscribing again, then return a SUBCRIPTION_NOT_EXISTS error', async ({datastore}) => {
-    const mum = new AsyncDatastoreMother(datastore)
-    const user = new UserMother().standard()
-    await mum.with(user).beingStored()
-    const card = new CardMother().standard()
-    await mum.with(card).beingStored()
+userUnsubscribesFromCard('given a previous unsubscription, when unsubscribing again, then return a SUBSCRIPTION_NOT_EXISTS error', async ({datastore}) => {
+    const {user, card} = await givenAStoredCard(datastore);
     
     const request = {
         userId: user.getId().getId(),
@@ -80,12 +77,8 @@ userUnsubscribesFromCard('given a previous unsubscription, when unsubscribing ag
     assert.equal(result, Response.withError(ErrorType.SUBSCRIPTION_NOT_EXISTS))
 })
 
-userUnsubscribesFromCard('given an existing user id not subscribed to an existing cardid, then return a SUBSCRIPTION_NOT_EXISTS', async ({datastore}) => {
-    const mum = new AsyncDatastoreMother(datastore)
-    const user = new UserMother().standard()
-    await mum.with(user).beingStored()
-    const card = new CardMother().standard()
-    await mum.with(card).beingStored()
+userUnsubscribesFromCard('given an existing user id not subscribed to an existing card id, then return a SUBSCRIPTION_NOT_EXISTS', async ({datastore}) => {
+    const {user, card} = await givenAStoredCard(datastore);
     
     const request = {
         userId: user.getId().getId(),
@@ -99,14 +92,10 @@ userUnsubscribesFromCard('given an existing user id not subscribed to an existin
 
 
 userUnsubscribesFromCard('given a non existing userid, then return a USER_NOT_FOUND', async ({datastore}) => {
-    const mum = new AsyncDatastoreMother(datastore)
-    const user = new UserMother().standard()
-    await mum.with(user).beingStored()
-    const card = new CardMother().standard()
-    await mum.with(card).beingStored()
+    const {card} = await givenAStoredCard(datastore);
     
     const request = {
-        userId: 'nonexistinguserid',
+        userId: 'non-existing-userid',
         cardId: card.getId().getId()
     }
 
@@ -115,16 +104,12 @@ userUnsubscribesFromCard('given a non existing userid, then return a USER_NOT_FO
     assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
 })
 
-userUnsubscribesFromCard('given a non existing cardid, then return a CARD_NOT_FOUND', async ({datastore}) => {
-    const mum = new AsyncDatastoreMother(datastore)
-    const user = new UserMother().standard()
-    await mum.with(user).beingStored()
-    const card = new CardMother().standard()
-    await mum.with(card).beingStored()
+userUnsubscribesFromCard('given a non existing card id, then return a CARD_NOT_FOUND', async ({datastore}) => {
+    const {user} = await givenAStoredCard(datastore);
     
     const request = {
         userId: user.getId().getId(),
-        cardId: 'nonexistingcard'
+        cardId: 'non-existing-card'
     }
 
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
