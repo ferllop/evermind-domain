@@ -7,8 +7,9 @@ import {CardIdentification} from '../../../domain/card/CardIdentification'
 import {CardMapper} from '../../../domain/card/CardMapper'
 import {CardSqlQuery} from './CardSqlQuery'
 import {NullCard} from "../../../domain/card/NullCard";
+import {CardDao} from "../../../domain/card/CardDao";
 
-export class CardPostgresDao {
+export class CardPostgresDao implements CardDao {
 
     private sqlQuery = new CardSqlQuery()
 
