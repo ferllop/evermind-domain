@@ -14,8 +14,10 @@ const userCreatesCardUseCase = suite("User creates a card use case")
 
 const cardMother = new CardMother()
 
-userCreatesCardUseCase.before.each(() => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
+userCreatesCardUseCase.before.each(async () => {
+    const datastore = new InMemoryDatastore();
+    ImplementationsContainer.set(Dependency.DATASTORE, datastore)
+    await datastore.clean()
 })
 
 userCreatesCardUseCase(
@@ -30,8 +32,10 @@ userCreatesCardUseCase(
     'given data representing a card, ' +
     'when execute this use case, ' +
     'the card should remain in storage', async () => {
-        ImplementationsContainer.set(Dependency.DATASTORE, new DatastoreTestClass())
-        const datastore = ImplementationsContainer.get(Dependency.DATASTORE) as DatastoreTestClass
+
+        const datastore = new DatastoreTestClass();
+        await datastore.clean()
+        ImplementationsContainer.set(Dependency.DATASTORE, datastore)
         await executeUseCase()
         assert.is(await (new DatastoreMother(cardMother, datastore)).isDataStored(datastore.dtoId, 'authorId'), true)
     })

@@ -7,8 +7,9 @@ let sutDatastore: Datastore
 
 const datastoreRetrieving = suite('In-memory datastore when retrieving')
 
-datastoreRetrieving.before.each(() => {
+datastoreRetrieving.before.each(async () => {
     sutDatastore = new InMemoryDatastore()
+    await sutDatastore.clean()
 })
 
 datastoreRetrieving('should not permit empty id when retrieving', async () => {

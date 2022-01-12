@@ -7,8 +7,9 @@ const datastoreCreating = suite('InMemory Datastore When Creating')
 
 let sutDatastore: Datastore
 
-datastoreCreating.before.each( () => {
+datastoreCreating.before.each( async () => {
     sutDatastore = new InMemoryDatastore()
+    await sutDatastore.clean()
 })
 
 datastoreCreating('should require a dto with an id property when creating', async () => {

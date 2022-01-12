@@ -7,8 +7,9 @@ let sutDatastore: Datastore
 
 const datastoreUpdating = suite('In-memory datastore when updating')
 
-datastoreUpdating.before.each(() => {
+datastoreUpdating.before.each(async () => {
     sutDatastore = new InMemoryDatastore()
+    await sutDatastore.clean()
 })
 
 datastoreUpdating('should require a dto with an id property when updating', async () => {

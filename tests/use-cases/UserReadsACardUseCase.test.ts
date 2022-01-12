@@ -16,9 +16,10 @@ const cardMother = new CardMother()
 
 let datastore: Datastore
 
-userReadsACardUseCase.before.each(() => {
+userReadsACardUseCase.before.each(async () => {
     ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
     datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
+    await datastore.clean()
 })
 
 userReadsACardUseCase(

@@ -6,8 +6,9 @@ let sutDatastore: Datastore
 
 const datastoreFinder = suite('In-memory datastore finder')
 
-datastoreFinder.before.each(() => {
+datastoreFinder.before.each(async () => {
     sutDatastore = new InMemoryDatastore()
+    await sutDatastore.clean()
 })
 
 datastoreFinder('should return an empty array where there are no coincidences', async () => {

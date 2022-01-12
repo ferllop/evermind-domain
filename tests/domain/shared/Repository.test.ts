@@ -21,10 +21,11 @@ type Context = {
 
 const repository = suite<Context>('Repository')
 
-repository.before.each((context: Context) => {
+repository.before.each(async (context: Context) => {
     ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
     context.table = 'testTable'
     context.db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
+    await context.db.clean()
     context.sut = new TestRepository(context.table, new TestMapper())
 })
 
