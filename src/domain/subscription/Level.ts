@@ -13,7 +13,7 @@ export class Level extends Enum {
     static LEVEL_6 = new Level(60)
     static LEVEL_7 = new Level(120)
 
-    constructor(private value: number) {
+    constructor(private readonly value: number) {
         super(Level.getValues())
         this.value = value
     }

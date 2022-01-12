@@ -6,7 +6,7 @@ import {Dependency} from '../../../implementations/implementations-container/Dep
 export class Identification {
     static NULL = new Identification('')
 
-    private id: string
+    private readonly id: string
 
     constructor(value: string) {
         this.id = value

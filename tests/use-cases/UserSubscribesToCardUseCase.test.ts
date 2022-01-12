@@ -10,11 +10,18 @@ import { InMemoryDatastore } from '../../src/implementations/persistence/in-memo
 import { Datastore } from '../../src/domain/shared/Datastore.js'
 import { UserSubscribesToCardUseCase } from '../../src/use-cases/UserSubscribesToCardUseCase.js'
 
-const userSubscribesToCard = suite("User subscribes to card")
+type Context = {
+    db: InMemoryDatastore
+}
 
-userSubscribesToCard('given an existing user id and an existing cardid, then create a subscription with id properly formatted', async () => {
+const userSubscribesToCard = suite<Context>("User subscribes to card")
+
+userSubscribesToCard.before.each( (context) => {
     ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    const db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
+    context.db = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
+})
+
+userSubscribesToCard('given an existing user id and an existing cardid, then create a subscription with id properly formatted', async ({db}) => {
     const datastore = new AsyncDatastoreMother(db)
     const userId = 'theuserid'
     await datastore.user.withId(userId).beingStored()
@@ -25,9 +32,7 @@ userSubscribesToCard('given an existing user id and an existing cardid, then cre
     assert.ok(await datastore.subscription.withId(userId + '#' + cardId).isPresent())
 })
 
-userSubscribesToCard('given a user subscribed to a card, when subscribing again, should return a USER_IS_ALREADY_SUBSCRIBED_TO_CARD error', async () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    const db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
+userSubscribesToCard('given a user subscribed to a card, when subscribing again, should return a USER_IS_ALREADY_SUBSCRIBED_TO_CARD error', async ({db}) => {
     const datastore = new AsyncDatastoreMother(db)
     const userId = 'theuserid'
     await datastore.user.withId(userId).beingStored()
@@ -40,9 +45,7 @@ userSubscribesToCard('given a user subscribed to a card, when subscribing again,
 })
 
 
-userSubscribesToCard('given an existing user id and an existing cardid, then create a subscription in Level 0', async () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    const db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
+userSubscribesToCard('given an existing user id and an existing cardid, then create a subscription in Level 0', async ({db}) => {
     const datastore = new AsyncDatastoreMother(db)
     await datastore.user.withId('theuserid').beingStored()
     await datastore.card.withId('thecardid').beingStored()
@@ -54,9 +57,7 @@ userSubscribesToCard('given an existing user id and an existing cardid, then cre
     assert.ok(await datastore.subscription.hasLevel(0))
 })
 
-userSubscribesToCard('given a non existing user id and an existing cardid, then the subscription is not done and return a USER_NOT_FOUND error', async () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    const db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
+userSubscribesToCard('given a non existing user id and an existing cardid, then the subscription is not done and return a USER_NOT_FOUND error', async ({db}) => {
     const datastore = new AsyncDatastoreMother(db)
     await datastore.subscription.withId('someid').beingStored()
     const cardId = 'thecardid'
@@ -68,9 +69,7 @@ userSubscribesToCard('given a non existing user id and an existing cardid, then 
     assert.ok(result.hasError(ErrorType.USER_NOT_FOUND))
 })
 
-userSubscribesToCard('given an existing user id and non existing cardid, then the subscription is not done and return a CARD_NOT_FOUND error', async () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    const db = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
+userSubscribesToCard('given an existing user id and non existing cardid, then the subscription is not done and return a CARD_NOT_FOUND error', async ({db}) => {
     const datastore = new AsyncDatastoreMother(db)
     const userId = 'theuserid'
     await datastore.user.withId(userId).beingStored()
@@ -92,7 +91,7 @@ class AsyncDatastoreMother {
 
     get user() {
         this.mother = new UserMother()
-        return this    
+        return this
     }
 
     get card() {

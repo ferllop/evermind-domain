@@ -44,7 +44,7 @@ repository(
 repository(
     'given a null entity ' +
     'when deleting it ' +
-    'then return a INVALID_INPU_DATA error', async ({sut}) => {
+    'then return a INVALID_INPUT_DATA error', async ({sut}) => {
         try {
             await sut.delete(sut.getNull())
             assert.unreachable()
@@ -86,9 +86,9 @@ repository(
     })
 
 repository(
-    'given a populated table and two criterias ' +
-    'when trying to find entities matching either two criterias ' +
-    'returns an array with the elements matching any of the two criterias', async ({sut, table, db}) => {
+    'given a populated table and two criteria ' +
+    'when trying to find entities matching either two criteria ' +
+    'returns an array with the elements matching any of the two criteria', async ({sut, table, db}) => {
         await givenAPopulatedDatabase(table, db)
         const existingEntity1 = givenAnEntity(1)
         const existingEntity2 = givenAnEntity(2)
@@ -103,16 +103,16 @@ repository(
     })
 
 repository(
-    'given a populated table and two criterias ' +
-    'when trying to find entities matching two criterias ' +
-    'returns an array with the elements matching the two criterias at the same time', async ({sut, table, db}) => {
+    'given a populated table and two criteria ' +
+    'when trying to find entities matching two criteria ' +
+    'returns an array with the elements matching the two criteria at the same time', async ({sut, table, db}) => {
         await givenAPopulatedDatabase(table, db)
         const existingEntity1 = givenAnEntity(1)
         const criteriaA = (dto: TestEntityDto) => {
             return existingEntity1.getId().equals(new Identification(dto.id))
         }
         const criteriaB = (dto: TestEntityDto) => {
-            return dto.id.startsWith('someid#')
+            return dto.id.startsWith('some-id#')
         }
         const response = await sut.find((dto) => criteriaA(dto) && criteriaB(dto))
         assert.equal(response, [existingEntity1])
@@ -147,7 +147,7 @@ repository(
     'returns the entity', async ({sut, table, db}) => {
         await givenAPopulatedDatabase(table, db)
         const criteria = (dto: TestEntityDto) => {
-            return dto.id === 'someid#1'
+            return dto.id === 'some-id#1'
         }
         const response = await sut.findOne(criteria)
         assert.equal(response, givenAnEntity(1))
@@ -162,7 +162,7 @@ async function givenAPopulatedDatabase(table: string, db: Datastore) {
 }
 
 function givenAnEntityDto(number: number): TestEntityDto {
-    return { id: 'someid#' + number }
+    return { id: 'some-id#' + number }
 }
 
 function givenAnEntity(number: number): TestEntity {

@@ -51,7 +51,7 @@ datastoreUpdating('should require to update into an existing table', async () =>
     const dto = {id: 'someId', data: 'someData'}
     await sutDatastore.create('aTable', dto)
     try {
-        await sutDatastore.update('unexistingTable', dto)
+        await sutDatastore.update('non-existingTable', dto)
         assert.unreachable()
     } catch (error) {
         assert.instance(error, PreconditionError)

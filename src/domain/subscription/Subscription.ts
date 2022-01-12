@@ -11,13 +11,13 @@ import { SubscriptionIdentification } from './SubscriptionIdentification.js'
 
 export class Subscription extends Entity {
     
-    private userId: Identification
+    private readonly userId: Identification
 
-    private cardId: Identification
+    private readonly cardId: Identification
 
-    private level: Level
+    private readonly level: Level
 
-    private lastReview: DateEvermind
+    private readonly lastReview: DateEvermind
 
     protected constructor(id: SubscriptionIdentification, userId: Identification, cardId: Identification, level: Level, lastReview: DateEvermind) {
         super(id)

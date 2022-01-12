@@ -2,7 +2,7 @@ import { precondition } from '../../implementations/preconditions.js'
 
 export class Label {
     constructor(
-        private value: string
+        private readonly value: string
     ) { 
         precondition(Label.isValid(value))
         this.value = value.toLowerCase().trim()

@@ -2,9 +2,9 @@ import { Identification } from './value/Identification.js';
 
 export abstract class Entity {
 
-    private id: Identification
+    private readonly id: Identification
 
-    constructor(id: Identification) {
+    protected constructor(id: Identification) {
         this.id = id
     }
 

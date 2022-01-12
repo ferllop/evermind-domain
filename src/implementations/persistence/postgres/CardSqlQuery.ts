@@ -47,7 +47,7 @@ export class CardSqlQuery {
     }
 
     delete(id: CardIdentification) {
-        return `DELETE FROM ${CardDatabaseMap.TABLE_NAME} WHERE id = '${id.getId()}'`
+        return `DELETE FROM ${CardDatabaseMap.TABLE_NAME} WHERE ${CardDatabaseMap.ID} = '${id.getId()}'`
     }
 
     private getInsertLabellingQuery(cardId: CardIdentification, labelling: Labelling) {

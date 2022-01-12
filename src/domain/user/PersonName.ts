@@ -12,7 +12,7 @@ export class PersonName {
     }
 
     static isValid(name: string) {
-        return typeof name === 'string' && name.length > 0
+        return name.length > 0
     }
 
 }

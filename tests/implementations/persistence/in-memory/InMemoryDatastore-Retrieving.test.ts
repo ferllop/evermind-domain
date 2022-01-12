@@ -17,7 +17,7 @@ datastoreRetrieving('should not permit empty id when retrieving', async () => {
     await sutDatastore.create('a-table', dto)
     try {
         const emptyId = ''
-        await sutDatastore.read('a-table', emptyId), dto
+        await sutDatastore.read('a-table', emptyId)
         assert.unreachable()
     } catch (error) {
         assert.instance(error, PreconditionError)
@@ -33,12 +33,12 @@ datastoreRetrieving('should return a dto when reading an existing id', async () 
 datastoreRetrieving('should return null when reading a not existing id', async () => {
     const dto = {id: 'someId', data: 'someData'}
     await sutDatastore.create('aTable', dto)
-    assert.equal(await sutDatastore.read('aTable', 'unexistingID'), null)
+    assert.equal(await sutDatastore.read('aTable', 'non-existingID'), null)
 })
 
 datastoreRetrieving('should require to read into an existing table', async () => {
     try {
-        await sutDatastore.read('unexistingTable', 'someID')
+        await sutDatastore.read('non-existingTable', 'someID')
         assert.unreachable()
     } catch (error) {
         assert.instance(error, PreconditionError)

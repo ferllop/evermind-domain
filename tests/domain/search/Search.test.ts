@@ -31,7 +31,7 @@ search('should be able to provide a label when a word is not prefixed with at sy
     assert.equal(search.getLabels()[0], new LabelToken('label'))
 })
 
-search('should be able to provide all labels when multiple words withouth at symbol are provided', () => {
+search('should be able to provide all labels when multiple words without at symbol are provided', () => {
     const search = new Search('label1,label2')
     assert.equal(search.getLabels()[0], new LabelToken('label1'))
     assert.equal(search.getLabels()[1], new LabelToken('label2'))

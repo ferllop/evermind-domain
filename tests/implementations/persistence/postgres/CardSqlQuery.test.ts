@@ -83,7 +83,7 @@ cardSqlQuery('should provide a working delete card query', async () => {
     assert.equal(storedCards.rowCount, 0)
 })
 
-cardSqlQuery('shoùld provide the correct card update query', async () => {
+cardSqlQuery('should provide the correct card update query', async () => {
     const card = new CardBuilder().build()
     const sut = new CardSqlQuery().update(card)
     const expectedQuery = `BEGIN;
@@ -104,7 +104,7 @@ cardSqlQuery('should provide a working card update query', async () => {
         ...card.toDto(),
         question: 'updated question',
         answer: 'updated answer',
-        labelling: ['updated-labelling', 'pipi']
+        labelling: ['updated-labelling', 'other']
     }
     const sut = new CardSqlQuery().update(Card.fromDto(updatedCard))
 

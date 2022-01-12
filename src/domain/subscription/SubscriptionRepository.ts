@@ -1,7 +1,7 @@
-import { Subscription } from '../subscription/Subscription.js';
-import { SubscriptionField } from '../subscription/SubscriptionField.js';
-import { SubscriptionMapper } from '../subscription/SubscriptionMapper.js';
-import { SubscriptionDto } from '../subscription/SusbcriptionDto.js';
+import { Subscription } from './Subscription';
+import { SubscriptionField } from './SubscriptionField';
+import { SubscriptionMapper } from './SubscriptionMapper';
+import { SubscriptionDto } from './SusbcriptionDto';
 import { User } from '../user/User.js';
 import { Repository } from '../shared/Repository.js';
 import { NullSubscription } from './NullSubscription.js';

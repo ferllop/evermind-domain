@@ -1,6 +1,6 @@
 export class Enum {
     
-    private ordinal: number
+    private readonly ordinal: number
 
     constructor(values: any) {
         this.ordinal = values.length

@@ -3,7 +3,7 @@ import { ErrorEnglish, ErrorType } from './ErrorType.js'
 export class DomainError extends Error {
     static NULL = new DomainError(ErrorType.NULL)
     
-    private code: ErrorType
+    private readonly code: ErrorType
 
     constructor(errorType: ErrorType){
         super(ErrorEnglish.get(errorType) ?? DomainError.getUndocumentedErrorMessage(errorType))

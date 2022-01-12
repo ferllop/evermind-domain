@@ -45,7 +45,7 @@ export class UserSqlQuery {
     }
 
     delete(id: UserIdentification) {
-        return `DELETE FROM ${UserDatabaseMap.TABLE_NAME} WHERE id = '${id.getId()}'`
+        return `DELETE FROM ${UserDatabaseMap.TABLE_NAME} WHERE ${UserDatabaseMap.ID} = '${id.getId()}'`
     }
 
     selectById(id: UserIdentification) {

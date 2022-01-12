@@ -12,10 +12,10 @@ import { WrittenQuestion } from './WrittenQuestion.js'
 
 export class Card extends Entity {
 
-    private authorID: AuthorIdentification
-    private question: Question
-    private answer: Answer
-    private labelling: Labelling
+    private readonly authorID: AuthorIdentification
+    private readonly question: Question
+    private readonly answer: Answer
+    private readonly labelling: Labelling
 
     protected constructor(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: CardIdentification) {
         super(id)
@@ -73,8 +73,8 @@ export class Card extends Entity {
 
     apply(card: Omit<Partial<CardDto>, 'id'>) {
         const thisAsDto = new CardMapper().toDto(this)
-        const modifedCard = { ...thisAsDto, ...card}
-        return new CardMapper().fromDto(modifedCard)
+        const modifiedCard = { ...thisAsDto, ...card}
+        return new CardMapper().fromDto(modifiedCard)
     }
 
     static isValid(authorID: string, question: string, answer: string, labels: string[], id?: string) {

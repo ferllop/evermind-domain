@@ -18,14 +18,14 @@ datastoreFinder('should return an empty array where there are no coincidences', 
     assert.is(result.length, 0)
 })
 
-datastoreFinder('should return an array whith one coincidence', async () => {
+datastoreFinder('should return an array with one coincidence', async () => {
     const table = 'aTable'
     await sutDatastore.create(table, {id: 'a', data: 'thing'})
     const result = await sutDatastore.findMany('aTable', (row: any) => row.data === 'thing')
     assert.is(result.length, 1)
 })
 
-datastoreFinder('should return an array whith all the coincidences', async () => {
+datastoreFinder('should return an array with all the coincidences', async () => {
     const table = 'aTable'
     const dtoA = {id: 'a', label: 'labelA'}
     const dtoB = {id: 'b', label: 'labelA'}

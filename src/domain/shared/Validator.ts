@@ -1,1 +1,1 @@
-export type Validator = (valud: unknown) => boolean
+export type Validator = (valid: unknown) => boolean
