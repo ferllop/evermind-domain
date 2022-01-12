@@ -12,8 +12,8 @@ import {Datastore} from './Datastore.js'
 
 export abstract class Repository<T extends Entity, TDto extends IdDto> {
     
-    private readonly tableName: string
-    private mapper: Mapper<T, TDto>
+    protected readonly tableName: string
+    protected mapper: Mapper<T, TDto>
     protected datastore: Datastore
 
     constructor(tableName: string, mapper: Mapper<T, TDto>) {
