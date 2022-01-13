@@ -84,6 +84,26 @@ export class CardSqlQuery {
         WHERE ${CardDatabaseMap.AUTHOR} = '${id.getId()}'`
     }
 
+    selectCardByLabelling(labelling: Labelling) {
+        const labels = labelling.getLabels().map(label => label.getValue())
+        const whereClause = `${LabellingDatabaseMap.LABEL} = '` + labels.join(`' OR ${LabellingDatabaseMap.LABEL} = '`) + `'`
+        return `SELECT 
+        ${CardDatabaseMap.ID}, 
+        ${CardDatabaseMap.AUTHOR},
+        ${CardDatabaseMap.QUESTION},
+        ${CardDatabaseMap.ANSWER},
+        array(SELECT ${LabellingDatabaseMap.LABEL}
+            FROM ${LabellingDatabaseMap.TABLE_NAME}
+            WHERE ${LabellingDatabaseMap.CARD_ID} = ${CardDatabaseMap.ID}) as labelling
+        FROM ${CardDatabaseMap.TABLE_NAME}
+        WHERE ${CardDatabaseMap.ID} in 
+            (SELECT ${LabellingDatabaseMap.CARD_ID}
+             FROM ${LabellingDatabaseMap.TABLE_NAME} 
+            WHERE ${whereClause} 
+            GROUP BY ${LabellingDatabaseMap.CARD_ID} 
+            HAVING COUNT(${LabellingDatabaseMap.LABEL}) = ${labels.length})`
+    }
+
     selectLabellingByCardId(id: CardIdentification) {
         return `SELECT 
         ${LabellingDatabaseMap.LABEL}

@@ -11,6 +11,7 @@ import {UserDao} from '../../../../src/implementations/persistence/postgres/User
 import {UserIdentification} from '../../../../src/domain/user/UserIdentification'
 import {CardDto} from '../../../../src/domain/card/CardDto'
 import {Card} from '../../../../src/domain/card/Card'
+import {Labelling} from "../../../../src/domain/card/Labelling";
 
 const cardSqlQuery = suite('Card Sql Query')
 
@@ -135,6 +136,24 @@ cardSqlQuery('should send a working query to find a card by it\'s author', async
     assert.equal(foundCards.rowCount, 3)
 })
 
+cardSqlQuery('should send the proper query to find a card by one label', async () => {
+    const labelling = Labelling.fromStringLabels(['label1'])
+    const sut = new CardSqlQuery().selectCardByLabelling(labelling)
+    const expectedQuery = `SELECT id, author_id, question, answer, array(SELECT label FROM labelling WHERE card_id = id) as labelling
+        FROM cards
+                           WHERE id in (SELECT card_id FROM labelling WHERE label = 'label1' GROUP BY card_id HAVING COUNT(label) = 1)`
+    assertQueriesAreEqual(sut, expectedQuery)
+})
+
+cardSqlQuery('should send the proper query to find a card by two labels', async () => {
+    const labelling = Labelling.fromStringLabels(['label1', 'label2'])
+    const sut = new CardSqlQuery().selectCardByLabelling(labelling)
+    const expectedQuery = `SELECT id, author_id, question, answer, array(SELECT label FROM labelling WHERE card_id = id) as labelling
+        FROM cards 
+        WHERE id in (SELECT card_id FROM labelling WHERE label = 'label1' OR label = 'label2' GROUP BY card_id HAVING COUNT(label) = 2)`
+    assertQueriesAreEqual(sut, expectedQuery)
+})
+
 cardSqlQuery('should send the proper query to find a card by it\'s id', async () => {
     const cardId = CardIdentification.create()
     const card = await givenTheExistingCardWithId(cardId)
@@ -153,7 +172,7 @@ async function givenAnExistingUser() {
     return user
 }
 
-async function givenTheExistingCardWithId(id: CardIdentification) {
+export async function givenTheExistingCardWithId(id: CardIdentification) {
     const user = await givenAnExistingUser()
 
     const card = new CardBuilder()
