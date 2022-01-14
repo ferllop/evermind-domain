@@ -9,6 +9,7 @@ import {CardSqlQuery} from './CardSqlQuery'
 import {NullCard} from "../../../domain/card/NullCard";
 import {CardDao} from "../../../domain/card/CardDao";
 import {Labelling} from "../../../domain/card/Labelling";
+import {CardDto} from "../../../domain/card/CardDto";
 
 export class CardPostgresDao implements CardDao {
 
@@ -62,10 +63,37 @@ export class CardPostgresDao implements CardDao {
         return result.rowCount === 1 ? new CardMapper().fromDto(result.rows[0]) : NullCard.getInstance()
     }
 
-    findByLabelling(labelling: Labelling): Promise<Card[]> {
-        throw new Error('Finding by labelling ' + labelling.getLabels().join() + ' feature not implemented')
+    async findByLabelling(labelling: Labelling): Promise<Card[]> {
+        const query = this.sqlQuery.selectCardByLabelling(labelling)
+        const result = await this.datastore.query(query)
+        return result.rows.map(this.fromRowToCard)
+    }
+
+    private fromRowToCard(row: CardRow): Card {
+        const pgCardMap: Record<string, keyof CardDto> = {
+            id: 'id',
+            author_id: 'authorID',
+            question: 'question',
+            answer: 'answer',
+            labelling: 'labelling',
+        }
+        const cardDto = Object.keys(row).reduce( (accum, key) => {
+            const value = row[key as keyof CardRow]
+            return { ...accum,
+                [pgCardMap[key]]: value}
+
+        }, {})
+
+        return new CardMapper().fromDto(cardDto as CardDto)
     }
 
 }
 
+export type CardRow = {
+    id: string,
+    author_id: string,
+    question: string,
+    answer: string,
+    labelling: string[],
+}
 

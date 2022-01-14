@@ -1,6 +1,6 @@
 import {AuthorIdentification} from '../../../../src/domain/card/AuthorIdentification.js'
 import {CardIdentification} from '../../../../src/domain/card/CardIdentification.js'
-import {CardPostgresDao} from '../../../../src/implementations/persistence/postgres/CardPostgresDao.js'
+import {CardPostgresDao, CardRow} from '../../../../src/implementations/persistence/postgres/CardPostgresDao.js'
 import {PostgresDatastore} from '../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
 import {CardBuilder} from '../../../domain/card/CardBuilder.js'
 import {assert, suite} from '../../../test-config.js'
@@ -12,6 +12,8 @@ import {UserIdentification} from '../../../../src/domain/user/UserIdentification
 import {CardDto} from '../../../../src/domain/card/CardDto'
 import {Card} from '../../../../src/domain/card/Card'
 import {Labelling} from "../../../../src/domain/card/Labelling";
+import {CardMapper} from "../../../../src/domain/card/CardMapper";
+import {assertCardsAreEqualsInAnyOrder} from "./CardPostgresDao.test";
 
 const cardSqlQuery = suite('Card Sql Query')
 
@@ -132,7 +134,6 @@ cardSqlQuery('should send a working query to find a card by it\'s author', async
     const sut = new CardSqlQuery().selectCardByAuthorId(authorId)
 
     const foundCards = await new PostgresDatastore().query(sut)
-
     assert.equal(foundCards.rowCount, 3)
 })
 
@@ -141,7 +142,11 @@ cardSqlQuery('should send the proper query to find a card by one label', async (
     const sut = new CardSqlQuery().selectCardByLabelling(labelling)
     const expectedQuery = `SELECT id, author_id, question, answer, array(SELECT label FROM labelling WHERE card_id = id) as labelling
         FROM cards
-                           WHERE id in (SELECT card_id FROM labelling WHERE label = 'label1' GROUP BY card_id HAVING COUNT(label) = 1)`
+        WHERE id in (SELECT card_id 
+            FROM labelling 
+            WHERE label = 'label1' 
+            GROUP BY card_id 
+            HAVING COUNT(label) = 1)`
     assertQueriesAreEqual(sut, expectedQuery)
 })
 
@@ -154,7 +159,26 @@ cardSqlQuery('should send the proper query to find a card by two labels', async 
     assertQueriesAreEqual(sut, expectedQuery)
 })
 
-cardSqlQuery('should send the proper query to find a card by it\'s id', async () => {
+cardSqlQuery('should return the found cards when searching by labelling', async () => {
+    const cardToFoundA = await givenTheExistingCardWithLabels('label1', 'label2')
+    const cardToFoundB = await givenTheExistingCardWithLabels('label1', 'label2', 'label3')
+    await givenTheExistingCardWithLabels('label1')
+
+    const sut = new CardSqlQuery().selectCardByLabelling(Labelling.fromStringLabels(['label1', 'label2']))
+    const result = await new PostgresDatastore().query(sut)
+    assertAllRowsAreEqualToCards(result.rows, [cardToFoundB, cardToFoundA])
+})
+
+cardSqlQuery('should send the proper query to find a card by id', async () => {
+    const cardId = CardIdentification.create()
+    const sut = new CardSqlQuery().selectCardById(cardId)
+    const expectedQuery = `SELECT id, author_id, question, answer, array(SELECT label FROM labelling WHERE card_id = id) as labelling
+        FROM cards 
+        WHERE id = '${cardId.getId()}'`
+    assertQueriesAreEqual(sut, expectedQuery)
+})
+
+cardSqlQuery('should send a working query to find a card by id', async () => {
     const cardId = CardIdentification.create()
     const card = await givenTheExistingCardWithId(cardId)
 
@@ -178,6 +202,17 @@ export async function givenTheExistingCardWithId(id: CardIdentification) {
     const card = new CardBuilder()
         .setId(id)
         .setAuthorID(user.getId() as AuthorIdentification)
+        .build()
+    await new CardPostgresDao().insert(card)
+    return card
+}
+
+export async function givenTheExistingCardWithLabels(...labels: string[]) {
+    const user = await givenAnExistingUser()
+
+    const card = new CardBuilder()
+        .setAuthorID(user.getId() as AuthorIdentification)
+        .setLabelling(Labelling.fromStringLabels(labels))
         .build()
     await new CardPostgresDao().insert(card)
     return card
@@ -216,6 +251,29 @@ function assertCardsAreEqual(pgCard: Record<string, any>, cardDto: CardDto) {
         const mappedKey = pgCardMap[key]
         assert.equal(pgCard[key], cardDto[mappedKey])
     })
+}
+
+function assertAllRowsAreEqualToCards(rows: CardRow[], cards: Card[]) {
+    const cardRows = rows.map(fromRowToCardDto).map(dto => new CardMapper().fromDto(dto))
+    assertCardsAreEqualsInAnyOrder(cardRows, cards)
+}
+
+function fromRowToCardDto(row: CardRow): CardDto {
+    const pgCardMap: Record<string, keyof CardDto> = {
+        id: 'id',
+        author_id: 'authorID',
+        question: 'question',
+        answer: 'answer',
+        labelling: 'labelling',
+    }
+    return Object.keys(row).reduce((accum, key) => {
+        const value = row[key as keyof CardRow]
+        return {
+            ...accum,
+            [pgCardMap[key]]: value
+        }
+
+    }, {}) as CardDto
 }
 
 cardSqlQuery.run()

@@ -32,7 +32,7 @@ userSearchesForCards('having three cards, with one coincident card, return a Res
 
 userSearchesForCards('having three cards, with one partial card, return a Result with an empty array as data and null as error', async () => {
     await new DatastoreMother(cardMother, datastore).having(3).storedIn()
-    const result = await new UserSearchesForCardsUseCase().execute({query: 'label0ofcard1, otherlabel'})
+    const result = await new UserSearchesForCardsUseCase().execute({query: 'label0ofcard1, other-label'})
     assert.is(result.data.length, 0)
 })
 
