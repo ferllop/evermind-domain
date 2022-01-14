@@ -1,19 +1,21 @@
 import {AuthorIdentification} from '../../../../src/domain/card/AuthorIdentification.js'
 import {CardIdentification} from '../../../../src/domain/card/CardIdentification.js'
-import {CardPostgresDao, CardRow} from '../../../../src/implementations/persistence/postgres/CardPostgresDao.js'
 import {PostgresDatastore} from '../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
 import {CardBuilder} from '../../../domain/card/CardBuilder.js'
 import {assert, suite} from '../../../test-config.js'
 import {UserSqlQuery} from '../../../../src/implementations/persistence/postgres/UserSqlQuery'
 import {CardSqlQuery} from '../../../../src/implementations/persistence/postgres/CardSqlQuery'
-import {UserBuilder} from '../../../domain/user/UserBuilder'
-import {UserDao} from '../../../../src/implementations/persistence/postgres/UserDao'
-import {UserIdentification} from '../../../../src/domain/user/UserIdentification'
-import {CardDto} from '../../../../src/domain/card/CardDto'
 import {Card} from '../../../../src/domain/card/Card'
 import {Labelling} from "../../../../src/domain/card/Labelling";
-import {CardMapper} from "../../../../src/domain/card/CardMapper";
-import {assertCardsAreEqualsInAnyOrder} from "./CardPostgresDao.test";
+import {assertQueriesAreEqual} from "./AssertQueriesAreEqual";
+import {assertAllRowsAreEqualToCards} from "./CardAssertion";
+import {givenAnExistingUser} from "./UserScenario";
+import {
+    givenAnExistingCard,
+    givenSomeExistingCardsFromSameUser,
+    givenTheExistingCardWithId,
+    givenTheExistingCardWithLabels
+} from "./CardScenario";
 
 const cardSqlQuery = suite('Card Sql Query')
 
@@ -61,9 +63,10 @@ cardSqlQuery('should provide a working insert card query', async () => {
     const sut = new CardSqlQuery().insert(card)
 
     await new PostgresDatastore().query(sut)
-    const storedCards = await new PostgresDatastore().query('SELECT * FROM cards')
+    const storedCards = await new PostgresDatastore().query(
+        'SELECT *, array(SELECT label FROM labelling WHERE card_id = id) as labelling FROM cards')
     assert.equal(storedCards.rowCount, 1)
-    assertCardsAreEqual(storedCards.rows[0], card.toDto())
+    assertAllRowsAreEqualToCards(storedCards.rows, [card])
 })
 
 cardSqlQuery('should provide the correct query to delete the provided card', async () => {
@@ -114,7 +117,7 @@ cardSqlQuery('should provide a working card update query', async () => {
     await new PostgresDatastore().query(sut)
     const storedCards = await new PostgresDatastore().query(new CardSqlQuery().selectCardById(card.getId()))
 
-    assertCardsAreEqual(storedCards.rows[0], updatedCard)
+    assertAllRowsAreEqualToCards(storedCards.rows, [Card.fromDto(updatedCard)])
 })
 
 cardSqlQuery('should send the proper query to find a card by it\'s author', async () => {
@@ -187,103 +190,10 @@ cardSqlQuery('should send a working query to find a card by id', async () => {
     const foundCard = await new PostgresDatastore().query(sut)
 
     assert.equal(foundCard.rowCount, 1)
-    assertCardsAreEqual(foundCard.rows[0], card.toDto())
+    assertAllRowsAreEqualToCards(foundCard.rows, [card])
 })
 
-async function givenAnExistingUser() {
-    const user = new UserBuilder().setId(UserIdentification.create().getId()).build()
-    await new UserDao().add(user)
-    return user
-}
-
-export async function givenTheExistingCardWithId(id: CardIdentification) {
-    const user = await givenAnExistingUser()
-
-    const card = new CardBuilder()
-        .setId(id)
-        .setAuthorID(user.getId() as AuthorIdentification)
-        .build()
-    await new CardPostgresDao().insert(card)
-    return card
-}
-
-export async function givenTheExistingCardWithLabels(...labels: string[]) {
-    const user = await givenAnExistingUser()
-
-    const card = new CardBuilder()
-        .setAuthorID(user.getId() as AuthorIdentification)
-        .setLabelling(Labelling.fromStringLabels(labels))
-        .build()
-    await new CardPostgresDao().insert(card)
-    return card
-}
-
-async function givenAnExistingCard() {
-    const user = await givenAnExistingUser()
-    const card = new CardBuilder()
-        .setAuthorID(user.getId() as AuthorIdentification)
-        .build()
-    await new CardPostgresDao().insert(card)
-    return card
-}
-
-async function givenSomeExistingCardsFromSameUser(quantity: number) {
-    const user = await givenAnExistingUser()
-    for (let i = 0; i < quantity; i++) {
-        const card = new CardBuilder()
-            .setAuthorID(user.getId() as AuthorIdentification)
-            .build()
-        await new CardPostgresDao().insert(card)
-    }
-    return user
-}
-
-function assertCardsAreEqual(pgCard: Record<string, any>, cardDto: CardDto) {
-    const pgCardMap: Record<string, keyof CardDto> = {
-        id: 'id',
-        author_id: 'authorID',
-        question: 'question',
-        answer: 'answer',
-        labelling: 'labelling',
-    }
-
-    Object.keys(pgCard).forEach(key => {
-        const mappedKey = pgCardMap[key]
-        assert.equal(pgCard[key], cardDto[mappedKey])
-    })
-}
-
-function assertAllRowsAreEqualToCards(rows: CardRow[], cards: Card[]) {
-    const cardRows = rows.map(fromRowToCardDto).map(dto => new CardMapper().fromDto(dto))
-    assertCardsAreEqualsInAnyOrder(cardRows, cards)
-}
-
-function fromRowToCardDto(row: CardRow): CardDto {
-    const pgCardMap: Record<string, keyof CardDto> = {
-        id: 'id',
-        author_id: 'authorID',
-        question: 'question',
-        answer: 'answer',
-        labelling: 'labelling',
-    }
-    return Object.keys(row).reduce((accum, key) => {
-        const value = row[key as keyof CardRow]
-        return {
-            ...accum,
-            [pgCardMap[key]]: value
-        }
-
-    }, {}) as CardDto
-}
-
 cardSqlQuery.run()
-
-function assertQueriesAreEqual(actual: string, expect: string) {
-    const removeIndent = (str: string) => {
-        return str.replace(/\s+/g, ' ')
-    }
-    assert.equal(removeIndent(actual), removeIndent(expect))
-}
 
 
 

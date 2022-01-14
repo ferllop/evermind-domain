@@ -1,21 +1,21 @@
-import {PostgresDatastore, PostgresErrorType} from './PostgresDatastore'
+import {PostgresErrorType} from './PostgresDatastore'
 import {DomainError} from '../../../domain/errors/DomainError'
 import {ErrorType} from '../../../domain/errors/ErrorType'
 import {AuthorIdentification} from '../../../domain/card/AuthorIdentification'
 import {Card} from '../../../domain/card/Card'
 import {CardIdentification} from '../../../domain/card/CardIdentification'
-import {CardMapper} from '../../../domain/card/CardMapper'
 import {CardSqlQuery} from './CardSqlQuery'
 import {NullCard} from "../../../domain/card/NullCard";
 import {CardDao} from "../../../domain/card/CardDao";
 import {Labelling} from "../../../domain/card/Labelling";
-import {CardDto} from "../../../domain/card/CardDto";
+import {CardPostgresMapper} from "./CardPostgresMapper";
+import {CardPostgresDatastore} from "./CardPostgresDatastore";
 
 export class CardPostgresDao implements CardDao {
 
     private sqlQuery = new CardSqlQuery()
 
-    constructor(private datastore: PostgresDatastore = new PostgresDatastore()) {
+    constructor(private datastore: CardPostgresDatastore = new CardPostgresDatastore()) {
     }
 
     async insert(card: Card) {
@@ -51,7 +51,7 @@ export class CardPostgresDao implements CardDao {
     async findByAuthorId(id: AuthorIdentification): Promise<Card[]> {
         const query = this.sqlQuery.selectCardByAuthorId(id)
         const result = await this.datastore.query(query)
-        return new CardMapper().fromDtoArray(result.rows)
+        return result.rows.map(new CardPostgresMapper().rowToCard)
     }
 
     async findById(id: CardIdentification): Promise<Card> {
@@ -60,40 +60,14 @@ export class CardPostgresDao implements CardDao {
         if (result.rowCount > 1) {
             throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
         }
-        return result.rowCount === 1 ? new CardMapper().fromDto(result.rows[0]) : NullCard.getInstance()
+        return result.rowCount === 1 ? new CardPostgresMapper().rowToCard(result.rows[0]) : NullCard.getInstance()
     }
 
     async findByLabelling(labelling: Labelling): Promise<Card[]> {
         const query = this.sqlQuery.selectCardByLabelling(labelling)
         const result = await this.datastore.query(query)
-        return result.rows.map(this.fromRowToCard)
+        return result.rows.map(new CardPostgresMapper().rowToCard)
     }
-
-    private fromRowToCard(row: CardRow): Card {
-        const pgCardMap: Record<string, keyof CardDto> = {
-            id: 'id',
-            author_id: 'authorID',
-            question: 'question',
-            answer: 'answer',
-            labelling: 'labelling',
-        }
-        const cardDto = Object.keys(row).reduce( (accum, key) => {
-            const value = row[key as keyof CardRow]
-            return { ...accum,
-                [pgCardMap[key]]: value}
-
-        }, {})
-
-        return new CardMapper().fromDto(cardDto as CardDto)
-    }
-
 }
 
-export type CardRow = {
-    id: string,
-    author_id: string,
-    question: string,
-    answer: string,
-    labelling: string[],
-}
 
