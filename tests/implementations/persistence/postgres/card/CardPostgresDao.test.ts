@@ -11,8 +11,8 @@ import {Labelling} from "../../../../../src/domain/card/Labelling";
 import {QueryResultBuilder} from "../QueryResultBuilder";
 import {PostgresDatastoreMock} from "../PostgresDatastoreMock";
 import {CardPostgresMapperTestHelper} from "./CardPostgresMapperTestHelper";
-import {assertCardsAreEqualsInAnyOrder} from "./CardAssertion";
 import {CardRow} from "../../../../../src/implementations/persistence/postgres/card/CardRow";
+import {assertObjectListsAreEqualsInAnyOrder} from "../AssertObjectListsAreEqualsInAnyOrder";
 
 type Context = {
     mock: PostgresDatastoreMock,
@@ -79,7 +79,7 @@ cardDao('should return the found card when searching by card id', async ({mock, 
     const resultWithFoundCard = new QueryResultBuilder<CardRow>().withRows([new CardPostgresMapperTestHelper().cardToRow(card)]).withRowCount(1).build()
     mock.returnResult(resultWithFoundCard)
     const result = await sut.findById(cardId)
-    assertCardsAreEqualsInAnyOrder([result], [card])
+    assertObjectListsAreEqualsInAnyOrder([result], [card])
 })
 
 cardDao('should return the found cards when searching by author id', async ({mock, sut}) => {
@@ -91,7 +91,7 @@ cardDao('should return the found cards when searching by author id', async ({moc
     const resultWithFoundCards = new QueryResultBuilder<CardRow>().withRows(cards.map(new CardPostgresMapperTestHelper().cardToRow)).withRowCount(1).build()
     mock.returnResult(resultWithFoundCards)
     const result = await sut.findByAuthorId(AuthorIdentification.create())
-    assertCardsAreEqualsInAnyOrder(result, cards)
+    assertObjectListsAreEqualsInAnyOrder(result, cards)
 })
 
 cardDao('should return the found cards when searching by labelling', async ({mock, sut}) => {
@@ -104,7 +104,7 @@ cardDao('should return the found cards when searching by labelling', async ({moc
     mock.returnResult(new QueryResultBuilder<CardRow>().withRows(foundCards.map(new CardPostgresMapperTestHelper().cardToRow)).build())
     const result = await sut.findByLabelling(Labelling.fromStringLabels(search))
 
-    assertCardsAreEqualsInAnyOrder(result, foundCards);
+    assertObjectListsAreEqualsInAnyOrder(result, foundCards);
 })
 
 cardDao.run()

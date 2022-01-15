@@ -1,20 +1,22 @@
-import {User} from '../../../domain/user/User'
-import {PostgresDatastore, PostgresErrorType} from './PostgresDatastore'
-import {DomainError} from '../../../domain/errors/DomainError'
-import {ErrorType} from '../../../domain/errors/ErrorType'
-import {UserIdentification} from '../../../domain/user/UserIdentification'
-import {UserMapper} from '../../../domain/user/UserMapper'
-import {NullUser} from '../../../domain/user/NullUser'
+import {User} from '../../../../domain/user/User'
+import {PostgresErrorType} from '../PostgresDatastore'
+import {DomainError} from '../../../../domain/errors/DomainError'
+import {ErrorType} from '../../../../domain/errors/ErrorType'
+import {UserIdentification} from '../../../../domain/user/UserIdentification'
+import {NullUser} from '../../../../domain/user/NullUser'
 import {UserSqlQuery} from './UserSqlQuery'
+import {UserPostgresDatastore} from "./UserPostgresDatastore";
+import {UserPostgresMapper} from "./UserPostgresMapper";
+import {UserDao} from "../../../../domain/user/UserDao";
 
-export class UserDao {
+export class UserPostgresDao implements UserDao {
 
     private readonly sqlQuery = new UserSqlQuery()
 
-    constructor(private datastore: PostgresDatastore = new PostgresDatastore()) {
+    constructor(private datastore: UserPostgresDatastore = new UserPostgresDatastore()) {
     }
 
-    async add(user: User) {
+    async insert(user: User) {
         const query = this.sqlQuery.insert(user)
 
         try {
@@ -44,10 +46,14 @@ export class UserDao {
     }
 
     async findById(id: UserIdentification): Promise<User> {
-        const query = this.sqlQuery.selectById(id)
+        const query = this.sqlQuery.selectUserById(id)
         const result = await this.datastore.query(query)
+        if (result.rowCount > 1) {
+            throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
+        }
         return result.rowCount > 0
-            ? new UserMapper().fromDto(result.rows[0])
+            ? new UserPostgresMapper().rowToUser(result.rows[0])
             : NullUser.getInstance()
     }
+
 }

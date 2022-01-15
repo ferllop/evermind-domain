@@ -3,13 +3,13 @@ import {CardIdentification} from '../../../../../src/domain/card/CardIdentificat
 import {PostgresDatastore} from '../../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
 import {CardBuilder} from '../../../../domain/card/CardBuilder.js'
 import {assert, suite} from '../../../../test-config.js'
-import {UserSqlQuery} from '../../../../../src/implementations/persistence/postgres/UserSqlQuery'
+import {UserSqlQuery} from '../../../../../src/implementations/persistence/postgres/user/UserSqlQuery'
 import {CardSqlQuery} from '../../../../../src/implementations/persistence/postgres/card/CardSqlQuery'
 import {Card} from '../../../../../src/domain/card/Card'
 import {Labelling} from "../../../../../src/domain/card/Labelling";
 import {assertQueriesAreEqual} from "../AssertQueriesAreEqual";
 import {assertAllRowsAreEqualToCards} from "./CardAssertion";
-import {givenAnExistingUser} from "../UserScenario";
+import {givenAnExistingUser} from "../user/UserScenario";
 import {
     givenAnExistingCard,
     givenSomeExistingCardsFromSameUser,

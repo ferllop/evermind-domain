@@ -4,6 +4,7 @@ import { Username } from '../../../src/domain/user/Username.js';
 import { DayStartTime } from '../../../src/domain/shared/value/DayStartTime.js';
 import { Identification } from '../../../src/domain/shared/value/Identification.js';
 import { UserMapper } from '../../../src/domain/user/UserMapper.js';
+import {UserIdentification} from "../../../src/domain/user/UserIdentification";
 
 export class UserBuilder {
     private id: string
@@ -12,7 +13,7 @@ export class UserBuilder {
     private dayStartTime: number;
 
     constructor() { 
-            this.id = 'anId'
+            this.id = UserIdentification.create().getId()
             this.name = 'aName'
             this.username = 'aUsername'
             this.dayStartTime = 9

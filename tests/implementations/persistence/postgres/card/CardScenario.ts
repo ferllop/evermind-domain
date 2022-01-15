@@ -1,4 +1,4 @@
-import {givenAnExistingUser} from "../UserScenario";
+import {givenAnExistingUser} from "../user/UserScenario";
 import {CardBuilder} from "../../../../domain/card/CardBuilder";
 import {AuthorIdentification} from "../../../../../src/domain/card/AuthorIdentification";
 import {Labelling} from "../../../../../src/domain/card/Labelling";
