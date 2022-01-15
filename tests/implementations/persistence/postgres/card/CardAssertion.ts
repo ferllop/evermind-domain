@@ -1,7 +1,7 @@
-import {Card} from "../../../../src/domain/card/Card";
-import {assert} from "../../../test-config";
-import {CardRow} from "../../../../src/implementations/persistence/postgres/CardRow";
-import {CardPostgresMapper} from "../../../../src/implementations/persistence/postgres/CardPostgresMapper";
+import {Card} from "../../../../../src/domain/card/Card";
+import {assert} from "../../../../test-config";
+import {CardRow} from "../../../../../src/implementations/persistence/postgres/card/CardRow";
+import {CardPostgresMapper} from "../../../../../src/implementations/persistence/postgres/card/CardPostgresMapper";
 
 export function assertCardsAreEqualsInAnyOrder(cardsA: Card[], cardsB: Card[]) {
     assert.ok(

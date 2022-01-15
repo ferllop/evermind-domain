@@ -1,6 +1,6 @@
-import {CardDto} from "../../../domain/card/CardDto";
-import {Card} from "../../../domain/card/Card";
-import {CardMapper} from "../../../domain/card/CardMapper";
+import {CardDto} from "../../../../domain/card/CardDto";
+import {Card} from "../../../../domain/card/Card";
+import {CardMapper} from "../../../../domain/card/CardMapper";
 import {CardRow} from "./CardRow";
 
 export class CardPostgresMapper {

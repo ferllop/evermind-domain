@@ -1,4 +1,4 @@
-import {PostgresDatastore} from "./PostgresDatastore";
+import {PostgresDatastore} from "../PostgresDatastore";
 import {QueryResult} from "pg";
 import {CardRow} from "./CardRow";
 

@@ -1,5 +1,5 @@
-import {CardPostgresMapper} from "../../../../src/implementations/persistence/postgres/CardPostgresMapper";
-import {Card} from "../../../../src/domain/card/Card";
+import {CardPostgresMapper} from "../../../../../src/implementations/persistence/postgres/card/CardPostgresMapper";
+import {Card} from "../../../../../src/domain/card/Card";
 
 export class CardPostgresMapperTestHelper extends CardPostgresMapper {
     cardToRow = (card: Card) => {

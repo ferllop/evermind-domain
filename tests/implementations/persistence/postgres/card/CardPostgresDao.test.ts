@@ -1,17 +1,18 @@
-import {AuthorIdentification} from '../../../../src/domain/card/AuthorIdentification.js'
-import {CardIdentification} from '../../../../src/domain/card/CardIdentification.js'
-import {CardPostgresDao} from '../../../../src/implementations/persistence/postgres/CardPostgresDao.js'
-import {DomainError} from '../../../../src/domain/errors/DomainError.js'
-import {ErrorType} from '../../../../src/domain/errors/ErrorType.js'
-import {PostgresErrorType} from '../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
-import {CardBuilder} from '../../../domain/card/CardBuilder.js'
-import {assert, suite} from '../../../test-config.js'
-import {Card} from '../../../../src/domain/card/Card.js'
-import {Labelling} from "../../../../src/domain/card/Labelling";
-import {QueryResultBuilder} from "./QueryResultBuilder";
-import {PostgresDatastoreMock} from "./PostgresDatastoreMock";
+import {AuthorIdentification} from '../../../../../src/domain/card/AuthorIdentification.js'
+import {CardIdentification} from '../../../../../src/domain/card/CardIdentification.js'
+import {CardPostgresDao} from '../../../../../src/implementations/persistence/postgres/card/CardPostgresDao.js'
+import {DomainError} from '../../../../../src/domain/errors/DomainError.js'
+import {ErrorType} from '../../../../../src/domain/errors/ErrorType.js'
+import {PostgresErrorType} from '../../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
+import {CardBuilder} from '../../../../domain/card/CardBuilder.js'
+import {assert, suite} from '../../../../test-config.js'
+import {Card} from '../../../../../src/domain/card/Card.js'
+import {Labelling} from "../../../../../src/domain/card/Labelling";
+import {QueryResultBuilder} from "../QueryResultBuilder";
+import {PostgresDatastoreMock} from "../PostgresDatastoreMock";
 import {CardPostgresMapperTestHelper} from "./CardPostgresMapperTestHelper";
 import {assertCardsAreEqualsInAnyOrder} from "./CardAssertion";
+import {CardRow} from "../../../../../src/implementations/persistence/postgres/card/CardRow";
 
 type Context = {
     mock: PostgresDatastoreMock,
@@ -43,7 +44,7 @@ cardDao('should throw a CARD_ALREADY_EXISTS error when inserting a card that alr
 
 cardDao('should throw a CARD_NOT_FOUND error when deleting a non-existing card', async ({mock, sut}) => {
     const deletedCardsCount = 0
-    const noDeletedCardsResult = new QueryResultBuilder().withRowCount(deletedCardsCount).build()
+    const noDeletedCardsResult = new QueryResultBuilder<CardRow>().withRowCount(deletedCardsCount).build()
     mock.returnResult(noDeletedCardsResult)
     try {
         await sut.delete(CardIdentification.create())
@@ -58,7 +59,7 @@ cardDao('should throw a CARD_NOT_FOUND error when deleting a non-existing card',
 })
 
 cardDao('should throw a CARD_NOT_FOUND error when no card is found to be updated', async ({mock, sut}) => {
-    const noUpdatedCardsResult = new QueryResultBuilder().withRowCount(0).build()
+    const noUpdatedCardsResult = new QueryResultBuilder<CardRow>().withRowCount(0).build()
     mock.returnResult(noUpdatedCardsResult)
     try {
         await sut.update(new CardBuilder().build())
@@ -75,7 +76,7 @@ cardDao('should throw a CARD_NOT_FOUND error when no card is found to be updated
 cardDao('should return the found card when searching by card id', async ({mock, sut}) => {
     const cardId = CardIdentification.create()
     const card = new CardBuilder().setId(cardId).build()
-    const resultWithFoundCard = new QueryResultBuilder().withRows([new CardPostgresMapperTestHelper().cardToRow(card)]).withRowCount(1).build()
+    const resultWithFoundCard = new QueryResultBuilder<CardRow>().withRows([new CardPostgresMapperTestHelper().cardToRow(card)]).withRowCount(1).build()
     mock.returnResult(resultWithFoundCard)
     const result = await sut.findById(cardId)
     assertCardsAreEqualsInAnyOrder([result], [card])
@@ -87,7 +88,7 @@ cardDao('should return the found cards when searching by author id', async ({moc
         new CardBuilder().withAuthorId(authorId.getId()).build(),
         new CardBuilder().withAuthorId(authorId.getId()).build(),
     ]
-    const resultWithFoundCards = new QueryResultBuilder().withRows(cards.map(new CardPostgresMapperTestHelper().cardToRow)).withRowCount(1).build()
+    const resultWithFoundCards = new QueryResultBuilder<CardRow>().withRows(cards.map(new CardPostgresMapperTestHelper().cardToRow)).withRowCount(1).build()
     mock.returnResult(resultWithFoundCards)
     const result = await sut.findByAuthorId(AuthorIdentification.create())
     assertCardsAreEqualsInAnyOrder(result, cards)
@@ -100,7 +101,7 @@ cardDao('should return the found cards when searching by labelling', async ({moc
         new CardBuilder().withLabels([...search, 'label3']).build(),
     ]
 
-    mock.returnResult(new QueryResultBuilder().withRows(foundCards.map(new CardPostgresMapperTestHelper().cardToRow)).build())
+    mock.returnResult(new QueryResultBuilder<CardRow>().withRows(foundCards.map(new CardPostgresMapperTestHelper().cardToRow)).build())
     const result = await sut.findByLabelling(Labelling.fromStringLabels(search))
 
     assertCardsAreEqualsInAnyOrder(result, foundCards);

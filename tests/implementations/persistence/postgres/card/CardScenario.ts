@@ -1,9 +1,9 @@
-import {givenAnExistingUser} from "./UserScenario";
-import {CardBuilder} from "../../../domain/card/CardBuilder";
-import {AuthorIdentification} from "../../../../src/domain/card/AuthorIdentification";
-import {Labelling} from "../../../../src/domain/card/Labelling";
-import {CardPostgresDao} from "../../../../src/implementations/persistence/postgres/CardPostgresDao";
-import {CardIdentification} from "../../../../src/domain/card/CardIdentification";
+import {givenAnExistingUser} from "../UserScenario";
+import {CardBuilder} from "../../../../domain/card/CardBuilder";
+import {AuthorIdentification} from "../../../../../src/domain/card/AuthorIdentification";
+import {Labelling} from "../../../../../src/domain/card/Labelling";
+import {CardPostgresDao} from "../../../../../src/implementations/persistence/postgres/card/CardPostgresDao";
+import {CardIdentification} from "../../../../../src/domain/card/CardIdentification";
 
 export async function givenTheExistingCardWithId(id: CardIdentification) {
     const user = await givenAnExistingUser()

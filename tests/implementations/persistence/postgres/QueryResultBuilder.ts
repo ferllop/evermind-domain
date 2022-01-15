@@ -1,5 +1,5 @@
-export class QueryResultBuilder {
-    private rows: any[] = []
+export class QueryResultBuilder<T> {
+    private rows: T[] = []
     private command = ''
     private rowCount = 0
     private oid = 0
@@ -10,7 +10,7 @@ export class QueryResultBuilder {
         return this
     }
 
-    withRows(rows: any[]) {
+    withRows(rows: T[]) {
         this.rows = rows
         return this
     }

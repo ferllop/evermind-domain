@@ -1,8 +1,8 @@
-import {Card} from '../../../domain/card/Card'
-import {CardIdentification} from '../../../domain/card/CardIdentification'
-import {Labelling} from '../../../domain/card/Labelling'
-import {AuthorIdentification} from '../../../domain/card/AuthorIdentification'
-import {UserDatabaseMap} from './UserSqlQuery'
+import {Card} from '../../../../domain/card/Card'
+import {CardIdentification} from '../../../../domain/card/CardIdentification'
+import {Labelling} from '../../../../domain/card/Labelling'
+import {AuthorIdentification} from '../../../../domain/card/AuthorIdentification'
+import {UserDatabaseMap} from '../UserSqlQuery'
 import {CardDatabaseMap} from "./CardDatabaseMap";
 import {LabellingDatabaseMap} from "./LabellingDatabaseMap";
 
