@@ -3,20 +3,8 @@ import {CardIdentification} from '../../../domain/card/CardIdentification'
 import {Labelling} from '../../../domain/card/Labelling'
 import {AuthorIdentification} from '../../../domain/card/AuthorIdentification'
 import {UserDatabaseMap} from './UserSqlQuery'
-
-enum CardDatabaseMap {
-    TABLE_NAME = 'cards',
-    ID = 'id',
-    AUTHOR = 'author_id',
-    QUESTION = 'question',
-    ANSWER = 'answer',
-}
-
-enum LabellingDatabaseMap {
-    TABLE_NAME = 'labelling',
-    CARD_ID = 'card_id',
-    LABEL = 'label',
-}
+import {CardDatabaseMap} from "./CardDatabaseMap";
+import {LabellingDatabaseMap} from "./LabellingDatabaseMap";
 
 export class CardSqlQuery {
     insert(card: Card) {
@@ -47,7 +35,9 @@ export class CardSqlQuery {
     }
 
     delete(id: CardIdentification) {
-        return `DELETE FROM ${CardDatabaseMap.TABLE_NAME} WHERE ${CardDatabaseMap.ID} = '${id.getId()}'`
+        return `DELETE
+                FROM ${CardDatabaseMap.TABLE_NAME}
+                WHERE ${CardDatabaseMap.ID} = '${id.getId()}'`
     }
 
     private getInsertLabellingQuery(cardId: CardIdentification, labelling: Labelling) {
@@ -55,48 +45,33 @@ export class CardSqlQuery {
             const result = `('${cardId.getId()}','${label}')`
             return accum.concat(result)
         }, [])
-        return `INSERT INTO ${LabellingDatabaseMap.TABLE_NAME} VALUES ${labelsValuesString.join(',')}`
+        return `INSERT INTO ${LabellingDatabaseMap.TABLE_NAME}
+                VALUES ${labelsValuesString.join(',')}`
+    }
+
+    private selectAllCards() {
+        return `SELECT ${CardDatabaseMap.ID},
+                       ${CardDatabaseMap.AUTHOR},
+                       ${CardDatabaseMap.QUESTION},
+                       ${CardDatabaseMap.ANSWER},
+                       array(SELECT ${LabellingDatabaseMap.LABEL}
+                             FROM ${LabellingDatabaseMap.TABLE_NAME}
+                             WHERE ${LabellingDatabaseMap.CARD_ID} = ${CardDatabaseMap.ID}) as labelling
+                FROM ${CardDatabaseMap.TABLE_NAME}`
     }
 
     selectCardById(id: CardIdentification) {
-        return `SELECT 
-        ${CardDatabaseMap.ID}, 
-        ${CardDatabaseMap.AUTHOR},
-        ${CardDatabaseMap.QUESTION},
-        ${CardDatabaseMap.ANSWER},
-        array(SELECT ${LabellingDatabaseMap.LABEL}
-            FROM labelling
-            WHERE ${LabellingDatabaseMap.CARD_ID} = ${CardDatabaseMap.ID}) as labelling
-        FROM ${CardDatabaseMap.TABLE_NAME}
-        WHERE ${CardDatabaseMap.ID} = '${id.getId()}'`
+        return `${this.selectAllCards()} WHERE ${CardDatabaseMap.ID} = '${id.getId()}'`
     }
 
     selectCardByAuthorId(id: AuthorIdentification) {
-        return `SELECT 
-        ${CardDatabaseMap.ID}, 
-        ${CardDatabaseMap.AUTHOR},
-        ${CardDatabaseMap.QUESTION},
-        ${CardDatabaseMap.ANSWER},
-        array(SELECT ${LabellingDatabaseMap.LABEL}
-            FROM labelling
-            WHERE ${LabellingDatabaseMap.CARD_ID} = ${CardDatabaseMap.ID}) as labelling
-        FROM ${CardDatabaseMap.TABLE_NAME}
-        WHERE ${CardDatabaseMap.AUTHOR} = '${id.getId()}'`
+        return `${this.selectAllCards()} WHERE ${CardDatabaseMap.AUTHOR} = '${id.getId()}'`
     }
 
     selectCardByLabelling(labelling: Labelling) {
         const labels = labelling.getLabels().map(label => label.getValue())
         const whereClause = `${LabellingDatabaseMap.LABEL} = '` + labels.join(`' OR ${LabellingDatabaseMap.LABEL} = '`) + `'`
-        return `SELECT 
-        ${CardDatabaseMap.ID}, 
-        ${CardDatabaseMap.AUTHOR},
-        ${CardDatabaseMap.QUESTION},
-        ${CardDatabaseMap.ANSWER},
-        array(SELECT ${LabellingDatabaseMap.LABEL}
-            FROM ${LabellingDatabaseMap.TABLE_NAME}
-            WHERE ${LabellingDatabaseMap.CARD_ID} = ${CardDatabaseMap.ID}) as labelling
-        FROM ${CardDatabaseMap.TABLE_NAME}
-        WHERE ${CardDatabaseMap.ID} in 
+        return `${this.selectAllCards()} WHERE ${CardDatabaseMap.ID} in 
             (SELECT ${LabellingDatabaseMap.CARD_ID}
              FROM ${LabellingDatabaseMap.TABLE_NAME} 
             WHERE ${whereClause} 
@@ -104,29 +79,24 @@ export class CardSqlQuery {
             HAVING COUNT(${LabellingDatabaseMap.LABEL}) = ${labels.length})`
     }
 
-    selectLabellingByCardId(id: CardIdentification) {
-        return `SELECT 
-        ${LabellingDatabaseMap.LABEL}
-            FROM ${LabellingDatabaseMap.TABLE_NAME}
-            WHERE ${LabellingDatabaseMap.CARD_ID} = '${id.getId()}'`
-    }
-
     createCardsTable() {
-        return `CREATE TABLE ${CardDatabaseMap.TABLE_NAME}(
-                ${CardDatabaseMap.ID} UUID PRIMARY KEY,
-                ${CardDatabaseMap.AUTHOR} UUID,
-                ${CardDatabaseMap.QUESTION} TEXT,
-                ${CardDatabaseMap.ANSWER} TEXT,
-                FOREIGN KEY (${CardDatabaseMap.AUTHOR})
-                    REFERENCES ${UserDatabaseMap.TABLE_NAME} (${UserDatabaseMap.ID}) ON DELETE CASCADE
-            );`
+        return `CREATE TABLE ${CardDatabaseMap.TABLE_NAME}
+                (
+                    ${CardDatabaseMap.ID}       UUID PRIMARY KEY,
+                    ${CardDatabaseMap.AUTHOR}   UUID,
+                    ${CardDatabaseMap.QUESTION} TEXT,
+                    ${CardDatabaseMap.ANSWER}   TEXT,
+                    FOREIGN KEY (${CardDatabaseMap.AUTHOR})
+                        REFERENCES ${UserDatabaseMap.TABLE_NAME} (${UserDatabaseMap.ID}) ON DELETE CASCADE
+                );`
     }
 
     createLabellingTable() {
-        return `CREATE TABLE ${LabellingDatabaseMap.TABLE_NAME} (
+        return `CREATE TABLE ${LabellingDatabaseMap.TABLE_NAME}
+                (
                     ${LabellingDatabaseMap.CARD_ID} UUID NOT NULL,
-                    ${LabellingDatabaseMap.LABEL} TEXT NOT NULL,
-                    FOREIGN KEY (${LabellingDatabaseMap.CARD_ID}) 
+                    ${LabellingDatabaseMap.LABEL}   TEXT NOT NULL,
+                    FOREIGN KEY (${LabellingDatabaseMap.CARD_ID})
                         REFERENCES ${CardDatabaseMap.TABLE_NAME} (${CardDatabaseMap.ID}) ON DELETE CASCADE,
                     PRIMARY KEY (${LabellingDatabaseMap.CARD_ID}, ${LabellingDatabaseMap.LABEL})
                 );`
