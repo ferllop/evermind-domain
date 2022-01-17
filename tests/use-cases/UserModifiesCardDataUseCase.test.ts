@@ -1,6 +1,6 @@
 import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import { CardDto } from '../../src/domain/card/CardDto.js'
-import { CardField } from '../../src/domain/card/CardField.js'
+import { CardField } from '../../src/implementations/persistence/in-memory/CardField.js'
 import { ErrorType } from '../../src/domain/errors/ErrorType.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { UserModifiesCardDataUseCase } from '../../src/use-cases/UserModifiesCardDataUseCase.js'
