@@ -7,7 +7,7 @@ export class SubscriptionMother {
     subscription: Subscription = new SubscriptionBuilder().build()
     userId = 'the-user-id'
     cardId = 'the-card-id'
-    id = this.userId + '#' + this.cardId
+    id = this.subscription.getId().getId()
 
     newDto() {
         return { cardId: 'the-card-Id', userId: 'the-user-Id' }

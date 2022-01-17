@@ -14,6 +14,7 @@ import {Dependency} from '../../src/implementations/implementations-container/De
 import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { UserSubscribesToCardUseCase } from '../../src/use-cases/UserSubscribesToCardUseCase.js'
 import { UserUnsubscribesFromCardUseCase } from '../../src/use-cases/UserUnsubscribesFromCardUseCase.js'
+import {SubscriptionDto} from '../../src/domain/subscription/SusbcriptionDto'
 
 type Context = {
     datastore: InMemoryDatastore
@@ -21,9 +22,10 @@ type Context = {
 
 const userUnsubscribesFromCard = suite<Context>("User unsubscribes from card")
 
-userUnsubscribesFromCard.before.each( (context) => {
+userUnsubscribesFromCard.before.each( async context => {
     ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
     context.datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
+    await context.datastore.clean()
 })
 
 async function givenAStoredCard(datastore: InMemoryDatastore) {
@@ -43,9 +45,12 @@ userUnsubscribesFromCard('given an existing user id subscribed to an existing ca
         cardId: card.getId().getId()
     }
     await new UserSubscribesToCardUseCase().execute(request)
-    await new UserUnsubscribesFromCardUseCase().execute(request)
+    let storedSubscriptions = await datastore.findMany<SubscriptionDto>('subscriptions', () => true)
+    assert.equal(storedSubscriptions.length, 1)
 
-    assert.not.ok(await datastore.read('subscriptions', request.userId + '#' + request.cardId))
+    await new UserUnsubscribesFromCardUseCase().execute(request)
+    storedSubscriptions = await datastore.findMany<SubscriptionDto>('subscriptions', () => true)
+    assert.equal(storedSubscriptions.length, 0)
 })
 
 userUnsubscribesFromCard('given an existing user id subscribed to an existing card id, then return a ok without data response', async ({datastore}) => {

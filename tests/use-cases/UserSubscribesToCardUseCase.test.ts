@@ -9,6 +9,7 @@ import {Dependency} from '../../src/implementations/implementations-container/De
 import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { Datastore } from '../../src/domain/shared/Datastore.js'
 import { UserSubscribesToCardUseCase } from '../../src/use-cases/UserSubscribesToCardUseCase.js'
+import {SubscriptionDto} from '../../src/domain/subscription/SusbcriptionDto'
 
 type Context = {
     db: InMemoryDatastore
@@ -16,20 +17,10 @@ type Context = {
 
 const userSubscribesToCard = suite<Context>("User subscribes to card")
 
-userSubscribesToCard.before.each( (context) => {
+userSubscribesToCard.before.each( async (context) => {
     ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
     context.db = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
-})
-
-userSubscribesToCard('given an existing user id and an existing card id, then create a subscription with id properly formatted', async ({db}) => {
-    const datastore = new AsyncDatastoreMother(db)
-    const userId = 'the-userid'
-    await datastore.user.withId(userId).beingStored()
-    const cardId = 'the-card-id'
-    await datastore.card.withId(cardId).beingStored()
-    const subscription = { userId, cardId }
-    await new UserSubscribesToCardUseCase().execute(subscription)
-    assert.ok(await datastore.subscription.withId(userId + '#' + cardId).isPresent())
+    await context.db.clean()
 })
 
 userSubscribesToCard('given a user subscribed to a card, when subscribing again, should return a USER_IS_ALREADY_SUBSCRIBED_TO_CARD error', async ({db}) => {
@@ -54,7 +45,9 @@ userSubscribesToCard('given an existing user id and an existing card id, then cr
         cardId: 'the-card-id'
     }
     await new UserSubscribesToCardUseCase().execute(subscription)
-    assert.ok(await datastore.subscription.hasLevel(0))
+    const storedSubscriptions = await db.findMany<SubscriptionDto>('subscriptions', () => true)
+    assert.equal(storedSubscriptions.length, 1)
+    assert.equal(storedSubscriptions[0].level, 0)
 })
 
 userSubscribesToCard('given a non existing user id and an existing card id, then the subscription is not done and return a USER_NOT_FOUND error', async ({db}) => {
@@ -111,16 +104,6 @@ class AsyncDatastoreMother {
 
     async isPresent() {
         return Boolean(await this.datastore.read(this.mother.TABLE_NAME, this.dto.id))
-    }
-
-    async isPresentOnlyOnce() {
-        const found = await this.datastore.findMany(this.mother.TABLE_NAME, dto => dto.id === this.dto.id)
-        return found.length === 1
-    }
-
-    async hasLevel(level: number) {
-        this.dto = await this.datastore.read(this.mother.TABLE_NAME, this.mother.id)
-        return this.dto.level === level
     }
 
     async beingStored() {

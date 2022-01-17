@@ -4,6 +4,8 @@ import { SubscriptionIdentification } from '../../../src/domain/subscription/Sub
 import { DateEvermind } from '../../../src/domain/shared/value/DateEvermind.js'
 import { DateISO } from '../../../src/domain/shared/value/DateISO.js'
 import { Identification } from '../../../src/domain/shared/value/Identification.js'
+import {UserIdentification} from '../../../src/domain/user/UserIdentification'
+import {CardIdentification} from '../../../src/domain/card/CardIdentification'
 
 export class SubscriptionBuilder {
     private id: SubscriptionIdentification
@@ -18,7 +20,7 @@ export class SubscriptionBuilder {
     constructor() {
         this.userId = Identification.create()
         this.cardId = Identification.create()
-        this.id = new SubscriptionIdentification(this.userId, this.cardId)
+        this.id = SubscriptionIdentification.create()
         this.level = Level.LEVEL_0
         this.lastReview = DateEvermind.fromNow()
     }
@@ -33,8 +35,18 @@ export class SubscriptionBuilder {
         return this
     }
 
+    withUserId(id: UserIdentification) {
+        this.userId = id
+        return this
+    }
+
     setCardId(id: string) {
         this.cardId = new Identification(id)
+        return this
+    }
+
+    withCardId(id: CardIdentification) {
+        this.cardId = id
         return this
     }
 

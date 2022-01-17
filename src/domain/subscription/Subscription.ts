@@ -11,15 +11,15 @@ import { SubscriptionIdentification } from './SubscriptionIdentification.js'
 
 export class Subscription extends Entity {
     
-    private readonly userId: Identification
+    private readonly userId: UserIdentification
 
-    private readonly cardId: Identification
+    private readonly cardId: CardIdentification
 
     private readonly level: Level
 
     private readonly lastReview: DateEvermind
 
-    protected constructor(id: SubscriptionIdentification, userId: Identification, cardId: Identification, level: Level, lastReview: DateEvermind) {
+    protected constructor(id: SubscriptionIdentification, userId: UserIdentification, cardId: CardIdentification, level: Level, lastReview: DateEvermind) {
         super(id)
         this.userId = userId
         this.cardId = cardId
@@ -72,7 +72,7 @@ export class Subscription extends Entity {
     }
 
     static create(userId: UserIdentification, cardId: CardIdentification) {
-        const id  = new SubscriptionIdentification(userId, cardId)
+        const id  = SubscriptionIdentification.create()
         return new Subscription(id, userId, cardId, Level.LEVEL_0, DateEvermind.fromNow())
     }
 

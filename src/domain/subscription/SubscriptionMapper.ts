@@ -1,14 +1,13 @@
-import { Mapper } from '../shared/Mapper.js';
-import { MayBeIdentified } from '../shared/value/MayBeIdentified.js';
-import { Identification } from '../shared/value/Identification.js';
-import { Level } from './Level.js';
-import { Subscription } from './Subscription.js';
-import { SubscriptionDto } from './SusbcriptionDto.js';
-import { SubscriptionIdentification } from './SubscriptionIdentification.js';
-import { Validator } from '../shared/Validator.js';
-import { UserIdentification } from '../user/UserIdentification.js';
-import { CardIdentification } from '../card/CardIdentification.js';
-import { DateEvermind } from '../shared/value/DateEvermind.js';
+import {Mapper} from '../shared/Mapper.js'
+import {MayBeIdentified} from '../shared/value/MayBeIdentified.js'
+import {Level} from './Level.js'
+import {Subscription} from './Subscription.js'
+import {SubscriptionDto} from './SusbcriptionDto.js'
+import {SubscriptionIdentification} from './SubscriptionIdentification.js'
+import {Validator} from '../shared/Validator.js'
+import {UserIdentification} from '../user/UserIdentification.js'
+import {CardIdentification} from '../card/CardIdentification.js'
+import {DateEvermind} from '../shared/value/DateEvermind.js'
 
 export class SubscriptionMapper extends Mapper<Subscription, SubscriptionDto> {
     getValidators(): Map<string, Validator> {
@@ -25,10 +24,11 @@ export class SubscriptionMapper extends Mapper<Subscription, SubscriptionDto> {
     }
 
     fromDto(dto: SubscriptionDto): Subscription {
-        const userId = new Identification(dto.userId)
-        const cardId = new Identification(dto.cardId)
+        const userId = new UserIdentification(dto.userId)
+        const cardId = new CardIdentification(dto.cardId)
+        const subscriptionId = new SubscriptionIdentification(dto.id)
         return Subscription.recreate(
-            new SubscriptionIdentification(userId, cardId),
+            subscriptionId,
             userId, 
             cardId, 
             Level.getByOrdinal(dto.level), 
