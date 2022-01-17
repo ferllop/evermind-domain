@@ -5,6 +5,7 @@ import { Labelling } from '../card/Labelling.js'
 import { UserRepository } from '../user/UserRepository.js'
 import { Query } from './Query.js'
 import { Search } from './Search.js'
+import {Username} from '../user/Username'
 
 export class SearchService {
     async executeQuery(query: Query): Promise<Card[]> {
@@ -13,9 +14,9 @@ export class SearchService {
         let cardsWithLabels: Card[]
 
         if (search.hasAuthor() && search.hasLabels()) {
-            const user = await new UserRepository().findOne(user => {
-                return search.getAuthorUsername().toString() === user.username
-            })
+            const user = await new UserRepository().findByUsername(
+                new Username(search.getAuthorUsername().toString()))
+
             if (user.isNull()) {
                 return []
             }
@@ -31,9 +32,9 @@ export class SearchService {
         }
 
         if (search.hasAuthor()) {
-            const user = await new UserRepository().findOne(user => {
-                return search.getAuthorUsername().toString() === user.username
-            })
+            const user = await new UserRepository().findByUsername(
+                new Username(search.getAuthorUsername().toString()))
+
             if (user.isNull()) {
                 return []
             }

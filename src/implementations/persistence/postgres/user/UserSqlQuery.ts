@@ -1,6 +1,7 @@
 import {User} from '../../../../domain/user/User'
 import {UserIdentification} from '../../../../domain/user/UserIdentification'
 import {UserDatabaseMap} from './UserDatabaseMap'
+import {Username} from '../../../../domain/user/Username'
 
 export class UserSqlQuery {
     createUsersTable() {
@@ -39,12 +40,19 @@ export class UserSqlQuery {
                 WHERE ${UserDatabaseMap.ID} = '${id.getId()}'`
     }
 
-    selectUserById(id: UserIdentification) {
+    private selectAllUsers() {
         return `SELECT ${UserDatabaseMap.ID},
                        ${UserDatabaseMap.NAME},
                        ${UserDatabaseMap.USERNAME},
                        ${UserDatabaseMap.DAY_START_TIME}
-                FROM ${UserDatabaseMap.TABLE_NAME}
-                WHERE ${UserDatabaseMap.ID} = '${id.getId()}'`
+                FROM ${UserDatabaseMap.TABLE_NAME}`
+    }
+
+    selectUserById(id: UserIdentification) {
+        return `${this.selectAllUsers()} WHERE ${UserDatabaseMap.ID} = '${id.getId()}'`
+    }
+
+    selectUserByUsername(username: Username) {
+        return `${this.selectAllUsers()} WHERE ${UserDatabaseMap.USERNAME} = '${username.getValue()}'`
     }
 }

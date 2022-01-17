@@ -9,6 +9,7 @@ import {UserMapper} from '../../../../../src/domain/user/UserMapper'
 import {assertAllRowsAreEqualToUsers} from './AssertAllRowsAreEqualToUsers'
 import {UserIdentification} from '../../../../../src/domain/user/UserIdentification'
 import {givenAnExistingUser} from './UserScenario'
+import {Username} from '../../../../../src/domain/user/Username'
 
 const userSqlQuery = suite('User Sql Query')
 
@@ -109,6 +110,26 @@ userSqlQuery('should send a working query to find a user by id', async () => {
     const user = await givenAnExistingUser()
 
     const sut = new UserSqlQuery().selectUserById(user.getId())
+
+    const foundUser = await new UserPostgresDatastore().query(sut)
+
+    assert.equal(foundUser.rowCount, 1)
+    assertAllRowsAreEqualToUsers(foundUser.rows, [user])
+})
+
+userSqlQuery('should send the proper query to find a user by username', async () => {
+    const username = new Username('the-username')
+    const sut = new UserSqlQuery().selectUserByUsername(username)
+    const expectedQuery = `SELECT id, name, username, day_start_time
+                           FROM users
+                           WHERE username = '${username.getValue()}'`
+    assertQueriesAreEqual(sut, expectedQuery)
+})
+
+userSqlQuery('should send a working query to find a user by username', async () => {
+    const user = await givenAnExistingUser()
+
+    const sut = new UserSqlQuery().selectUserByUsername(user.getUsername())
 
     const foundUser = await new UserPostgresDatastore().query(sut)
 

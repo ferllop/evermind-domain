@@ -1,35 +1,34 @@
 import {User} from './User.js'
-import {UserDto} from './UserDto.js'
-import {UserField} from './UserField.js'
-import {NullUser} from './NullUser.js'
-import {UserMapper} from './UserMapper.js'
-import {Repository} from '../shared/Repository.js'
-import {ErrorType} from '../errors/ErrorType.js'
-import {DomainError} from '../errors/DomainError.js'
+import {UserInMemoryDao} from '../../implementations/persistence/in-memory/UserInMemoryDao'
+import {UserDao} from './UserDao'
+import {UserIdentification} from './UserIdentification'
+import {Username} from './Username'
 
-export class UserRepository extends Repository<User, UserDto> {
+export class UserRepository {
+
+    dao: UserDao
 
     constructor() {
-        super(UserField.TABLE_NAME, new UserMapper())
+        this.dao = new UserInMemoryDao()
     }
 
-    override async delete(user: User) {
-        if (user.isNull()) {
-            throw new DomainError(ErrorType.USER_NOT_FOUND)
-        }
-
-        try {
-            return await super.delete(user)
-        } catch (error) {
-            if (error.code() === ErrorType.RESOURCE_NOT_FOUND) {
-                throw new DomainError(ErrorType.USER_NOT_FOUND)
-            }
-            throw error
-        }
+    async add(user: User) {
+        await this.dao.insert(user)
     }
 
-    getNull() {
-        return NullUser.getInstance()
+    async delete(user: User) {
+        await this.dao.delete(user.getId())
+    }
+
+    async findById(id: UserIdentification) {
+        return await this.dao.findById(id)
+    }
+    async findByUsername(username: Username) {
+        return await this.dao.findByUsername(username)
+    }
+
+    async update(user: User) {
+        await this.dao.update(user)
     }
 
 }

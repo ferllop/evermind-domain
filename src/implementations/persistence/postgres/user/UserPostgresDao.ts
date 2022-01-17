@@ -8,6 +8,7 @@ import {UserSqlQuery} from './UserSqlQuery'
 import {UserPostgresDatastore} from "./UserPostgresDatastore";
 import {UserPostgresMapper} from "./UserPostgresMapper";
 import {UserDao} from "../../../../domain/user/UserDao";
+import {Username} from '../../../../domain/user/Username'
 
 export class UserPostgresDao implements UserDao {
 
@@ -45,8 +46,7 @@ export class UserPostgresDao implements UserDao {
         }
     }
 
-    async findById(id: UserIdentification): Promise<User> {
-        const query = this.sqlQuery.selectUserById(id)
+    private async findOne(query: string): Promise<User> {
         const result = await this.datastore.query(query)
         if (result.rowCount > 1) {
             throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
@@ -55,5 +55,18 @@ export class UserPostgresDao implements UserDao {
             ? new UserPostgresMapper().rowToUser(result.rows[0])
             : NullUser.getInstance()
     }
+
+    async findById(id: UserIdentification): Promise<User> {
+        const query = this.sqlQuery.selectUserById(id)
+        return this.findOne(query)
+
+    }
+
+    async findByUsername(username: Username): Promise<User> {
+        const query = this.sqlQuery.selectUserByUsername(username)
+        return this.findOne(query)
+    }
+
+
 
 }
