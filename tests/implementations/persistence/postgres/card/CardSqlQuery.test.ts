@@ -3,32 +3,37 @@ import {CardIdentification} from '../../../../../src/domain/card/CardIdentificat
 import {PostgresDatastore} from '../../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
 import {CardBuilder} from '../../../../domain/card/CardBuilder.js'
 import {assert, suite} from '../../../../test-config.js'
-import {UserSqlQuery} from '../../../../../src/implementations/persistence/postgres/user/UserSqlQuery'
 import {CardSqlQuery} from '../../../../../src/implementations/persistence/postgres/card/CardSqlQuery'
 import {Card} from '../../../../../src/domain/card/Card'
-import {Labelling} from "../../../../../src/domain/card/Labelling";
-import {assertQueriesAreEqual} from "../AssertQueriesAreEqual";
-import {assertAllRowsAreEqualToCards} from "./CardAssertion";
-import {givenAnExistingUser} from "../user/UserScenario";
+import {Labelling} from '../../../../../src/domain/card/Labelling'
+import {assertQueriesAreEqual} from '../AssertQueriesAreEqual'
+import {assertAllRowsAreEqualToCards} from './CardAssertion'
+import {givenAnExistingUser} from '../user/UserScenario'
 import {
     givenAnExistingCard,
     givenSomeExistingCardsFromSameUser,
     givenTheExistingCardWithId,
-    givenTheExistingCardWithLabels
-} from "./CardScenario";
+    givenTheExistingCardWithLabels,
+} from './CardScenario'
+import {cleanDatabase} from '../PostgresTestHelper'
 
 const cardSqlQuery = suite('Card Sql Query')
 
-cardSqlQuery.before.each(async () => {
-    const postgresDatastore = new PostgresDatastore()
-    try {
-        await postgresDatastore.query('DROP TABLE IF EXISTS cards CASCADE; DROP TABLE IF EXISTS labelling; DROP TABLE IF EXISTS users;' +
-            new UserSqlQuery().createUsersTable() + ';' +
-            new CardSqlQuery().createCardsTable() + ';' +
-            new CardSqlQuery().createLabellingTable())
-    } catch (error) {
-        console.log('ERROR:', error)
-    }
+cardSqlQuery.before.each(async () => await cleanDatabase())
+
+cardSqlQuery('should provide the correct create cards table query', async () => {
+    const sut = new CardSqlQuery().createCardsTable()
+
+    const expectedQuery = `CREATE TABLE cards
+                (
+                    id       UUID PRIMARY KEY,
+                    author_id   UUID,
+                    question TEXT,
+                    answer   TEXT,
+                    FOREIGN KEY (author_id)
+                        REFERENCES users (id) ON DELETE CASCADE
+                );`
+    assertQueriesAreEqual(sut, expectedQuery)
 })
 
 cardSqlQuery('should provide the correct insert query', async () => {

@@ -20,8 +20,8 @@ export class SubscriptionRepository {
         return await this.dao.update(entity)
     }
 
-    async delete(entity: Subscription) {
-        await this.dao.delete(entity)
+    async delete(subscription: Subscription) {
+        await this.dao.delete(subscription.getId())
 
     }
 
@@ -30,7 +30,7 @@ export class SubscriptionRepository {
     }
 
     async findByUserId(user: User) {
-        return await this.dao.findByUserId(user)
+        return await this.dao.findByUserId(user.getId())
     }
 
 }

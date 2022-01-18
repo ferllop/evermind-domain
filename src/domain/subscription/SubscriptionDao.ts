@@ -1,15 +1,15 @@
 import {Subscription} from './Subscription'
-import {Identification} from '../shared/value/Identification'
-import {User} from '../user/User'
+import {SubscriptionIdentification} from './SubscriptionIdentification'
+import {UserIdentification} from '../user/UserIdentification'
 
 export interface SubscriptionDao {
     insert(entity: Subscription): Promise<void>
 
-    delete(entity: Subscription): Promise<void>
+    delete(id: SubscriptionIdentification): Promise<void>
 
-    findById(id: Identification): Promise<Subscription>
+    findById(id: SubscriptionIdentification): Promise<Subscription>
 
     update(entity: Subscription): Promise<void>
 
-    findByUserId(user: User): any
+    findByUserId(id: UserIdentification): Promise<Subscription[]>
 }

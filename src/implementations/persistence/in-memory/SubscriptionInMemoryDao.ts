@@ -1,4 +1,3 @@
-import {User} from '../../../domain/user/User'
 import {SubscriptionMapper} from '../../../domain/subscription/SubscriptionMapper'
 import {Identification} from '../../../domain/shared/value/Identification'
 import {Dependency} from '../../implementations-container/Dependency'
@@ -12,6 +11,8 @@ import {SubscriptionDto} from '../../../domain/subscription/SusbcriptionDto'
 import {ImplementationsContainer} from '../../implementations-container/ImplementationsContainer'
 import {ErrorType} from '../../../domain/errors/ErrorType'
 import {SubscriptionDao} from '../../../domain/subscription/SubscriptionDao'
+import {SubscriptionIdentification} from '../../../domain/subscription/SubscriptionIdentification'
+import {UserIdentification} from '../../../domain/user/UserIdentification'
 
 
 export class SubscriptionInMemoryDao implements SubscriptionDao {
@@ -26,8 +27,8 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
         }
     }
 
-    async delete(entity: Subscription) {
-        if (entity.isNull()) {
+    async delete(id: SubscriptionIdentification) {
+        if (id.isNull()) {
             throw new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
         }
 
@@ -35,7 +36,7 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
             throw new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }
 
-        const deleted = await this.datastore.delete(this.tableName, entity.getId().getId())
+        const deleted = await this.datastore.delete(this.tableName, id.getId())
         if (!deleted) {
             throw new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }
@@ -87,14 +88,14 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
         return this.mapper.fromDto(result)
     }
 
-    findByUserId(user: User) {
+    async findByUserId(id: UserIdentification) {
         const criteria = (subscription: SubscriptionDto) => {
-            return subscription.userId === user.getId().getId()
+            return subscription.userId === id.getId()
         }
-        return this.find(criteria)
+        return await this.find(criteria)
     }
 
-    getNull() {
+    private getNull() {
         return NullSubscription.getInstance()
     }
 }

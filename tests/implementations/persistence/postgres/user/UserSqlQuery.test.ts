@@ -10,18 +10,11 @@ import {assertAllRowsAreEqualToUsers} from './AssertAllRowsAreEqualToUsers'
 import {UserIdentification} from '../../../../../src/domain/user/UserIdentification'
 import {givenAnExistingUser} from './UserScenario'
 import {Username} from '../../../../../src/domain/user/Username'
+import {cleanDatabase} from '../PostgresTestHelper'
 
 const userSqlQuery = suite('User Sql Query')
 
-userSqlQuery.before.each(async () => {
-    const postgresDatastore = new UserPostgresDatastore()
-    try {
-        await postgresDatastore.query('DROP TABLE IF EXISTS labelling; DROP TABLE IF EXISTS cards; DROP TABLE IF EXISTS users;' +
-            new UserSqlQuery().createUsersTable() + ';')
-    } catch (error) {
-        console.log('ERROR:', error)
-    }
-})
+userSqlQuery.before.each(async () => await cleanDatabase())
 
 userSqlQuery('should provide the correct insert query', async () => {
     const user = new UserBuilder().build()
