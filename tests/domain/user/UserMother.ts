@@ -3,7 +3,7 @@ import { UserDto } from '../../../src/domain/user/UserDto.js'
 import { Mother } from "../shared/Mother.js"
 import { User } from '../../../src/domain/user/User.js'
 import { UserBuilder } from './UserBuilder.js'
-import { UserMapper } from '../../../src/domain/user/UserMapper.js'
+import { UserFactory } from '../../../src/domain/user/UserFactory.js'
 
 export class UserMother implements Mother<UserDto> {
     
@@ -11,7 +11,7 @@ export class UserMother implements Mother<UserDto> {
     user: User = new UserBuilder().build()
 
     standard() {
-        return new UserMapper().fromDto(this.dto())
+        return new UserFactory().fromDto(this.dto())
     }
 
     dto(): UserDto {

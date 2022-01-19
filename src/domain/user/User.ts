@@ -1,13 +1,12 @@
-import { Identification } from '../shared/value/Identification.js'
-import { Entity } from '../shared/Entity.js'
-import { DayStartTime } from '../shared/value/DayStartTime.js'
-import { PersonName } from './PersonName.js'
-import { Username } from './Username.js'
-import { Subscription } from '../subscription/Subscription.js'
-import { Card } from '../card/Card.js'
-import { UserIdentification } from './UserIdentification.js'
-import { UserDto } from './UserDto.js'
-import { UserMapper } from './UserMapper.js'
+import {Entity} from '../shared/Entity.js'
+import {DayStartTime} from '../shared/value/DayStartTime.js'
+import {PersonName} from './PersonName.js'
+import {Username} from './Username.js'
+import {Subscription} from '../subscription/Subscription.js'
+import {Card} from '../card/Card.js'
+import {UserIdentification} from './UserIdentification.js'
+import {UserDto} from './UserDto.js'
+import {UserFactory} from './UserFactory.js'
 
 export class User extends Entity {
 
@@ -16,14 +15,6 @@ export class User extends Entity {
     protected constructor(private name: PersonName, private username: Username, private dayStartTime: DayStartTime, id: UserIdentification) {
         super(id)
         this.subscriptions = []
-    }
-
-    static create(name: PersonName, username: Username) {
-        return new User(name, username, new DayStartTime(), Identification.create())
-    }
-
-    static recreate(name: PersonName, username: Username, dayStartTime: DayStartTime, id: Identification) {
-        return new User(name, username, dayStartTime, id)
     }
 
     getName() {
@@ -63,14 +54,7 @@ export class User extends Entity {
 
     apply(user: Omit<Partial<UserDto>, 'id'>) {
         const modifiedCard = { ...this.toDto(), ...user }
-        return new UserMapper().fromDto(modifiedCard)
-    }
-
-    static isValid(name: string, username: string, dayStartTime: number, id?: string): boolean {
-        return PersonName.isValid(name) &&
-            Username.isValid(username) &&
-            DayStartTime.isValid(dayStartTime) &&
-            (Boolean(id) ? Identification.isValid(id) : true)
+        return new UserFactory().fromDto(modifiedCard)
     }
 
     toDto(){

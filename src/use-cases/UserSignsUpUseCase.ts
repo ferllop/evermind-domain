@@ -1,10 +1,10 @@
-import { ErrorType } from '../domain/errors/ErrorType.js';
-import { UserRepository } from '../domain/user/UserRepository.js';
-import { PersonName } from '../domain/user/PersonName.js';
-import { User } from '../domain/user/User.js';
-import { Username } from '../domain/user/Username.js';
-import { Response } from './Response.js';
-import { UserSignsUpRequest } from './UserSignsUpRequest.js';
+import {ErrorType} from '../domain/errors/ErrorType.js'
+import {UserRepository} from '../domain/user/UserRepository.js'
+import {PersonName} from '../domain/user/PersonName.js'
+import {Username} from '../domain/user/Username.js'
+import {Response} from './Response.js'
+import {UserSignsUpRequest} from './UserSignsUpRequest.js'
+import {UserFactory} from '../domain/user/UserFactory'
 
 export class UserSignsUpUseCase {
     
@@ -12,7 +12,7 @@ export class UserSignsUpUseCase {
         if (!PersonName.isValid(request.name) || !Username.isValid(request.username)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
-        const user = User.create(new PersonName(request.name), new Username(request.username))
+        const user = new UserFactory().create(new PersonName(request.name), new Username(request.username))
 
         try {
             await new UserRepository().add(user)

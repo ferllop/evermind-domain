@@ -7,7 +7,7 @@ import {Dependency} from '../../src/implementations/implementations-container/De
 import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import {UserSignsUpUseCase} from '../../src/use-cases/UserSignsUpUseCase.js'
 import {Username} from '../../src/domain/user/Username'
-import {UserMapper} from '../../src/domain/user/UserMapper'
+import {UserFactory} from '../../src/domain/user/UserFactory'
 import {PersistenceFactory} from '../../src/implementations/persistence/PersistenceFactory'
 
 const userSignsUpUseCase = suite('User signs up use case')
@@ -32,7 +32,7 @@ userSignsUpUseCase(
         await new UserSignsUpUseCase().execute(user)
         const storedUser = await PersistenceFactory.getUserDao().findByUsername(new Username(user.username))
 
-        const mapper = new UserMapper()
+        const mapper = new UserFactory()
         const expectedUser = mapper.fromDto({
             ...storedUser.toDto(),
             ...user,

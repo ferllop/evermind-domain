@@ -1,9 +1,9 @@
 import {PersonName} from '../../../src/domain/user/PersonName.js'
-import {User} from '../../../src/domain/user/User.js'
 import {Username} from '../../../src/domain/user/Username.js'
 import {DayStartTime} from '../../../src/domain/shared/value/DayStartTime.js'
 import {Identification} from '../../../src/domain/shared/value/Identification.js'
 import {UserIdentification} from '../../../src/domain/user/UserIdentification'
+import {UserFactory} from '../../../src/domain/user/UserFactory'
 
 export class UserBuilder {
     private id: string
@@ -39,12 +39,7 @@ export class UserBuilder {
     }
 
     build() {
-        return User.recreate(
-            new PersonName(this.name),
-            new Username(this.username),
-            new DayStartTime(this.dayStartTime), 
-            Identification.recreate(this.id)
-        )
+        return new UserFactory().recreate(new PersonName(this.name), new Username(this.username), new DayStartTime(this.dayStartTime), Identification.recreate(this.id))
     }
 
     buildDto() {

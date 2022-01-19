@@ -5,7 +5,7 @@ import {
     UserPostgresDatastore,
 } from '../../../../../src/implementations/persistence/postgres/user/UserPostgresDatastore'
 import {UserBuilder} from '../../../../domain/user/UserBuilder'
-import {UserMapper} from '../../../../../src/domain/user/UserMapper'
+import {UserFactory} from '../../../../../src/domain/user/UserFactory'
 import {assertAllRowsAreEqualToUsers} from './AssertAllRowsAreEqualToUsers'
 import {UserIdentification} from '../../../../../src/domain/user/UserIdentification'
 import {givenAnExistingUser} from './UserScenario'
@@ -77,7 +77,7 @@ userSqlQuery('should provide the correct user update query', async () => {
 
 userSqlQuery('should provide a working user update query', async () => {
     const user = await givenAnExistingUser()
-    const updatedUser = new UserMapper().fromDto({
+    const updatedUser = new UserFactory().fromDto({
         ...user.toDto(),
         name: 'updated name',
         username: 'updated username',

@@ -4,7 +4,7 @@ import {UserDao} from '../../../domain/user/UserDao'
 import {InMemoryDatastore} from './InMemoryDatastore'
 import {UserIdentification} from '../../../domain/user/UserIdentification'
 import {UserDto} from '../../../domain/user/UserDto'
-import {UserMapper} from '../../../domain/user/UserMapper'
+import {UserFactory} from '../../../domain/user/UserFactory'
 import {User} from '../../../domain/user/User'
 import {DomainError} from '../../../domain/errors/DomainError'
 import {NullUser} from '../../../domain/user/NullUser'
@@ -14,7 +14,7 @@ import {Username} from '../../../domain/user/Username'
 export class UserInMemoryDao implements UserDao {
 
     protected readonly tableName = 'users'
-    protected mapper = new UserMapper()
+    protected mapper = new UserFactory()
     protected datastore: InMemoryDatastore
 
     constructor() {

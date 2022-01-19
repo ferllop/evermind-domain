@@ -1,14 +1,14 @@
 import { ErrorType } from '../domain/errors/ErrorType.js';
 import { UserRepository } from '../domain/user/UserRepository.js';
 import { UserIdentification } from '../domain/user/UserIdentification.js';
-import { UserMapper } from '../domain/user/UserMapper.js';
+import { UserFactory } from '../domain/user/UserFactory.js';
 import { Response } from './Response.js';
 import { UserModifiesUserDataRequest } from './UserModifiesUserDataRequest.js';
 
 export class UserModifiesUserDataUseCase {
     
     async execute(dto: UserModifiesUserDataRequest): Promise<Response<null>> {
-        const mapper = new UserMapper()
+        const mapper = new UserFactory()
         if (!mapper.arePropertiesValid(dto)) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }

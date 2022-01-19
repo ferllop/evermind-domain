@@ -1,7 +1,7 @@
 import {UserDto} from "../../../../domain/user/UserDto";
 import {UserRow} from "./UserRow";
 import {User} from "../../../../domain/user/User";
-import {UserMapper} from "../../../../domain/user/UserMapper";
+import {UserFactory} from "../../../../domain/user/UserFactory";
 
 export class UserPostgresMapper {
     postgresToDtoMap: Record<string, keyof UserDto> = {
@@ -21,6 +21,6 @@ export class UserPostgresMapper {
 
         }, {})
 
-        return new UserMapper().fromDto(userDto as UserDto)
+        return new UserFactory().fromDto(userDto as UserDto)
     }
 }
