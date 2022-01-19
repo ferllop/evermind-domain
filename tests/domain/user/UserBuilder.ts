@@ -1,10 +1,9 @@
-import { PersonName } from '../../../src/domain/user/PersonName.js';
-import { User } from '../../../src/domain/user/User.js';
-import { Username } from '../../../src/domain/user/Username.js';
-import { DayStartTime } from '../../../src/domain/shared/value/DayStartTime.js';
-import { Identification } from '../../../src/domain/shared/value/Identification.js';
-import { UserMapper } from '../../../src/domain/user/UserMapper.js';
-import {UserIdentification} from "../../../src/domain/user/UserIdentification";
+import {PersonName} from '../../../src/domain/user/PersonName.js'
+import {User} from '../../../src/domain/user/User.js'
+import {Username} from '../../../src/domain/user/Username.js'
+import {DayStartTime} from '../../../src/domain/shared/value/DayStartTime.js'
+import {Identification} from '../../../src/domain/shared/value/Identification.js'
+import {UserIdentification} from '../../../src/domain/user/UserIdentification'
 
 export class UserBuilder {
     private id: string
@@ -49,7 +48,7 @@ export class UserBuilder {
     }
 
     buildDto() {
-        return new UserMapper().toDto(this.build())
+        return this.build().toDto()
     }
 
     

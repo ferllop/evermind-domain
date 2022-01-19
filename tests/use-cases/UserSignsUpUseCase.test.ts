@@ -34,7 +34,7 @@ userSignsUpUseCase(
 
         const mapper = new UserMapper()
         const expectedUser = mapper.fromDto({
-            ...mapper.toDto(storedUser),
+            ...storedUser.toDto(),
             ...user,
         })
         assert.equal(storedUser, expectedUser)

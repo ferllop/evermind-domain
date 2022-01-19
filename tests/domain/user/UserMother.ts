@@ -43,7 +43,7 @@ export class UserMother implements Mother<UserDto> {
     }
 
     getDto() {
-       return new UserMapper().toDto(this.user) 
+       return this.user.toDto()
     }
 
 }

@@ -18,7 +18,7 @@ userSqlQuery.before.each(async () => await cleanDatabase())
 
 userSqlQuery('should provide the correct insert query', async () => {
     const user = new UserBuilder().build()
-    const {id, name, username, dayStartTime} = new UserMapper().toDto(user)
+    const {id, name, username, dayStartTime} = user.toDto()
 
     const sut = new UserSqlQuery().insert(user)
 
@@ -78,7 +78,7 @@ userSqlQuery('should provide the correct user update query', async () => {
 userSqlQuery('should provide a working user update query', async () => {
     const user = await givenAnExistingUser()
     const updatedUser = new UserMapper().fromDto({
-        ...new UserMapper().toDto(user),
+        ...user.toDto(),
         name: 'updated name',
         username: 'updated username',
     })

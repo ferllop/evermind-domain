@@ -1,14 +1,14 @@
-import { User } from './User.js'
-import { Mapper } from '../shared/Mapper.js'
-import { Validator } from '../shared/Validator.js'
-import { DayStartTime } from '../shared/value/DayStartTime.js'
-import { Identification } from '../shared/value/Identification.js'
-import { MayBeIdentified } from '../shared/value/MayBeIdentified.js'
-import { PersonName } from './PersonName.js'
-import { UserDto } from './UserDto.js'
-import { UserIdentification } from './UserIdentification.js'
-import { Username } from './Username.js'
-import { precondition } from '../../implementations/preconditions.js'
+import {User} from './User.js'
+import {Mapper} from '../shared/Mapper.js'
+import {Validator} from '../shared/Validator.js'
+import {DayStartTime} from '../shared/value/DayStartTime.js'
+import {Identification} from '../shared/value/Identification.js'
+import {MayBeIdentified} from '../shared/value/MayBeIdentified.js'
+import {PersonName} from './PersonName.js'
+import {UserDto} from './UserDto.js'
+import {UserIdentification} from './UserIdentification.js'
+import {Username} from './Username.js'
+import {precondition} from '../../implementations/preconditions.js'
 
 export class UserMapper extends Mapper<User, UserDto> {
 
@@ -39,12 +39,4 @@ export class UserMapper extends Mapper<User, UserDto> {
             new Identification(dto.id))
     }
 
-    toDto(user: User): UserDto {
-        return {
-            id: user.getId().getId(),
-            name: user.getName().toString(),
-            username: user.getUsername().toString(),
-            dayStartTime: user.getDayStartTime().getValue()
-        }
-    }
 }

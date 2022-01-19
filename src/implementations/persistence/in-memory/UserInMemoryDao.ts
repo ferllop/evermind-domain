@@ -22,7 +22,7 @@ export class UserInMemoryDao implements UserDao {
     }
 
     async insert(user: User) {
-        const result = await this.datastore.create(this.tableName, this.mapper.toDto(user))
+        const result = await this.datastore.create(this.tableName, user.toDto())
         if (!result) {
             throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
         }
@@ -63,7 +63,7 @@ export class UserInMemoryDao implements UserDao {
         if (!await this.datastore.hasTable(this.tableName)) {
             throw new DomainError(ErrorType.USER_NOT_FOUND)
         }
-        const updated = this.datastore.update(this.tableName, this.mapper.toDto(user))
+        const updated = this.datastore.update(this.tableName, user.toDto())
         if (!updated) {
             throw new DomainError(ErrorType.USER_NOT_FOUND)
         }

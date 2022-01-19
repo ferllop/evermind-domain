@@ -4,7 +4,7 @@ import {UserMapper} from '../../../../../src/domain/user/UserMapper'
 
 export class UserPostgresMapperTestHelper extends UserPostgresMapper {
     userToRow = (user: User) => {
-        const {dayStartTime, ...rest} = new UserMapper().toDto(user)
+        const {dayStartTime, ...rest} = user.toDto()
         return {
             ...rest,
             day_start_time: dayStartTime,

@@ -74,6 +74,11 @@ export class User extends Entity {
     }
 
     toDto(){
-        return new UserMapper().toDto(this)
+        return {
+            id: this.getId().getId(),
+            name: this.getName().toString(),
+            username: this.getUsername().toString(),
+            dayStartTime: this.getDayStartTime().getValue()
+        }
     }
 }
