@@ -1,7 +1,5 @@
 import {precondition} from '../../../implementations/preconditions.js'
-import {ImplementationsContainer} from '../../../implementations/implementations-container/ImplementationsContainer.js'
-import {UuidGenerator} from './UuidGenerator.js'
-import {Dependency} from '../../../implementations/implementations-container/Dependency.js'
+import {NodeNativeUuid} from '../NodeNativeUuidGenerator'
 
 export class Identification {
     static NULL = new Identification('')
@@ -13,7 +11,7 @@ export class Identification {
     }
     
     static create(): Identification {
-        const idGenerator = ImplementationsContainer.get(Dependency.UUID) as UuidGenerator
+        const idGenerator = new NodeNativeUuid()
         return new Identification(idGenerator.getUuid())
     }
     
