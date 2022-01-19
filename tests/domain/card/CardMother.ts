@@ -46,7 +46,7 @@ export class CardMother implements Mother<CardDto>{
     }
 
     getDto() {
-       return new CardMapper().toDto(this.card) 
+       return this.card.toDto()
     }
 
 }

@@ -72,8 +72,7 @@ export class Card extends Entity {
     }
 
     apply(card: Omit<Partial<CardDto>, 'id'>) {
-        const thisAsDto = new CardMapper().toDto(this)
-        const modifiedCard = { ...thisAsDto, ...card}
+        const modifiedCard = { ...this.toDto(), ...card}
         return new CardMapper().fromDto(modifiedCard)
     }
 
@@ -86,7 +85,13 @@ export class Card extends Entity {
     }
 
     toDto(){
-        return new CardMapper().toDto(this)
+        return {
+            id: this.getId().getId(),
+            authorID: this.getAuthorID().getId(),
+            question: this.getQuestion().getValue() as string,
+            answer: this.getAnswer().getValue() as string,
+            labelling: this.getLabelling().getLabels().map(label => label.toString())
+        }
     }
 
     static fromDto(dto: CardDto){

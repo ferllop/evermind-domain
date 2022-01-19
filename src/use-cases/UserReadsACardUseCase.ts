@@ -1,10 +1,9 @@
-import { CardRepository } from '../domain/card/CardRepository.js';
-import { CardDto } from '../domain/card/CardDto.js';
-import { CardMapper } from '../domain/card/CardMapper.js';
-import { ErrorType } from '../domain/errors/ErrorType.js';
-import { Identification } from '../domain/shared/value/Identification.js';
-import { Response } from './Response.js';
-import { UserReadsACardRequest } from './UserReadsACardRequest.js';
+import {CardRepository} from '../domain/card/CardRepository.js'
+import {CardDto} from '../domain/card/CardDto.js'
+import {ErrorType} from '../domain/errors/ErrorType.js'
+import {Identification} from '../domain/shared/value/Identification.js'
+import {Response} from './Response.js'
+import {UserReadsACardRequest} from './UserReadsACardRequest.js'
 
 export class UserReadsACardUseCase {
 
@@ -18,7 +17,7 @@ export class UserReadsACardUseCase {
             return Response.withError(ErrorType.CARD_NOT_FOUND)
         }
 
-        return new Response(ErrorType.NULL, new CardMapper().toDto(card))
+        return new Response(ErrorType.NULL, card.toDto())
     }
     
 }

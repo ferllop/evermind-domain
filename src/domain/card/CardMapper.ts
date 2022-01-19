@@ -47,14 +47,5 @@ export class CardMapper extends Mapper<Card, CardDto> {
         return dtoArray.map(cardDto => this.fromDto(cardDto))
     }
 
-    toDto(card: Card): CardDto {
-        return {
-            id: card.getId().getId(),
-            authorID: card.getAuthorID().getId(),
-            question: card.getQuestion().getValue() as string,
-            answer: card.getAnswer().getValue() as string,
-            labelling: card.getLabelling().getLabels().map(label => label.toString())
-        }
-    }
 
 }
