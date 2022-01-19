@@ -1,4 +1,3 @@
-import {precondition, PreconditionError} from '../preconditions.js'
 import {Dependency} from './Dependency.js'
 import {InMemoryDatastore} from '../persistence/in-memory/InMemoryDatastore.js'
 
@@ -15,7 +14,6 @@ export class ImplementationsContainer {
     initWithDefaultImplementations() {
         this.container
             .set(Dependency.DATASTORE, new InMemoryDatastore())
-            .set(Dependency.PRECONDITIONS, {precondition, PreconditionError})
     }
 
     static get(dependency: Dependency) {
