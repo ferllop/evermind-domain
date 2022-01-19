@@ -1,4 +1,3 @@
-import {PostgresErrorType} from '../PostgresDatastore'
 import {DomainError} from '../../../../domain/errors/DomainError'
 import {ErrorType} from '../../../../domain/errors/ErrorType'
 import {AuthorIdentification} from '../../../../domain/card/AuthorIdentification'
@@ -10,6 +9,7 @@ import {CardDao} from "../../../../domain/card/CardDao";
 import {Labelling} from "../../../../domain/card/Labelling";
 import {CardPostgresMapper} from "./CardPostgresMapper";
 import {CardPostgresDatastore} from "./CardPostgresDatastore";
+import {PostgresErrorType} from '../PostgresErrorType'
 
 export class CardPostgresDao implements CardDao {
 

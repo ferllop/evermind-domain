@@ -1,22 +1,17 @@
-import {Pool} from "pg";
+import {Pool, QueryResult} from 'pg'
 
-export class PostgresDatastore {
+export abstract class PostgresDatastore<RowType> {
     private pool: Pool
 
     constructor() {
         this.pool = new Pool()
     }
 
-    async query(query: string) {
+    async query(query: string): Promise<QueryResult<RowType>> {
         const result = await this.pool.query(query)
         await this.pool.end()
         return result
     }
-}
-
-export enum PostgresErrorType {
-    NOT_UNIQUE_FIELD = '23505',
-    TABLE_DOES_NOT_EXISTS = '42P01',
 }
 
 

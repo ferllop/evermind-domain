@@ -3,7 +3,6 @@ import {CardIdentification} from '../../../../../src/domain/card/CardIdentificat
 import {CardPostgresDao} from '../../../../../src/implementations/persistence/postgres/card/CardPostgresDao.js'
 import {DomainError} from '../../../../../src/domain/errors/DomainError.js'
 import {ErrorType} from '../../../../../src/domain/errors/ErrorType.js'
-import {PostgresErrorType} from '../../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
 import {CardBuilder} from '../../../../domain/card/CardBuilder.js'
 import {assert, suite} from '../../../../test-config.js'
 import {Card} from '../../../../../src/domain/card/Card.js'
@@ -13,6 +12,7 @@ import {PostgresDatastoreMock} from "../PostgresDatastoreMock";
 import {CardPostgresMapperTestHelper} from "./CardPostgresMapperTestHelper";
 import {CardRow} from "../../../../../src/implementations/persistence/postgres/card/CardRow";
 import {assertObjectListsAreEqualsInAnyOrder} from "../AssertObjectListsAreEqualsInAnyOrder";
+import {PostgresErrorType} from '../../../../../src/implementations/persistence/postgres/PostgresErrorType'
 
 type Context = {
     mock: PostgresDatastoreMock,

@@ -3,7 +3,7 @@ import {QueryResult} from "node-postgres";
 import {QueryResultBuilder} from "./QueryResultBuilder";
 import {PostgresDatastoreError} from "./PostgresDatastoreError";
 
-export class PostgresDatastoreMock extends PostgresDatastore {
+export class PostgresDatastoreMock extends PostgresDatastore<any> {
     private resultToReturn: QueryResult = new QueryResultBuilder().build()
     private errorToThrow: PostgresDatastoreError | null = null
 

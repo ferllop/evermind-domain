@@ -3,12 +3,12 @@ import {Subscription} from '../../../../domain/subscription/Subscription'
 import {DomainError} from '../../../../domain/errors/DomainError'
 import {ErrorType} from '../../../../domain/errors/ErrorType'
 import {NullSubscription} from '../../../../domain/subscription/NullSubscription'
-import {PostgresErrorType} from '../PostgresDatastore'
 import {SubscriptionIdentification} from '../../../../domain/subscription/SubscriptionIdentification'
 import {UserIdentification} from '../../../../domain/user/UserIdentification'
 import {SubscriptionPostgresMapper} from './SubscriptionPostgresMapper'
 import {SubscriptionPostgresDatastore} from './SubscriptionPostgresDatastore'
 import {SubscriptionSqlQuery} from './SubscriptionSqlQuery'
+import {PostgresErrorType} from '../PostgresErrorType'
 
 export class SubscriptionPostgresDao implements SubscriptionDao {
     private sqlQuery = new SubscriptionSqlQuery()

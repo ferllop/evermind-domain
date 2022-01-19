@@ -1,10 +1,6 @@
 import {PostgresDatastore} from '../PostgresDatastore'
-import {QueryResult} from 'pg'
 import {SubscriptionRow} from './SubscriptionRow'
 
-export class SubscriptionPostgresDatastore extends PostgresDatastore {
+export class SubscriptionPostgresDatastore extends PostgresDatastore<SubscriptionRow> {
 
-    override async query(query: string): Promise<QueryResult<SubscriptionRow>> {
-        return super.query(query)
-    }
 }

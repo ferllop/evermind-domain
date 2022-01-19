@@ -1,7 +1,6 @@
 import {assert, suite} from '../../../../test-config.js'
 import {PostgresDatastoreMock} from '../PostgresDatastoreMock'
 import {UserPostgresDao} from '../../../../../src/implementations/persistence/postgres/user/UserPostgresDao'
-import {PostgresErrorType} from '../../../../../src/implementations/persistence/postgres/PostgresDatastore'
 import {UserIdentification} from '../../../../../src/domain/user/UserIdentification'
 import {UserBuilder} from '../../../../domain/user/UserBuilder'
 import {DomainError} from '../../../../../src/domain/errors/DomainError'
@@ -10,6 +9,7 @@ import {QueryResultBuilder} from '../QueryResultBuilder'
 import {UserRow} from '../../../../../src/implementations/persistence/postgres/user/UserRow'
 import {UserPostgresMapperTestHelper} from './UserPostgresMapperTestHelper'
 import {assertObjectListsAreEqualsInAnyOrder} from '../AssertObjectListsAreEqualsInAnyOrder'
+import {PostgresErrorType} from '../../../../../src/implementations/persistence/postgres/PostgresErrorType'
 
 type Context = {
     mock: PostgresDatastoreMock,

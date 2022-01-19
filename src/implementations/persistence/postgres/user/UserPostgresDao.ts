@@ -1,5 +1,4 @@
 import {User} from '../../../../domain/user/User'
-import {PostgresErrorType} from '../PostgresDatastore'
 import {DomainError} from '../../../../domain/errors/DomainError'
 import {ErrorType} from '../../../../domain/errors/ErrorType'
 import {UserIdentification} from '../../../../domain/user/UserIdentification'
@@ -9,6 +8,7 @@ import {UserPostgresDatastore} from "./UserPostgresDatastore";
 import {UserPostgresMapper} from "./UserPostgresMapper";
 import {UserDao} from "../../../../domain/user/UserDao";
 import {Username} from '../../../../domain/user/Username'
+import {PostgresErrorType} from '../PostgresErrorType'
 
 export class UserPostgresDao implements UserDao {
 

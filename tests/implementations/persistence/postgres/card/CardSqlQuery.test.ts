@@ -1,6 +1,5 @@
 import {AuthorIdentification} from '../../../../../src/domain/card/AuthorIdentification.js'
 import {CardIdentification} from '../../../../../src/domain/card/CardIdentification.js'
-import {PostgresDatastore} from '../../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
 import {CardBuilder} from '../../../../domain/card/CardBuilder.js'
 import {assert, suite} from '../../../../test-config.js'
 import {CardSqlQuery} from '../../../../../src/implementations/persistence/postgres/card/CardSqlQuery'
@@ -16,6 +15,7 @@ import {
 } from './CardScenario'
 import {cleanDatabase} from '../PostgresTestHelper'
 import {CardFactory} from '../../../../../src/domain/card/CardFactory'
+import {CardPostgresDatastore} from '../../../../../src/implementations/persistence/postgres/card/CardPostgresDatastore'
 
 const cardSqlQuery = suite('Card Sql Query')
 
@@ -67,8 +67,8 @@ cardSqlQuery('should provide a working insert card query', async () => {
 
     const sut = new CardSqlQuery().insert(card)
 
-    await new PostgresDatastore().query(sut)
-    const storedCards = await new PostgresDatastore().query(
+    await new CardPostgresDatastore().query(sut)
+    const storedCards = await new CardPostgresDatastore().query(
         'SELECT *, array(SELECT label FROM labelling WHERE card_id = id) as labelling FROM cards')
     assert.equal(storedCards.rowCount, 1)
     assertAllRowsAreEqualToCards(storedCards.rows, [card])
@@ -87,10 +87,10 @@ cardSqlQuery('should provide a working delete card query', async () => {
 
     const sut = new CardSqlQuery().delete(cardId)
 
-    let storedCards = await new PostgresDatastore().query('SELECT * FROM cards')
+    let storedCards = await new CardPostgresDatastore().query('SELECT * FROM cards')
     assert.equal(storedCards.rowCount, 1)
-    await new PostgresDatastore().query(sut)
-    storedCards = await new PostgresDatastore().query('SELECT * FROM cards')
+    await new CardPostgresDatastore().query(sut)
+    storedCards = await new CardPostgresDatastore().query('SELECT * FROM cards')
     assert.equal(storedCards.rowCount, 0)
 })
 
@@ -119,8 +119,8 @@ cardSqlQuery('should provide a working card update query', async () => {
     }
     const sut = new CardSqlQuery().update(new CardFactory().fromDto(updatedCard))
 
-    await new PostgresDatastore().query(sut)
-    const storedCards = await new PostgresDatastore().query(new CardSqlQuery().selectCardById(card.getId()))
+    await new CardPostgresDatastore().query(sut)
+    const storedCards = await new CardPostgresDatastore().query(new CardSqlQuery().selectCardById(card.getId()))
 
     assertAllRowsAreEqualToCards(storedCards.rows, [new CardFactory().fromDto(updatedCard)])
 })
@@ -141,7 +141,7 @@ cardSqlQuery('should send a working query to find a card by it\'s author', async
 
     const sut = new CardSqlQuery().selectCardByAuthorId(authorId)
 
-    const foundCards = await new PostgresDatastore().query(sut)
+    const foundCards = await new CardPostgresDatastore().query(sut)
     assert.equal(foundCards.rowCount, 3)
 })
 
@@ -173,7 +173,7 @@ cardSqlQuery('should return the found cards when searching by labelling', async 
     await givenTheExistingCardWithLabels('label1')
 
     const sut = new CardSqlQuery().selectCardByLabelling(Labelling.fromStringLabels(['label1', 'label2']))
-    const result = await new PostgresDatastore().query(sut)
+    const result = await new CardPostgresDatastore().query(sut)
     assertAllRowsAreEqualToCards(result.rows, [cardToFoundB, cardToFoundA])
 })
 
@@ -192,7 +192,7 @@ cardSqlQuery('should send a working query to find a card by id', async () => {
 
     const sut = new CardSqlQuery().selectCardById(cardId)
 
-    const foundCard = await new PostgresDatastore().query(sut)
+    const foundCard = await new CardPostgresDatastore().query(sut)
 
     assert.equal(foundCard.rowCount, 1)
     assertAllRowsAreEqualToCards(foundCard.rows, [card])

@@ -6,7 +6,7 @@ import {
 import {PostgresDatastore} from '../../../../src/implementations/persistence/postgres/PostgresDatastore'
 
 export async function cleanDatabase() {
-    const postgresDatastore = new PostgresDatastore()
+    const postgresDatastore = new class extends PostgresDatastore<any>{}()
     try {
         await postgresDatastore.query('DROP TABLE IF EXISTS subscriptions; ' +
             'DROP TABLE IF EXISTS cards CASCADE; ' +
