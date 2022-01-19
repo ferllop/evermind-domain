@@ -1,11 +1,9 @@
-import { CardMother } from '../domain/card/CardMother.js'
-import { assert, suite } from '../test-config.js'
-import { UserMother } from '../domain/user/UserMother.js'
-import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import { DatastoreMother } from '../domain/shared/DatastoreMother.js'
-import { UserSearchesForCardsUseCase } from '../../src/use-cases/UserSearchesForCardsUseCase.js'
-import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import { Dependency } from '../../src/implementations/implementations-container/Dependency.js'
+import {CardMother} from '../domain/card/CardMother.js'
+import {assert, suite} from '../test-config.js'
+import {UserMother} from '../domain/user/UserMother.js'
+import {DatastoreMother} from '../domain/shared/DatastoreMother.js'
+import {UserSearchesForCardsUseCase} from '../../src/use-cases/UserSearchesForCardsUseCase.js'
+import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 
 const userSearchesForCards = suite('User searches for cards use case')
 
@@ -13,8 +11,7 @@ const cardMother = new CardMother()
 
 let datastore: InMemoryDatastore
 userSearchesForCards.before.each(() => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
+    datastore = new InMemoryDatastore()
 })
 
 userSearchesForCards('having 0 coincident cards, return a Result with empty array as data and null as error', async () => {

@@ -2,19 +2,12 @@ import {UserMother} from '../domain/user/UserMother.js'
 import {assert, suite} from '../test-config.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {ErrorType} from '../../src/domain/errors/ErrorType.js'
-import {ImplementationsContainer} from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import {UserSignsUpUseCase} from '../../src/use-cases/UserSignsUpUseCase.js'
 import {Username} from '../../src/domain/user/Username'
 import {UserFactory} from '../../src/domain/user/UserFactory'
 import {PersistenceFactory} from '../../src/implementations/persistence/PersistenceFactory'
 
 const userSignsUpUseCase = suite('User signs up use case')
-
-userSignsUpUseCase.before.each(() => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-})
 
 userSignsUpUseCase(
     'given data representing a user, ' +

@@ -6,8 +6,6 @@ import {UserMother} from '../domain/user/UserMother.js'
 import {assert, suite} from '../test-config.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {precondition} from '../../src/implementations/preconditions.js'
-import {ImplementationsContainer} from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
 import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import {UserSubscribesToCardUseCase} from '../../src/use-cases/UserSubscribesToCardUseCase.js'
 import {UserUnsubscribesFromCardUseCase} from '../../src/use-cases/UserUnsubscribesFromCardUseCase.js'
@@ -21,8 +19,7 @@ type Context = {
 const userUnsubscribesFromCard = suite<Context>("User unsubscribes from card")
 
 userUnsubscribesFromCard.before.each( async context => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    context.datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
+    context.datastore = new InMemoryDatastore()
     await context.datastore.clean()
     PersistenceFactory.setType('memory')
 })

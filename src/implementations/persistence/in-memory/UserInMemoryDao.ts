@@ -1,5 +1,3 @@
-import {ImplementationsContainer} from '../../implementations-container/ImplementationsContainer'
-import {Dependency} from '../../implementations-container/Dependency'
 import {UserDao} from '../../../domain/user/UserDao'
 import {InMemoryDatastore} from './InMemoryDatastore'
 import {UserIdentification} from '../../../domain/user/UserIdentification'
@@ -18,7 +16,7 @@ export class UserInMemoryDao implements UserDao {
     protected datastore: InMemoryDatastore
 
     constructor() {
-        this.datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
+        this.datastore = new InMemoryDatastore()
     }
 
     async insert(user: User) {

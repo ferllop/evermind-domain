@@ -1,5 +1,4 @@
 import {Dependency} from './Dependency.js'
-import {InMemoryDatastore} from '../persistence/in-memory/InMemoryDatastore.js'
 
 export class ImplementationsContainer {
     static instance = new ImplementationsContainer()
@@ -12,8 +11,8 @@ export class ImplementationsContainer {
     }
 
     initWithDefaultImplementations() {
-        this.container
-            .set(Dependency.DATASTORE, new InMemoryDatastore())
+
+
     }
 
     static get(dependency: Dependency) {

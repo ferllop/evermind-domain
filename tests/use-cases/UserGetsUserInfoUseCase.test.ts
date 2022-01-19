@@ -1,20 +1,15 @@
-import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import { ErrorType } from '../../src/domain/errors/ErrorType.js'
-import { Response } from '../../src/use-cases/Response.js'
-import { UserMother } from '../domain/user/UserMother.js'
-import { IdentificationMother } from '../domain/value/IdentificationMother.js'
-import { assert, suite } from '../test-config.js'
-import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
+import {ErrorType} from '../../src/domain/errors/ErrorType.js'
+import {Response} from '../../src/use-cases/Response.js'
+import {UserMother} from '../domain/user/UserMother.js'
+import {IdentificationMother} from '../domain/value/IdentificationMother.js'
+import {assert, suite} from '../test-config.js'
 import {UserGetsUserInfoUseCase} from '../../src/use-cases/UserGetsUserInfoUseCase.js'
 import {DatastoreMother} from '../domain/shared/DatastoreMother.js'
 import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore'
 
 const userGetsUserInfoUseCase = suite("User gets user info use case")
 
-let datastore: InMemoryDatastore
-userGetsUserInfoUseCase.before.each(() => {
-    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
-})
+let datastore: InMemoryDatastore = new InMemoryDatastore()
 
 userGetsUserInfoUseCase(
     'given invalid id, ' +

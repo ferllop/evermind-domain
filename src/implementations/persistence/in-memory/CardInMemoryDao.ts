@@ -1,25 +1,23 @@
-import {CardDao} from "../../../domain/card/CardDao";
-import {NullCard} from "../../../domain/card/NullCard";
-import {CardFactory} from "../../../domain/card/CardFactory";
-import {DomainError} from "../../../domain/errors/DomainError";
-import {ErrorType} from "../../../domain/errors/ErrorType";
-import {Identification} from "../../../domain/shared/value/Identification";
-import {InMemoryDatastore} from "./InMemoryDatastore";
-import {Card} from "../../../domain/card/Card";
-import {CardIdentification} from "../../../domain/card/CardIdentification";
-import {CardDto} from "../../../domain/card/CardDto";
-import {AuthorIdentification} from "../../../domain/card/AuthorIdentification";
-import {ImplementationsContainer} from "../../implementations-container/ImplementationsContainer";
-import {Dependency} from "../../implementations-container/Dependency";
-import {Labelling} from "../../../domain/card/Labelling";
-import {Criteria} from "./Criteria";
+import {CardDao} from '../../../domain/card/CardDao'
+import {NullCard} from '../../../domain/card/NullCard'
+import {CardFactory} from '../../../domain/card/CardFactory'
+import {DomainError} from '../../../domain/errors/DomainError'
+import {ErrorType} from '../../../domain/errors/ErrorType'
+import {Identification} from '../../../domain/shared/value/Identification'
+import {InMemoryDatastore} from './InMemoryDatastore'
+import {Card} from '../../../domain/card/Card'
+import {CardIdentification} from '../../../domain/card/CardIdentification'
+import {CardDto} from '../../../domain/card/CardDto'
+import {AuthorIdentification} from '../../../domain/card/AuthorIdentification'
+import {Labelling} from '../../../domain/card/Labelling'
+import {Criteria} from './Criteria'
 
 export class CardInMemoryDao implements CardDao {
     private readonly tableName = 'cards'
     private mapper = new CardFactory()
 
 
-    constructor(protected datastore: InMemoryDatastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore){
+    constructor(protected datastore: InMemoryDatastore = new InMemoryDatastore()){
     }
 
     async insert(card: Card) {

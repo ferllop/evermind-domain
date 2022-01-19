@@ -1,13 +1,11 @@
-import { ErrorType } from '../../src/domain/errors/ErrorType.js'
-import { precondition } from '../../src/implementations/preconditions.js'
-import { CardMother } from '../domain/card/CardMother.js'
-import { SubscriptionMother } from '../domain/subscription/SubscriptionMother.js'
-import { UserMother } from '../domain/user/UserMother.js'
-import { suite, assert } from '../test-config.js'
-import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import { UserSubscribesToCardUseCase } from '../../src/use-cases/UserSubscribesToCardUseCase.js'
+import {ErrorType} from '../../src/domain/errors/ErrorType.js'
+import {precondition} from '../../src/implementations/preconditions.js'
+import {CardMother} from '../domain/card/CardMother.js'
+import {SubscriptionMother} from '../domain/subscription/SubscriptionMother.js'
+import {UserMother} from '../domain/user/UserMother.js'
+import {assert, suite} from '../test-config.js'
+import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import {UserSubscribesToCardUseCase} from '../../src/use-cases/UserSubscribesToCardUseCase.js'
 import {SubscriptionDto} from '../../src/domain/subscription/SusbcriptionDto'
 
 type Context = {
@@ -17,8 +15,7 @@ type Context = {
 const userSubscribesToCard = suite<Context>("User subscribes to card")
 
 userSubscribesToCard.before.each( async (context) => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    context.db = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
+    context.db = new InMemoryDatastore()
     await context.db.clean()
 })
 

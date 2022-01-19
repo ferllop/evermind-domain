@@ -1,13 +1,11 @@
-import { ErrorType } from '../../src/domain/errors/ErrorType.js'
-import { Response } from '../../src/use-cases/Response.js'
-import { CardMother } from '../domain/card/CardMother.js'
-import { IdentificationMother } from '../domain/value/IdentificationMother.js'
-import { assert, suite } from '../test-config.js'
-import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import { Dependency } from '../../src/implementations/implementations-container/Dependency.js'
-import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import { UserReadsACardUseCase } from '../../src/use-cases/UserReadsACardUseCase.js'
-import { DatastoreMother } from '../domain/shared/DatastoreMother.js'
+import {ErrorType} from '../../src/domain/errors/ErrorType.js'
+import {Response} from '../../src/use-cases/Response.js'
+import {CardMother} from '../domain/card/CardMother.js'
+import {IdentificationMother} from '../domain/value/IdentificationMother.js'
+import {assert, suite} from '../test-config.js'
+import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import {UserReadsACardUseCase} from '../../src/use-cases/UserReadsACardUseCase.js'
+import {DatastoreMother} from '../domain/shared/DatastoreMother.js'
 
 const userReadsACardUseCase = suite("User reads a card use case")
 
@@ -16,8 +14,7 @@ const cardMother = new CardMother()
 let datastore: InMemoryDatastore
 
 userReadsACardUseCase.before.each(async () => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
+    datastore = new InMemoryDatastore()
     await datastore.clean()
 })
 

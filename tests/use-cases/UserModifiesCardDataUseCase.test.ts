@@ -1,15 +1,13 @@
-import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import { CardDto } from '../../src/domain/card/CardDto.js'
-import { CardField } from '../../src/implementations/persistence/in-memory/CardField.js'
-import { ErrorType } from '../../src/domain/errors/ErrorType.js'
-import { Response } from '../../src/use-cases/Response.js'
-import { UserModifiesCardDataUseCase } from '../../src/use-cases/UserModifiesCardDataUseCase.js'
-import { CardMother } from '../domain/card/CardMother.js'
-import { LabellingMother } from '../domain/card/LabellingMother.js'
-import { assert, suite } from '../test-config.js'
-import { Dependency } from '../../src/implementations/implementations-container/Dependency.js'
-import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import { DatastoreMother } from '../domain/shared/DatastoreMother.js'
+import {CardDto} from '../../src/domain/card/CardDto.js'
+import {CardField} from '../../src/implementations/persistence/in-memory/CardField.js'
+import {ErrorType} from '../../src/domain/errors/ErrorType.js'
+import {Response} from '../../src/use-cases/Response.js'
+import {UserModifiesCardDataUseCase} from '../../src/use-cases/UserModifiesCardDataUseCase.js'
+import {CardMother} from '../domain/card/CardMother.js'
+import {LabellingMother} from '../domain/card/LabellingMother.js'
+import {assert, suite} from '../test-config.js'
+import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import {DatastoreMother} from '../domain/shared/DatastoreMother.js'
 
 const userModifiesCardDataUseCase = suite("User modifies card data use case")
 
@@ -17,8 +15,7 @@ const cardMother = new CardMother()
 
 let datastore: InMemoryDatastore
 userModifiesCardDataUseCase.before.each(() => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
+    datastore = new InMemoryDatastore()
 })
 
 

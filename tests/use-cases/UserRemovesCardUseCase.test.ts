@@ -1,13 +1,11 @@
-import { ErrorType } from '../../src/domain/errors/ErrorType.js'
-import { Response } from '../../src/use-cases/Response.js'
-import { CardMother } from '../domain/card/CardMother.js'
-import { IdentificationMother } from '../domain/value/IdentificationMother.js'
-import { assert, suite } from '../test-config.js'
-import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
-import { Dependency } from '../../src/implementations/implementations-container/Dependency.js'
-import { DatastoreMother } from '../domain/shared/DatastoreMother.js'
-import { UserRemovesCardUseCase } from '../../src/use-cases/UserRemovesCardUseCase.js'
-import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import {ErrorType} from '../../src/domain/errors/ErrorType.js'
+import {Response} from '../../src/use-cases/Response.js'
+import {CardMother} from '../domain/card/CardMother.js'
+import {IdentificationMother} from '../domain/value/IdentificationMother.js'
+import {assert, suite} from '../test-config.js'
+import {DatastoreMother} from '../domain/shared/DatastoreMother.js'
+import {UserRemovesCardUseCase} from '../../src/use-cases/UserRemovesCardUseCase.js'
+import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 
 const userRemovesCardUseCase = suite("User removes card use case")
 
@@ -15,8 +13,7 @@ const cardMother = new CardMother()
 
 let datastore: InMemoryDatastore
 userRemovesCardUseCase.before.each(() => {
-    ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
+    datastore = new InMemoryDatastore()
 })
 
 userRemovesCardUseCase(
