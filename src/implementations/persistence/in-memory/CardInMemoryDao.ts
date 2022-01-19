@@ -1,6 +1,6 @@
 import {CardDao} from "../../../domain/card/CardDao";
 import {NullCard} from "../../../domain/card/NullCard";
-import {CardMapper} from "../../../domain/card/CardMapper";
+import {CardFactory} from "../../../domain/card/CardFactory";
 import {DomainError} from "../../../domain/errors/DomainError";
 import {ErrorType} from "../../../domain/errors/ErrorType";
 import {Identification} from "../../../domain/shared/value/Identification";
@@ -16,7 +16,7 @@ import {Criteria} from "../../../domain/shared/Criteria";
 
 export class CardInMemoryDao implements CardDao {
     private readonly tableName = 'cards'
-    private mapper = new CardMapper()
+    private mapper = new CardFactory()
 
 
     constructor(protected datastore: InMemoryDatastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore){

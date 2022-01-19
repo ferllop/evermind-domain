@@ -1,7 +1,7 @@
 import { Validator } from './Validator.js';
 import { MayBeIdentified } from './value/MayBeIdentified.js';
 
-export abstract class Mapper<T, TDto> {
+export abstract class EntityFactory<T, TDto> {
     validators: Map<string, Validator>
 
     constructor() {

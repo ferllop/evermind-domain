@@ -1,6 +1,6 @@
 import {CardDto} from "../../../../domain/card/CardDto";
 import {Card} from "../../../../domain/card/Card";
-import {CardMapper} from "../../../../domain/card/CardMapper";
+import {CardFactory} from "../../../../domain/card/CardFactory";
 import {CardRow} from "./CardRow";
 
 export class CardPostgresMapper {
@@ -22,6 +22,6 @@ export class CardPostgresMapper {
 
         }, {})
 
-        return new CardMapper().fromDto(cardDto as CardDto)
+        return new CardFactory().fromDto(cardDto as CardDto)
     }
 }

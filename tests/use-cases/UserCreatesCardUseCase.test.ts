@@ -6,7 +6,7 @@ import {assert, suite} from '../test-config.js'
 import {UserCreatesCardUseCase} from '../../src/use-cases/UserCreatesCardUseCase.js'
 import {CardBuilder} from '../domain/card/CardBuilder'
 import {AuthorIdentification} from '../../src/domain/card/AuthorIdentification'
-import {CardMapper} from '../../src/domain/card/CardMapper'
+import {CardFactory} from '../../src/domain/card/CardFactory'
 import {PersistenceFactory} from '../../src/implementations/persistence/PersistenceFactory'
 
 const userCreatesCardUseCase = suite("User creates a card use case")
@@ -38,7 +38,7 @@ userCreatesCardUseCase(
         })
 
         const storedCards = await PersistenceFactory.getCardDao().findByAuthorId(authorId)
-        const expectedCard = new CardMapper().fromDto({
+        const expectedCard = new CardFactory().fromDto({
             ...card,
             id: storedCards[0].getId().getId(),
             authorID: authorId.getId()

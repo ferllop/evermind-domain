@@ -1,14 +1,12 @@
-import { Entity } from '../shared/Entity.js'
-import { Identification } from '../shared/value/Identification.js'
-import { Answer } from './Answer.js'
-import { AuthorIdentification } from './AuthorIdentification.js'
-import { CardDto } from './CardDto.js'
-import { CardIdentification } from './CardIdentification.js'
-import { CardMapper } from './CardMapper.js'
-import { Labelling } from './Labelling.js'
-import { Question } from './Question.js'
-import { WrittenAnswer } from './WrittenAnswer.js'
-import { WrittenQuestion } from './WrittenQuestion.js'
+import {Entity} from '../shared/Entity.js'
+import {Identification} from '../shared/value/Identification.js'
+import {Answer} from './Answer.js'
+import {AuthorIdentification} from './AuthorIdentification.js'
+import {CardDto} from './CardDto.js'
+import {CardIdentification} from './CardIdentification.js'
+import {Labelling} from './Labelling.js'
+import {Question} from './Question.js'
+import {CardFactory} from './CardFactory'
 
 export class Card extends Entity {
 
@@ -63,25 +61,9 @@ export class Card extends Entity {
         return this.getId().equals(card.getId())
     }
 
-    static create(userId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling){
-        return new Card(userId, question, answer, labels, Identification.create())
-    }
-
-    static recreate(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: Identification){
-        return new Card(authorID, question, answer, labels, id)
-    }
-
     apply(card: Omit<Partial<CardDto>, 'id'>) {
         const modifiedCard = { ...this.toDto(), ...card}
-        return new CardMapper().fromDto(modifiedCard)
-    }
-
-    static isValid(authorID: string, question: string, answer: string, labels: string[], id?: string) {
-        return Identification.isValid(authorID) &&
-            WrittenQuestion.isValid(question) &&
-            WrittenAnswer.isValid(answer) &&
-            Labelling.isValid(labels) &&
-            (Boolean(id) ? Identification.isValid(id) : true)
+        return new CardFactory().fromDto(modifiedCard)
     }
 
     toDto(){
@@ -93,9 +75,4 @@ export class Card extends Entity {
             labelling: this.getLabelling().getLabels().map(label => label.toString())
         }
     }
-
-    static fromDto(dto: CardDto){
-        return new CardMapper().fromDto(dto)
-    }
-
 }

@@ -1,6 +1,5 @@
 import {Answer} from '../../../src/domain/card/Answer.js'
 import {AuthorIdentification} from '../../../src/domain/card/AuthorIdentification.js'
-import {Card} from '../../../src/domain/card/Card.js'
 import {Labelling} from '../../../src/domain/card/Labelling.js'
 import {Question} from '../../../src/domain/card/Question.js'
 import {WrittenAnswer} from '../../../src/domain/card/WrittenAnswer.js'
@@ -8,6 +7,7 @@ import {WrittenQuestion} from '../../../src/domain/card/WrittenQuestion.js'
 import {Identification} from '../../../src/domain/shared/value/Identification.js'
 import {Label} from '../../../src/domain/card/Label.js'
 import {CardIdentification} from '../../../src/domain/card/CardIdentification.js'
+import {CardFactory} from '../../../src/domain/card/CardFactory'
 
 export class CardBuilder {
 
@@ -66,7 +66,7 @@ export class CardBuilder {
     }
 
     build() {
-        return Card.recreate(this.authorID, this.question, this.answer, this.labelling, this.id)
+        return new CardFactory().recreate(this.authorID, this.question, this.answer, this.labelling, this.id)
     }
 
     buildDto() {

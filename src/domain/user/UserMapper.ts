@@ -1,5 +1,4 @@
 import {User} from './User.js'
-import {Mapper} from '../shared/Mapper.js'
 import {Validator} from '../shared/Validator.js'
 import {DayStartTime} from '../shared/value/DayStartTime.js'
 import {Identification} from '../shared/value/Identification.js'
@@ -9,8 +8,9 @@ import {UserDto} from './UserDto.js'
 import {UserIdentification} from './UserIdentification.js'
 import {Username} from './Username.js'
 import {precondition} from '../../implementations/preconditions.js'
+import {EntityFactory} from '../shared/EntityFactory'
 
-export class UserMapper extends Mapper<User, UserDto> {
+export class UserMapper extends EntityFactory<User, UserDto> {
 
     getValidators(): Map<string, Validator> {
         return new Map()

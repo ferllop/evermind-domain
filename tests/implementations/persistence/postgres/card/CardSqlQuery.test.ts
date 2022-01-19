@@ -4,7 +4,6 @@ import {PostgresDatastore} from '../../../../../src/implementations/persistence/
 import {CardBuilder} from '../../../../domain/card/CardBuilder.js'
 import {assert, suite} from '../../../../test-config.js'
 import {CardSqlQuery} from '../../../../../src/implementations/persistence/postgres/card/CardSqlQuery'
-import {Card} from '../../../../../src/domain/card/Card'
 import {Labelling} from '../../../../../src/domain/card/Labelling'
 import {assertQueriesAreEqual} from '../AssertQueriesAreEqual'
 import {assertAllRowsAreEqualToCards} from './CardAssertion'
@@ -16,6 +15,7 @@ import {
     givenTheExistingCardWithLabels,
 } from './CardScenario'
 import {cleanDatabase} from '../PostgresTestHelper'
+import {CardFactory} from '../../../../../src/domain/card/CardFactory'
 
 const cardSqlQuery = suite('Card Sql Query')
 
@@ -117,12 +117,12 @@ cardSqlQuery('should provide a working card update query', async () => {
         answer: 'updated answer',
         labelling: ['updated-labelling', 'other']
     }
-    const sut = new CardSqlQuery().update(Card.fromDto(updatedCard))
+    const sut = new CardSqlQuery().update(new CardFactory().fromDto(updatedCard))
 
     await new PostgresDatastore().query(sut)
     const storedCards = await new PostgresDatastore().query(new CardSqlQuery().selectCardById(card.getId()))
 
-    assertAllRowsAreEqualToCards(storedCards.rows, [Card.fromDto(updatedCard)])
+    assertAllRowsAreEqualToCards(storedCards.rows, [new CardFactory().fromDto(updatedCard)])
 })
 
 cardSqlQuery('should send the proper query to find a card by it\'s author', async () => {

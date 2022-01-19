@@ -1,7 +1,7 @@
 import { Card } from '../../../src/domain/card/Card.js'
 import { CardDto } from '../../../src/domain/card/CardDto.js'
 import { Identification } from '../../../src/domain/shared/value/Identification.js'
-import { CardMapper } from '../../../src/domain/card/CardMapper.js'
+import { CardFactory } from '../../../src/domain/card/CardFactory.js'
 import { Mother } from "../shared/Mother.js"
 import { IdentificationMother } from '../value/IdentificationMother.js'
 import { CardBuilder } from './CardBuilder.js'
@@ -12,7 +12,7 @@ export class CardMother implements Mother<CardDto>{
     TABLE_NAME = 'cards'
 
     standard() {
-        return new CardMapper().fromDto(this.dto())
+        return new CardFactory().fromDto(this.dto())
     }
 
     dto(): CardDto {
