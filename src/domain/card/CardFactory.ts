@@ -55,7 +55,6 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
     }
 
     create(userId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling){
-        console.log('aqui')
         return new this.cardConstructor(userId, question, answer, labels, Identification.create())
     }
 

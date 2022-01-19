@@ -1,19 +1,13 @@
 import {Level} from '../../../src/domain/subscription/Level.js'
-import {Subscription} from '../../../src/domain/subscription/Subscription.js'
 import {DateEvermind} from '../../../src/domain/shared/value/DateEvermind.js'
 import {DayStartTime} from '../../../src/domain/shared/value/DayStartTime.js'
 import {Identification} from '../../../src/domain/shared/value/Identification.js'
 import {assert, suite} from '../../test-config.js'
+import {SubscriptionFactory} from '../../../src/domain/subscription/SubscriptionFactory'
 
 class SubscriptionMother {
     forDay(day: Date) {
-        return Subscription.recreate(
-            Identification.create(),
-            Identification.create(),
-            Identification.create(),
-            Level.LEVEL_0,
-            DateEvermind.fromDate(day)
-        )
+        return new SubscriptionFactory().recreate(Identification.create(), Identification.create(), Identification.create(), Level.LEVEL_0, DateEvermind.fromDate(day))
     }
 }
 const toReview = new Date('Mon Jul 12 2021 10:00:00 GMT+0200')

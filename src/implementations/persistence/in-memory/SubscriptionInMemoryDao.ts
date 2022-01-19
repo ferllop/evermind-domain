@@ -1,4 +1,4 @@
-import {SubscriptionMapper} from '../../../domain/subscription/SubscriptionMapper'
+import {SubscriptionFactory} from '../../../domain/subscription/SubscriptionFactory'
 import {Identification} from '../../../domain/shared/value/Identification'
 import {Dependency} from '../../implementations-container/Dependency'
 import {Criteria} from '../../../domain/shared/Criteria'
@@ -17,7 +17,7 @@ import {UserIdentification} from '../../../domain/user/UserIdentification'
 
 export class SubscriptionInMemoryDao implements SubscriptionDao {
     protected readonly tableName = SubscriptionField.TABLE_NAME
-    protected mapper = new SubscriptionMapper()
+    protected mapper = new SubscriptionFactory()
     protected datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
 
     async insert(subscription: Subscription) {
@@ -45,12 +45,12 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
 
     async findById(id: Identification): Promise<Subscription> {
         if (!await this.datastore.hasTable(this.tableName)) {
-            return this.getNull()
+            return NullSubscription.getInstance()
         }
 
         const result = await this.datastore.read<SubscriptionDto>(this.tableName, id.getId())
         if (!result || !this.mapper.isDtoValid(result)) {
-            return this.getNull()
+            return NullSubscription.getInstance()
         }
 
         return this.mapper.fromDto(result)
@@ -76,13 +76,13 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
 
     async findOne(criteria: Criteria<SubscriptionDto>) {
         if (!await this.datastore.hasTable(this.tableName)) {
-            return this.getNull()
+            return NullSubscription.getInstance()
         }
 
         const result = await this.datastore.findOne(this.tableName, criteria)
 
         if (!result) {
-            return this.getNull()
+            return NullSubscription.getInstance()
         }
 
         return this.mapper.fromDto(result)
@@ -93,9 +93,5 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
             return subscription.userId === id.getId()
         }
         return await this.find(criteria)
-    }
-
-    private getNull() {
-        return NullSubscription.getInstance()
     }
 }

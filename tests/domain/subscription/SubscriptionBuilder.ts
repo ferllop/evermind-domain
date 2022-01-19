@@ -1,10 +1,10 @@
 import {Level} from '../../../src/domain/subscription/Level.js'
-import {Subscription} from '../../../src/domain/subscription/Subscription.js'
 import {SubscriptionIdentification} from '../../../src/domain/subscription/SubscriptionIdentification.js'
 import {DateEvermind} from '../../../src/domain/shared/value/DateEvermind.js'
 import {DateISO} from '../../../src/domain/shared/value/DateISO.js'
 import {UserIdentification} from '../../../src/domain/user/UserIdentification'
 import {CardIdentification} from '../../../src/domain/card/CardIdentification'
+import {SubscriptionFactory} from '../../../src/domain/subscription/SubscriptionFactory'
 
 export class SubscriptionBuilder {
     private id: SubscriptionIdentification
@@ -60,6 +60,6 @@ export class SubscriptionBuilder {
     }
 
     build() {
-        return Subscription.recreate(this.id, this.userId, this.cardId, this.level, this.lastReview)
+        return new SubscriptionFactory().recreate(this.id, this.userId, this.cardId, this.level, this.lastReview)
     }
 }

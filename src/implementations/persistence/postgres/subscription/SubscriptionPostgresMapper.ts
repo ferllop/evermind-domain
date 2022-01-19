@@ -1,7 +1,7 @@
 import {SubscriptionDto} from '../../../../domain/subscription/SusbcriptionDto'
 import {SubscriptionRow} from './SubscriptionRow'
 import {Subscription} from '../../../../domain/subscription/Subscription'
-import {SubscriptionMapper} from '../../../../domain/subscription/SubscriptionMapper'
+import {SubscriptionFactory} from '../../../../domain/subscription/SubscriptionFactory'
 
 export class SubscriptionPostgresMapper {
     pgSubscriptionMap: Record<string, keyof SubscriptionDto> = {
@@ -22,6 +22,6 @@ export class SubscriptionPostgresMapper {
 
         }, {})
 
-        return new SubscriptionMapper().fromDto(subscriptionDto as SubscriptionDto)
+        return new SubscriptionFactory().fromDto(subscriptionDto as SubscriptionDto)
     }
 }

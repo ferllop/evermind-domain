@@ -1,13 +1,11 @@
-import { CardIdentification } from '../card/CardIdentification.js'
-import { Entity } from '../shared/Entity.js'
-import { UserIdentification } from '../user/UserIdentification.js'
-import { DateEvermind } from '../shared/value/DateEvermind.js'
-import { DateISO } from '../shared/value/DateISO.js'
-import { DayStartTime } from '../shared/value/DayStartTime.js'
-import { Hour } from '../shared/value/Hour.js'
-import { Identification } from '../shared/value/Identification.js'
-import { Level } from './Level.js'
-import { SubscriptionIdentification } from './SubscriptionIdentification.js'
+import {CardIdentification} from '../card/CardIdentification.js'
+import {Entity} from '../shared/Entity.js'
+import {UserIdentification} from '../user/UserIdentification.js'
+import {DateEvermind} from '../shared/value/DateEvermind.js'
+import {DayStartTime} from '../shared/value/DayStartTime.js'
+import {Hour} from '../shared/value/Hour.js'
+import {Level} from './Level.js'
+import {SubscriptionIdentification} from './SubscriptionIdentification.js'
 import {SubscriptionDto} from './SusbcriptionDto'
 
 export class Subscription extends Entity {
@@ -60,25 +58,6 @@ export class Subscription extends Entity {
     equals(subscription: Subscription) {
         return this.getUserID().equals(subscription.getUserID()) &&
             this.getCardID().equals(subscription.getCardID())
-    }
-
-    static isValid(userId: string, cardId: string, level: number, lastReview: DateISO) {
-        return this.isDtoValid(userId, cardId) &&
-            Level.isValid(level) &&
-            new DateEvermind(lastReview).isNowOrBefore()
-    }
-
-    static isDtoValid(userId: string, cardId: string) {
-        return Identification.isValid(userId) && Identification.isValid(cardId)
-    }
-
-    static create(userId: UserIdentification, cardId: CardIdentification) {
-        const id  = SubscriptionIdentification.create()
-        return new Subscription(id, userId, cardId, Level.LEVEL_0, DateEvermind.fromNow())
-    }
-
-    static recreate(id: SubscriptionIdentification, userId: UserIdentification, cardId: CardIdentification, level: Level, lastReview: DateEvermind) {
-        return new Subscription(id, userId, cardId, level, lastReview)
     }
 
     toDto(): SubscriptionDto {

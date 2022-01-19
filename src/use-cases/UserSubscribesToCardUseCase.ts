@@ -1,15 +1,14 @@
-import { CardRepository } from '../domain/card/CardRepository.js';
-import { ErrorType } from '../domain/errors/ErrorType.js';
-import { SubscriptionRepository } from '../domain/subscription/SubscriptionRepository.js';
-import { Subscription } from '../domain/subscription/Subscription.js';
-import { UserRepository } from '../domain/user/UserRepository.js';
-import { Identification } from '../domain/shared/value/Identification.js';
-import { Response } from './Response.js';
-import { UserSubscribesToCardRequest } from './UserSubscribesToCardRequest.js';
+import {CardRepository} from '../domain/card/CardRepository.js'
+import {ErrorType} from '../domain/errors/ErrorType.js'
+import {SubscriptionRepository} from '../domain/subscription/SubscriptionRepository.js'
+import {UserRepository} from '../domain/user/UserRepository.js'
+import {Identification} from '../domain/shared/value/Identification.js'
+import {Response} from './Response.js'
+import {UserSubscribesToCardRequest} from './UserSubscribesToCardRequest.js'
 
 export class UserSubscribesToCardUseCase {
     async execute(request: UserSubscribesToCardRequest) {
-        if (!Subscription.isDtoValid(request.userId, request.cardId)) {
+        if (!(Identification.isValid(request.userId) && Identification.isValid(request.cardId))) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
 

@@ -5,7 +5,7 @@ import {
     SubscriptionSqlQuery,
 } from '../../../../../src/implementations/persistence/postgres/subscription/SubscriptionSqlQuery'
 import {SubscriptionBuilder} from '../../../../domain/subscription/SubscriptionBuilder'
-import {SubscriptionMapper} from '../../../../../src/domain/subscription/SubscriptionMapper'
+import {SubscriptionFactory} from '../../../../../src/domain/subscription/SubscriptionFactory'
 import {givenAnExistingCard} from '../card/CardScenario'
 import {
     SubscriptionPostgresDatastore,
@@ -110,10 +110,10 @@ subscriptionSqlQuery('should provide a working subscription update query', async
         ...subscription.toDto(),
         level: 3,
     }
-    const sut = new SubscriptionSqlQuery().update(new SubscriptionMapper().fromDto(updatedSubscription))
+    const sut = new SubscriptionSqlQuery().update(new SubscriptionFactory().fromDto(updatedSubscription))
     await new SubscriptionPostgresDatastore().query(sut)
     const storedSubscriptions = await new SubscriptionPostgresDatastore().query('SELECT * FROM subscriptions')
-    assertAllRowsAreEqualToSubscriptions(storedSubscriptions.rows, [new SubscriptionMapper().fromDto(updatedSubscription)])
+    assertAllRowsAreEqualToSubscriptions(storedSubscriptions.rows, [new SubscriptionFactory().fromDto(updatedSubscription)])
 })
 
 subscriptionSqlQuery('should send the proper query to find a subscription by user', async () => {

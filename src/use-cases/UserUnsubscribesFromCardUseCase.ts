@@ -1,16 +1,16 @@
-import { CardRepository } from '../domain/card/CardRepository.js';
-import { CardIdentification } from '../domain/card/CardIdentification.js';
-import { ErrorType } from '../domain/errors/ErrorType.js';
-import { SubscriptionRepository } from '../domain/subscription/SubscriptionRepository.js';
-import { Subscription } from '../domain/subscription/Subscription.js';
-import { UserRepository } from '../domain/user/UserRepository.js';
-import { UserIdentification } from '../domain/user/UserIdentification.js';
-import { Response } from './Response.js';
-import { UserUnsubscribesFromCardRequest } from './UserUnsubscribesFromCardRequest.js';
+import {CardRepository} from '../domain/card/CardRepository.js'
+import {CardIdentification} from '../domain/card/CardIdentification.js'
+import {ErrorType} from '../domain/errors/ErrorType.js'
+import {SubscriptionRepository} from '../domain/subscription/SubscriptionRepository.js'
+import {UserRepository} from '../domain/user/UserRepository.js'
+import {UserIdentification} from '../domain/user/UserIdentification.js'
+import {Response} from './Response.js'
+import {UserUnsubscribesFromCardRequest} from './UserUnsubscribesFromCardRequest.js'
+import {Identification} from '../domain/shared/value/Identification'
 
 export class UserUnsubscribesFromCardUseCase {
     async execute(request: UserUnsubscribesFromCardRequest) {
-        if (!Subscription.isDtoValid(request.userId, request.cardId)) {
+        if (!(Identification.isValid(request.userId) && Identification.isValid(request.cardId))) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
 

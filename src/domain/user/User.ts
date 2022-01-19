@@ -7,6 +7,7 @@ import {Card} from '../card/Card.js'
 import {UserIdentification} from './UserIdentification.js'
 import {UserDto} from './UserDto.js'
 import {UserFactory} from './UserFactory.js'
+import {SubscriptionFactory} from '../subscription/SubscriptionFactory'
 
 export class User extends Entity {
 
@@ -38,7 +39,7 @@ export class User extends Entity {
         if (this.getSubscription(card)) {
             return null
         }
-        return Subscription.create(this.getId(), card.getId())
+        return new SubscriptionFactory().create(this.getId(), card.getId())
     }
 
     unsubscribeFrom(card: Card) {
