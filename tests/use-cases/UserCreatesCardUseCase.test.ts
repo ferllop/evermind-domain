@@ -1,30 +1,28 @@
-import {ImplementationsContainer} from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {CardMother} from '../domain/card/CardMother.js'
 import {IdentificationMother} from '../domain/value/IdentificationMother.js'
 import {assert, suite} from '../test-config.js'
-import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import {DatastoreTestClass} from '../domain/shared/DatastoreTestClass.js'
-import {DatastoreMother} from '../domain/shared/DatastoreMother.js'
 import {UserCreatesCardUseCase} from '../../src/use-cases/UserCreatesCardUseCase.js'
+import {CardBuilder} from '../domain/card/CardBuilder'
+import {AuthorIdentification} from '../../src/domain/card/AuthorIdentification'
+import {CardMapper} from '../../src/domain/card/CardMapper'
+import {PersistenceFactory} from '../../src/implementations/persistence/PersistenceFactory'
 
 const userCreatesCardUseCase = suite("User creates a card use case")
 
-const cardMother = new CardMother()
-
-userCreatesCardUseCase.before.each(async () => {
-    const datastore = new InMemoryDatastore();
-    ImplementationsContainer.set(Dependency.DATASTORE, datastore)
-    await datastore.clean()
+userCreatesCardUseCase.before( () => {
+    //CardDaoFactory.setDao(new CardInMemoryDao())
 })
 
 userCreatesCardUseCase(
     'given data representing a card, ' +
     'when execute this use case, ' +
     'an object should be returned with either error and data properties being null', async () => {
-        const result = await executeUseCase()
+        const result = await new UserCreatesCardUseCase().execute({
+            ...new CardMother().dto(),
+            userId: IdentificationMother.dto().id
+        })
         assert.equal(result, Response.OkWithoutData())
     })
 
@@ -32,12 +30,20 @@ userCreatesCardUseCase(
     'given data representing a card, ' +
     'when execute this use case, ' +
     'the card should remain in storage', async () => {
+        const {id, authorID, ...card} = new CardBuilder().buildDto()
+        const authorId = AuthorIdentification.create()
+        await new UserCreatesCardUseCase().execute({
+            ...card,
+            userId: authorId.getId(),
+        })
 
-        const datastore = new DatastoreTestClass();
-        await datastore.clean()
-        ImplementationsContainer.set(Dependency.DATASTORE, datastore)
-        await executeUseCase()
-        assert.is(await (new DatastoreMother(cardMother, datastore)).isDataStored(datastore.dtoId, 'authorId'), true)
+        const storedCards = await PersistenceFactory.getCardDao().findByAuthorId(authorId)
+        const expectedCard = new CardMapper().fromDto({
+            ...card,
+            id: storedCards[0].getId().getId(),
+            authorID: authorId.getId()
+        })
+        assert.equal(expectedCard, storedCards[0] )
     })
 
 userCreatesCardUseCase(
@@ -45,17 +51,10 @@ userCreatesCardUseCase(
     'when execute this use case, ' +
     'it should return an object with a data property as null and ' +
     'error property with a INPUT_DATA_NOT_VALID DomainError', async () => {
-        const invalidData = {...cardMother.invalidDto(), userId: ''}
+        const invalidData = {...new CardMother().invalidDto(), userId: ''}
         const result = await new UserCreatesCardUseCase().execute(invalidData)
         assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
     })
-
-async function executeUseCase() {
-    return new UserCreatesCardUseCase().execute({
-        ...cardMother.dto(),
-        userId: IdentificationMother.dto().id
-    })
-}
 
 userCreatesCardUseCase.run()
 

@@ -1,15 +1,16 @@
-import { UserMother } from '../domain/user/UserMother.js'
-import { assert, suite } from '../test-config.js'
-import { Response } from '../../src/use-cases/Response.js'
-import { ErrorType } from '../../src/domain/errors/ErrorType.js'
-import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
+import {UserMother} from '../domain/user/UserMother.js'
+import {assert, suite} from '../test-config.js'
+import {Response} from '../../src/use-cases/Response.js'
+import {ErrorType} from '../../src/domain/errors/ErrorType.js'
+import {ImplementationsContainer} from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import { DatastoreTestClass } from '../domain/shared/DatastoreTestClass.js'
-import { DatastoreMother } from '../domain/shared/DatastoreMother.js'
-import { UserSignsUpUseCase } from '../../src/use-cases/UserSignsUpUseCase.js'
+import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import {UserSignsUpUseCase} from '../../src/use-cases/UserSignsUpUseCase.js'
+import {Username} from '../../src/domain/user/Username'
+import {UserMapper} from '../../src/domain/user/UserMapper'
+import {PersistenceFactory} from '../../src/implementations/persistence/PersistenceFactory'
 
-const userSignsUpUseCase = suite("User signs up use case")
+const userSignsUpUseCase = suite('User signs up use case')
 
 userSignsUpUseCase.before.each(() => {
     ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
@@ -26,11 +27,17 @@ userSignsUpUseCase(
 userSignsUpUseCase(
     'given data representing a user, ' +
     'when execute this use case, ' +
-    'the card should remain in storage', async () => {
-        ImplementationsContainer.set(Dependency.DATASTORE, new DatastoreTestClass())
-        const datastore = ImplementationsContainer.get(Dependency.DATASTORE) as DatastoreTestClass
-        await new UserSignsUpUseCase().execute(new UserMother().dto())
-        assert.ok((await new DatastoreMother(new UserMother(), datastore)).isDataStored(datastore.dtoId, 'authId'))
+    'the user should remain in storage', async () => {
+        const user = {name: 'Maria', username: 'maria82'}
+        await new UserSignsUpUseCase().execute(user)
+        const storedUser = await PersistenceFactory.getUserDao().findByUsername(new Username(user.username))
+
+        const mapper = new UserMapper()
+        const expectedUser = mapper.fromDto({
+            ...mapper.toDto(storedUser),
+            ...user,
+        })
+        assert.equal(storedUser, expectedUser)
     })
 
 userSignsUpUseCase(

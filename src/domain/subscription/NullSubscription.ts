@@ -11,7 +11,7 @@ export class NullSubscription extends Subscription {
 
     private constructor() {
         super(
-            new SubscriptionIdentification(UserIdentification.NULL, CardIdentification.NULL), 
+            SubscriptionIdentification.NULL,
             UserIdentification.NULL, 
             CardIdentification.NULL, 
             new Level(0), 

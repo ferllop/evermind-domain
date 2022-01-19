@@ -2,14 +2,14 @@ import {Subscription} from './Subscription'
 import {User} from '../user/User.js'
 import {Identification} from '../shared/value/Identification'
 import {SubscriptionDao} from './SubscriptionDao'
-import {SubscriptionInMemoryDao} from '../../implementations/persistence/in-memory/SubscriptionInMemoryDao'
+import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory'
 
 export class SubscriptionRepository {
 
     private dao: SubscriptionDao
 
     constructor() {
-        this.dao = new SubscriptionInMemoryDao()
+        this.dao = PersistenceFactory.getSubscriptionDao()
     }
 
     async add(subscription: Subscription) {

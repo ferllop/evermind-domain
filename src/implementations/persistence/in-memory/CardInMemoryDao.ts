@@ -17,10 +17,9 @@ import {Criteria} from "../../../domain/shared/Criteria";
 export class CardInMemoryDao implements CardDao {
     private readonly tableName = 'cards'
     private mapper = new CardMapper()
-    protected datastore: InMemoryDatastore
 
-    constructor(){
-        this.datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
+
+    constructor(protected datastore: InMemoryDatastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore){
     }
 
     async insert(card: Card) {

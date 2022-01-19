@@ -1,19 +1,16 @@
-import { Level } from '../../../src/domain/subscription/Level.js'
-import { Subscription } from '../../../src/domain/subscription/Subscription.js'
-import { SubscriptionIdentification } from '../../../src/domain/subscription/SubscriptionIdentification.js'
-import { DateEvermind } from '../../../src/domain/shared/value/DateEvermind.js'
-import { DayStartTime } from '../../../src/domain/shared/value/DayStartTime.js'
-import { Identification } from '../../../src/domain/shared/value/Identification.js'
-import { assert, suite } from '../../test-config.js'
+import {Level} from '../../../src/domain/subscription/Level.js'
+import {Subscription} from '../../../src/domain/subscription/Subscription.js'
+import {DateEvermind} from '../../../src/domain/shared/value/DateEvermind.js'
+import {DayStartTime} from '../../../src/domain/shared/value/DayStartTime.js'
+import {Identification} from '../../../src/domain/shared/value/Identification.js'
+import {assert, suite} from '../../test-config.js'
 
 class SubscriptionMother {
     forDay(day: Date) {
-        const userId = Identification.create()
-        const cardId = Identification.create()
         return Subscription.recreate(
-            new SubscriptionIdentification(userId, cardId),
-            userId,
-            cardId,
+            Identification.create(),
+            Identification.create(),
+            Identification.create(),
             Level.LEVEL_0,
             DateEvermind.fromDate(day)
         )

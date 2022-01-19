@@ -1,16 +1,16 @@
 import {Card} from './Card.js'
 import {Labelling} from './Labelling.js'
 import {Identification} from '../shared/value/Identification.js'
-import {CardInMemoryDao} from "../../implementations/persistence/in-memory/CardInMemoryDao";
-import {CardDao} from "./CardDao";
-import {AuthorIdentification} from "./AuthorIdentification";
+import {CardDao} from './CardDao'
+import {AuthorIdentification} from './AuthorIdentification'
+import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory'
 
 export class CardRepository {
 
     protected dao: CardDao
 
     constructor() {
-        this.dao = new CardInMemoryDao()
+        this.dao = PersistenceFactory.getCardDao()
     }
 
     async add(card: Card) {

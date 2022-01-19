@@ -1,15 +1,15 @@
 import {User} from './User.js'
-import {UserInMemoryDao} from '../../implementations/persistence/in-memory/UserInMemoryDao'
 import {UserDao} from './UserDao'
 import {UserIdentification} from './UserIdentification'
 import {Username} from './Username'
+import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory'
 
 export class UserRepository {
 
     dao: UserDao
 
     constructor() {
-        this.dao = new UserInMemoryDao()
+        this.dao = PersistenceFactory.getUserDao()
     }
 
     async add(user: User) {

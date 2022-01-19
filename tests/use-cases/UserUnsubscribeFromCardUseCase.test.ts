@@ -1,20 +1,21 @@
-import { ErrorType } from '../../src/domain/errors/ErrorType.js'
-import { Card } from '../../src/domain/card/Card.js'
-import { User } from '../../src/domain/user/User.js'
-import { Datastore } from '../../src/domain/shared/Datastore.js'
-import { CardMapper } from '../../src/domain/card/CardMapper.js'
-import { UserMapper } from '../../src/domain/user/UserMapper.js'
-import { CardMother } from '../domain/card/CardMother.js'
-import { UserMother } from '../domain/user/UserMother.js'
-import { suite, assert } from '../test-config.js'
-import { Response } from '../../src/use-cases/Response.js'
-import { precondition } from '../../src/implementations/preconditions.js'
-import { ImplementationsContainer } from '../../src/implementations/implementations-container/ImplementationsContainer.js'
+import {ErrorType} from '../../src/domain/errors/ErrorType.js'
+import {Card} from '../../src/domain/card/Card.js'
+import {User} from '../../src/domain/user/User.js'
+import {Datastore} from '../../src/domain/shared/Datastore.js'
+import {CardMapper} from '../../src/domain/card/CardMapper.js'
+import {UserMapper} from '../../src/domain/user/UserMapper.js'
+import {CardMother} from '../domain/card/CardMother.js'
+import {UserMother} from '../domain/user/UserMother.js'
+import {assert, suite} from '../test-config.js'
+import {Response} from '../../src/use-cases/Response.js'
+import {precondition} from '../../src/implementations/preconditions.js'
+import {ImplementationsContainer} from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import { UserSubscribesToCardUseCase } from '../../src/use-cases/UserSubscribesToCardUseCase.js'
-import { UserUnsubscribesFromCardUseCase } from '../../src/use-cases/UserUnsubscribesFromCardUseCase.js'
+import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import {UserSubscribesToCardUseCase} from '../../src/use-cases/UserSubscribesToCardUseCase.js'
+import {UserUnsubscribesFromCardUseCase} from '../../src/use-cases/UserUnsubscribesFromCardUseCase.js'
 import {SubscriptionDto} from '../../src/domain/subscription/SusbcriptionDto'
+import {PersistenceFactory} from '../../src/implementations/persistence/PersistenceFactory'
 
 type Context = {
     datastore: InMemoryDatastore
@@ -26,6 +27,7 @@ userUnsubscribesFromCard.before.each( async context => {
     ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
     context.datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
     await context.datastore.clean()
+    PersistenceFactory.setType('memory')
 })
 
 async function givenAStoredCard(datastore: InMemoryDatastore) {

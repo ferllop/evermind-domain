@@ -1,0 +1,1 @@
+export type PersistenceType = 'postgres' | 'memory' | null
