@@ -7,7 +7,7 @@ import {CardMother} from '../domain/card/CardMother.js'
 import {LabellingMother} from '../domain/card/LabellingMother.js'
 import {assert, suite} from '../test-config.js'
 import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import {DatastoreMother} from '../domain/shared/DatastoreMother.js'
+import {InMemoryDatastoreMother} from '../implementations/persistence/in-memory/InMemoryDatastoreMother.js'
 
 const userModifiesCardDataUseCase = suite("User modifies card data use case")
 
@@ -30,7 +30,7 @@ userModifiesCardDataUseCase(
 userModifiesCardDataUseCase(
     'given a previously stored card and data to update it, ' +
     'the card should be updated in storage', async () => {
-        const dsMother = await new DatastoreMother(cardMother, datastore).having(1).storedIn()
+        const dsMother = await new InMemoryDatastoreMother(cardMother, datastore).having(1).storedIn()
         const newAuthorID = 'newAuthorId'
         await new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.numberedDto(1), authorID: newAuthorID })
         assert.equal(newAuthorID, (await dsMother.stored(1)).storedDto?.authorID)
@@ -39,7 +39,7 @@ userModifiesCardDataUseCase(
 userModifiesCardDataUseCase(
     'given a previously stored card and data to update it, ' +
     'when provided a different labelling, the card should be updated in storage', async () => {
-        const dsMother = await new DatastoreMother(cardMother, datastore).having(1).storedIn()
+        const dsMother = await new InMemoryDatastoreMother(cardMother, datastore).having(1).storedIn()
         const {id} = (await dsMother.stored(1)).storedDto as CardDto
         const labelling = ['new-labelling']
         await new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.numberedDto(1), labelling })
@@ -50,7 +50,7 @@ userModifiesCardDataUseCase(
     'given a previously stored card and data to update it, ' +
     'should return an object with null as error property and ' +
     'null as data property', async () => {
-        await new DatastoreMother(cardMother, datastore).having(1).storedIn()
+        await new InMemoryDatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = await new UserModifiesCardDataUseCase().execute(
             { userId: '', ...cardMother.numberedDto(1), authorID: 'updatedAuthor' },
         )
@@ -61,7 +61,7 @@ userModifiesCardDataUseCase(
     'given an unexisting card in an existing table, ' +
     'should return an object with null as data property and ' +
     'CARD_NOT_FOUND DomainError as error', async () => {
-        await new DatastoreMother(cardMother, datastore).having(1).storedIn()
+        await new InMemoryDatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = await new UserModifiesCardDataUseCase().execute({ userId: '', ...cardMother.numberedDto(1), id: 'notExistingId' })
         assert.equal(result, Response.withError(ErrorType.CARD_NOT_FOUND))
     })

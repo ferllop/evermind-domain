@@ -5,7 +5,7 @@ import {IdentificationMother} from '../domain/value/IdentificationMother.js'
 import {assert, suite} from '../test-config.js'
 import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import {UserReadsACardUseCase} from '../../src/use-cases/UserReadsACardUseCase.js'
-import {DatastoreMother} from '../domain/shared/DatastoreMother.js'
+import {InMemoryDatastoreMother} from '../implementations/persistence/in-memory/InMemoryDatastoreMother.js'
 
 const userReadsACardUseCase = suite("User reads a card use case")
 
@@ -30,7 +30,7 @@ userReadsACardUseCase(
     'given a non existing id in an existing cards table, ' +
     'should return an object with data property as null ' +
     'and CARD_NOT_FOUND DomainError', async () => {
-        await new DatastoreMother(cardMother, datastore).having(1).storedIn()
+        await new InMemoryDatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = await new UserReadsACardUseCase().execute({ id: 'nonExistingId' })
         assert.equal(result, Response.withError(ErrorType.CARD_NOT_FOUND))
     })
@@ -46,7 +46,7 @@ userReadsACardUseCase(
 userReadsACardUseCase(
     'given an existing id, ' +
     'should return an object with null as error and card as data', async () => {
-        await new DatastoreMother(cardMother, datastore).having(1).storedIn()
+        await new InMemoryDatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = await new UserReadsACardUseCase().execute(IdentificationMother.numberedDto(1))
         assert.equal(result, Response.OkWithData(cardMother.numberedDto(1)))
     })

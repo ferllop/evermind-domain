@@ -3,7 +3,7 @@ import {Response} from '../../src/use-cases/Response.js'
 import {CardMother} from '../domain/card/CardMother.js'
 import {IdentificationMother} from '../domain/value/IdentificationMother.js'
 import {assert, suite} from '../test-config.js'
-import {DatastoreMother} from '../domain/shared/DatastoreMother.js'
+import {InMemoryDatastoreMother} from '../implementations/persistence/in-memory/InMemoryDatastoreMother.js'
 import {UserRemovesCardUseCase} from '../../src/use-cases/UserRemovesCardUseCase.js'
 import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 
@@ -20,13 +20,13 @@ userRemovesCardUseCase(
     'given an existing card id, ' +
     'should return an object with either ' +
     'data and error properties as null', async () => {
-        await new DatastoreMother(cardMother, datastore).having(1).storedIn()
+        await new InMemoryDatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = await new UserRemovesCardUseCase().execute(IdentificationMother.numberedDto(1))
         assert.equal(result, Response.OkWithoutData())
     })
 
 userRemovesCardUseCase('given an existing card id, should remove it', async () => {
-    const dsMother = await new DatastoreMother(cardMother, datastore).having(1).storedIn()
+    const dsMother = await new InMemoryDatastoreMother(cardMother, datastore).having(1).storedIn()
     assert.ok(await dsMother.exists(1))
     await new UserRemovesCardUseCase().execute(IdentificationMother.numberedDto(1))
     assert.not.ok(await dsMother.exists(1))
@@ -36,7 +36,7 @@ userRemovesCardUseCase(
     'given an unexisting card id into an existing cards table, ' +
     'it should return an object with data property as null and ' +
     'error property as CARD_NOT_FOUND DomainError', async () => {
-        await new DatastoreMother(cardMother, datastore).having(1).storedIn()
+        await new InMemoryDatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = await new UserRemovesCardUseCase().execute({ id: 'unexistingID' })
         assert.equal(result, Response.withError(ErrorType.CARD_NOT_FOUND))
     })

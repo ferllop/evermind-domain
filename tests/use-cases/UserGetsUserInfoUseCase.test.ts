@@ -4,7 +4,7 @@ import {UserMother} from '../domain/user/UserMother.js'
 import {IdentificationMother} from '../domain/value/IdentificationMother.js'
 import {assert, suite} from '../test-config.js'
 import {UserGetsUserInfoUseCase} from '../../src/use-cases/UserGetsUserInfoUseCase.js'
-import {DatastoreMother} from '../domain/shared/DatastoreMother.js'
+import {InMemoryDatastoreMother} from '../implementations/persistence/in-memory/InMemoryDatastoreMother.js'
 import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore'
 
 const userGetsUserInfoUseCase = suite("User gets user info use case")
@@ -23,7 +23,7 @@ userGetsUserInfoUseCase(
     'given a non existing id in an existing users table, ' +
     'should return an object with data property as null ' +
     'and USER_NOT_FOUND DomainError', async () => {
-        await new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
+        await new InMemoryDatastoreMother(new UserMother(), datastore).having(1).storedIn()
         const result = await new UserGetsUserInfoUseCase().execute({ id: 'nonExistingId' })
         assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
@@ -39,7 +39,7 @@ userGetsUserInfoUseCase(
 userGetsUserInfoUseCase(
     'given an existing id, ' +
     'should return an object with null as error and user as data', async () => {
-        await new DatastoreMother(new UserMother(), datastore).having(1).storedIn()
+        await new InMemoryDatastoreMother(new UserMother(), datastore).having(1).storedIn()
         const result = await new UserGetsUserInfoUseCase().execute(IdentificationMother.numberedDto(1))
         assert.equal(result, Response.OkWithData(new UserMother().numberedDto(1)))
     })

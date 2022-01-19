@@ -1,9 +1,9 @@
-import {IdDto} from '../../../src/domain/shared/value/IdDto.js'
-import {Mother} from './Mother.js'
-import {IdentificationMother} from '../value/IdentificationMother.js'
-import {InMemoryDatastore} from '../../../src/implementations/persistence/in-memory/InMemoryDatastore'
+import {IdDto} from '../../../../src/domain/shared/value/IdDto.js'
+import {Mother} from '../../../domain/shared/Mother.js'
+import {IdentificationMother} from '../../../domain/value/IdentificationMother.js'
+import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore'
 
-export class DatastoreMother<T extends IdDto> {
+export class InMemoryDatastoreMother<T extends IdDto> {
         
     qty: number = 0
     storedDto?: T | null
