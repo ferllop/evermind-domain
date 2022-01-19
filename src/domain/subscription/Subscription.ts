@@ -8,6 +8,7 @@ import { Hour } from '../shared/value/Hour.js'
 import { Identification } from '../shared/value/Identification.js'
 import { Level } from './Level.js'
 import { SubscriptionIdentification } from './SubscriptionIdentification.js'
+import {SubscriptionDto} from './SusbcriptionDto'
 
 export class Subscription extends Entity {
     
@@ -78,6 +79,16 @@ export class Subscription extends Entity {
 
     static recreate(id: SubscriptionIdentification, userId: UserIdentification, cardId: CardIdentification, level: Level, lastReview: DateEvermind) {
         return new Subscription(id, userId, cardId, level, lastReview)
+    }
+
+    toDto(): SubscriptionDto {
+        return {
+            id: this.getId().getId(),
+            userId: this.getUserID().getId(),
+            cardId: this.getCardID().getId(),
+            level: this.getLevel().getOrdinal(),
+            lastReview: this.getLastReview().toDtoFormat()
+        }
     }
 
 }

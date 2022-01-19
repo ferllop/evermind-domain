@@ -36,14 +36,4 @@ export class SubscriptionMapper extends Mapper<Subscription, SubscriptionDto> {
         )
     }
 
-    toDto(subscription: Subscription): SubscriptionDto {
-        return {
-            id: subscription.getId().getId(),
-            userId: subscription.getUserID().getId(),
-            cardId: subscription.getCardID().getId(),
-            level: subscription.getLevel().getOrdinal(),
-            lastReview: subscription.getLastReview().toDtoFormat()
-        }
-    }
-
 }

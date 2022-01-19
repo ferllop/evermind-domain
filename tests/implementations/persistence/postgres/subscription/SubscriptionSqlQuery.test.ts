@@ -40,7 +40,7 @@ subscriptionSqlQuery('should provide the correct create subscriptions table quer
 
 subscriptionSqlQuery('should provide the correct insert query', async () => {
     const subscription = new SubscriptionBuilder().build()
-    const {id, userId, cardId, level, lastReview} = new SubscriptionMapper().toDto(subscription)
+    const {id, userId, cardId, level, lastReview} = subscription.toDto()
 
     const sut = new SubscriptionSqlQuery().insert(subscription)
 
@@ -107,7 +107,7 @@ subscriptionSqlQuery('should provide a working subscription update query', async
     const subscription = await givenAnExistingSubscription()
 
     const updatedSubscription = {
-        ...new SubscriptionMapper().toDto(subscription),
+        ...subscription.toDto(),
         level: 3,
     }
     const sut = new SubscriptionSqlQuery().update(new SubscriptionMapper().fromDto(updatedSubscription))

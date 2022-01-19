@@ -22,5 +22,4 @@ export abstract class Mapper<T, TDto> {
     abstract getValidators(): Map<string, Validator>
     abstract isDtoValid(dto: MayBeIdentified<TDto>): boolean;
     abstract fromDto(dto: TDto): T;
-    abstract toDto(entity: T): TDto;
 }

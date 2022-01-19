@@ -21,7 +21,7 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
     protected datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
 
     async insert(subscription: Subscription) {
-        const result = await this.datastore.create(this.tableName, this.mapper.toDto(subscription))
+        const result = await this.datastore.create(this.tableName, subscription.toDto())
         if (!result) {
             throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
         }
@@ -60,7 +60,7 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
         if (!await this.datastore.hasTable(this.tableName)) {
             throw new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }
-        const updated = this.datastore.update(this.tableName, this.mapper.toDto(entity))
+        const updated = this.datastore.update(this.tableName, entity.toDto())
         if (!updated) {
             throw new DomainError(ErrorType.RESOURCE_NOT_FOUND)
         }

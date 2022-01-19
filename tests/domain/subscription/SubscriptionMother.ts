@@ -1,6 +1,5 @@
-import { Subscription } from '../../../src/domain/subscription/Subscription.js';
-import { SubscriptionMapper } from '../../../src/domain/subscription/SubscriptionMapper.js';
-import { SubscriptionBuilder } from './SubscriptionBuilder.js';
+import {Subscription} from '../../../src/domain/subscription/Subscription.js'
+import {SubscriptionBuilder} from './SubscriptionBuilder.js'
 
 export class SubscriptionMother {
     TABLE_NAME = 'subscriptions'
@@ -19,6 +18,6 @@ export class SubscriptionMother {
     }
 
     getDto() {
-       return new SubscriptionMapper().toDto(this.subscription) 
+       return this.subscription.toDto()
     }
 }
