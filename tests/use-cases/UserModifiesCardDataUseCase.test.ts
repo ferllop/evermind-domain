@@ -10,16 +10,15 @@ import { assert, suite } from '../test-config.js'
 import { Dependency } from '../../src/implementations/implementations-container/Dependency.js'
 import { InMemoryDatastore } from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { DatastoreMother } from '../domain/shared/DatastoreMother.js'
-import { Datastore } from '../../src/domain/shared/Datastore.js'
 
 const userModifiesCardDataUseCase = suite("User modifies card data use case")
 
 const cardMother = new CardMother()
 
-let datastore: Datastore
+let datastore: InMemoryDatastore
 userModifiesCardDataUseCase.before.each(() => {
     ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
+    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
 })
 
 

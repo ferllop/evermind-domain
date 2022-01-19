@@ -1,8 +1,7 @@
 import {SubscriptionFactory} from '../../../domain/subscription/SubscriptionFactory'
 import {Identification} from '../../../domain/shared/value/Identification'
 import {Dependency} from '../../implementations-container/Dependency'
-import {Criteria} from '../../../domain/shared/Criteria'
-import {Datastore} from '../../../domain/shared/Datastore'
+import {Criteria} from './Criteria'
 import {DomainError} from '../../../domain/errors/DomainError'
 import {NullSubscription} from '../../../domain/subscription/NullSubscription'
 import {SubscriptionField} from './SubscriptionField'
@@ -13,12 +12,13 @@ import {ErrorType} from '../../../domain/errors/ErrorType'
 import {SubscriptionDao} from '../../../domain/subscription/SubscriptionDao'
 import {SubscriptionIdentification} from '../../../domain/subscription/SubscriptionIdentification'
 import {UserIdentification} from '../../../domain/user/UserIdentification'
+import {InMemoryDatastore} from './InMemoryDatastore'
 
 
 export class SubscriptionInMemoryDao implements SubscriptionDao {
     protected readonly tableName = SubscriptionField.TABLE_NAME
     protected mapper = new SubscriptionFactory()
-    protected datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
+    protected datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
 
     async insert(subscription: Subscription) {
         const result = await this.datastore.create(this.tableName, subscription.toDto())

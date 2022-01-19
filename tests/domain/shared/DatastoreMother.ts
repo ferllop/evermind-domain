@@ -1,7 +1,7 @@
 import {IdDto} from '../../../src/domain/shared/value/IdDto.js'
 import {Mother} from './Mother.js'
 import {IdentificationMother} from '../value/IdentificationMother.js'
-import {Datastore} from '../../../src/domain/shared/Datastore.js'
+import {InMemoryDatastore} from '../../../src/implementations/persistence/in-memory/InMemoryDatastore'
 
 export class DatastoreMother<T extends IdDto> {
         
@@ -9,9 +9,9 @@ export class DatastoreMother<T extends IdDto> {
     storedDto?: T | null
     
     mother: Mother<T>
-    datastore: Datastore
+    datastore: InMemoryDatastore
     
-    constructor(mother: Mother<T>, datastore: Datastore) {
+    constructor(mother: Mother<T>, datastore: InMemoryDatastore) {
         this.mother = mother
         this.datastore = datastore
     }

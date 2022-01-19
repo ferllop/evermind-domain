@@ -12,7 +12,7 @@ import {AuthorIdentification} from "../../../domain/card/AuthorIdentification";
 import {ImplementationsContainer} from "../../implementations-container/ImplementationsContainer";
 import {Dependency} from "../../implementations-container/Dependency";
 import {Labelling} from "../../../domain/card/Labelling";
-import {Criteria} from "../../../domain/shared/Criteria";
+import {Criteria} from "./Criteria";
 
 export class CardInMemoryDao implements CardDao {
     private readonly tableName = 'cards'

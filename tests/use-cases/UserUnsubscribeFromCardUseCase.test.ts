@@ -1,7 +1,6 @@
 import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Card} from '../../src/domain/card/Card.js'
 import {User} from '../../src/domain/user/User.js'
-import {Datastore} from '../../src/domain/shared/Datastore.js'
 import {CardMother} from '../domain/card/CardMother.js'
 import {UserMother} from '../domain/user/UserMother.js'
 import {assert, suite} from '../test-config.js'
@@ -128,7 +127,7 @@ class AsyncDatastoreMother {
     private dto?: any
     private mother?: any
 
-    constructor(private datastore: Datastore){}
+    constructor(private datastore: InMemoryDatastore){}
 
     with(obj: any) {
         if (obj instanceof User) {

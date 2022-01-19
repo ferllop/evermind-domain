@@ -1,8 +1,7 @@
 import {assert, suite} from '../../../test-config.js'
-import { Datastore } from '../../../../src/domain/shared/Datastore.js'
 import { InMemoryDatastore } from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 
-let sutDatastore: Datastore
+let sutDatastore: InMemoryDatastore
 
 const datastoreFinder = suite('In-memory datastore finder')
 

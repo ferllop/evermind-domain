@@ -1,11 +1,10 @@
 import { InMemoryDatastore } from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import { PreconditionError } from '../../../../src/implementations/preconditions.js'
-import { Datastore } from '../../../../src/domain/shared/Datastore.js'
 import { assert, suite } from '../../../test-config.js'
 
 const datastoreCreating = suite('InMemory Datastore When Creating')
 
-let sutDatastore: Datastore
+let sutDatastore: InMemoryDatastore
 
 datastoreCreating.before.each( async () => {
     sutDatastore = new InMemoryDatastore()

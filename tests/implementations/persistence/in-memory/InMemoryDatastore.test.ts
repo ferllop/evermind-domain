@@ -1,9 +1,8 @@
 import { InMemoryDatastore } from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
-import { Datastore } from '../../../../src/domain/shared/Datastore.js'
 import { assert, suite } from '../../../test-config.js'
 
 type Context = {
-    datastore: Datastore
+    datastore: InMemoryDatastore
 }
 
 const datastore = suite<Context>('In-Memory Datastore')

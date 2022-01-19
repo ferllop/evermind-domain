@@ -1,5 +1,4 @@
 import { ErrorType } from '../../src/domain/errors/ErrorType.js'
-import { Datastore } from '../../src/domain/shared/Datastore.js'
 import { Response } from '../../src/use-cases/Response.js'
 import { UserMother } from '../domain/user/UserMother.js'
 import { assert, suite } from '../test-config.js'
@@ -11,10 +10,10 @@ import { InMemoryDatastore } from '../../src/implementations/persistence/in-memo
 
 const userModifiesUserDataUseCase = suite("User modifies user data use case")
 
-let datastore: Datastore
+let datastore: InMemoryDatastore
 userModifiesUserDataUseCase.before.each(() => {
     ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
+    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
 })
 
 userModifiesUserDataUseCase(

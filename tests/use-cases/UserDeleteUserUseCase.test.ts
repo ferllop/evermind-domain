@@ -6,19 +6,18 @@ import {Response} from '../../src/use-cases/Response.js'
 import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {ImplementationsContainer} from '../../src/implementations/implementations-container/ImplementationsContainer.js'
 import {Dependency} from '../../src/implementations/implementations-container/Dependency.js'
-import {Datastore} from '../../src/domain/shared/Datastore.js'
 import {DatastoreMother} from '../domain/shared/DatastoreMother.js'
 import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import {UserRemovesAccountUseCase} from '../../src/use-cases/UserRemovesAccountUseCase.js'
 
 const userRemovesAccountUseCase = suite("User removes account use case")
 
-let datastore: Datastore
+let datastore: InMemoryDatastore
 let datastoreMother: DatastoreMother<UserDto>
 
 userRemovesAccountUseCase.before.each(() => {
     ImplementationsContainer.set(Dependency.DATASTORE, new InMemoryDatastore())
-    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as Datastore
+    datastore = ImplementationsContainer.get(Dependency.DATASTORE) as InMemoryDatastore
     datastoreMother = new DatastoreMother(new UserMother(), datastore)
 })
 

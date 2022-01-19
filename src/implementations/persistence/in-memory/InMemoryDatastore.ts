@@ -1,9 +1,8 @@
 import {AsyncDatabase} from 'in-memory-database'
-import {Datastore} from '../../../domain/shared/Datastore.js'
 import {IdDto} from '../../../domain/shared/value/IdDto.js'
 import { precondition } from '../../preconditions.js'
 
-export class InMemoryDatastore implements Datastore {
+export class InMemoryDatastore {
 
     private static db: AsyncDatabase = new AsyncDatabase()
 
