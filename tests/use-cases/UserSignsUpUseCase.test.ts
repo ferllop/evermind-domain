@@ -6,8 +6,11 @@ import {UserSignsUpUseCase} from '../../src/use-cases/UserSignsUpUseCase.js'
 import {Username} from '../../src/domain/user/Username'
 import {UserFactory} from '../../src/domain/user/UserFactory'
 import {PersistenceFactory} from '../../src/implementations/persistence/PersistenceFactory'
+import {givenACleanInMemoryDatabase} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
 
 const userSignsUpUseCase = suite('User signs up use case')
+
+userSignsUpUseCase.before.each(async () => await givenACleanInMemoryDatabase())
 
 userSignsUpUseCase(
     'given data representing a user, ' +

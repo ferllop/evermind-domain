@@ -1,51 +1,42 @@
 import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Response} from '../../src/use-cases/Response.js'
-import {CardMother} from '../domain/card/CardMother.js'
 import {IdentificationMother} from '../domain/value/IdentificationMother.js'
 import {assert, suite} from '../test-config.js'
-import {InMemoryDatastoreMother} from '../implementations/persistence/in-memory/InMemoryDatastoreMother.js'
 import {UserRemovesCardUseCase} from '../../src/use-cases/UserRemovesCardUseCase.js'
-import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import {
+    givenACleanInMemoryDatabase,
+    givenAStoredCard,
+} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
+import {
+    assertCardIsNotStored,
+    assertCardIsStored,
+} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions'
 
 const userRemovesCardUseCase = suite("User removes card use case")
 
-const cardMother = new CardMother()
-
-let datastore: InMemoryDatastore
-userRemovesCardUseCase.before.each(() => {
-    datastore = new InMemoryDatastore()
-})
+userRemovesCardUseCase.before.each(async () => await givenACleanInMemoryDatabase())
 
 userRemovesCardUseCase(
     'given an existing card id, ' +
     'should return an object with either ' +
     'data and error properties as null', async () => {
-        await new InMemoryDatastoreMother(cardMother, datastore).having(1).storedIn()
-        const result = await new UserRemovesCardUseCase().execute(IdentificationMother.numberedDto(1))
+        const {id} = await givenAStoredCard()
+        const result = await new UserRemovesCardUseCase().execute({id})
         assert.equal(result, Response.OkWithoutData())
     })
 
 userRemovesCardUseCase('given an existing card id, should remove it', async () => {
-    const dsMother = await new InMemoryDatastoreMother(cardMother, datastore).having(1).storedIn()
-    assert.ok(await dsMother.exists(1))
+    const card = await givenAStoredCard()
+    await assertCardIsStored(card)
     await new UserRemovesCardUseCase().execute(IdentificationMother.numberedDto(1))
-    assert.not.ok(await dsMother.exists(1))
+    await assertCardIsNotStored(card)
 })
 
 userRemovesCardUseCase(
     'given an unexisting card id into an existing cards table, ' +
     'it should return an object with data property as null and ' +
     'error property as CARD_NOT_FOUND DomainError', async () => {
-        await new InMemoryDatastoreMother(cardMother, datastore).having(1).storedIn()
         const result = await new UserRemovesCardUseCase().execute({ id: 'unexistingID' })
-        assert.equal(result, Response.withError(ErrorType.CARD_NOT_FOUND))
-    })
-
-userRemovesCardUseCase(
-    'given an unexisting table, ' +
-    'it should return an object with data property as null and ' +
-    'error property as CARD_NOT_FOUND DomainError', async () => {
-        const result = await new UserRemovesCardUseCase().execute({ id: 'neither-existingIDorTable' })
         assert.equal(result, Response.withError(ErrorType.CARD_NOT_FOUND))
     })
 

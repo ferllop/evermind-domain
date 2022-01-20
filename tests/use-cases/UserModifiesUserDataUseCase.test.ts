@@ -3,15 +3,15 @@ import {Response} from '../../src/use-cases/Response.js'
 import {UserMother} from '../domain/user/UserMother.js'
 import {assert, suite} from '../test-config.js'
 import {UserModifiesUserDataUseCase} from '../../src/use-cases/UserModifiesUserDataUseCase.js'
-import {InMemoryDatastoreMother} from '../implementations/persistence/in-memory/InMemoryDatastoreMother.js'
-import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import {
+    givenACleanInMemoryDatabase,
+    givenAStoredUser,
+} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
+import {assertUserIsStored} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions'
 
 const userModifiesUserDataUseCase = suite("User modifies user data use case")
 
-let datastore: InMemoryDatastore
-userModifiesUserDataUseCase.before.each(() => {
-    datastore = new InMemoryDatastore()
-})
+userModifiesUserDataUseCase.before.each(async () => await givenACleanInMemoryDatabase())
 
 userModifiesUserDataUseCase(
     'given an unexisting table, ' +
@@ -24,18 +24,18 @@ userModifiesUserDataUseCase(
 userModifiesUserDataUseCase(
     'given a previously stored user and data to update it, ' +
     'the user should be updated in storage', async () => {
-        const dsMother = await new InMemoryDatastoreMother(new UserMother(), datastore).having(1).storedIn()
-        const newName = 'newName'
-        await new UserModifiesUserDataUseCase().execute({ ...new UserMother().numberedDto(1), name: newName })
-        assert.ok((await dsMother.stored(1)).hasPropertyValue('name', newName))
+        const user = await givenAStoredUser()
+        const updatedUser = { ...user, name: 'newName' }
+        await new UserModifiesUserDataUseCase().execute(updatedUser)
+        await assertUserIsStored(updatedUser)
     })
 
 userModifiesUserDataUseCase(
     'given a previously stored user and data to update it, ' +
     'should return an object with null as error property and ' +
     'null as data property', async () => {
-        await new InMemoryDatastoreMother(new UserMother(), datastore).having(1).storedIn()
-        const result = await new UserModifiesUserDataUseCase().execute({ ...new UserMother().numberedDto(1), name: 'newName' })
+        const user = await givenAStoredUser()
+        const result = await new UserModifiesUserDataUseCase().execute({ ...user, name: 'newName' })
         assert.equal(result, Response.OkWithoutData())
     })
 
@@ -43,8 +43,8 @@ userModifiesUserDataUseCase(
     'given an unexisting user in an existing table, ' +
     'should return an object with null as data property and ' +
     'RESOURCE_NOT_FOUND DomainError', async () => {
-        await new InMemoryDatastoreMother(new UserMother(), datastore).having(1).storedIn()
-        const result = await new UserModifiesUserDataUseCase().execute({ ...new UserMother().numberedDto(1), id: 'notExistingId' })
+        const user = await givenAStoredUser()
+        const result = await new UserModifiesUserDataUseCase().execute({ ...user, id: 'notExistingId' })
         assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
     })
 

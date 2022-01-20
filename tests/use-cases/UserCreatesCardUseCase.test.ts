@@ -8,12 +8,11 @@ import {CardBuilder} from '../domain/card/CardBuilder'
 import {AuthorIdentification} from '../../src/domain/card/AuthorIdentification'
 import {CardFactory} from '../../src/domain/card/CardFactory'
 import {PersistenceFactory} from '../../src/implementations/persistence/PersistenceFactory'
+import {givenACleanInMemoryDatabase} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
 
 const userCreatesCardUseCase = suite("User creates a card use case")
 
-userCreatesCardUseCase.before( () => {
-    //CardDaoFactory.setDao(new CardInMemoryDao())
-})
+userCreatesCardUseCase.before( async () => await givenACleanInMemoryDatabase())
 
 userCreatesCardUseCase(
     'given data representing a card, ' +

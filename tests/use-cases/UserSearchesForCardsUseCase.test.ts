@@ -1,76 +1,114 @@
-import {CardMother} from '../domain/card/CardMother.js'
 import {assert, suite} from '../test-config.js'
-import {UserMother} from '../domain/user/UserMother.js'
-import {InMemoryDatastoreMother} from '../implementations/persistence/in-memory/InMemoryDatastoreMother.js'
 import {UserSearchesForCardsUseCase} from '../../src/use-cases/UserSearchesForCardsUseCase.js'
-import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import {
+    givenACleanInMemoryDatabase,
+    givenAStoredCard,
+    givenAStoredCardFromUser,
+    givenAStoredUser,
+    givenTheStoredCard,
+    givenTheStoredUser,
+    givenXStoredCards,
+} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
+import {UserBuilder} from '../domain/user/UserBuilder'
+import {CardBuilder} from '../domain/card/CardBuilder'
 
 const userSearchesForCards = suite('User searches for cards use case')
 
-const cardMother = new CardMother()
-
-let datastore: InMemoryDatastore
-userSearchesForCards.before.each(() => {
-    datastore = new InMemoryDatastore()
-})
+userSearchesForCards.before.each(async () => await givenACleanInMemoryDatabase())
 
 userSearchesForCards('having 0 coincident cards, return a Result with empty array as data and null as error', async () => {
-    await new InMemoryDatastoreMother(cardMother, datastore).having(3).storedIn()
-    const result = await new UserSearchesForCardsUseCase().execute({query: 'non-existing'})
+    await givenXStoredCards(3)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        query: 'non-existing'
+    })
     assert.is(result.data.length, 0)
 })
 
 userSearchesForCards('having three cards, with one coincident card, return a Result with a one element array as data and null as error', async () => {
-    await new InMemoryDatastoreMother(cardMother, datastore).having(3).storedIn()
-    const result = await new UserSearchesForCardsUseCase().execute({query: 'label0ofcard1'})
+    const cards = await givenXStoredCards(3)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        query: cards[0].labelling[0]
+    })
     assert.is(result.data.length, 1)
 })
 
 userSearchesForCards('having three cards, with one partial card, return a Result with an empty array as data and null as error', async () => {
-    await new InMemoryDatastoreMother(cardMother, datastore).having(3).storedIn()
-    const result = await new UserSearchesForCardsUseCase().execute({query: 'label0ofcard1, other-label'})
+    const cards = await givenXStoredCards(3)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        query: cards[0].labelling[0] + ', other-label'
+    })
     assert.is(result.data.length, 0)
 })
 
 userSearchesForCards('having 3 cards stored, two of them with same labels, return a Result with a two elements array as data and null as error', async () => {
-    await new InMemoryDatastoreMother(cardMother, datastore).having(3).storedIn()
-    await datastore.update(cardMother.TABLE_NAME, { id: 'the-id2', labelling:['label0ofcard1']})
-    const result = await new UserSearchesForCardsUseCase().execute({query: 'label0ofcard1'})
+    await givenAStoredCard()
+    const label = ['coincident-label']
+    await givenTheStoredCard(new CardBuilder().withLabels(label).buildDto())
+    await givenTheStoredCard(new CardBuilder().withLabels(label).buildDto())
+
+    const result = await new UserSearchesForCardsUseCase().execute({
+        query: label.join()
+    })
     assert.is(result.data.length, 2)
 })
 
 userSearchesForCards('having 1 card with two coincident labels, return a Result with one element array as data and null as error', async () => {
-    await new InMemoryDatastoreMother(cardMother, datastore).having(3).storedIn()
-    await datastore.update(cardMother.TABLE_NAME, { id: 'the-id1', labelling:['label0ofcard1', 'label0ofcard2']})
-    const result = await new UserSearchesForCardsUseCase().execute({query: 'label0ofcard1, label0ofcard2'})
+    await givenXStoredCards(2)
+    const labels = ['label0ofcard1', 'label1ofcard1']
+    await givenTheStoredCard(new CardBuilder().withLabels(labels).buildDto())
+    const result = await new UserSearchesForCardsUseCase().execute({
+        query: labels.join()
+    })
     assert.is(result.data.length, 1)
 })
 
 userSearchesForCards('having 0 coincident cards, when searching by author, then return a Result with an empty array as data and null as error', async () => {
-    await new InMemoryDatastoreMother(new UserMother(), datastore).having(1).storedIn()
-    await new InMemoryDatastoreMother(cardMother, datastore).having(3).storedIn()
-    const result = await new UserSearchesForCardsUseCase().execute({query: '@non-existing-author'})
+    await givenAStoredUser()
+    await givenXStoredCards(3)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        query: '@non-existing-author'
+    })
     assert.is(result.data.length, 0)
 })
 
 userSearchesForCards('having 1 coincident cards, when searching by author, then return a Result with with a one element array  as data and null as error', async () => {
-    await new InMemoryDatastoreMother(new UserMother(), datastore).having(1).storedIn()
-    await new InMemoryDatastoreMother(cardMother, datastore).having(3).storedIn()
-    const result = await new UserSearchesForCardsUseCase().execute({query: '@valid-username1'})
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
+    await givenTheStoredUser(user)
+    await givenXStoredCards(3)
+    const cardToBeFound = await givenAStoredCardFromUser(user)
+
+    const result = await new UserSearchesForCardsUseCase().execute({
+        query: '@' + user.username
+    })
     assert.is(result.data.length, 1)
+    assert.equal(result.data[0], cardToBeFound)
 })
 
 userSearchesForCards('having 0 coincident cards, when searching by author and label, then return a Result with an empty array as data and null as error', async () => {
-    await new InMemoryDatastoreMother(new UserMother(), datastore).having(1).storedIn()
-    await new InMemoryDatastoreMother(cardMother, datastore).having(3).storedIn()
-    const result = await new UserSearchesForCardsUseCase().execute({query: '@validUsername1, non-existing-label'})
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
+    await givenXStoredCards(3)
+    await givenAStoredCardFromUser(user)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        query: '@real-username, non-existing-label'
+    })
     assert.is(result.data.length, 0)
 })
 
 userSearchesForCards('having 1 coincident cards, when searching by author and label, then return a Result with a one element array as data and null as error', async () => {
-    await new InMemoryDatastoreMother(new UserMother(), datastore).having(1).storedIn()
-    await new InMemoryDatastoreMother(cardMother, datastore).having(3).storedIn()
-    const result = await new UserSearchesForCardsUseCase().execute({query: '@valid-username1, label0ofCard1'})
+    const user = new UserBuilder()
+        .setId('real-id')
+        .setUsername('real-username')
+        .buildDto()
+    await givenTheStoredUser(user)
+
+    await givenXStoredCards(3)
+    const card = new CardBuilder()
+        .withAuthorId(user.id)
+        .withLabels(['real-label1'])
+        .buildDto()
+    await givenTheStoredCard(card)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        query: '@real-username, real-label1'})
     assert.is(result.data.length, 1)
 })
 
