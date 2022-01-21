@@ -3,7 +3,6 @@ import {CardField} from '../../src/implementations/persistence/in-memory/CardFie
 import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {UserModifiesCardDataUseCase} from '../../src/use-cases/UserModifiesCardDataUseCase.js'
-import {LabellingMother} from '../domain/card/LabellingMother.js'
 import {assert, suite} from '../test-config.js'
 import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import {
@@ -101,10 +100,11 @@ userModifiesCardDataUseCase(
     'given wrong labelling in card data, ' +
     'should return an object with null as data property and ' +
     'INPUT_DATA_NOT_VALID DomainError', async () => {
+        const invalidLabelling = ['']
         const result = await new UserModifiesCardDataUseCase().execute({
             userId: '',
             ...new CardBuilder().buildDto(),
-            ...LabellingMother.invalidDto(),
+            labelling: invalidLabelling,
         })
         assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
     })
