@@ -25,9 +25,12 @@ userSearchesForCards('having 0 coincident cards, return a Result with empty arra
 })
 
 userSearchesForCards('having three cards, with one coincident card, return a Result with a one element array as data and null as error', async () => {
-    const cards = await givenXStoredCards(3)
+    await givenXStoredCards(2)
+    const labels = ['test-label']
+    const cardToBeFound = new CardBuilder().withLabels(labels).buildDto()
+    await givenTheStoredCard(cardToBeFound)
     const result = await new UserSearchesForCardsUseCase().execute({
-        query: cards[0].labelling[0]
+        query: labels.join()
     })
     assert.is(result.data.length, 1)
 })

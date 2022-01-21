@@ -28,7 +28,7 @@ userRemovesCardUseCase(
 userRemovesCardUseCase('given an existing card id, should remove it', async () => {
     const card = await givenAStoredCard()
     await assertCardIsStored(card)
-    await new UserRemovesCardUseCase().execute(IdentificationMother.numberedDto(1))
+    await new UserRemovesCardUseCase().execute({id: card.id})
     await assertCardIsNotStored(card)
 })
 

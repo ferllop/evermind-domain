@@ -1,6 +1,5 @@
 import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Response} from '../../src/use-cases/Response.js'
-import {UserMother} from '../domain/user/UserMother.js'
 import {IdentificationMother} from '../domain/value/IdentificationMother.js'
 import {assert, suite} from '../test-config.js'
 import {UserGetsUserInfoUseCase} from '../../src/use-cases/UserGetsUserInfoUseCase.js'
@@ -40,9 +39,9 @@ userGetsUserInfoUseCase(
 userGetsUserInfoUseCase(
     'given an existing id, ' +
     'should return an object with null as error and user as data', async () => {
-        const {id} = await givenAStoredUser()
-        const result = await new UserGetsUserInfoUseCase().execute({id})
-        assert.equal(result, Response.OkWithData(new UserMother().numberedDto(1)))
+        const user = await givenAStoredUser()
+        const result = await new UserGetsUserInfoUseCase().execute({id: user.id})
+        assert.equal(result, Response.OkWithData(user))
     })
 
 userGetsUserInfoUseCase.run()

@@ -25,7 +25,7 @@ export class Card extends Entity {
 
     clone(): Card {
         return new Card(
-            this.getAuthorID().clone(),
+            new AuthorIdentification(this.getAuthorID().getId()),
             this.getQuestion().clone(),
             this.getAnswer().clone(),
             this.getLabelling().clone(),

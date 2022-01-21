@@ -1,10 +1,10 @@
 import {UserDto} from '../../../../src/domain/user/UserDto'
 import {UserMother} from '../../../domain/user/UserMother'
 import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore'
-import {CardMother} from '../../../domain/card/CardMother'
 import {PersistenceFactory} from '../../../../src/implementations/persistence/PersistenceFactory'
 import {CardDto} from '../../../../src/domain/card/CardDto'
 import {CardBuilder} from '../../../domain/card/CardBuilder'
+import {UserBuilder} from '../../../domain/user/UserBuilder'
 
 const datastore = new InMemoryDatastore()
 const usersTable = 'users'
@@ -38,8 +38,9 @@ export async function givenXStoredUsers(quantity: number) {
 }
 
 export async function givenAStoredUser() {
-    const users = await givenXStoredUsers(1)
-    return users[0]
+    const user = new UserBuilder().buildDto()
+    await givenTheStoredUser(user)
+    return user
 }
 
 export async function givenTheStoredUser(user: UserDto) {
@@ -57,16 +58,14 @@ export async function givenAStoredCardFromUser(user: UserDto) {
 }
 
 export async function givenAStoredCard() {
-    const cards = await givenXStoredCards(1)
-    return cards[0]
+    return await givenTheStoredCard(new CardBuilder().buildDto())
 }
 
 export async function givenXStoredCards(quantity: number) {
     const cards: CardDto[] = []
     for (let i = 1; i <= quantity; i++) {
-        const card = new CardMother().numberedDto(i)
+        const card = await givenAStoredCard()
         cards.push(card)
-        await datastore.create(cardsTable, card)
     }
     return cards
 }
