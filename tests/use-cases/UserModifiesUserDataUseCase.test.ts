@@ -1,6 +1,5 @@
 import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Response} from '../../src/use-cases/Response.js'
-import {UserMother} from '../domain/user/UserMother.js'
 import {assert, suite} from '../test-config.js'
 import {UserModifiesUserDataUseCase} from '../../src/use-cases/UserModifiesUserDataUseCase.js'
 import {
@@ -8,18 +7,11 @@ import {
     givenAStoredUser,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
 import {assertUserIsStored} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions'
+import {UserBuilder} from '../domain/user/UserBuilder'
 
 const userModifiesUserDataUseCase = suite("User modifies user data use case")
 
 userModifiesUserDataUseCase.before.each(async () => await givenACleanInMemoryDatabase())
-
-userModifiesUserDataUseCase(
-    'given an unexisting table, ' +
-    'should return an object with null as data property and ' +
-    'RESOURCE_NOT_FOUND DomainError', async () => {
-        const result = await new UserModifiesUserDataUseCase().execute(new UserMother().dto())
-        assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
-    })
 
 userModifiesUserDataUseCase(
     'given a previously stored user and data to update it, ' +
@@ -52,7 +44,12 @@ userModifiesUserDataUseCase(
     'given wrong user data, ' +
     'should return an object with null as data property and ' +
     'INPUT_DATA_NOT_VALID DomainError', async () => {
-        const result = await new UserModifiesUserDataUseCase().execute(new UserMother().invalidDto())
+        const invalidUserId = ''
+        const invalidRequest = {
+            ...new UserBuilder().buildDto(),
+            id: invalidUserId
+        }
+        const result = await new UserModifiesUserDataUseCase().execute(invalidRequest)
         assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
     })
 

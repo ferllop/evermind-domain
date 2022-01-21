@@ -1,5 +1,4 @@
 import {UserDto} from '../../../../src/domain/user/UserDto'
-import {UserMother} from '../../../domain/user/UserMother'
 import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore'
 import {PersistenceFactory} from '../../../../src/implementations/persistence/PersistenceFactory'
 import {CardDto} from '../../../../src/domain/card/CardDto'
@@ -27,14 +26,8 @@ async function createCardsTable() {
     await datastore.delete(cardsTable, card.id)
 }
 
-export async function givenXStoredUsers(quantity: number) {
-    const users: UserDto[] = []
-    for (let i = 1; i <= quantity; i++) {
-        const user = new UserMother().numberedDto(i)
-        users.push(user)
-        await givenTheStoredUser(user)
-    }
-    return users
+export async function givenTheStoredUser(user: UserDto) {
+    await datastore.create(usersTable, user)
 }
 
 export async function givenAStoredUser() {
@@ -43,17 +36,17 @@ export async function givenAStoredUser() {
     return user
 }
 
-export async function givenTheStoredUser(user: UserDto) {
-    await datastore.create(usersTable, user)
+export async function givenXStoredUsers(quantity: number) {
+    const users: UserDto[] = []
+    for (let i = 1; i <= quantity; i++) {
+        const user = await givenAStoredUser()
+        users.push(user)
+    }
+    return users
 }
 
 export async function givenTheStoredCard(card: CardDto) {
     await datastore.create(cardsTable, card)
-    return card
-}
-export async function givenAStoredCardFromUser(user: UserDto) {
-    const card = new CardBuilder().withAuthorId(user.id).buildDto()
-    await givenTheStoredCard(card)
     return card
 }
 
@@ -68,4 +61,10 @@ export async function givenXStoredCards(quantity: number) {
         cards.push(card)
     }
     return cards
+}
+
+export async function givenAStoredCardFromUser(user: UserDto) {
+    const card = new CardBuilder().withAuthorId(user.id).buildDto()
+    await givenTheStoredCard(card)
+    return card
 }

@@ -1,7 +1,7 @@
 import {precondition} from '../../../src/implementations/preconditions.js'
 import {assert, suite} from '../../test-config.js'
-import {UserMother} from './UserMother.js'
 import {UserFactory} from '../../../src/domain/user/UserFactory'
+import {UserBuilder} from './UserBuilder'
 
 const user = suite('User')
 
@@ -22,6 +22,6 @@ user.run()
 
 function isUserValidWith(obj: object) {
     precondition(typeof obj === 'object')
-    const dto = {...new UserMother().dto(), ...obj}
+    const dto = {...new UserBuilder().buildDto(), ...obj}
     return new UserFactory().isValid(dto.name, dto.username, dto.dayStartTime, undefined)
 }

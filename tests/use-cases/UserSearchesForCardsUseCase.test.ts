@@ -77,8 +77,8 @@ userSearchesForCards('having 0 coincident cards, when searching by author, then 
 userSearchesForCards('having 1 coincident cards, when searching by author, then return a Result with with a one element array  as data and null as error', async () => {
     const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
     await givenTheStoredUser(user)
-    await givenXStoredCards(3)
-    const cardToBeFound = await givenAStoredCardFromUser(user)
+    const cardToBeFound = new CardBuilder().withAuthorId(user.id).buildDto()
+    await givenTheStoredCard(cardToBeFound)
 
     const result = await new UserSearchesForCardsUseCase().execute({
         query: '@' + user.username
