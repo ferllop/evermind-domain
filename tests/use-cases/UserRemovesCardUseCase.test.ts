@@ -1,6 +1,5 @@
 import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Response} from '../../src/use-cases/Response.js'
-import {IdentificationMother} from '../domain/value/IdentificationMother.js'
 import {assert, suite} from '../test-config.js'
 import {UserRemovesCardUseCase} from '../../src/use-cases/UserRemovesCardUseCase.js'
 import {
@@ -44,7 +43,10 @@ userRemovesCardUseCase(
     'given an invalid id, ' +
     'should return an object with data property as null ' +
     'and error property as INPUT_DATA_NOT_VALID DomainError', async () => {
-        const result = await new UserRemovesCardUseCase().execute(IdentificationMother.invalidDto())
+        const invalidRequest = {
+            id: ''
+        }
+        const result = await new UserRemovesCardUseCase().execute(invalidRequest)
         assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
     })
 
