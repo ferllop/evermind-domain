@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/ferllop/evermind-domain#readme",
   "devDependencies": {
-    "@tsconfig/node14": "1.0.1",
+    "@tsconfig/node16": "1.0.2",
     "@types/node": "16.4.10",
     "@types/pg": "8.6.1",
     "@types/pg-format": "1.0.2",
