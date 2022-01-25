@@ -7,7 +7,7 @@ import {WrittenQuestion} from '../../../src/domain/card/WrittenQuestion.js'
 import {Identification} from '../../../src/domain/shared/value/Identification.js'
 import {Label} from '../../../src/domain/card/Label.js'
 import {CardIdentification} from '../../../src/domain/card/CardIdentification.js'
-import {CardFactory} from '../../../src/domain/card/CardFactory'
+import {CardFactory} from '../../../src/domain/card/CardFactory.js'
 
 export class CardBuilder {
 

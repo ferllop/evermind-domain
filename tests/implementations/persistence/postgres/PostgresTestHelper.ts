@@ -1,9 +1,9 @@
-import {UserSqlQuery} from '../../../../src/implementations/persistence/postgres/user/UserSqlQuery'
-import {CardSqlQuery} from '../../../../src/implementations/persistence/postgres/card/CardSqlQuery'
+import {UserSqlQuery} from '../../../../src/implementations/persistence/postgres/user/UserSqlQuery.js'
+import {CardSqlQuery} from '../../../../src/implementations/persistence/postgres/card/CardSqlQuery.js'
 import {
     SubscriptionSqlQuery
-} from '../../../../src/implementations/persistence/postgres/subscription/SubscriptionSqlQuery'
-import {PostgresDatastore} from '../../../../src/implementations/persistence/postgres/PostgresDatastore'
+} from '../../../../src/implementations/persistence/postgres/subscription/SubscriptionSqlQuery.js'
+import {PostgresDatastore} from '../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
 
 export async function cleanDatabase() {
     const postgresDatastore = new class extends PostgresDatastore<any>{}()

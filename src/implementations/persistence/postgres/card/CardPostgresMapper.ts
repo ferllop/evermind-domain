@@ -1,7 +1,7 @@
-import {CardDto} from "../../../../domain/card/CardDto";
-import {Card} from "../../../../domain/card/Card";
-import {CardFactory} from "../../../../domain/card/CardFactory";
-import {CardRow} from "./CardRow";
+import {CardDto} from '../../../../domain/card/CardDto.js'
+import {Card} from '../../../../domain/card/Card.js'
+import {CardFactory} from '../../../../domain/card/CardFactory.js'
+import {CardRow} from './CardRow.js'
 
 export class CardPostgresMapper {
     pgCardMap: Record<string, keyof CardDto> = {

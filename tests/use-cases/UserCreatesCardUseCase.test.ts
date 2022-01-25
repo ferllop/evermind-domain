@@ -2,12 +2,12 @@ import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {assert, suite} from '../test-config.js'
 import {UserCreatesCardUseCase} from '../../src/use-cases/UserCreatesCardUseCase.js'
-import {CardBuilder} from '../domain/card/CardBuilder'
+import {CardBuilder} from '../domain/card/CardBuilder.js'
 import {
     givenACleanInMemoryDatabase,
     givenAStoredUser,
-} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
-import {assertUserHasStoredACard} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions'
+} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
+import {assertUserHasStoredACard} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
 
 const userCreatesCardUseCase = suite("User creates a card use case")
 

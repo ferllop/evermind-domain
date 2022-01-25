@@ -5,7 +5,7 @@ import { Labelling } from '../card/Labelling.js'
 import { UserRepository } from '../user/UserRepository.js'
 import { Query } from './Query.js'
 import { Search } from './Search.js'
-import {Username} from '../user/Username'
+import {Username} from '../user/Username.js'
 
 export class SearchService {
     async executeQuery(query: Query): Promise<Card[]> {

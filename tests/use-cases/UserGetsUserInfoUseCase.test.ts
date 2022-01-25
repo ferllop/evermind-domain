@@ -5,7 +5,7 @@ import {UserGetsUserInfoUseCase} from '../../src/use-cases/UserGetsUserInfoUseCa
 import {
     givenACleanInMemoryDatabase,
     givenAStoredUser,
-} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
+} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 
 const userGetsUserInfoUseCase = suite('User gets user info use case')
 

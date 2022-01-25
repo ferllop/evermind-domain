@@ -1,13 +1,13 @@
-import {CardPostgresDao} from './postgres/card/CardPostgresDao'
-import {CardInMemoryDao} from './in-memory/CardInMemoryDao'
-import {CardNullDao} from './null/CardNullDao'
-import {UserPostgresDao} from './postgres/user/UserPostgresDao'
-import {UserInMemoryDao} from './in-memory/UserInMemoryDao'
-import {SubscriptionPostgresDao} from './postgres/subscription/SubscriptionPostgresDao'
-import {SubscriptionInMemoryDao} from './in-memory/SubscriptionInMemoryDao'
-import {PersistenceType} from './PersistenceType'
-import {UserNullDao} from './null/UserNullDao'
-import {SubscriptionNullDao} from './null/SubscriptionNullDao'
+import {CardPostgresDao} from './postgres/card/CardPostgresDao.js'
+import {CardInMemoryDao} from './in-memory/CardInMemoryDao.js'
+import {CardNullDao} from './null/CardNullDao.js'
+import {UserPostgresDao} from './postgres/user/UserPostgresDao.js'
+import {UserInMemoryDao} from './in-memory/UserInMemoryDao.js'
+import {SubscriptionPostgresDao} from './postgres/subscription/SubscriptionPostgresDao.js'
+import {SubscriptionInMemoryDao} from './in-memory/SubscriptionInMemoryDao.js'
+import {PersistenceType} from './PersistenceType.js'
+import {UserNullDao} from './null/UserNullDao.js'
+import {SubscriptionNullDao} from './null/SubscriptionNullDao.js'
 
 export class PersistenceFactory {
 

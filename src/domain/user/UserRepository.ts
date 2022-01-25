@@ -1,8 +1,8 @@
 import {User} from './User.js'
-import {UserDao} from './UserDao'
-import {UserIdentification} from './UserIdentification'
-import {Username} from './Username'
-import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory'
+import {UserDao} from './UserDao.js'
+import {UserIdentification} from './UserIdentification.js'
+import {Username} from './Username.js'
+import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory.js'
 
 export class UserRepository {
 

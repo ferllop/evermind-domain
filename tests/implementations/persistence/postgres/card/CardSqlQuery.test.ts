@@ -2,20 +2,20 @@ import {AuthorIdentification} from '../../../../../src/domain/card/AuthorIdentif
 import {CardIdentification} from '../../../../../src/domain/card/CardIdentification.js'
 import {CardBuilder} from '../../../../domain/card/CardBuilder.js'
 import {assert, suite} from '../../../../test-config.js'
-import {CardSqlQuery} from '../../../../../src/implementations/persistence/postgres/card/CardSqlQuery'
-import {Labelling} from '../../../../../src/domain/card/Labelling'
-import {assertQueriesAreEqual} from '../AssertQueriesAreEqual'
-import {assertAllRowsAreEqualToCards} from './CardAssertion'
-import {givenAnExistingUser} from '../user/UserScenario'
+import {CardSqlQuery} from '../../../../../src/implementations/persistence/postgres/card/CardSqlQuery.js'
+import {Labelling} from '../../../../../src/domain/card/Labelling.js'
+import {assertQueriesAreEqual} from '../AssertQueriesAreEqual.js'
+import {assertAllRowsAreEqualToCards} from './CardAssertion.js'
+import {givenAnExistingUser} from '../user/UserScenario.js'
 import {
     givenAnExistingCard,
     givenSomeExistingCardsFromSameUser,
     givenTheExistingCardWithId,
     givenTheExistingCardWithLabels,
-} from './CardScenario'
-import {cleanDatabase} from '../PostgresTestHelper'
-import {CardFactory} from '../../../../../src/domain/card/CardFactory'
-import {CardPostgresDatastore} from '../../../../../src/implementations/persistence/postgres/card/CardPostgresDatastore'
+} from './CardScenario.js'
+import {cleanDatabase} from '../PostgresTestHelper.js'
+import {CardFactory} from '../../../../../src/domain/card/CardFactory.js'
+import {CardPostgresDatastore} from '../../../../../src/implementations/persistence/postgres/card/CardPostgresDatastore.js'
 
 const cardSqlQuery = suite('Card Sql Query')
 

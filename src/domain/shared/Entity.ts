@@ -1,4 +1,4 @@
-import { Identification } from './value/Identification.js';
+import { Identification } from './value/Identification.js'
 
 export abstract class Entity {
 

@@ -1,6 +1,6 @@
-import {User} from './User'
-import {UserIdentification} from './UserIdentification'
-import {Username} from './Username'
+import {User} from './User.js'
+import {UserIdentification} from './UserIdentification.js'
+import {Username} from './Username.js'
 
 export interface UserDao {
     insert(user: User): Promise<void>

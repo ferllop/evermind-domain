@@ -1,7 +1,7 @@
-import {User} from '../../../../domain/user/User'
-import {UserIdentification} from '../../../../domain/user/UserIdentification'
-import {UserDatabaseMap} from './UserDatabaseMap'
-import {Username} from '../../../../domain/user/Username'
+import {User} from '../../../../domain/user/User.js'
+import {UserIdentification} from '../../../../domain/user/UserIdentification.js'
+import {UserDatabaseMap} from './UserDatabaseMap.js'
+import {Username} from '../../../../domain/user/Username.js'
 
 export class UserSqlQuery {
     createUsersTable() {

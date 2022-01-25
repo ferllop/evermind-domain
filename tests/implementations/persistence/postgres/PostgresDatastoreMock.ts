@@ -1,7 +1,7 @@
-import {PostgresDatastore} from "../../../../src/implementations/persistence/postgres/PostgresDatastore";
-import {QueryResult} from "node-postgres";
-import {QueryResultBuilder} from "./QueryResultBuilder";
-import {PostgresDatastoreError} from "./PostgresDatastoreError";
+import {PostgresDatastore} from '../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
+import {QueryResult} from 'node-postgres'
+import {QueryResultBuilder} from './QueryResultBuilder.js'
+import {PostgresDatastoreError} from './PostgresDatastoreError.js'
 
 export class PostgresDatastoreMock extends PostgresDatastore<any> {
     private resultToReturn: QueryResult = new QueryResultBuilder().build()

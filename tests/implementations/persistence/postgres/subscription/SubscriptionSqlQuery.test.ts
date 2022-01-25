@@ -1,20 +1,20 @@
 import {assert, suite} from '../../../../test-config.js'
-import {assertQueriesAreEqual} from '../AssertQueriesAreEqual'
-import {givenAnExistingUser} from '../user/UserScenario'
+import {assertQueriesAreEqual} from '../AssertQueriesAreEqual.js'
+import {givenAnExistingUser} from '../user/UserScenario.js'
 import {
     SubscriptionSqlQuery,
-} from '../../../../../src/implementations/persistence/postgres/subscription/SubscriptionSqlQuery'
-import {SubscriptionBuilder} from '../../../../domain/subscription/SubscriptionBuilder'
-import {SubscriptionFactory} from '../../../../../src/domain/subscription/SubscriptionFactory'
-import {givenAnExistingCard} from '../card/CardScenario'
+} from '../../../../../src/implementations/persistence/postgres/subscription/SubscriptionSqlQuery.js'
+import {SubscriptionBuilder} from '../../../../domain/subscription/SubscriptionBuilder.js'
+import {SubscriptionFactory} from '../../../../../src/domain/subscription/SubscriptionFactory.js'
+import {givenAnExistingCard} from '../card/CardScenario.js'
 import {
     SubscriptionPostgresDatastore,
-} from '../../../../../src/implementations/persistence/postgres/subscription/SubscriptionPostgresDatastore'
-import {assertAllRowsAreEqualToSubscriptions} from './AssertAllRowsAreEqualToSubscriptions'
-import {SubscriptionIdentification} from '../../../../../src/domain/subscription/SubscriptionIdentification'
-import {givenAnExistingSubscription, givenAnExistingSubscriptionFromUserId} from './SubscriptionScenario'
-import {cleanDatabase} from '../PostgresTestHelper'
-import {UserIdentification} from '../../../../../src/domain/user/UserIdentification'
+} from '../../../../../src/implementations/persistence/postgres/subscription/SubscriptionPostgresDatastore.js'
+import {assertAllRowsAreEqualToSubscriptions} from './AssertAllRowsAreEqualToSubscriptions.js'
+import {SubscriptionIdentification} from '../../../../../src/domain/subscription/SubscriptionIdentification.js'
+import {givenAnExistingSubscription, givenAnExistingSubscriptionFromUserId} from './SubscriptionScenario.js'
+import {cleanDatabase} from '../PostgresTestHelper.js'
+import {UserIdentification} from '../../../../../src/domain/user/UserIdentification.js'
 
 const subscriptionSqlQuery = suite('Subscription Sql Query')
 

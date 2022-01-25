@@ -6,7 +6,7 @@ import {DayStartTime} from '../shared/value/DayStartTime.js'
 import {Hour} from '../shared/value/Hour.js'
 import {Level} from './Level.js'
 import {SubscriptionIdentification} from './SubscriptionIdentification.js'
-import {SubscriptionDto} from './SusbcriptionDto'
+import {SubscriptionDto} from './SusbcriptionDto.js'
 
 export class Subscription extends Entity {
     

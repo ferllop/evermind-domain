@@ -1,9 +1,9 @@
-import {UserDto} from '../../../../src/domain/user/UserDto'
-import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore'
-import {PersistenceFactory} from '../../../../src/implementations/persistence/PersistenceFactory'
-import {CardDto} from '../../../../src/domain/card/CardDto'
-import {CardBuilder} from '../../../domain/card/CardBuilder'
-import {UserBuilder} from '../../../domain/user/UserBuilder'
+import {UserDto} from '../../../../src/domain/user/UserDto.js'
+import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import {PersistenceFactory} from '../../../../src/implementations/persistence/PersistenceFactory.js'
+import {CardDto} from '../../../../src/domain/card/CardDto.js'
+import {CardBuilder} from '../../../domain/card/CardBuilder.js'
+import {UserBuilder} from '../../../domain/user/UserBuilder.js'
 
 const datastore = new InMemoryDatastore()
 const usersTable = 'users'

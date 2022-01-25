@@ -1,13 +1,13 @@
-import {UserDao} from '../../../domain/user/UserDao'
-import {InMemoryDatastore} from './InMemoryDatastore'
-import {UserIdentification} from '../../../domain/user/UserIdentification'
-import {UserDto} from '../../../domain/user/UserDto'
-import {UserFactory} from '../../../domain/user/UserFactory'
-import {User} from '../../../domain/user/User'
-import {DomainError} from '../../../domain/errors/DomainError'
-import {NullUser} from '../../../domain/user/NullUser'
-import {ErrorType} from '../../../domain/errors/ErrorType'
-import {Username} from '../../../domain/user/Username'
+import {UserDao} from '../../../domain/user/UserDao.js'
+import {InMemoryDatastore} from './InMemoryDatastore.js'
+import {UserIdentification} from '../../../domain/user/UserIdentification.js'
+import {UserDto} from '../../../domain/user/UserDto.js'
+import {UserFactory} from '../../../domain/user/UserFactory.js'
+import {User} from '../../../domain/user/User.js'
+import {DomainError} from '../../../domain/errors/DomainError.js'
+import {NullUser} from '../../../domain/user/NullUser.js'
+import {ErrorType} from '../../../domain/errors/ErrorType.js'
+import {Username} from '../../../domain/user/Username.js'
 
 export class UserInMemoryDao implements UserDao {
 

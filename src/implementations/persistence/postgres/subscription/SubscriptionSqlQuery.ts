@@ -1,9 +1,9 @@
-import {SubscriptionDatabaseMap} from './SubscriptionDatabaseMap'
-import {UserDatabaseMap} from '../user/UserDatabaseMap'
-import {CardDatabaseMap} from '../card/CardDatabaseMap'
-import {Subscription} from '../../../../domain/subscription/Subscription'
-import {SubscriptionIdentification} from '../../../../domain/subscription/SubscriptionIdentification'
-import {UserIdentification} from '../../../../domain/user/UserIdentification'
+import {SubscriptionDatabaseMap} from './SubscriptionDatabaseMap.js'
+import {UserDatabaseMap} from '../user/UserDatabaseMap.js'
+import {CardDatabaseMap} from '../card/CardDatabaseMap.js'
+import {Subscription} from '../../../../domain/subscription/Subscription.js'
+import {SubscriptionIdentification} from '../../../../domain/subscription/SubscriptionIdentification.js'
+import {UserIdentification} from '../../../../domain/user/UserIdentification.js'
 
 export class SubscriptionSqlQuery {
     createTable() {

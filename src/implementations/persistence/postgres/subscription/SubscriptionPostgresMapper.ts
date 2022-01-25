@@ -1,7 +1,7 @@
-import {SubscriptionDto} from '../../../../domain/subscription/SusbcriptionDto'
-import {SubscriptionRow} from './SubscriptionRow'
-import {Subscription} from '../../../../domain/subscription/Subscription'
-import {SubscriptionFactory} from '../../../../domain/subscription/SubscriptionFactory'
+import {SubscriptionDto} from '../../../../domain/subscription/SusbcriptionDto.js'
+import {SubscriptionRow} from './SubscriptionRow.js'
+import {Subscription} from '../../../../domain/subscription/Subscription.js'
+import {SubscriptionFactory} from '../../../../domain/subscription/SubscriptionFactory.js'
 
 export class SubscriptionPostgresMapper {
     pgSubscriptionMap: Record<string, keyof SubscriptionDto> = {

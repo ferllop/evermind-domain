@@ -6,7 +6,7 @@ import {CardDto} from './CardDto.js'
 import {CardIdentification} from './CardIdentification.js'
 import {Labelling} from './Labelling.js'
 import {Question} from './Question.js'
-import {CardFactory} from './CardFactory'
+import {CardFactory} from './CardFactory.js'
 
 export class Card extends Entity {
 

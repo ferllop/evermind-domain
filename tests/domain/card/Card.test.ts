@@ -1,5 +1,5 @@
 import {assert, suite} from '../../test-config.js'
-import {CardBuilder} from './CardBuilder'
+import {CardBuilder} from './CardBuilder.js'
 
 const card = suite('Card')
 

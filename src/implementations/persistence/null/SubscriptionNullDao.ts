@@ -1,5 +1,5 @@
-import {SubscriptionDao} from '../../../domain/subscription/SubscriptionDao'
-import {Subscription} from '../../../domain/subscription/Subscription'
+import {SubscriptionDao} from '../../../domain/subscription/SubscriptionDao.js'
+import {Subscription} from '../../../domain/subscription/Subscription.js'
 
 export class SubscriptionNullDao implements SubscriptionDao {
     delete(): Promise<void> {

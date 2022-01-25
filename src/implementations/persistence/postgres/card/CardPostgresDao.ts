@@ -1,15 +1,15 @@
-import {DomainError} from '../../../../domain/errors/DomainError'
-import {ErrorType} from '../../../../domain/errors/ErrorType'
-import {AuthorIdentification} from '../../../../domain/card/AuthorIdentification'
-import {Card} from '../../../../domain/card/Card'
-import {CardIdentification} from '../../../../domain/card/CardIdentification'
-import {CardSqlQuery} from './CardSqlQuery'
-import {NullCard} from "../../../../domain/card/NullCard";
-import {CardDao} from "../../../../domain/card/CardDao";
-import {Labelling} from "../../../../domain/card/Labelling";
-import {CardPostgresMapper} from "./CardPostgresMapper";
-import {CardPostgresDatastore} from "./CardPostgresDatastore";
-import {PostgresErrorType} from '../PostgresErrorType'
+import {DomainError} from '../../../../domain/errors/DomainError.js'
+import {ErrorType} from '../../../../domain/errors/ErrorType.js'
+import {AuthorIdentification} from '../../../../domain/card/AuthorIdentification.js'
+import {Card} from '../../../../domain/card/Card.js'
+import {CardIdentification} from '../../../../domain/card/CardIdentification.js'
+import {CardSqlQuery} from './CardSqlQuery.js'
+import {NullCard} from '../../../../domain/card/NullCard.js'
+import {CardDao} from '../../../../domain/card/CardDao.js'
+import {Labelling} from '../../../../domain/card/Labelling.js'
+import {CardPostgresMapper} from './CardPostgresMapper.js'
+import {CardPostgresDatastore} from './CardPostgresDatastore.js'
+import {PostgresErrorType} from '../PostgresErrorType.js'
 
 export class CardPostgresDao implements CardDao {
 

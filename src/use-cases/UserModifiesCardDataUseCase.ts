@@ -1,9 +1,9 @@
-import { CardRepository } from '../domain/card/CardRepository.js';
-import { CardIdentification } from '../domain/card/CardIdentification.js';
-import { CardFactory } from '../domain/card/CardFactory.js';
-import { ErrorType } from '../domain/errors/ErrorType.js';
-import { Response } from './Response.js';
-import { UserModifiesCardDataRequest } from './UserModifiesCardDataRequest.js';
+import { CardRepository } from '../domain/card/CardRepository.js'
+import { CardIdentification } from '../domain/card/CardIdentification.js'
+import { CardFactory } from '../domain/card/CardFactory.js'
+import { ErrorType } from '../domain/errors/ErrorType.js'
+import { Response } from './Response.js'
+import { UserModifiesCardDataRequest } from './UserModifiesCardDataRequest.js'
 
 export class UserModifiesCardDataUseCase {
     

@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node14/tsconfig.json",
+  "extends": "@tsconfig/node16/tsconfig.json",
   "include": ["src/**/*", "tests/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
@@ -16,6 +16,7 @@
     "noFallthroughCasesInSwitch": true,          /* Report errors for fallthrough cases in switch statement. */
     "noImplicitAny": true,
     "noImplicitOverride": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "esModuleInterop": true,
   }
 }

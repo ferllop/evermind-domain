@@ -1,7 +1,7 @@
 import {precondition} from '../../../src/implementations/preconditions.js'
 import {assert, suite} from '../../test-config.js'
-import {UserFactory} from '../../../src/domain/user/UserFactory'
-import {UserBuilder} from './UserBuilder'
+import {UserFactory} from '../../../src/domain/user/UserFactory.js'
+import {UserBuilder} from './UserBuilder.js'
 
 const user = suite('User')
 

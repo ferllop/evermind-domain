@@ -1,8 +1,8 @@
-import {Subscription} from './Subscription'
+import {Subscription} from './Subscription.js'
 import {User} from '../user/User.js'
-import {Identification} from '../shared/value/Identification'
-import {SubscriptionDao} from './SubscriptionDao'
-import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory'
+import {Identification} from '../shared/value/Identification.js'
+import {SubscriptionDao} from './SubscriptionDao.js'
+import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory.js'
 
 export class SubscriptionRepository {
 

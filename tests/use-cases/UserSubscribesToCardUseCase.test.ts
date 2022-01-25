@@ -5,11 +5,11 @@ import {
     givenACleanInMemoryDatabase,
     givenAStoredCard,
     givenAStoredUser,
-} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
+} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {
     assertSubscriptionHasCertainLevel,
     assertSubscriptionIsNotStored,
-} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions'
+} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
 
 const userSubscribesToCard = suite("User subscribes to card")
 

@@ -1,5 +1,5 @@
-import {UserDao} from '../../../domain/user/UserDao'
-import {User} from '../../../domain/user/User'
+import {UserDao} from '../../../domain/user/UserDao.js'
+import {User} from '../../../domain/user/User.js'
 
 export class UserNullDao implements UserDao {
     delete(): Promise<void> {

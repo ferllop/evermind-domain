@@ -5,9 +5,9 @@ import {UserModifiesUserDataUseCase} from '../../src/use-cases/UserModifiesUserD
 import {
     givenACleanInMemoryDatabase,
     givenAStoredUser,
-} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
-import {assertUserIsStored} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions'
-import {UserBuilder} from '../domain/user/UserBuilder'
+} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
+import {assertUserIsStored} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
+import {UserBuilder} from '../domain/user/UserBuilder.js'
 
 const userModifiesUserDataUseCase = suite("User modifies user data use case")
 

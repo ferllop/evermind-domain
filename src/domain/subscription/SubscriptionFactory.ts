@@ -7,9 +7,9 @@ import {Validator} from '../shared/Validator.js'
 import {UserIdentification} from '../user/UserIdentification.js'
 import {CardIdentification} from '../card/CardIdentification.js'
 import {DateEvermind} from '../shared/value/DateEvermind.js'
-import {EntityFactory} from '../shared/EntityFactory'
-import {DateISO} from '../shared/value/DateISO'
-import {Identification} from '../shared/value/Identification'
+import {EntityFactory} from '../shared/EntityFactory.js'
+import {DateISO} from '../shared/value/DateISO.js'
+import {Identification} from '../shared/value/Identification.js'
 
 export class SubscriptionFactory extends EntityFactory<Subscription, SubscriptionDto> {
 

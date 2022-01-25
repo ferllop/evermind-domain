@@ -1,4 +1,4 @@
-import { Answer } from './Answer.js';
+import { Answer } from './Answer.js'
 
 
 export class NullAnswer extends Answer {

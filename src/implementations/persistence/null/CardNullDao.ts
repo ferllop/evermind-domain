@@ -1,5 +1,5 @@
-import {CardDao} from '../../../domain/card/CardDao'
-import {Card} from '../../../domain/card/Card'
+import {CardDao} from '../../../domain/card/CardDao.js'
+import {Card} from '../../../domain/card/Card.js'
 
 export class CardNullDao implements CardDao {
     delete(): Promise<void> {

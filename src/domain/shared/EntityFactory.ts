@@ -1,5 +1,5 @@
-import { Validator } from './Validator.js';
-import { MayBeIdentified } from './value/MayBeIdentified.js';
+import { Validator } from './Validator.js'
+import { MayBeIdentified } from './value/MayBeIdentified.js'
 
 export abstract class EntityFactory<T, TDto> {
     validators: Map<string, Validator>

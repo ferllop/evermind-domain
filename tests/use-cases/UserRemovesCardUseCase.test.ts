@@ -5,11 +5,11 @@ import {UserRemovesCardUseCase} from '../../src/use-cases/UserRemovesCardUseCase
 import {
     givenACleanInMemoryDatabase,
     givenAStoredCard,
-} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
+} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {
     assertCardIsNotStored,
     assertCardIsStored,
-} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions'
+} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
 
 const userRemovesCardUseCase = suite("User removes card use case")
 

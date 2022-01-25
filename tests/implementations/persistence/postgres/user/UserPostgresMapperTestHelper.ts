@@ -1,5 +1,5 @@
-import {UserPostgresMapper} from '../../../../../src/implementations/persistence/postgres/user/UserPostgresMapper'
-import {User} from '../../../../../src/domain/user/User'
+import {UserPostgresMapper} from '../../../../../src/implementations/persistence/postgres/user/UserPostgresMapper.js'
+import {User} from '../../../../../src/domain/user/User.js'
 
 export class UserPostgresMapperTestHelper extends UserPostgresMapper {
     userToRow = (user: User) => {

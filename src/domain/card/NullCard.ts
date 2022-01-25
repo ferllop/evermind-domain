@@ -1,9 +1,9 @@
-import { AuthorIdentification } from './AuthorIdentification.js';
-import { CardIdentification } from './CardIdentification.js';
-import { Labelling } from './Labelling.js';
-import { NullQuestion } from "./NullQuestion.js";
-import { NullAnswer } from './NullAnswer.js';
-import { Card } from './Card.js';
+import { AuthorIdentification } from './AuthorIdentification.js'
+import { CardIdentification } from './CardIdentification.js'
+import { Labelling } from './Labelling.js'
+import { NullQuestion } from './NullQuestion.js'
+import { NullAnswer } from './NullAnswer.js'
+import { Card } from './Card.js'
 
 export class NullCard extends Card {
     private static instance = null

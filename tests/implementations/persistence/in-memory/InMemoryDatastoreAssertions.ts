@@ -1,8 +1,8 @@
-import {UserDto} from '../../../../src/domain/user/UserDto'
-import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore'
-import {assert} from '../../../test-config'
-import {CardDto} from '../../../../src/domain/card/CardDto'
-import {SubscriptionDto} from '../../../../src/domain/subscription/SusbcriptionDto'
+import {UserDto} from '../../../../src/domain/user/UserDto.js'
+import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import {assert} from '../../../test-config.js'
+import {CardDto} from '../../../../src/domain/card/CardDto.js'
+import {SubscriptionDto} from '../../../../src/domain/subscription/SusbcriptionDto.js'
 import {Id} from 'in-memory-database/build/Id'
 
 const datastore = new InMemoryDatastore()

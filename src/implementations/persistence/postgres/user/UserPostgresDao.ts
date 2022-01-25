@@ -1,14 +1,14 @@
-import {User} from '../../../../domain/user/User'
-import {DomainError} from '../../../../domain/errors/DomainError'
-import {ErrorType} from '../../../../domain/errors/ErrorType'
-import {UserIdentification} from '../../../../domain/user/UserIdentification'
-import {NullUser} from '../../../../domain/user/NullUser'
-import {UserSqlQuery} from './UserSqlQuery'
-import {UserPostgresDatastore} from "./UserPostgresDatastore";
-import {UserPostgresMapper} from "./UserPostgresMapper";
-import {UserDao} from "../../../../domain/user/UserDao";
-import {Username} from '../../../../domain/user/Username'
-import {PostgresErrorType} from '../PostgresErrorType'
+import {User} from '../../../../domain/user/User.js'
+import {DomainError} from '../../../../domain/errors/DomainError.js'
+import {ErrorType} from '../../../../domain/errors/ErrorType.js'
+import {UserIdentification} from '../../../../domain/user/UserIdentification.js'
+import {NullUser} from '../../../../domain/user/NullUser.js'
+import {UserSqlQuery} from './UserSqlQuery.js'
+import {UserPostgresDatastore} from './UserPostgresDatastore.js'
+import {UserPostgresMapper} from './UserPostgresMapper.js'
+import {UserDao} from '../../../../domain/user/UserDao.js'
+import {Username} from '../../../../domain/user/Username.js'
+import {PostgresErrorType} from '../PostgresErrorType.js'
 
 export class UserPostgresDao implements UserDao {
 

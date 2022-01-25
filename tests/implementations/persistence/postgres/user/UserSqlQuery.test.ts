@@ -1,16 +1,16 @@
 import {assert, suite} from '../../../../test-config.js'
-import {UserSqlQuery} from '../../../../../src/implementations/persistence/postgres/user/UserSqlQuery'
-import {assertQueriesAreEqual} from '../AssertQueriesAreEqual'
+import {UserSqlQuery} from '../../../../../src/implementations/persistence/postgres/user/UserSqlQuery.js'
+import {assertQueriesAreEqual} from '../AssertQueriesAreEqual.js'
 import {
     UserPostgresDatastore,
-} from '../../../../../src/implementations/persistence/postgres/user/UserPostgresDatastore'
-import {UserBuilder} from '../../../../domain/user/UserBuilder'
-import {UserFactory} from '../../../../../src/domain/user/UserFactory'
-import {assertAllRowsAreEqualToUsers} from './AssertAllRowsAreEqualToUsers'
-import {UserIdentification} from '../../../../../src/domain/user/UserIdentification'
-import {givenAnExistingUser} from './UserScenario'
-import {Username} from '../../../../../src/domain/user/Username'
-import {cleanDatabase} from '../PostgresTestHelper'
+} from '../../../../../src/implementations/persistence/postgres/user/UserPostgresDatastore.js'
+import {UserBuilder} from '../../../../domain/user/UserBuilder.js'
+import {UserFactory} from '../../../../../src/domain/user/UserFactory.js'
+import {assertAllRowsAreEqualToUsers} from './AssertAllRowsAreEqualToUsers.js'
+import {UserIdentification} from '../../../../../src/domain/user/UserIdentification.js'
+import {givenAnExistingUser} from './UserScenario.js'
+import {Username} from '../../../../../src/domain/user/Username.js'
+import {cleanDatabase} from '../PostgresTestHelper.js'
 
 const userSqlQuery = suite('User Sql Query')
 

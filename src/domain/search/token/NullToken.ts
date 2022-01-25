@@ -1,4 +1,4 @@
-import { Token } from './Token.js';
+import { Token } from './Token.js'
 
 
 export class NullToken extends Token {

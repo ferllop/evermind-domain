@@ -7,7 +7,7 @@ import {Card} from '../card/Card.js'
 import {UserIdentification} from './UserIdentification.js'
 import {UserDto} from './UserDto.js'
 import {UserFactory} from './UserFactory.js'
-import {SubscriptionFactory} from '../subscription/SubscriptionFactory'
+import {SubscriptionFactory} from '../subscription/SubscriptionFactory.js'
 
 export class User extends Entity {
 

@@ -2,8 +2,8 @@ import {PersonName} from '../../../src/domain/user/PersonName.js'
 import {Username} from '../../../src/domain/user/Username.js'
 import {DayStartTime} from '../../../src/domain/shared/value/DayStartTime.js'
 import {Identification} from '../../../src/domain/shared/value/Identification.js'
-import {UserIdentification} from '../../../src/domain/user/UserIdentification'
-import {UserFactory} from '../../../src/domain/user/UserFactory'
+import {UserIdentification} from '../../../src/domain/user/UserIdentification.js'
+import {UserFactory} from '../../../src/domain/user/UserFactory.js'
 
 export class UserBuilder {
     private id: string

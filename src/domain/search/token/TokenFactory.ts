@@ -1,6 +1,6 @@
-import { AuthorToken } from './AuthorToken.js';
-import { LabelToken } from './LabelToken.js';
-import { NullToken } from "./NullToken.js";
+import { AuthorToken } from './AuthorToken.js'
+import { LabelToken } from './LabelToken.js'
+import { NullToken } from './NullToken.js'
 
 
 export class TokenFactory {

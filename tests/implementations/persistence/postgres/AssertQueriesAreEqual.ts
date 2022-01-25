@@ -1,4 +1,4 @@
-import {assert} from "../../../test-config";
+import {assert} from '../../../test-config.js'
 
 export function assertQueriesAreEqual(actual: string, expect: string) {
     const removeIndent = (str: string) => {

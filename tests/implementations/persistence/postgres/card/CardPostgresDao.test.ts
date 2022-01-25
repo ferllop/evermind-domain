@@ -6,13 +6,13 @@ import {ErrorType} from '../../../../../src/domain/errors/ErrorType.js'
 import {CardBuilder} from '../../../../domain/card/CardBuilder.js'
 import {assert, suite} from '../../../../test-config.js'
 import {Card} from '../../../../../src/domain/card/Card.js'
-import {Labelling} from "../../../../../src/domain/card/Labelling";
-import {QueryResultBuilder} from "../QueryResultBuilder";
-import {PostgresDatastoreMock} from "../PostgresDatastoreMock";
-import {CardPostgresMapperTestHelper} from "./CardPostgresMapperTestHelper";
-import {CardRow} from "../../../../../src/implementations/persistence/postgres/card/CardRow";
-import {assertObjectListsAreEqualsInAnyOrder} from "../AssertObjectListsAreEqualsInAnyOrder";
-import {PostgresErrorType} from '../../../../../src/implementations/persistence/postgres/PostgresErrorType'
+import {Labelling} from '../../../../../src/domain/card/Labelling.js'
+import {QueryResultBuilder} from '../QueryResultBuilder.js'
+import {PostgresDatastoreMock} from '../PostgresDatastoreMock.js'
+import {CardPostgresMapperTestHelper} from './CardPostgresMapperTestHelper.js'
+import {CardRow} from '../../../../../src/implementations/persistence/postgres/card/CardRow.js'
+import {assertObjectListsAreEqualsInAnyOrder} from '../AssertObjectListsAreEqualsInAnyOrder.js'
+import {PostgresErrorType} from '../../../../../src/implementations/persistence/postgres/PostgresErrorType.js'
 
 type Context = {
     mock: PostgresDatastoreMock,

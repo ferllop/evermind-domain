@@ -4,7 +4,7 @@ import {PersonName} from '../domain/user/PersonName.js'
 import {Username} from '../domain/user/Username.js'
 import {Response} from './Response.js'
 import {UserSignsUpRequest} from './UserSignsUpRequest.js'
-import {UserFactory} from '../domain/user/UserFactory'
+import {UserFactory} from '../domain/user/UserFactory.js'
 
 export class UserSignsUpUseCase {
     

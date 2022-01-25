@@ -1,6 +1,6 @@
 import { Search } from '../../../src/domain/search/Search.js'
-import { LabelToken } from "../../../src/domain/search/token/LabelToken.js"
-import { AuthorToken } from "../../../src/domain/search/token/AuthorToken.js"
+import { LabelToken } from '../../../src/domain/search/token/LabelToken.js'
+import { AuthorToken } from '../../../src/domain/search/token/AuthorToken.js'
 import { assert, suite } from'../../test-config.js'
 import { PreconditionError } from '../../../src/implementations/preconditions.js'
 

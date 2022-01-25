@@ -8,7 +8,7 @@ import {UserDto} from './UserDto.js'
 import {UserIdentification} from './UserIdentification.js'
 import {Username} from './Username.js'
 import {precondition} from '../../implementations/preconditions.js'
-import {EntityFactory} from '../shared/EntityFactory'
+import {EntityFactory} from '../shared/EntityFactory.js'
 
 export class UserFactory extends EntityFactory<User, UserDto> {
 

@@ -1,10 +1,10 @@
-import {givenAnExistingUser} from '../user/UserScenario'
-import {givenAnExistingCard} from '../card/CardScenario'
-import {SubscriptionBuilder} from '../../../../domain/subscription/SubscriptionBuilder'
+import {givenAnExistingUser} from '../user/UserScenario.js'
+import {givenAnExistingCard} from '../card/CardScenario.js'
+import {SubscriptionBuilder} from '../../../../domain/subscription/SubscriptionBuilder.js'
 import {
     SubscriptionPostgresDao,
-} from '../../../../../src/implementations/persistence/postgres/subscription/SubscriptionPostgresDao'
-import {UserIdentification} from '../../../../../src/domain/user/UserIdentification'
+} from '../../../../../src/implementations/persistence/postgres/subscription/SubscriptionPostgresDao.js'
+import {UserIdentification} from '../../../../../src/domain/user/UserIdentification.js'
 
 export async function givenAnExistingSubscription() {
     const user = await givenAnExistingUser()

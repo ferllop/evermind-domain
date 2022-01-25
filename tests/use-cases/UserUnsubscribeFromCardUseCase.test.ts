@@ -7,11 +7,11 @@ import {
     givenACleanInMemoryDatabase,
     givenAStoredCard,
     givenAStoredUser,
-} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
+} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {
     assertSubscriptionIsNotStored,
     assertSubscriptionIsStored,
-} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions'
+} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
 
 const userUnsubscribesFromCard = suite("User unsubscribes from card")
 

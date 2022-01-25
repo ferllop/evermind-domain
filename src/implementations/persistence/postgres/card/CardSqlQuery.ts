@@ -1,10 +1,10 @@
-import {Card} from '../../../../domain/card/Card'
-import {CardIdentification} from '../../../../domain/card/CardIdentification'
-import {Labelling} from '../../../../domain/card/Labelling'
-import {AuthorIdentification} from '../../../../domain/card/AuthorIdentification'
-import {CardDatabaseMap} from "./CardDatabaseMap";
-import {LabellingDatabaseMap} from "./LabellingDatabaseMap";
-import {UserDatabaseMap} from "../user/UserDatabaseMap";
+import {Card} from '../../../../domain/card/Card.js'
+import {CardIdentification} from '../../../../domain/card/CardIdentification.js'
+import {Labelling} from '../../../../domain/card/Labelling.js'
+import {AuthorIdentification} from '../../../../domain/card/AuthorIdentification.js'
+import {CardDatabaseMap} from './CardDatabaseMap.js'
+import {LabellingDatabaseMap} from './LabellingDatabaseMap.js'
+import {UserDatabaseMap} from '../user/UserDatabaseMap.js'
 
 export class CardSqlQuery {
     insert(card: Card) {

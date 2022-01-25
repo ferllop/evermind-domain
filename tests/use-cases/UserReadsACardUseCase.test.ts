@@ -5,7 +5,7 @@ import {UserReadsACardUseCase} from '../../src/use-cases/UserReadsACardUseCase.j
 import {
     givenACleanInMemoryDatabase,
     givenAStoredCard,
-} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
+} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 
 const userReadsACardUseCase = suite("User reads a card use case")
 

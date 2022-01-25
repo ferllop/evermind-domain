@@ -1,9 +1,9 @@
 import {Card} from './Card.js'
 import {Labelling} from './Labelling.js'
 import {Identification} from '../shared/value/Identification.js'
-import {CardDao} from './CardDao'
-import {AuthorIdentification} from './AuthorIdentification'
-import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory'
+import {CardDao} from './CardDao.js'
+import {AuthorIdentification} from './AuthorIdentification.js'
+import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory.js'
 
 export class CardRepository {
 

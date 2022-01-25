@@ -1,6 +1,6 @@
-import {Subscription} from './Subscription'
-import {SubscriptionIdentification} from './SubscriptionIdentification'
-import {UserIdentification} from '../user/UserIdentification'
+import {Subscription} from './Subscription.js'
+import {SubscriptionIdentification} from './SubscriptionIdentification.js'
+import {UserIdentification} from '../user/UserIdentification.js'
 
 export interface SubscriptionDao {
     insert(subscription: Subscription): Promise<void>

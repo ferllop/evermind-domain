@@ -1,9 +1,9 @@
-import { DateEvermind } from '../shared/value/DateEvermind';
-import { DateISO } from '../shared/value/DateISO';
-import { Identification } from '../shared/value/Identification';
-import { AuthenticationStatus } from './AuthenticationStatus';
-import { Email } from './Email';
-import { Password } from './Password';
+import { DateEvermind } from '../shared/value/DateEvermind.js'
+import { DateISO } from '../shared/value/DateISO.js'
+import { Identification } from '../shared/value/Identification.js'
+import { AuthenticationStatus } from './AuthenticationStatus.js'
+import { Email } from './Email.js'
+import { Password } from './Password.js'
 
 export class Authentication {
     constructor(

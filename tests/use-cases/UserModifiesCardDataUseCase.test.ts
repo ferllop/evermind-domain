@@ -8,8 +8,8 @@ import {InMemoryDatastore} from '../../src/implementations/persistence/in-memory
 import {
     givenACleanInMemoryDatabase,
     givenAStoredCard,
-} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
-import {CardBuilder} from '../domain/card/CardBuilder'
+} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
+import {CardBuilder} from '../domain/card/CardBuilder.js'
 
 const userModifiesCardDataUseCase = suite('User modifies card data use case')
 

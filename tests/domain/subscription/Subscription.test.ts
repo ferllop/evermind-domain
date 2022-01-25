@@ -3,7 +3,7 @@ import {DateEvermind} from '../../../src/domain/shared/value/DateEvermind.js'
 import {DayStartTime} from '../../../src/domain/shared/value/DayStartTime.js'
 import {Identification} from '../../../src/domain/shared/value/Identification.js'
 import {assert, suite} from '../../test-config.js'
-import {SubscriptionFactory} from '../../../src/domain/subscription/SubscriptionFactory'
+import {SubscriptionFactory} from '../../../src/domain/subscription/SubscriptionFactory.js'
 
 const toReview = new Date('Mon Jul 12 2021 10:00:00 GMT+0200')
 const subscriptionForToday = new SubscriptionFactory().recreate(Identification.create(), Identification.create(), Identification.create(), Level.LEVEL_0, DateEvermind.fromDate(toReview))

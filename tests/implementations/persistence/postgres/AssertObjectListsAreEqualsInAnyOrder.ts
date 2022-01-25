@@ -1,4 +1,4 @@
-import {assert} from "../../../test-config";
+import {assert} from '../../../test-config.js'
 
 export function assertObjectListsAreEqualsInAnyOrder<T>(listA: T[], listB: T[]) {
     assert.ok(

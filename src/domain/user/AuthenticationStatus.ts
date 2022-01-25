@@ -1,4 +1,4 @@
-import { Enum } from '../shared/value/Enum'
+import { Enum } from '../shared/value/Enum.js'
 
 export class AuthenticationStatus extends Enum {
     private static values: AuthenticationStatus[] = []

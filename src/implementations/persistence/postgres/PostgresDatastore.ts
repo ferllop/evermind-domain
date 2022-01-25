@@ -1,4 +1,5 @@
-import {Pool, QueryResult} from 'pg'
+import pg from 'pg'
+const {Pool, QueryResult} = pg
 
 export abstract class PostgresDatastore<RowType> {
     private pool: Pool

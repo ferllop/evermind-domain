@@ -8,9 +8,9 @@ import {
     givenTheStoredCard,
     givenTheStoredUser,
     givenXStoredCards,
-} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios'
-import {UserBuilder} from '../domain/user/UserBuilder'
-import {CardBuilder} from '../domain/card/CardBuilder'
+} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
+import {UserBuilder} from '../domain/user/UserBuilder.js'
+import {CardBuilder} from '../domain/card/CardBuilder.js'
 
 const userSearchesForCards = suite('User searches for cards use case')
 

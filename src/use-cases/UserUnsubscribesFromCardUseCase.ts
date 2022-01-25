@@ -6,7 +6,7 @@ import {UserRepository} from '../domain/user/UserRepository.js'
 import {UserIdentification} from '../domain/user/UserIdentification.js'
 import {Response} from './Response.js'
 import {UserUnsubscribesFromCardRequest} from './UserUnsubscribesFromCardRequest.js'
-import {Identification} from '../domain/shared/value/Identification'
+import {Identification} from '../domain/shared/value/Identification.js'
 
 export class UserUnsubscribesFromCardUseCase {
     async execute(request: UserUnsubscribesFromCardRequest) {
