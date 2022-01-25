@@ -9,7 +9,5 @@ postgresDatastore('should connect to testing database', async () => {
     assert.instance(new Date(result.rows[0]), Date)
 })
 
-if(process.env.WITH_POSTGRES){
-    process.env.PGPASSWORD = 'testing_evermind'
-    postgresDatastore.run()
-}
+postgresDatastore.run()
+
