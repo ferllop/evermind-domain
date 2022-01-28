@@ -1,11 +1,13 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
-  "include": ["src/**/*", "tests/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "lib": ["es2020"],
     "moduleResolution": "node",
     "module": "es2020",
+    "declaration": true,
     // "baseUrl": "./", 
     "allowJs": true,                             /* Allow javascript files to be compiled. */
     "checkJs": true,                             /* Report errors in .js files. */
@@ -17,6 +19,6 @@
     "noImplicitAny": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "esModuleInterop": true,
+    "esModuleInterop": true
   }
 }
