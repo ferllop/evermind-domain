@@ -4,11 +4,15 @@ import { CardFactory } from '../domain/card/CardFactory.js'
 import { ErrorType } from '../domain/errors/ErrorType.js'
 import { Response } from './Response.js'
 import { UserModifiesCardDataRequest } from './UserModifiesCardDataRequest.js'
+import {CardDto} from '../domain/card/CardDto.js'
+import {UseCase} from './UseCase.js'
 
-export class UserModifiesCardDataUseCase {
+export class UserModifiesCardDataUseCase extends UseCase<UserModifiesCardDataRequest, CardDto|null>{
+    protected getRequiredRequestFields(): string[] {
+        return ['id', 'userId']
+    }
     
-    async execute(request: UserModifiesCardDataRequest): Promise<Response<null>> {
-        
+    protected async internalExecute(request: UserModifiesCardDataRequest) {
         const {userId, ...cardData} = request
         if (!new CardFactory().arePropertiesValid(cardData)) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)

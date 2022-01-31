@@ -5,10 +5,15 @@ import {Username} from '../domain/user/Username.js'
 import {Response} from './Response.js'
 import {UserSignsUpRequest} from './UserSignsUpRequest.js'
 import {UserFactory} from '../domain/user/UserFactory.js'
+import {UseCase} from './UseCase.js'
 
-export class UserSignsUpUseCase {
+export class UserSignsUpUseCase extends UseCase<UserSignsUpRequest, null>{
+
+    protected getRequiredRequestFields(): string[] {
+        return ['name', 'username'];
+    }
     
-    async execute(request: UserSignsUpRequest): Promise<Response<null>> {
+    protected async internalExecute(request: UserSignsUpRequest) {
         if (!PersonName.isValid(request.name) || !Username.isValid(request.username)) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }

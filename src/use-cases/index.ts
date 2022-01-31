@@ -1,6 +1,8 @@
 // File created automatically. Do not modify manually
 export {ErrorDto} from './ErrorDto.js';
+export {Request} from './Request.js';
 export {Response} from './Response.js';
+export {UseCase} from './UseCase.js';
 export {UserCreatesCardRequest} from './UserCreatesCardRequest.js';
 export {UserCreatesCardUseCase} from './UserCreatesCardUseCase.js';
 export {UserGetsUserInfoRequest} from './UserGetsUserInfoRequest.js';

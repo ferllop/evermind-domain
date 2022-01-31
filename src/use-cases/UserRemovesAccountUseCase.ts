@@ -3,10 +3,14 @@ import { UserRepository } from '../domain/user/UserRepository.js'
 import { Identification } from '../domain/shared/value/Identification.js'
 import { Response } from './Response.js'
 import { UserRemovesAccountRequest } from './UserRemovesAccountRequest.js'
+import {UseCase} from './UseCase.js'
 
-export class UserRemovesAccountUseCase {
+export class UserRemovesAccountUseCase extends UseCase<UserRemovesAccountRequest, null>{
+    protected getRequiredRequestFields(): string[] {
+        return ['id']
+    }
     
-    async execute(request: UserRemovesAccountRequest): Promise<Response<null>> {
+    protected async internalExecute(request: UserRemovesAccountRequest): Promise<Response<null>> {
         if(!Identification.isValid(request.id)) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }

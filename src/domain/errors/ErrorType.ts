@@ -9,6 +9,7 @@ export enum ErrorType {
     USER_IS_ALREADY_SUBSCRIBED_TO_CARD,
     CARD_ALREADY_EXISTS,
     USER_ALREADY_EXISTS,
+    REQUEST_FIELD_NOT_VALID,
 }
 
 export const ErrorEnglish = new Map()
@@ -21,4 +22,5 @@ export const ErrorEnglish = new Map()
     .set(ErrorType.SUBSCRIPTION_NOT_EXISTS, 'Subscription not exists')
     .set(ErrorType.USER_IS_ALREADY_SUBSCRIBED_TO_CARD, 'User is already subscribed to card')
     .set(ErrorType.CARD_ALREADY_EXISTS, 'Card already exists')
+    .set(ErrorType.REQUEST_FIELD_NOT_VALID, 'Field into request not valid')
 

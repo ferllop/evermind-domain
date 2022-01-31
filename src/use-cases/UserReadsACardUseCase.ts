@@ -4,10 +4,14 @@ import {ErrorType} from '../domain/errors/ErrorType.js'
 import {Identification} from '../domain/shared/value/Identification.js'
 import {Response} from './Response.js'
 import {UserReadsACardRequest} from './UserReadsACardRequest.js'
+import {UseCase} from './UseCase.js'
 
-export class UserReadsACardUseCase {
+export class UserReadsACardUseCase extends UseCase<UserReadsACardRequest, CardDto|null>{
+    protected getRequiredRequestFields(): string[] {
+        return ['id']
+    }
 
-    async execute(request: UserReadsACardRequest): Promise<Response<CardDto|null>> {
+    protected async internalExecute(request: UserReadsACardRequest): Promise<Response<CardDto|null>> {
         if(!Identification.isValid(request.id)) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
         }

@@ -4,10 +4,14 @@ import { UserIdentification } from '../domain/user/UserIdentification.js'
 import { UserFactory } from '../domain/user/UserFactory.js'
 import { Response } from './Response.js'
 import { UserModifiesUserDataRequest } from './UserModifiesUserDataRequest.js'
+import {UseCase} from './UseCase.js'
 
-export class UserModifiesUserDataUseCase {
+export class UserModifiesUserDataUseCase extends UseCase<UserModifiesUserDataRequest, null>{
+    protected getRequiredRequestFields(): string[] {
+        return ['id']
+    }
     
-    async execute(dto: UserModifiesUserDataRequest): Promise<Response<null>> {
+    protected async internalExecute(dto: UserModifiesUserDataRequest) {
         const mapper = new UserFactory()
         if (!mapper.arePropertiesValid(dto)) {
             return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)

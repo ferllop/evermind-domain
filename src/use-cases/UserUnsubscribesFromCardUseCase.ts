@@ -7,9 +7,14 @@ import {UserIdentification} from '../domain/user/UserIdentification.js'
 import {Response} from './Response.js'
 import {UserUnsubscribesFromCardRequest} from './UserUnsubscribesFromCardRequest.js'
 import {Identification} from '../domain/shared/value/Identification.js'
+import {UseCase} from './UseCase.js'
 
-export class UserUnsubscribesFromCardUseCase {
-    async execute(request: UserUnsubscribesFromCardRequest) {
+export class UserUnsubscribesFromCardUseCase extends UseCase<UserUnsubscribesFromCardRequest, null>{
+    protected getRequiredRequestFields(): string[] {
+        return ['userId', 'cardId']
+    }
+
+    protected async internalExecute(request: UserUnsubscribesFromCardRequest) {
         if (!(Identification.isValid(request.userId) && Identification.isValid(request.cardId))) {
             return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
         }
