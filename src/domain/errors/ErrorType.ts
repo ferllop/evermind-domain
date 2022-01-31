@@ -10,6 +10,7 @@ export enum ErrorType {
     CARD_ALREADY_EXISTS,
     USER_ALREADY_EXISTS,
     REQUEST_FIELD_NOT_VALID,
+    PERSISTENCE_METHOD_NOT_DECLARED,
 }
 
 export const ErrorEnglish = new Map()
@@ -23,4 +24,5 @@ export const ErrorEnglish = new Map()
     .set(ErrorType.USER_IS_ALREADY_SUBSCRIBED_TO_CARD, 'User is already subscribed to card')
     .set(ErrorType.CARD_ALREADY_EXISTS, 'Card already exists')
     .set(ErrorType.REQUEST_FIELD_NOT_VALID, 'Field into request not valid')
+    .set(ErrorType.PERSISTENCE_METHOD_NOT_DECLARED, 'Provide the persistence for the whole evermind app with EVERMIND_PERSISTENCE environment variable')
 
