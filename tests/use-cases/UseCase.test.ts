@@ -1,6 +1,8 @@
-import {Request, Response, UseCase} from '../../src/use-cases/index.js'
 import {assert, suite} from '../test-config.js'
 import {ErrorType} from '../../src/domain/errors/ErrorType.js'
+import {UseCase} from '../../src/use-cases/UseCase.js'
+import {Request} from '../../src/use-cases/Request.js'
+import {Response} from '../../src/use-cases/Response.js'
 
 class TestableUseCase extends UseCase<Request, null> {
     getRequiredRequestFields(): string[] {
