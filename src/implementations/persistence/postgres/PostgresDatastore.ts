@@ -1,8 +1,8 @@
 import pg from 'pg'
-const {Pool, QueryResult} = pg
-
+import {QueryResult} from 'pg'
+const {Pool} = pg
 export abstract class PostgresDatastore<RowType> {
-    private pool: Pool
+    private pool: InstanceType<typeof Pool>
 
     constructor() {
         this.pool = new Pool()
