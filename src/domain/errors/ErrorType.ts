@@ -24,5 +24,5 @@ export const ErrorEnglish = new Map()
     .set(ErrorType.USER_IS_ALREADY_SUBSCRIBED_TO_CARD, 'User is already subscribed to card')
     .set(ErrorType.CARD_ALREADY_EXISTS, 'Card already exists')
     .set(ErrorType.REQUIRED_REQUEST_FIELD_IS_MISSING, 'Required request field is missing')
-    .set(ErrorType.PERSISTENCE_METHOD_NOT_DECLARED, 'Provide the persistence for the whole evermind app with EVERMIND_PERSISTENCE environment variable')
+    .set(ErrorType.PERSISTENCE_METHOD_NOT_DECLARED, 'Provide the persistence for the whole evermind app with EVERMIND_PERSISTENCE_TYPE environment variable')
 

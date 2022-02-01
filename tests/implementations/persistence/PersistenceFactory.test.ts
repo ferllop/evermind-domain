@@ -4,10 +4,11 @@ import {CardPostgresDao} from '../../../src/implementations/persistence/postgres
 import {CardInMemoryDao} from '../../../src/implementations/persistence/in-memory/CardInMemoryDao.js'
 import {DomainError} from '../../../src/domain/errors/DomainError.js'
 import {ErrorType} from '../../../src/domain/errors/ErrorType.js'
+import {Config} from '../../../src/implementations/Config.js'
 
 const persistenceFactory = suite('Persistence Factory')
 
-persistenceFactory.before.each(() => {process.env[PersistenceFactory.ENV_VAR] = undefined})
+persistenceFactory.before.each(() => {Config.persistenceType = undefined})
 
 persistenceFactory('should throw error when no persistence type is provided', () => {
     assert.throws(
@@ -17,7 +18,7 @@ persistenceFactory('should throw error when no persistence type is provided', ()
 })
 
 persistenceFactory('should throw error when an unexisting persistence type is provided', () => {
-    process.env[PersistenceFactory.ENV_VAR] = 'unexisting-persistence-type'
+    Config.persistenceType = 'unexisting-persistence-type'
     assert.throws(
         () => PersistenceFactory.getCardDao(),
         (error: any) => error instanceof DomainError
@@ -25,12 +26,12 @@ persistenceFactory('should throw error when an unexisting persistence type is pr
 })
 
 persistenceFactory('should provide CardPostgresDao when postgres is provided as type', () => {
-    process.env[PersistenceFactory.ENV_VAR] = 'postgres'
+    Config.persistenceType = 'postgres'
     assert.instance(PersistenceFactory.getCardDao(), CardPostgresDao)
 })
 
 persistenceFactory('should provide CardInMemoryDao when memory is provided as type', () => {
-    process.env[PersistenceFactory.ENV_VAR] = 'memory'
+    Config.persistenceType = 'memory'
     assert.instance(PersistenceFactory.getCardDao(), CardInMemoryDao)
 })
 

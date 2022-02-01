@@ -1,9 +1,10 @@
 import { suite, test } from 'uvu'
 import * as assert from 'uvu/assert'
+import {Config} from '../src/implementations/Config.js'
 
-process.env.ENABLE_PRECONDITIONS = 'true'
+Config.enablePreconditions = true
 
-if (!process.env.PGPASSWORD) {
+if (!Config.postgresPassword) {
     throw new Error('Password for postgres database is not found. ' +
         'Please provide one as an environment or process variable.')
 }

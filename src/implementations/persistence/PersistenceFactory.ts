@@ -7,12 +7,12 @@ import {SubscriptionInMemoryDao} from './in-memory/SubscriptionInMemoryDao.js'
 import {PersistenceType} from './PersistenceType.js'
 import {DomainError} from '../../domain/errors/DomainError.js'
 import {ErrorType} from '../../domain/errors/ErrorType.js'
+import {Config} from '../Config.js'
 
 export class PersistenceFactory {
-    static readonly ENV_VAR = 'EVERMIND_PERSISTENCE'
 
     static getCardDao() {
-        switch (process.env[this.ENV_VAR]) {
+        switch (Config.persistenceType) {
             case 'postgres':
                 return new CardPostgresDao()
             case 'memory':
@@ -23,7 +23,7 @@ export class PersistenceFactory {
     }
 
     static getUserDao() {
-        switch (process.env[this.ENV_VAR]) {
+        switch (Config.persistenceType) {
             case 'postgres':
                 return new UserPostgresDao()
             case 'memory':
@@ -34,7 +34,7 @@ export class PersistenceFactory {
     }
 
     static getSubscriptionDao() {
-        switch (process.env[this.ENV_VAR]) {
+        switch (Config.persistenceType) {
             case 'postgres':
                 return new SubscriptionPostgresDao()
             case 'memory':
@@ -45,6 +45,6 @@ export class PersistenceFactory {
     }
 
     static setType(type: PersistenceType) {
-        process.env[this.ENV_VAR] = type ?? undefined
+        Config.persistenceType = type ?? undefined
     }
 }
