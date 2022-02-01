@@ -8,40 +8,34 @@ import {Response} from './Response.js'
 import {UserUnsubscribesFromCardRequest} from './UserUnsubscribesFromCardRequest.js'
 import {Identification} from '../domain/shared/value/Identification.js'
 import {UseCase} from './UseCase.js'
+import {DomainError} from '../domain/errors/DomainError.js'
 
-export class UserUnsubscribesFromCardUseCase extends UseCase<UserUnsubscribesFromCardRequest, null>{
+export class UserUnsubscribesFromCardUseCase extends UseCase<UserUnsubscribesFromCardRequest, null> {
     protected getRequiredRequestFields(): string[] {
         return ['userId', 'cardId']
     }
 
     protected async internalExecute(request: UserUnsubscribesFromCardRequest) {
         if (!(Identification.isValid(request.userId) && Identification.isValid(request.cardId))) {
-            return Response.withError(ErrorType.INPUT_DATA_NOT_VALID)
+            throw new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
         }
 
         const user = await new UserRepository().findById(new UserIdentification(request.userId))
         if (user.isNull()) {
-            return Response.withError(ErrorType.USER_NOT_FOUND)
+            throw new DomainError(ErrorType.USER_NOT_FOUND)
         }
-
         const card = await new CardRepository().findById(new CardIdentification(request.cardId))
         if (card.isNull()) {
-            return Response.withError(ErrorType.CARD_NOT_FOUND)
+            throw new DomainError(ErrorType.CARD_NOT_FOUND)
         }
-
         const subscriptionRepository = new SubscriptionRepository()
         const subscriptions = await subscriptionRepository.findByUserId(user)
         const subscription = user.subscribedTo(subscriptions).unsubscribeFrom(card)
-  
         if (!subscription) {
-            return Response.withError(ErrorType.SUBSCRIPTION_NOT_EXISTS)
+            throw new DomainError(ErrorType.SUBSCRIPTION_NOT_EXISTS)
         }
+        await subscriptionRepository.delete(subscription)
 
-        try {
-            await subscriptionRepository.delete(subscription)
-            return Response.OkWithoutData()
-        } catch(error) {
-            return Response.withError(error)
-        }
+        return Response.OkWithoutData()
     }
 }

@@ -8,6 +8,7 @@ import {Response} from './Response.js'
 import {UserCreatesCardRequest} from './UserCreatesCardRequest.js'
 import {CardRepository} from '../domain/card/CardRepository.js'
 import {UseCase} from './UseCase.js'
+import {DomainError} from '../domain/errors/DomainError.js'
 
 export class UserCreatesCardUseCase extends UseCase<UserCreatesCardRequest, null> {
     protected getRequiredRequestFields(): string[] {
@@ -19,7 +20,7 @@ export class UserCreatesCardUseCase extends UseCase<UserCreatesCardRequest, null
 
     protected async internalExecute(request: UserCreatesCardRequest): Promise<Response<null>> {
         if (!new CardFactory().isDtoValid({...request, authorID: request.userId})) {
-            return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
+            throw new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
         }
 
         const card = new CardFactory().create(
@@ -28,13 +29,9 @@ export class UserCreatesCardUseCase extends UseCase<UserCreatesCardRequest, null
             new WrittenAnswer(request.answer),
             Labelling.fromStringLabels(request.labelling),
         )
+        await new CardRepository().add(card)
 
-        try {
-            await new CardRepository().add(card)
-            return Response.OkWithoutData()
-        } catch (error) {
-            return Response.withError(error)
-        }
+        return Response.OkWithoutData()
     }
 
 }

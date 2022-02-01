@@ -6,22 +6,21 @@ export class Response<T> {
     error: ErrorDto
     data: T
 
-    constructor(error: ErrorType, data: T) {
-        const domainError = new DomainError(error)
-        this.error = {code: domainError.getCode(), message: domainError.message}
+    constructor(error: DomainError, data: T) {
+        this.error = error.toDto()
         this.data = data
     }
 
-    static withError(error: ErrorType): Response<null> {
+    static withError(error: DomainError): Response<null> {
         return new Response(error, null)
     }
 
     static OkWithoutData(): Response<null> {
-        return new Response(ErrorType.NULL, null)
+        return new Response(new DomainError(ErrorType.NULL), null)
     }
 
     static OkWithData<T>(data: T): Response<T> {
-        return new Response<T>(ErrorType.NULL, data)
+        return new Response<T>(new DomainError(ErrorType.NULL), data)
     }
 
     hasError(error: ErrorType) {

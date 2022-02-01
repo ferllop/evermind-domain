@@ -7,6 +7,7 @@ import {UserFactory} from '../../src/domain/user/UserFactory.js'
 import {PersistenceFactory} from '../../src/implementations/persistence/PersistenceFactory.js'
 import {givenACleanInMemoryDatabase} from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {UserBuilder} from '../domain/user/UserBuilder.js'
+import {DomainError} from '../../src/domain/errors/DomainError.js'
 
 const userSignsUpUseCase = suite('User signs up use case')
 
@@ -48,7 +49,7 @@ userSignsUpUseCase(
             username: invalidUsername
         }
         const result = await new UserSignsUpUseCase().execute(invalidRequest)
-        assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
+        assert.equal(result, Response.withError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
     })
 
 userSignsUpUseCase.run()

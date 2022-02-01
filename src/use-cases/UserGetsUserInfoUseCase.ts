@@ -5,6 +5,7 @@ import {Response} from './Response.js'
 import {UserGetsUserInfoRequest} from './UserGetsUserInfoRequest.js'
 import {UserRepository} from '../domain/user/UserRepository.js'
 import {UseCase} from './UseCase.js'
+import {DomainError} from '../domain/errors/DomainError.js'
 
 export class UserGetsUserInfoUseCase extends UseCase<UserGetsUserInfoRequest, UserDto|null>{
 
@@ -14,13 +15,13 @@ export class UserGetsUserInfoUseCase extends UseCase<UserGetsUserInfoRequest, Us
 
     protected async internalExecute(request: UserGetsUserInfoRequest) {
         if(!Identification.isValid(request.id)) {
-            return new Response(ErrorType.INPUT_DATA_NOT_VALID, null)
+            throw new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
         }
         
         const user = await new UserRepository().findById(new Identification(request.id))
         
         if (user.isNull()) {
-            return Response.withError(ErrorType.USER_NOT_FOUND)
+            throw new DomainError(ErrorType.USER_NOT_FOUND)
         }
 
         return Response.OkWithData(user.toDto())

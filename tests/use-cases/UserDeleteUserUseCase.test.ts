@@ -10,6 +10,7 @@ import {
     assertUserIsNotStored,
     assertUserIsStored,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
+import {DomainError} from '../../src/domain/errors/DomainError.js'
 
 const userRemovesAccountUseCase = suite('User removes account use case')
 
@@ -37,7 +38,7 @@ userRemovesAccountUseCase(
     'error property as USER_NOT_FOUND DomainError', async () => {
         await givenAStoredUser()
         const result = await new UserRemovesAccountUseCase().execute({id: 'non-existingId'})
-        assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
+        assert.equal(result, Response.withError(new DomainError(ErrorType.USER_NOT_FOUND)))
     })
 
 userRemovesAccountUseCase(
@@ -45,7 +46,7 @@ userRemovesAccountUseCase(
     'it should return an object with data property as null and ' +
     'error property as USER_NOT_FOUND DomainError', async () => {
         const result = await new UserRemovesAccountUseCase().execute({id: 'non-existingIdNorTable'})
-        assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
+        assert.equal(result, Response.withError(new DomainError(ErrorType.USER_NOT_FOUND)))
     })
 
 userRemovesAccountUseCase(
@@ -56,7 +57,7 @@ userRemovesAccountUseCase(
             id: ''
         }
         const result = await new UserRemovesAccountUseCase().execute(invalidRequest)
-        assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
+        assert.equal(result, Response.withError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
     })
 
 userRemovesAccountUseCase.run()

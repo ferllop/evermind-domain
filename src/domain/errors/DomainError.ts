@@ -1,4 +1,5 @@
 import { ErrorEnglish, ErrorType } from './ErrorType.js'
+import {ErrorDto} from '../../use-cases/ErrorDto.js'
 
 export class DomainError extends Error {
     static NULL = new DomainError(ErrorType.NULL)
@@ -16,6 +17,10 @@ export class DomainError extends Error {
 
     getCode() {
         return this.code
+    }
+
+    toDto(): ErrorDto {
+        return { code: this.code, message: this.message }
     }
 
 }

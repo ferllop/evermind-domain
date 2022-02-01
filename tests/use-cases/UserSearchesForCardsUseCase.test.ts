@@ -21,7 +21,7 @@ userSearchesForCards('having 0 coincident cards, return a Result with empty arra
     const result = await new UserSearchesForCardsUseCase().execute({
         query: 'non-existing'
     })
-    assert.is(result.data.length, 0)
+    assert.is(result.data!.length, 0)
 })
 
 userSearchesForCards('having three cards, with one coincident card, return a Result with a one element array as data and null as error', async () => {
@@ -32,7 +32,7 @@ userSearchesForCards('having three cards, with one coincident card, return a Res
     const result = await new UserSearchesForCardsUseCase().execute({
         query: labels.join()
     })
-    assert.is(result.data.length, 1)
+    assert.is(result.data!.length, 1)
 })
 
 userSearchesForCards('having three cards, with one partial card, return a Result with an empty array as data and null as error', async () => {
@@ -40,7 +40,7 @@ userSearchesForCards('having three cards, with one partial card, return a Result
     const result = await new UserSearchesForCardsUseCase().execute({
         query: cards[0].labelling[0] + ', other-label'
     })
-    assert.is(result.data.length, 0)
+    assert.is(result.data!.length, 0)
 })
 
 userSearchesForCards('having 3 cards stored, two of them with same labels, return a Result with a two elements array as data and null as error', async () => {
@@ -52,7 +52,7 @@ userSearchesForCards('having 3 cards stored, two of them with same labels, retur
     const result = await new UserSearchesForCardsUseCase().execute({
         query: label.join()
     })
-    assert.is(result.data.length, 2)
+    assert.is(result.data!.length, 2)
 })
 
 userSearchesForCards('having 1 card with two coincident labels, return a Result with one element array as data and null as error', async () => {
@@ -62,7 +62,7 @@ userSearchesForCards('having 1 card with two coincident labels, return a Result 
     const result = await new UserSearchesForCardsUseCase().execute({
         query: labels.join()
     })
-    assert.is(result.data.length, 1)
+    assert.is(result.data!.length, 1)
 })
 
 userSearchesForCards('having 0 coincident cards, when searching by author, then return a Result with an empty array as data and null as error', async () => {
@@ -71,7 +71,7 @@ userSearchesForCards('having 0 coincident cards, when searching by author, then 
     const result = await new UserSearchesForCardsUseCase().execute({
         query: '@non-existing-author'
     })
-    assert.is(result.data.length, 0)
+    assert.is(result.data!.length, 0)
 })
 
 userSearchesForCards('having 1 coincident cards, when searching by author, then return a Result with with a one element array  as data and null as error', async () => {
@@ -83,8 +83,8 @@ userSearchesForCards('having 1 coincident cards, when searching by author, then 
     const result = await new UserSearchesForCardsUseCase().execute({
         query: '@' + user.username
     })
-    assert.is(result.data.length, 1)
-    assert.equal(result.data[0], cardToBeFound)
+    assert.is(result.data!.length, 1)
+    assert.equal(result.data![0], cardToBeFound)
 })
 
 userSearchesForCards('having 0 coincident cards, when searching by author and label, then return a Result with an empty array as data and null as error', async () => {
@@ -94,7 +94,7 @@ userSearchesForCards('having 0 coincident cards, when searching by author and la
     const result = await new UserSearchesForCardsUseCase().execute({
         query: '@real-username, non-existing-label'
     })
-    assert.is(result.data.length, 0)
+    assert.is(result.data!.length, 0)
 })
 
 userSearchesForCards('having 1 coincident cards, when searching by author and label, then return a Result with a one element array as data and null as error', async () => {
@@ -112,7 +112,7 @@ userSearchesForCards('having 1 coincident cards, when searching by author and la
     await givenTheStoredCard(card)
     const result = await new UserSearchesForCardsUseCase().execute({
         query: '@real-username, real-label1'})
-    assert.is(result.data.length, 1)
+    assert.is(result.data!.length, 1)
 })
 
 userSearchesForCards.run()

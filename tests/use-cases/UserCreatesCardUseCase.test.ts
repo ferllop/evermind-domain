@@ -8,6 +8,7 @@ import {
     givenAStoredUser,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {assertUserHasStoredACard} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
+import {DomainError} from '../../src/domain/errors/DomainError.js'
 
 const userCreatesCardUseCase = suite("User creates a card use case")
 
@@ -55,7 +56,7 @@ userCreatesCardUseCase(
             userId: invalidUserId
         }
         const result = await new UserCreatesCardUseCase().execute(invalidRequest)
-        assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
+        assert.equal(result, Response.withError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
     })
 
 userCreatesCardUseCase.run()

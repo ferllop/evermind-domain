@@ -1,8 +1,7 @@
-import { CardDto } from '../domain/card/CardDto.js'
-import { ErrorType } from '../domain/errors/ErrorType.js'
-import { SearchService } from '../domain/search/SearchService.js'
-import { Response } from './Response.js'
-import { UserSearchesForCardsRequest } from './UserSearchesForCardsRequest.js'
+import {CardDto} from '../domain/card/CardDto.js'
+import {SearchService} from '../domain/search/SearchService.js'
+import {Response} from './Response.js'
+import {UserSearchesForCardsRequest} from './UserSearchesForCardsRequest.js'
 import {UseCase} from './UseCase.js'
 
 export class UserSearchesForCardsUseCase extends UseCase<UserSearchesForCardsRequest, CardDto[]>{
@@ -12,6 +11,6 @@ export class UserSearchesForCardsUseCase extends UseCase<UserSearchesForCardsReq
 
     protected async internalExecute(request: UserSearchesForCardsRequest): Promise<Response<CardDto[]>> {
         const cards = await new SearchService().executeQuery(request)
-        return new Response(ErrorType.NULL, cards.map(card => card.toDto()))
+        return Response.OkWithData(cards.map(card => card.toDto()))
     }
 }

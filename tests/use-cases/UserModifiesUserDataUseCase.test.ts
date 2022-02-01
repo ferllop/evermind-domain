@@ -8,6 +8,7 @@ import {
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {assertUserIsStored} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
 import {UserBuilder} from '../domain/user/UserBuilder.js'
+import {DomainError} from '../../src/domain/errors/DomainError.js'
 
 const userModifiesUserDataUseCase = suite("User modifies user data use case")
 
@@ -37,7 +38,7 @@ userModifiesUserDataUseCase(
     'RESOURCE_NOT_FOUND DomainError', async () => {
         const user = await givenAStoredUser()
         const result = await new UserModifiesUserDataUseCase().execute({ ...user, id: 'notExistingId' })
-        assert.equal(result, Response.withError(ErrorType.USER_NOT_FOUND))
+        assert.equal(result, Response.withError(new DomainError(ErrorType.USER_NOT_FOUND)))
     })
 
 userModifiesUserDataUseCase(
@@ -50,7 +51,7 @@ userModifiesUserDataUseCase(
             id: invalidUserId
         }
         const result = await new UserModifiesUserDataUseCase().execute(invalidRequest)
-        assert.equal(result, Response.withError(ErrorType.INPUT_DATA_NOT_VALID))
+        assert.equal(result, Response.withError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
     })
 
 userModifiesUserDataUseCase.run()
