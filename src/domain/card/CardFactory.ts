@@ -47,7 +47,7 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
 
     fromDto(dto: CardDto): Card {
         precondition(this.isDtoValid(dto))
-        return new CardFactory().recreate(new AuthorIdentification(dto.authorID), new WrittenQuestion(dto.question), new WrittenAnswer(dto.answer), new Labelling(dto.labelling.map(labelStr => new Label(labelStr))), new CardIdentification(dto.id))
+        return this.recreate(new AuthorIdentification(dto.authorID), new WrittenQuestion(dto.question), new WrittenAnswer(dto.answer), new Labelling(dto.labelling.map(labelStr => new Label(labelStr))), new CardIdentification(dto.id))
     }
 
     fromDtoArray(dtoArray: CardDto[]): Card[] {

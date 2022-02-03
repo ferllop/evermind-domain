@@ -31,12 +31,12 @@ export class UserFactory extends EntityFactory<User, UserDto> {
 
     isDtoValid(dto: MayBeIdentified<UserDto>): boolean {
         return Boolean(dto) &&
-            new UserFactory().isValid(dto.name, dto.username, dto.dayStartTime, 'id' in dto ? dto.id : undefined)
+            this.isValid(dto.name, dto.username, dto.dayStartTime, 'id' in dto ? dto.id : undefined)
     }
 
     fromDto(dto: UserDto): User {
         precondition(this.isDtoValid(dto))
-        return new UserFactory().recreate(new PersonName(dto.name), new Username(dto.username), new DayStartTime(dto.dayStartTime), new Identification(dto.id))
+        return this.recreate(new PersonName(dto.name), new Username(dto.username), new DayStartTime(dto.dayStartTime), new Identification(dto.id))
     }
 
     create(name: PersonName, username: Username) {

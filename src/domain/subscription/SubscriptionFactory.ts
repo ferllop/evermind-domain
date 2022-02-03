@@ -31,14 +31,14 @@ export class SubscriptionFactory extends EntityFactory<Subscription, Subscriptio
     }
     
     isDtoValid(dto: MayBeIdentified<SubscriptionDto>): boolean {
-        return new SubscriptionFactory().isValid(dto.userId, dto.cardId, dto.level, dto.lastReview)
+        return this.isValid(dto.userId, dto.cardId, dto.level, dto.lastReview)
     }
 
     fromDto(dto: SubscriptionDto): Subscription {
         const userId = new UserIdentification(dto.userId)
         const cardId = new CardIdentification(dto.cardId)
         const subscriptionId = new SubscriptionIdentification(dto.id)
-        return new SubscriptionFactory().recreate(subscriptionId, userId, cardId, Level.getByOrdinal(dto.level), new DateEvermind(dto.lastReview))
+        return this.recreate(subscriptionId, userId, cardId, Level.getByOrdinal(dto.level), new DateEvermind(dto.lastReview))
     }
 
     isValid(userId: string, cardId: string, level: number, lastReview: DateISO) {
