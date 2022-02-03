@@ -25,7 +25,7 @@ export class UserModifiesCardDataUseCase extends UseCase<UserModifiesCardDataReq
         if (card.isNull()) {
             throw new DomainError(ErrorType.CARD_NOT_FOUND)
         }
-        await cardRepository.update(card.apply(data))
+        await cardRepository.update(new CardFactory().apply(card, data))
 
         return Response.OkWithoutData()
     }

@@ -24,7 +24,7 @@ export class UserModifiesUserDataUseCase extends UseCase<UserModifiesUserDataReq
         if (user.isNull()) {
             throw new DomainError(ErrorType.USER_NOT_FOUND)
         }
-        await userRepository.update(user.apply(userData))
+        await userRepository.update(new UserFactory().apply(user, userData))
 
         return Response.OkWithoutData()
     }

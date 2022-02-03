@@ -62,5 +62,9 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
         return new this.cardConstructor(authorID, question, answer, labels, id)
     }
 
+    apply(card: Card, data: Omit<Partial<CardDto>, 'id'>) {
+        const modifiedCard = { ...card.toDto(), ...data}
+        return this.fromDto(modifiedCard)
+    }
 
 }

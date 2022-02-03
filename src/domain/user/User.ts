@@ -5,8 +5,6 @@ import {Username} from './Username.js'
 import {Subscription} from '../subscription/Subscription.js'
 import {Card} from '../card/Card.js'
 import {UserIdentification} from './UserIdentification.js'
-import {UserDto} from './UserDto.js'
-import {UserFactory} from './UserFactory.js'
 import {SubscriptionFactory} from '../subscription/SubscriptionFactory.js'
 
 export class User extends Entity {
@@ -51,11 +49,6 @@ export class User extends Entity {
         return this.subscriptions.find(
             subscription => subscription.getCardID().equals(card.getId())
         )
-    }
-
-    apply(user: Omit<Partial<UserDto>, 'id'>) {
-        const modifiedCard = { ...this.toDto(), ...user }
-        return new UserFactory().fromDto(modifiedCard)
     }
 
     toDto(){

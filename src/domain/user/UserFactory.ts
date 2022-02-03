@@ -47,4 +47,9 @@ export class UserFactory extends EntityFactory<User, UserDto> {
         return new this.userConstructor(name, username, dayStartTime, id)
     }
 
+    apply(user: User, data: Omit<Partial<UserDto>, 'id'>) {
+        const modifiedCard = { ...user.toDto(), ...data }
+        return new UserFactory().fromDto(modifiedCard)
+    }
+
 }

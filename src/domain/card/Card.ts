@@ -2,11 +2,9 @@ import {Entity} from '../shared/Entity.js'
 import {Identification} from '../shared/value/Identification.js'
 import {Answer} from './Answer.js'
 import {AuthorIdentification} from './AuthorIdentification.js'
-import {CardDto} from './CardDto.js'
 import {CardIdentification} from './CardIdentification.js'
 import {Labelling} from './Labelling.js'
 import {Question} from './Question.js'
-import {CardFactory} from './CardFactory.js'
 
 export class Card extends Entity {
 
@@ -59,11 +57,6 @@ export class Card extends Entity {
 
     equals(card: Card) {
         return this.getId().equals(card.getId())
-    }
-
-    apply(card: Omit<Partial<CardDto>, 'id'>) {
-        const modifiedCard = { ...this.toDto(), ...card}
-        return new CardFactory().fromDto(modifiedCard)
     }
 
     toDto(){
