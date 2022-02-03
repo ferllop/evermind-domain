@@ -27,7 +27,7 @@ cardDao.before.each(context => {
 })
 
 cardDao('should throw a CARD_ALREADY_EXISTS error when inserting a card that already exists', async ({mock, sut}) => {
-    mock.throwError({code: PostgresErrorType.NOT_UNIQUE_FIELD})
+    mock.throwErrorWithCode(PostgresErrorType.NOT_UNIQUE_FIELD)
     const id = CardIdentification.create().getId()
     const card = new CardBuilder().withId(id).build()
     try {

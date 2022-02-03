@@ -9,6 +9,7 @@ import {SubscriptionPostgresMapper} from './SubscriptionPostgresMapper.js'
 import {SubscriptionPostgresDatastore} from './SubscriptionPostgresDatastore.js'
 import {SubscriptionSqlQuery} from './SubscriptionSqlQuery.js'
 import {PostgresErrorType} from '../PostgresErrorType.js'
+import {PostgresDatastoreError} from '../PostgresDatastoreError.js'
 
 export class SubscriptionPostgresDao implements SubscriptionDao {
     private sqlQuery = new SubscriptionSqlQuery()
@@ -22,7 +23,8 @@ export class SubscriptionPostgresDao implements SubscriptionDao {
         try {
             await this.datastore.query(query)
         } catch (error) {
-            if (error.code === PostgresErrorType.NOT_UNIQUE_FIELD) {
+            if (error instanceof PostgresDatastoreError &&
+                error.code === PostgresErrorType.NOT_UNIQUE_FIELD) {
                 throw new DomainError(ErrorType.USER_IS_ALREADY_SUBSCRIBED_TO_CARD)
             }
             throw error

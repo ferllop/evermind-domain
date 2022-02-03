@@ -22,19 +22,11 @@ export class CardRepository {
     }
 
     async findById(id: Identification): Promise<Card> {
-        try {
-            return this.dao.findById(id)
-        } catch(error) {
-            return error
-        }
+        return this.dao.findById(id)
     }
 
     async update(entity: Card) {
-        try {
-            await this.dao.update(entity)
-        } catch (error) {
-            return error
-        }
+        return this.dao.update(entity)
     }
 
     async findByLabelling(labelling: Labelling): Promise<Card[]> {

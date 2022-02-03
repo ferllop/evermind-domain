@@ -1,7 +1,7 @@
 import {PostgresDatastore} from '../../../../src/implementations/persistence/postgres/PostgresDatastore.js'
 import {QueryResult} from 'node-postgres'
 import {QueryResultBuilder} from './QueryResultBuilder.js'
-import {PostgresDatastoreError} from './PostgresDatastoreError.js'
+import {PostgresDatastoreError} from '../../../../src/implementations/persistence/postgres/PostgresDatastoreError.js'
 
 export class PostgresDatastoreMock extends PostgresDatastore<any> {
     private resultToReturn: QueryResult = new QueryResultBuilder().build()
@@ -19,7 +19,9 @@ export class PostgresDatastoreMock extends PostgresDatastore<any> {
         this.resultToReturn = result
     }
 
-    throwError(error: PostgresDatastoreError) {
+    throwErrorWithCode(code: string) {
+        const error = new PostgresDatastoreError('', 0, 'error')
+        error.code = code
         this.errorToThrow = error
     }
 

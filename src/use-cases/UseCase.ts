@@ -14,11 +14,11 @@ export abstract class UseCase<RequestType, ResponseType> {
                 return Response.withDomainError(new DomainError(ErrorType.REQUIRED_REQUEST_FIELD_IS_MISSING))
             }
             return await this.internalExecute(request)
-        } catch (error: any) {
+        } catch (error) {
             if(error instanceof DomainError){
                 return Response.withDomainError(error)
             } else {
-                return Response.withError(error)
+                return Response.withError(error as Error)
             }
         }
     }

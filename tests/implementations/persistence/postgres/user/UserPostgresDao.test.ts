@@ -24,7 +24,7 @@ userDao.before.each(context => {
 })
 
 userDao('should throw a USER_ALREADY_EXISTS error when inserting a user that already exists', async ({mock, sut}) => {
-    mock.throwError({code: PostgresErrorType.NOT_UNIQUE_FIELD})
+    mock.throwErrorWithCode(PostgresErrorType.NOT_UNIQUE_FIELD)
     const id = UserIdentification.create().getId()
     const user = new UserBuilder().setId(id).build()
     try {

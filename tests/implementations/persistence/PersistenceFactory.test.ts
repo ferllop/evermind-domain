@@ -13,7 +13,7 @@ persistenceFactory.before.each(() => {Config.persistenceType = undefined})
 persistenceFactory('should throw error when no persistence type is provided', () => {
     assert.throws(
         () => PersistenceFactory.getCardDao(),
-        (error: any) => error instanceof DomainError
+        (error: Error) => error instanceof DomainError
             && error.getCode() === ErrorType.PERSISTENCE_METHOD_NOT_DECLARED)
 })
 
@@ -21,7 +21,7 @@ persistenceFactory('should throw error when an unexisting persistence type is pr
     Config.persistenceType = 'unexisting-persistence-type'
     assert.throws(
         () => PersistenceFactory.getCardDao(),
-        (error: any) => error instanceof DomainError
+        (error: Error) => error instanceof DomainError
             && error.getCode() === ErrorType.PERSISTENCE_METHOD_NOT_DECLARED)
 })
 

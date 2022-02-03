@@ -10,6 +10,7 @@ import {Labelling} from '../../../../domain/card/Labelling.js'
 import {CardPostgresMapper} from './CardPostgresMapper.js'
 import {CardPostgresDatastore} from './CardPostgresDatastore.js'
 import {PostgresErrorType} from '../PostgresErrorType.js'
+import {PostgresDatastoreError} from '../PostgresDatastoreError.js'
 
 export class CardPostgresDao implements CardDao {
 
@@ -24,7 +25,7 @@ export class CardPostgresDao implements CardDao {
         try {
             await this.datastore.query(query)
         } catch (error) {
-            if (error.code === PostgresErrorType.NOT_UNIQUE_FIELD) {
+            if (error instanceof PostgresDatastoreError && error.code === PostgresErrorType.NOT_UNIQUE_FIELD) {
                 throw new DomainError(ErrorType.CARD_ALREADY_EXISTS)
             }
             throw error

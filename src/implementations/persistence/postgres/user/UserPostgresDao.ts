@@ -9,6 +9,7 @@ import {UserPostgresMapper} from './UserPostgresMapper.js'
 import {UserDao} from '../../../../domain/user/UserDao.js'
 import {Username} from '../../../../domain/user/Username.js'
 import {PostgresErrorType} from '../PostgresErrorType.js'
+import {PostgresDatastoreError} from '../PostgresDatastoreError.js'
 
 export class UserPostgresDao implements UserDao {
 
@@ -23,7 +24,9 @@ export class UserPostgresDao implements UserDao {
         try {
             await this.datastore.query(query)
         } catch (error) {
-            if (error.code === PostgresErrorType.NOT_UNIQUE_FIELD) {
+            console.log(error)
+            if (error instanceof PostgresDatastoreError &&
+                error.code === PostgresErrorType.NOT_UNIQUE_FIELD) {
                 throw new DomainError(ErrorType.USER_ALREADY_EXISTS)
             }
             throw error
