@@ -1,5 +1,6 @@
 export enum ErrorType {
     NULL,
+    UNDOCUMENTED,
     INPUT_DATA_NOT_VALID,
     RESOURCE_NOT_FOUND,
     DATA_FROM_STORAGE_NOT_VALID,
@@ -25,4 +26,4 @@ export const ErrorEnglish = new Map()
     .set(ErrorType.CARD_ALREADY_EXISTS, 'Card already exists')
     .set(ErrorType.REQUIRED_REQUEST_FIELD_IS_MISSING, 'Required request field is missing')
     .set(ErrorType.PERSISTENCE_METHOD_NOT_DECLARED, 'Provide the persistence for the whole evermind app with EVERMIND_PERSISTENCE_TYPE environment variable')
-
+    .set(ErrorType.UNDOCUMENTED, 'Undocumented error')

@@ -24,7 +24,7 @@ userModifiesCardDataUseCase(
             userId: '',
             ...new CardBuilder().buildDto(),
         })
-        assert.equal(result, Response.withError(new DomainError(ErrorType.CARD_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.CARD_NOT_FOUND)))
     })
 
 userModifiesCardDataUseCase(
@@ -79,7 +79,7 @@ userModifiesCardDataUseCase(
             ...card,
             id: 'notExistingId',
         })
-        assert.equal(result, Response.withError(new DomainError(ErrorType.CARD_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.CARD_NOT_FOUND)))
     })
 
 userModifiesCardDataUseCase(
@@ -94,7 +94,7 @@ userModifiesCardDataUseCase(
             userId: '',
             ...invalidCardData
         })
-        assert.equal(result, Response.withError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
+        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
     })
 
 userModifiesCardDataUseCase(
@@ -107,7 +107,7 @@ userModifiesCardDataUseCase(
             ...new CardBuilder().buildDto(),
             labelling: invalidLabelling,
         })
-        assert.equal(result, Response.withError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
+        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
     })
 
 userModifiesCardDataUseCase.run()

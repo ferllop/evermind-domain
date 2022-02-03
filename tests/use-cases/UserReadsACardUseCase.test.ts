@@ -20,7 +20,7 @@ userReadsACardUseCase(
             id: ''
         }
         const result = await new UserReadsACardUseCase().execute(invalidRequest)
-        assert.equal(result, Response.withError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
+        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
     })
 
 userReadsACardUseCase(
@@ -29,7 +29,7 @@ userReadsACardUseCase(
     'and CARD_NOT_FOUND DomainError', async () => {
         await givenAStoredCard()
         const result = await new UserReadsACardUseCase().execute({ id: 'nonExistingId' })
-        assert.equal(result, Response.withError(new DomainError(ErrorType.CARD_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.CARD_NOT_FOUND)))
     })
 
 userReadsACardUseCase(
@@ -37,7 +37,7 @@ userReadsACardUseCase(
     'should return an object with data property as null ' +
     'and CARD_NOT_FOUND DomainError', async () => {
         const result = await new UserReadsACardUseCase().execute({ id: 'nonExistingId' })
-        assert.equal(result, Response.withError(new DomainError(ErrorType.CARD_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.CARD_NOT_FOUND)))
     })
 
 userReadsACardUseCase(

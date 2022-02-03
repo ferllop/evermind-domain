@@ -38,7 +38,7 @@ userModifiesUserDataUseCase(
     'RESOURCE_NOT_FOUND DomainError', async () => {
         const user = await givenAStoredUser()
         const result = await new UserModifiesUserDataUseCase().execute({ ...user, id: 'notExistingId' })
-        assert.equal(result, Response.withError(new DomainError(ErrorType.USER_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.USER_NOT_FOUND)))
     })
 
 userModifiesUserDataUseCase(
@@ -51,7 +51,7 @@ userModifiesUserDataUseCase(
             id: invalidUserId
         }
         const result = await new UserModifiesUserDataUseCase().execute(invalidRequest)
-        assert.equal(result, Response.withError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
+        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
     })
 
 userModifiesUserDataUseCase.run()

@@ -49,7 +49,7 @@ userSignsUpUseCase(
             username: invalidUsername
         }
         const result = await new UserSignsUpUseCase().execute(invalidRequest)
-        assert.equal(result, Response.withError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
+        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
     })
 
 userSignsUpUseCase.run()

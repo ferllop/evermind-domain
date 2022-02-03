@@ -20,7 +20,7 @@ userGetsUserInfoUseCase(
             id: ''
         }
         const result = await new UserGetsUserInfoUseCase().execute(invalidRequest)
-        assert.equal(result, Response.withError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
+        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
     })
 
 userGetsUserInfoUseCase(
@@ -28,7 +28,7 @@ userGetsUserInfoUseCase(
     'should return an object with data property as null ' +
     'and USER_NOT_FOUND DomainError', async () => {
         const result = await new UserGetsUserInfoUseCase().execute({id: 'nonExistingId'})
-        assert.equal(result, Response.withError(new DomainError(ErrorType.USER_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.USER_NOT_FOUND)))
     })
 
 userGetsUserInfoUseCase(
@@ -36,7 +36,7 @@ userGetsUserInfoUseCase(
     'should return an object with data property as null ' +
     'and USER_NOT_FOUND DomainError', async () => {
         const result = await new UserGetsUserInfoUseCase().execute({id: 'nonExistingId'})
-        assert.equal(result, Response.withError(new DomainError(ErrorType.USER_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.USER_NOT_FOUND)))
     })
 
 userGetsUserInfoUseCase(

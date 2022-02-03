@@ -59,7 +59,7 @@ userUnsubscribesFromCard('given a previous unsubscription, when unsubscribing ag
     await new UserUnsubscribesFromCardUseCase().execute(request)
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
 
-    assert.equal(result, Response.withError(new DomainError(ErrorType.SUBSCRIPTION_NOT_EXISTS)))
+    assert.equal(result, Response.withDomainError(new DomainError(ErrorType.SUBSCRIPTION_NOT_EXISTS)))
 })
 
 userUnsubscribesFromCard('given an existing user id not subscribed to an existing card id, then return a SUBSCRIPTION_NOT_EXISTS', async () => {
@@ -72,7 +72,7 @@ userUnsubscribesFromCard('given an existing user id not subscribed to an existin
 
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
 
-    assert.equal(result, Response.withError(new DomainError(ErrorType.SUBSCRIPTION_NOT_EXISTS)))
+    assert.equal(result, Response.withDomainError(new DomainError(ErrorType.SUBSCRIPTION_NOT_EXISTS)))
 })
 
 
@@ -86,7 +86,7 @@ userUnsubscribesFromCard('given a non existing userid, then return a USER_NOT_FO
 
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
 
-    assert.equal(result, Response.withError(new DomainError(ErrorType.USER_NOT_FOUND)))
+    assert.equal(result, Response.withDomainError(new DomainError(ErrorType.USER_NOT_FOUND)))
 })
 
 userUnsubscribesFromCard('given a non existing card id, then return a CARD_NOT_FOUND', async () => {
@@ -99,7 +99,7 @@ userUnsubscribesFromCard('given a non existing card id, then return a CARD_NOT_F
 
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
 
-    assert.equal(result, Response.withError(new DomainError(ErrorType.CARD_NOT_FOUND)))
+    assert.equal(result, Response.withDomainError(new DomainError(ErrorType.CARD_NOT_FOUND)))
 })
 
 userUnsubscribesFromCard.run()
