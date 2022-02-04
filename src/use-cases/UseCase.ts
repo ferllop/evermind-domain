@@ -1,6 +1,6 @@
 import {Response} from './Response.js'
-import {ErrorType} from '../domain/errors/ErrorType.js'
 import {DomainError} from '../domain/errors/DomainError.js'
+import {RequiredRequestFieldIsMissingError} from '../domain/errors/RequiredRequestFieldIsMissingError.js'
 
 export abstract class UseCase<RequestType, ResponseType> {
     private isRequestValid(request: RequestType): boolean {
@@ -11,7 +11,7 @@ export abstract class UseCase<RequestType, ResponseType> {
     async execute(request: RequestType) {
         try {
             if (!this.isRequestValid(request)) {
-                return Response.withDomainError(new DomainError(ErrorType.REQUIRED_REQUEST_FIELD_IS_MISSING))
+                return Response.withDomainError(new RequiredRequestFieldIsMissingError())
             }
             return await this.internalExecute(request)
         } catch (error) {

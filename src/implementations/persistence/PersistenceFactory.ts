@@ -5,9 +5,8 @@ import {UserInMemoryDao} from './in-memory/UserInMemoryDao.js'
 import {SubscriptionPostgresDao} from './postgres/subscription/SubscriptionPostgresDao.js'
 import {SubscriptionInMemoryDao} from './in-memory/SubscriptionInMemoryDao.js'
 import {PersistenceType} from './PersistenceType.js'
-import {DomainError} from '../../domain/errors/DomainError.js'
-import {ErrorType} from '../../domain/errors/ErrorType.js'
 import {Config} from '../Config.js'
+import {PersistenceMethodNotDeclaredError} from '../../domain/errors/PersistenceMethodNotDeclaredError.js'
 
 export class PersistenceFactory {
 
@@ -18,7 +17,7 @@ export class PersistenceFactory {
             case 'memory':
                 return new CardInMemoryDao()
             default:
-                throw new DomainError(ErrorType.PERSISTENCE_METHOD_NOT_DECLARED)
+                throw new PersistenceMethodNotDeclaredError()
         }
     }
 
@@ -29,7 +28,7 @@ export class PersistenceFactory {
             case 'memory':
                 return new UserInMemoryDao()
             default:
-                throw new DomainError(ErrorType.PERSISTENCE_METHOD_NOT_DECLARED)
+                throw new PersistenceMethodNotDeclaredError()
         }
     }
 
@@ -40,7 +39,7 @@ export class PersistenceFactory {
             case 'memory':
                 return new SubscriptionInMemoryDao()
             default:
-                throw new DomainError(ErrorType.PERSISTENCE_METHOD_NOT_DECLARED)
+                throw new PersistenceMethodNotDeclaredError()
         }
     }
 

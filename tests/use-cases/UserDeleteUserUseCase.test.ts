@@ -1,6 +1,5 @@
 import {assert, suite} from '../test-config.js'
 import {Response} from '../../src/use-cases/Response.js'
-import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {UserRemovesAccountUseCase} from '../../src/use-cases/UserRemovesAccountUseCase.js'
 import {
     givenACleanInMemoryDatabase,
@@ -10,7 +9,8 @@ import {
     assertUserIsNotStored,
     assertUserIsStored,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
-import {DomainError} from '../../src/domain/errors/DomainError.js'
+import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
+import {UserNotFoundError} from '../../src/domain/errors/UserNotFoundError.js'
 
 const userRemovesAccountUseCase = suite('User removes account use case')
 
@@ -38,7 +38,7 @@ userRemovesAccountUseCase(
     'error property as USER_NOT_FOUND DomainError', async () => {
         await givenAStoredUser()
         const result = await new UserRemovesAccountUseCase().execute({id: 'non-existingId'})
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.USER_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new UserNotFoundError()))
     })
 
 userRemovesAccountUseCase(
@@ -46,7 +46,7 @@ userRemovesAccountUseCase(
     'it should return an object with data property as null and ' +
     'error property as USER_NOT_FOUND DomainError', async () => {
         const result = await new UserRemovesAccountUseCase().execute({id: 'non-existingIdNorTable'})
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.USER_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new UserNotFoundError()))
     })
 
 userRemovesAccountUseCase(
@@ -57,7 +57,7 @@ userRemovesAccountUseCase(
             id: ''
         }
         const result = await new UserRemovesAccountUseCase().execute(invalidRequest)
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
+        assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
     })
 
 userRemovesAccountUseCase.run()

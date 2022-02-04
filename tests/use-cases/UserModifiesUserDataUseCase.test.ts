@@ -1,4 +1,3 @@
-import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {assert, suite} from '../test-config.js'
 import {UserModifiesUserDataUseCase} from '../../src/use-cases/UserModifiesUserDataUseCase.js'
@@ -8,7 +7,8 @@ import {
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {assertUserIsStored} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
 import {UserBuilder} from '../domain/user/UserBuilder.js'
-import {DomainError} from '../../src/domain/errors/DomainError.js'
+import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
+import {UserNotFoundError} from '../../src/domain/errors/UserNotFoundError.js'
 
 const userModifiesUserDataUseCase = suite("User modifies user data use case")
 
@@ -38,7 +38,7 @@ userModifiesUserDataUseCase(
     'RESOURCE_NOT_FOUND DomainError', async () => {
         const user = await givenAStoredUser()
         const result = await new UserModifiesUserDataUseCase().execute({ ...user, id: 'notExistingId' })
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.USER_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new UserNotFoundError()))
     })
 
 userModifiesUserDataUseCase(
@@ -51,7 +51,7 @@ userModifiesUserDataUseCase(
             id: invalidUserId
         }
         const result = await new UserModifiesUserDataUseCase().execute(invalidRequest)
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
+        assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
     })
 
 userModifiesUserDataUseCase.run()

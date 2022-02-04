@@ -1,4 +1,3 @@
-import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {assert, suite} from '../test-config.js'
 import {UserRemovesCardUseCase} from '../../src/use-cases/UserRemovesCardUseCase.js'
@@ -10,7 +9,8 @@ import {
     assertCardIsNotStored,
     assertCardIsStored,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
-import {DomainError} from '../../src/domain/errors/DomainError.js'
+import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
+import {CardNotFoundError} from '../../src/domain/errors/CardNotFoundError.js'
 
 const userRemovesCardUseCase = suite("User removes card use case")
 
@@ -37,7 +37,7 @@ userRemovesCardUseCase(
     'it should return an object with data property as null and ' +
     'error property as CARD_NOT_FOUND DomainError', async () => {
         const result = await new UserRemovesCardUseCase().execute({ id: 'unexistingID' })
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.CARD_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new CardNotFoundError()))
     })
 
 userRemovesCardUseCase(
@@ -48,7 +48,7 @@ userRemovesCardUseCase(
             id: ''
         }
         const result = await new UserRemovesCardUseCase().execute(invalidRequest)
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
+        assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
     })
 
 userRemovesCardUseCase.run()

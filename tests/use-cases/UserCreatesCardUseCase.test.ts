@@ -1,4 +1,3 @@
-import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {assert, suite} from '../test-config.js'
 import {UserCreatesCardUseCase} from '../../src/use-cases/UserCreatesCardUseCase.js'
@@ -8,7 +7,7 @@ import {
     givenAStoredUser,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {assertUserHasStoredACard} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
-import {DomainError} from '../../src/domain/errors/DomainError.js'
+import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
 
 const userCreatesCardUseCase = suite("User creates a card use case")
 
@@ -56,7 +55,7 @@ userCreatesCardUseCase(
             userId: invalidUserId
         }
         const result = await new UserCreatesCardUseCase().execute(invalidRequest)
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
+        assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
     })
 
 userCreatesCardUseCase.run()

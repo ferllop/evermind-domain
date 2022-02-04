@@ -1,9 +1,8 @@
 import {assert, suite} from '../test-config.js'
-import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {UseCase} from '../../src/use-cases/UseCase.js'
 import {Request} from '../../src/use-cases/Request.js'
 import {Response} from '../../src/use-cases/Response.js'
-import {DomainError} from '../../src/domain/errors/DomainError.js'
+import {RequiredRequestFieldIsMissingError} from '../../src/domain/errors/RequiredRequestFieldIsMissingError.js'
 
 class TestableUseCase extends UseCase<Request, null> {
     error?: Error
@@ -30,7 +29,7 @@ const useCase = suite('Use Case')
 useCase('should return REQUEST_FIELD_NOT_VALID when a required field is not present in request', async () => {
     assert.equal(
         await new TestableUseCase().execute({fieldA: 'someData'}),
-        Response.withDomainError(new DomainError(ErrorType.REQUIRED_REQUEST_FIELD_IS_MISSING)))
+        Response.withDomainError(new RequiredRequestFieldIsMissingError()))
 })
 
 useCase('should permit extra fields in addition to the required ones', async () => {

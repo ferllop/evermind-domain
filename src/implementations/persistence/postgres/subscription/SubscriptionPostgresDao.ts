@@ -1,7 +1,5 @@
 import {SubscriptionDao} from '../../../../domain/subscription/SubscriptionDao.js'
 import {Subscription} from '../../../../domain/subscription/Subscription.js'
-import {DomainError} from '../../../../domain/errors/DomainError.js'
-import {ErrorType} from '../../../../domain/errors/ErrorType.js'
 import {NullSubscription} from '../../../../domain/subscription/NullSubscription.js'
 import {SubscriptionIdentification} from '../../../../domain/subscription/SubscriptionIdentification.js'
 import {UserIdentification} from '../../../../domain/user/UserIdentification.js'
@@ -10,6 +8,10 @@ import {SubscriptionPostgresDatastore} from './SubscriptionPostgresDatastore.js'
 import {SubscriptionSqlQuery} from './SubscriptionSqlQuery.js'
 import {PostgresErrorType} from '../PostgresErrorType.js'
 import {PostgresDatastoreError} from '../PostgresDatastoreError.js'
+import {SubscriptionNotExistsError} from '../../../../domain/errors/SubscriptionNotExistsError.js'
+import {UserIsAlreadySubscribedToCardError} from '../../../../domain/errors/UserIsAlreadySubscribedToCardError.js'
+import {CardNotFoundError} from '../../../../domain/errors/CardNotFoundError.js'
+import {DataFromStorageNotValidError} from '../../../../domain/errors/DataFromStorageNotValidError.js'
 
 export class SubscriptionPostgresDao implements SubscriptionDao {
     private sqlQuery = new SubscriptionSqlQuery()
@@ -25,7 +27,7 @@ export class SubscriptionPostgresDao implements SubscriptionDao {
         } catch (error) {
             if (error instanceof PostgresDatastoreError &&
                 error.code === PostgresErrorType.NOT_UNIQUE_FIELD) {
-                throw new DomainError(ErrorType.USER_IS_ALREADY_SUBSCRIBED_TO_CARD)
+                throw new UserIsAlreadySubscribedToCardError()
             }
             throw error
         }
@@ -35,7 +37,7 @@ export class SubscriptionPostgresDao implements SubscriptionDao {
         const query = this.sqlQuery.delete(id)
         const result = await this.datastore.query(query)
         if (result.rowCount === 0) {
-            throw new DomainError(ErrorType.CARD_NOT_FOUND)
+            throw new CardNotFoundError()
         }
     }
 
@@ -43,7 +45,7 @@ export class SubscriptionPostgresDao implements SubscriptionDao {
         const query = this.sqlQuery.findById(id)
         const result = await this.datastore.query(query)
         if (result.rowCount > 1) {
-            throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
+            throw new DataFromStorageNotValidError()
         }
         return result.rowCount === 1 ? new SubscriptionPostgresMapper().rowToSubscription(result.rows[0]) : NullSubscription.getInstance()
     }
@@ -52,7 +54,7 @@ export class SubscriptionPostgresDao implements SubscriptionDao {
         const query = this.sqlQuery.update(subscription)
         const result = await this.datastore.query(query)
         if (result.rowCount === 0) {
-            throw new DomainError(ErrorType.SUBSCRIPTION_NOT_EXISTS)
+            throw new SubscriptionNotExistsError()
         }
     }
 

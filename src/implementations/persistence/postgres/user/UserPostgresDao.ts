@@ -1,6 +1,4 @@
 import {User} from '../../../../domain/user/User.js'
-import {DomainError} from '../../../../domain/errors/DomainError.js'
-import {ErrorType} from '../../../../domain/errors/ErrorType.js'
 import {UserIdentification} from '../../../../domain/user/UserIdentification.js'
 import {NullUser} from '../../../../domain/user/NullUser.js'
 import {UserSqlQuery} from './UserSqlQuery.js'
@@ -10,6 +8,9 @@ import {UserDao} from '../../../../domain/user/UserDao.js'
 import {Username} from '../../../../domain/user/Username.js'
 import {PostgresErrorType} from '../PostgresErrorType.js'
 import {PostgresDatastoreError} from '../PostgresDatastoreError.js'
+import {UserAlreadyExistsError} from '../../../../domain/errors/UserAlreadyExistsError.js'
+import {UserNotFoundError} from '../../../../domain/errors/UserNotFoundError.js'
+import {DataFromStorageNotValidError} from '../../../../domain/errors/DataFromStorageNotValidError.js'
 
 export class UserPostgresDao implements UserDao {
 
@@ -24,10 +25,9 @@ export class UserPostgresDao implements UserDao {
         try {
             await this.datastore.query(query)
         } catch (error) {
-            console.log(error)
             if (error instanceof PostgresDatastoreError &&
                 error.code === PostgresErrorType.NOT_UNIQUE_FIELD) {
-                throw new DomainError(ErrorType.USER_ALREADY_EXISTS)
+                throw new UserAlreadyExistsError()
             }
             throw error
         }
@@ -37,7 +37,7 @@ export class UserPostgresDao implements UserDao {
         const query = this.sqlQuery.delete(id)
         const result = await this.datastore.query(query)
         if (result.rowCount === 0) {
-            throw new DomainError(ErrorType.USER_NOT_FOUND)
+            throw new UserNotFoundError()
         }
     }
 
@@ -45,14 +45,14 @@ export class UserPostgresDao implements UserDao {
         const query = this.sqlQuery.update(user)
         const result = await this.datastore.query(query)
         if (result.rowCount === 0) {
-            throw new DomainError(ErrorType.USER_NOT_FOUND)
+            throw new UserNotFoundError()
         }
     }
 
     private async findOne(query: string): Promise<User> {
         const result = await this.datastore.query(query)
         if (result.rowCount > 1) {
-            throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
+            throw new DataFromStorageNotValidError()
         }
         return result.rowCount > 0
             ? new UserPostgresMapper().rowToUser(result.rows[0])

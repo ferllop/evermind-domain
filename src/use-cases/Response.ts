@@ -1,6 +1,7 @@
 import {DomainError} from '../domain/errors/DomainError.js'
-import {ErrorType} from '../domain/errors/ErrorType.js'
 import {ErrorDto} from './ErrorDto.js'
+import {UndocumentedError} from '../domain/errors/UndocumentedError.js'
+import {NullError} from '../domain/errors/NullError.js'
 
 export class Response<T> {
     error: ErrorDto
@@ -16,19 +17,16 @@ export class Response<T> {
     }
 
     static withError(error: Error): Response<null> {
-        const undocumentedDomainError = new DomainError(ErrorType.UNDOCUMENTED, error)
+        const undocumentedDomainError = new UndocumentedError(error)
         return this.withDomainError(undocumentedDomainError)
     }
 
     static OkWithoutData(): Response<null> {
-        return new Response(new DomainError(ErrorType.NULL), null)
+        return new Response(new NullError(), null)
     }
 
     static OkWithData<T>(data: T): Response<T> {
-        return new Response<T>(new DomainError(ErrorType.NULL), data)
+        return new Response<T>(new NullError(), data)
     }
 
-    hasError(error: ErrorType) {
-        return this.data === null && this.error.code === error
-    }
 }

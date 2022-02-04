@@ -1,16 +1,17 @@
 import {SubscriptionFactory} from '../../../domain/subscription/SubscriptionFactory.js'
 import {Identification} from '../../../domain/shared/value/Identification.js'
 import {Criteria} from './Criteria.js'
-import {DomainError} from '../../../domain/errors/DomainError.js'
 import {NullSubscription} from '../../../domain/subscription/NullSubscription.js'
 import {SubscriptionField} from './SubscriptionField.js'
 import {Subscription} from '../../../domain/subscription/Subscription.js'
 import {SubscriptionDto} from '../../../domain/subscription/SusbcriptionDto.js'
-import {ErrorType} from '../../../domain/errors/ErrorType.js'
 import {SubscriptionDao} from '../../../domain/subscription/SubscriptionDao.js'
 import {SubscriptionIdentification} from '../../../domain/subscription/SubscriptionIdentification.js'
 import {UserIdentification} from '../../../domain/user/UserIdentification.js'
 import {InMemoryDatastore} from './InMemoryDatastore.js'
+import {InputDataNotValidError} from '../../../domain/errors/InputDataNotValidError.js'
+import {ResourceNotFoundError} from '../../../domain/errors/ResourceNotFoundError.js'
+import {DataFromStorageNotValidError} from '../../../domain/errors/DataFromStorageNotValidError.js'
 
 
 export class SubscriptionInMemoryDao implements SubscriptionDao {
@@ -21,22 +22,22 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
     async insert(subscription: Subscription) {
         const result = await this.datastore.create(this.tableName, subscription.toDto())
         if (!result) {
-            throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
+            throw new DataFromStorageNotValidError()
         }
     }
 
     async delete(id: SubscriptionIdentification) {
         if (id.isNull()) {
-            throw new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
+            throw new InputDataNotValidError()
         }
 
         if (!await this.datastore.hasTable(this.tableName)) {
-            throw new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+            throw new ResourceNotFoundError()
         }
 
         const deleted = await this.datastore.delete(this.tableName, id.getId())
         if (!deleted) {
-            throw new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+            throw new ResourceNotFoundError()
         }
 
     }
@@ -56,11 +57,11 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
 
     async update(entity: Subscription) {
         if (!await this.datastore.hasTable(this.tableName)) {
-            throw new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+            throw new ResourceNotFoundError()
         }
         const updated = this.datastore.update(this.tableName, entity.toDto())
         if (!updated) {
-            throw new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+            throw new ResourceNotFoundError()
         }
     }
 

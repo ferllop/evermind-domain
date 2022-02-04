@@ -4,10 +4,10 @@ import {UserIdentification} from '../../../domain/user/UserIdentification.js'
 import {UserDto} from '../../../domain/user/UserDto.js'
 import {UserFactory} from '../../../domain/user/UserFactory.js'
 import {User} from '../../../domain/user/User.js'
-import {DomainError} from '../../../domain/errors/DomainError.js'
 import {NullUser} from '../../../domain/user/NullUser.js'
-import {ErrorType} from '../../../domain/errors/ErrorType.js'
 import {Username} from '../../../domain/user/Username.js'
+import {UserNotFoundError} from '../../../domain/errors/UserNotFoundError.js'
+import {DataFromStorageNotValidError} from '../../../domain/errors/DataFromStorageNotValidError.js'
 
 export class UserInMemoryDao implements UserDao {
 
@@ -22,7 +22,7 @@ export class UserInMemoryDao implements UserDao {
     async insert(user: User) {
         const result = await this.datastore.create(this.tableName, user.toDto())
         if (!result) {
-            throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
+            throw new DataFromStorageNotValidError()
         }
     }
 
@@ -59,22 +59,22 @@ export class UserInMemoryDao implements UserDao {
 
     async update(user: User) {
         if (!await this.datastore.hasTable(this.tableName)) {
-            throw new DomainError(ErrorType.USER_NOT_FOUND)
+            throw new UserNotFoundError()
         }
         const updated = this.datastore.update(this.tableName, user.toDto())
         if (!updated) {
-            throw new DomainError(ErrorType.USER_NOT_FOUND)
+            throw new UserNotFoundError()
         }
     }
 
     async delete(id: UserIdentification) {
         if (!await this.datastore.hasTable(this.tableName)) {
-            throw new DomainError(ErrorType.USER_NOT_FOUND)
+            throw new UserNotFoundError()
         }
 
         const deleted = await this.datastore.delete(this.tableName, id.getId())
         if (!deleted) {
-            throw new DomainError(ErrorType.USER_NOT_FOUND)
+            throw new UserNotFoundError()
         }
 
     }

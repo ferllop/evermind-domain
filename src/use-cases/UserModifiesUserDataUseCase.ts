@@ -1,11 +1,11 @@
-import {ErrorType} from '../domain/errors/ErrorType.js'
 import {UserRepository} from '../domain/user/UserRepository.js'
 import {UserIdentification} from '../domain/user/UserIdentification.js'
 import {UserFactory} from '../domain/user/UserFactory.js'
 import {Response} from './Response.js'
 import {UserModifiesUserDataRequest} from './UserModifiesUserDataRequest.js'
 import {UseCase} from './UseCase.js'
-import {DomainError} from '../domain/errors/DomainError.js'
+import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js'
+import {UserNotFoundError} from '../domain/errors/UserNotFoundError.js'
 
 export class UserModifiesUserDataUseCase extends UseCase<UserModifiesUserDataRequest, null> {
     protected getRequiredRequestFields(): string[] {
@@ -15,14 +15,14 @@ export class UserModifiesUserDataUseCase extends UseCase<UserModifiesUserDataReq
     protected async internalExecute(dto: UserModifiesUserDataRequest) {
         const mapper = new UserFactory()
         if (!mapper.arePropertiesValid(dto)) {
-            throw new DomainError(ErrorType.INPUT_DATA_NOT_VALID)
+            throw new InputDataNotValidError()
         }
 
         const {id, ...userData} = dto
         const userRepository = new UserRepository()
         const user = await userRepository.findById(new UserIdentification(id))
         if (user.isNull()) {
-            throw new DomainError(ErrorType.USER_NOT_FOUND)
+            throw new UserNotFoundError()
         }
         await userRepository.update(new UserFactory().apply(user, userData))
 

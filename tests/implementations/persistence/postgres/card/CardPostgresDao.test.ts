@@ -2,7 +2,6 @@ import {AuthorIdentification} from '../../../../../src/domain/card/AuthorIdentif
 import {CardIdentification} from '../../../../../src/domain/card/CardIdentification.js'
 import {CardPostgresDao} from '../../../../../src/implementations/persistence/postgres/card/CardPostgresDao.js'
 import {DomainError} from '../../../../../src/domain/errors/DomainError.js'
-import {ErrorType} from '../../../../../src/domain/errors/ErrorType.js'
 import {CardBuilder} from '../../../../domain/card/CardBuilder.js'
 import {assert, suite} from '../../../../test-config.js'
 import {Card} from '../../../../../src/domain/card/Card.js'
@@ -13,6 +12,8 @@ import {CardPostgresMapperTestHelper} from './CardPostgresMapperTestHelper.js'
 import {CardRow} from '../../../../../src/implementations/persistence/postgres/card/CardRow.js'
 import {assertObjectListsAreEqualsInAnyOrder} from '../AssertObjectListsAreEqualsInAnyOrder.js'
 import {PostgresErrorType} from '../../../../../src/implementations/persistence/postgres/PostgresErrorType.js'
+import {CardAlreadyExistsError} from '../../../../../src/domain/errors/CardAlreadyExistsError.js'
+import {CardNotFoundError} from '../../../../../src/domain/errors/CardNotFoundError.js'
 
 type Context = {
     mock: PostgresDatastoreMock,
@@ -35,7 +36,7 @@ cardDao('should throw a CARD_ALREADY_EXISTS error when inserting a card that alr
         assert.unreachable()
     } catch (error) {
         if (error instanceof DomainError) {
-            assert.is(error.getCode(), ErrorType.CARD_ALREADY_EXISTS)
+            assert.instance(error, CardAlreadyExistsError)
         } else {
             throw error
         }
@@ -51,7 +52,7 @@ cardDao('should throw a CARD_NOT_FOUND error when deleting a non-existing card',
         assert.unreachable()
     } catch (error) {
         if (error instanceof DomainError) {
-            assert.is(error.getCode(), ErrorType.CARD_NOT_FOUND)
+            assert.instance(error, CardNotFoundError)
         } else {
             throw error
         }
@@ -66,7 +67,7 @@ cardDao('should throw a CARD_NOT_FOUND error when no card is found to be updated
         assert.unreachable()
     } catch (error) {
         if (error instanceof DomainError) {
-            assert.is(error.getCode(), ErrorType.CARD_NOT_FOUND)
+            assert.instance(error, CardNotFoundError)
         } else {
             throw error
         }

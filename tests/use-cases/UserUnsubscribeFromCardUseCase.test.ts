@@ -1,4 +1,3 @@
-import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {assert, suite} from '../test-config.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {UserSubscribesToCardUseCase} from '../../src/use-cases/UserSubscribesToCardUseCase.js'
@@ -12,7 +11,9 @@ import {
     assertSubscriptionIsNotStored,
     assertSubscriptionIsStored,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
-import {DomainError} from '../../src/domain/errors/DomainError.js'
+import {SubscriptionNotExistsError} from '../../src/domain/errors/SubscriptionNotExistsError.js'
+import {UserNotFoundError} from '../../src/domain/errors/UserNotFoundError.js'
+import {CardNotFoundError} from '../../src/domain/errors/CardNotFoundError.js'
 
 const userUnsubscribesFromCard = suite("User unsubscribes from card")
 
@@ -59,7 +60,7 @@ userUnsubscribesFromCard('given a previous unsubscription, when unsubscribing ag
     await new UserUnsubscribesFromCardUseCase().execute(request)
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
 
-    assert.equal(result, Response.withDomainError(new DomainError(ErrorType.SUBSCRIPTION_NOT_EXISTS)))
+    assert.equal(result, Response.withDomainError(new SubscriptionNotExistsError()))
 })
 
 userUnsubscribesFromCard('given an existing user id not subscribed to an existing card id, then return a SUBSCRIPTION_NOT_EXISTS', async () => {
@@ -72,7 +73,7 @@ userUnsubscribesFromCard('given an existing user id not subscribed to an existin
 
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
 
-    assert.equal(result, Response.withDomainError(new DomainError(ErrorType.SUBSCRIPTION_NOT_EXISTS)))
+    assert.equal(result, Response.withDomainError(new SubscriptionNotExistsError()))
 })
 
 
@@ -86,7 +87,7 @@ userUnsubscribesFromCard('given a non existing userid, then return a USER_NOT_FO
 
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
 
-    assert.equal(result, Response.withDomainError(new DomainError(ErrorType.USER_NOT_FOUND)))
+    assert.equal(result, Response.withDomainError(new UserNotFoundError()))
 })
 
 userUnsubscribesFromCard('given a non existing card id, then return a CARD_NOT_FOUND', async () => {
@@ -99,7 +100,7 @@ userUnsubscribesFromCard('given a non existing card id, then return a CARD_NOT_F
 
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
 
-    assert.equal(result, Response.withDomainError(new DomainError(ErrorType.CARD_NOT_FOUND)))
+    assert.equal(result, Response.withDomainError(new CardNotFoundError()))
 })
 
 userUnsubscribesFromCard.run()

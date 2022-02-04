@@ -1,8 +1,6 @@
 import {CardDao} from '../../../domain/card/CardDao.js'
 import {NullCard} from '../../../domain/card/NullCard.js'
 import {CardFactory} from '../../../domain/card/CardFactory.js'
-import {DomainError} from '../../../domain/errors/DomainError.js'
-import {ErrorType} from '../../../domain/errors/ErrorType.js'
 import {Identification} from '../../../domain/shared/value/Identification.js'
 import {InMemoryDatastore} from './InMemoryDatastore.js'
 import {Card} from '../../../domain/card/Card.js'
@@ -11,6 +9,9 @@ import {CardDto} from '../../../domain/card/CardDto.js'
 import {AuthorIdentification} from '../../../domain/card/AuthorIdentification.js'
 import {Labelling} from '../../../domain/card/Labelling.js'
 import {Criteria} from './Criteria.js'
+import {ResourceNotFoundError} from '../../../domain/errors/ResourceNotFoundError.js'
+import {DataFromStorageNotValidError} from '../../../domain/errors/DataFromStorageNotValidError.js'
+import {CardNotFoundError} from '../../../domain/errors/CardNotFoundError.js'
 
 export class CardInMemoryDao implements CardDao {
     private readonly tableName = 'cards'
@@ -23,17 +24,17 @@ export class CardInMemoryDao implements CardDao {
     async insert(card: Card) {
         const result = await this.datastore.create(this.tableName, card.toDto())
         if (!result) {
-            throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
+            throw new DataFromStorageNotValidError()
         }
     }
 
     async delete(id: CardIdentification) {
         if (!await this.datastore.hasTable(this.tableName)) {
-            throw new DomainError(ErrorType.CARD_NOT_FOUND)
+            throw new CardNotFoundError()
         }
         const deleted = await this.datastore.delete(this.tableName, id.getId())
         if (!deleted) {
-            throw new DomainError(ErrorType.RESOURCE_NOT_FOUND)
+            throw new ResourceNotFoundError()
         }
 
     }
@@ -52,11 +53,11 @@ export class CardInMemoryDao implements CardDao {
 
     async update(card: Card) {
         if (!await this.datastore.hasTable(this.tableName)) {
-            throw new DomainError(ErrorType.CARD_NOT_FOUND)
+            throw new CardNotFoundError()
         }
         const updated = this.datastore.update(this.tableName, card.toDto())
         if(!updated) {
-            throw new DomainError(ErrorType.CARD_NOT_FOUND)
+            throw new CardNotFoundError()
         }
     }
 

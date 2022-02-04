@@ -1,21 +1,13 @@
-import { ErrorEnglish, ErrorType } from './ErrorType.js'
+import {DomainErrorCode} from './DomainErrorCode.js'
 import {ErrorDto} from '../../use-cases/ErrorDto.js'
 
-export class DomainError extends Error {
-    static NULL = new DomainError(ErrorType.NULL)
-    
-    private readonly code: ErrorType
+export abstract class DomainError extends Error {
 
-    constructor(errorType: ErrorType, error?: Error){
-        super(ErrorEnglish.get(errorType) ?? DomainError.getUndocumentedErrorMessage(errorType))
+    private readonly code: DomainErrorCode
+
+    protected constructor(errorType: DomainErrorCode, message?: string){
+        super(message)
         this.code = errorType
-        if (error) {
-           this.message = error.message
-        }
-    }
-
-    private static getUndocumentedErrorMessage(errorType: ErrorType) {
-        return `Error with code ${errorType} not documented`
     }
 
     getCode() {

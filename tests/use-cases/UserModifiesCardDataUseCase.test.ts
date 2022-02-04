@@ -1,6 +1,5 @@
 import {CardDto} from '../../src/domain/card/CardDto.js'
 import {CardField} from '../../src/implementations/persistence/in-memory/CardField.js'
-import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {UserModifiesCardDataUseCase} from '../../src/use-cases/UserModifiesCardDataUseCase.js'
 import {assert, suite} from '../test-config.js'
@@ -10,7 +9,8 @@ import {
     givenAStoredCard,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {CardBuilder} from '../domain/card/CardBuilder.js'
-import {DomainError} from '../../src/domain/errors/DomainError.js'
+import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
+import {CardNotFoundError} from '../../src/domain/errors/CardNotFoundError.js'
 
 const userModifiesCardDataUseCase = suite('User modifies card data use case')
 
@@ -24,7 +24,7 @@ userModifiesCardDataUseCase(
             userId: '',
             ...new CardBuilder().buildDto(),
         })
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.CARD_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new CardNotFoundError()))
     })
 
 userModifiesCardDataUseCase(
@@ -79,7 +79,7 @@ userModifiesCardDataUseCase(
             ...card,
             id: 'notExistingId',
         })
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.CARD_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new CardNotFoundError()))
     })
 
 userModifiesCardDataUseCase(
@@ -94,7 +94,7 @@ userModifiesCardDataUseCase(
             userId: '',
             ...invalidCardData
         })
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
+        assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
     })
 
 userModifiesCardDataUseCase(
@@ -107,7 +107,7 @@ userModifiesCardDataUseCase(
             ...new CardBuilder().buildDto(),
             labelling: invalidLabelling,
         })
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
+        assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
     })
 
 userModifiesCardDataUseCase.run()

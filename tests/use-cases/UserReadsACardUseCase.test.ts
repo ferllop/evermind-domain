@@ -1,4 +1,3 @@
-import {ErrorType} from '../../src/domain/errors/ErrorType.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {assert, suite} from '../test-config.js'
 import {UserReadsACardUseCase} from '../../src/use-cases/UserReadsACardUseCase.js'
@@ -6,7 +5,8 @@ import {
     givenACleanInMemoryDatabase,
     givenAStoredCard,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
-import {DomainError} from '../../src/domain/errors/DomainError.js'
+import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
+import {CardNotFoundError} from '../../src/domain/errors/CardNotFoundError.js'
 
 const userReadsACardUseCase = suite("User reads a card use case")
 
@@ -20,7 +20,7 @@ userReadsACardUseCase(
             id: ''
         }
         const result = await new UserReadsACardUseCase().execute(invalidRequest)
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.INPUT_DATA_NOT_VALID)))
+        assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
     })
 
 userReadsACardUseCase(
@@ -29,7 +29,7 @@ userReadsACardUseCase(
     'and CARD_NOT_FOUND DomainError', async () => {
         await givenAStoredCard()
         const result = await new UserReadsACardUseCase().execute({ id: 'nonExistingId' })
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.CARD_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new CardNotFoundError()))
     })
 
 userReadsACardUseCase(
@@ -37,7 +37,7 @@ userReadsACardUseCase(
     'should return an object with data property as null ' +
     'and CARD_NOT_FOUND DomainError', async () => {
         const result = await new UserReadsACardUseCase().execute({ id: 'nonExistingId' })
-        assert.equal(result, Response.withDomainError(new DomainError(ErrorType.CARD_NOT_FOUND)))
+        assert.equal(result, Response.withDomainError(new CardNotFoundError()))
     })
 
 userReadsACardUseCase(

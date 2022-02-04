@@ -1,5 +1,3 @@
-import {DomainError} from '../../../../domain/errors/DomainError.js'
-import {ErrorType} from '../../../../domain/errors/ErrorType.js'
 import {AuthorIdentification} from '../../../../domain/card/AuthorIdentification.js'
 import {Card} from '../../../../domain/card/Card.js'
 import {CardIdentification} from '../../../../domain/card/CardIdentification.js'
@@ -11,6 +9,9 @@ import {CardPostgresMapper} from './CardPostgresMapper.js'
 import {CardPostgresDatastore} from './CardPostgresDatastore.js'
 import {PostgresErrorType} from '../PostgresErrorType.js'
 import {PostgresDatastoreError} from '../PostgresDatastoreError.js'
+import {CardAlreadyExistsError} from '../../../../domain/errors/CardAlreadyExistsError.js'
+import {CardNotFoundError} from '../../../../domain/errors/CardNotFoundError.js'
+import {DataFromStorageNotValidError} from '../../../../domain/errors/DataFromStorageNotValidError.js'
 
 export class CardPostgresDao implements CardDao {
 
@@ -26,7 +27,7 @@ export class CardPostgresDao implements CardDao {
             await this.datastore.query(query)
         } catch (error) {
             if (error instanceof PostgresDatastoreError && error.code === PostgresErrorType.NOT_UNIQUE_FIELD) {
-                throw new DomainError(ErrorType.CARD_ALREADY_EXISTS)
+                throw new CardAlreadyExistsError()
             }
             throw error
         }
@@ -37,7 +38,7 @@ export class CardPostgresDao implements CardDao {
         const query = this.sqlQuery.update(card)
         const result = await this.datastore.query(query)
         if (result.rowCount === 0) {
-            throw new DomainError(ErrorType.CARD_NOT_FOUND)
+            throw new CardNotFoundError()
         }
     }
 
@@ -45,7 +46,7 @@ export class CardPostgresDao implements CardDao {
         const query = this.sqlQuery.delete(id)
         const result = await this.datastore.query(query)
         if (result.rowCount === 0) {
-            throw new DomainError(ErrorType.CARD_NOT_FOUND)
+            throw new CardNotFoundError()
         }
     }
 
@@ -59,7 +60,7 @@ export class CardPostgresDao implements CardDao {
         const query = this.sqlQuery.selectCardById(id)
         const result = await this.datastore.query(query)
         if (result.rowCount > 1) {
-            throw new DomainError(ErrorType.DATA_FROM_STORAGE_NOT_VALID)
+            throw new DataFromStorageNotValidError()
         }
         return result.rowCount === 1 ? new CardPostgresMapper().rowToCard(result.rows[0]) : NullCard.getInstance()
     }
