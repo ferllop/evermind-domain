@@ -6,9 +6,8 @@
   "type": "module",
   "scripts": {
     "tests": "uvu -r tsm tests",
-    "dist": "tsc -p tsconfig.dist.json",
-    "compile": "tsc",
-    "compile:watch": "npm run build -- --watch",
+    "compile": "tsc -p tsconfig.build.json",
+    "tsc:watch": "tsc --noEmit --watch",
     "create-index": "ls src/use-cases/ | grep -v index[.]ts | sed s/[.]ts// | awk -v q=\"'\" '{print \"export {\" $0 \"} from \" q \"./\" $0 \".js\" q \";\"}' | sed '1s;^;// File created automatically. Do not modify manually\\n;' > ./src/use-cases/index.ts",
     "remove-index": "rm ./src/use-cases/index.ts",
     "build": "npm run create-index && npm run compile; npm run remove-index"

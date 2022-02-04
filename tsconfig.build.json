@@ -4,6 +4,6 @@
       "tests/**/*"
     ],
     "compilerOptions": {
-      "outDir": "./dist"
+      "outDir": "./build",                              /* Redirect output structure to the directory. */
     }
   }
