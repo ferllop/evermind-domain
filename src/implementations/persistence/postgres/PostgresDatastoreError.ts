@@ -1,5 +1,5 @@
-import {DatabaseError} from 'pg'
+import pg from 'pg'
 
-export class PostgresDatastoreError extends DatabaseError {
+export class PostgresDatastoreError extends pg.DatabaseError {
 
 }
