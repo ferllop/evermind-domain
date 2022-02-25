@@ -13,12 +13,16 @@ const userSignsUpUseCase = suite('User signs up use case')
 userSignsUpUseCase.before.each(async () => await givenACleanInMemoryDatabase())
 
 userSignsUpUseCase(
-    'given data representing a user, ' +
+    'given data representing an unidentified user, ' +
     'when execute this use case, ' +
-    'an object should be returned with either error and data properties being null', async () => {
-        const user = new UserBuilder().buildDto()
+    'an object should be returned with null error an identified user as data', async () => {
+        const {id:_, ...user} = new UserBuilder().buildDto()
         const result = await new UserSignsUpUseCase().execute(user)
-        assert.equal(result, Response.OkWithoutData())
+        const storedUser = {
+            id: result.data!.id,
+                ...user
+        }
+        assert.equal(result, Response.OkWithData(storedUser))
     })
 
 userSignsUpUseCase(

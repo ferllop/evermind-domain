@@ -6,8 +6,9 @@ import {UserSignsUpRequest} from './UserSignsUpRequest.js'
 import {UserFactory} from '../domain/user/UserFactory.js'
 import {UseCase} from './UseCase.js'
 import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js'
+import {UserDto} from '../domain/user/UserDto.js'
 
-export class UserSignsUpUseCase extends UseCase<UserSignsUpRequest, null> {
+export class UserSignsUpUseCase extends UseCase<UserSignsUpRequest, UserDto> {
 
     protected getRequiredRequestFields(): string[] {
         return ['name', 'username']
@@ -21,7 +22,7 @@ export class UserSignsUpUseCase extends UseCase<UserSignsUpRequest, null> {
         const user = new UserFactory().create(new PersonName(request.name), new Username(request.username))
         await new UserRepository().add(user)
 
-        return Response.OkWithoutData()
+        return Response.OkWithData(user.toDto())
     }
 
 }
