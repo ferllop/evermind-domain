@@ -2,8 +2,11 @@
   "name": "evermind-domain",
   "version": "0.1.0",
   "description": "Domain code for evermind",
-  "main": "build/use-cases/index.js",
   "type": "module",
+  "main": "build/use-cases/index.js",
+  "exports": {
+    ".": "./build/use-cases/index.js"
+  },
   "scripts": {
     "tests": "uvu -r tsm tests",
     "compile": "tsc -p tsconfig.build.json",
