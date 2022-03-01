@@ -2,10 +2,13 @@ import {Response} from './Response.js'
 import {DomainError} from '../domain/errors/DomainError.js'
 import {RequiredRequestFieldIsMissingError} from '../domain/errors/RequiredRequestFieldIsMissingError.js'
 
-export abstract class UseCase<RequestType, ResponseType> {
+export abstract class UseCase<RequestType extends Record<string, any>, ResponseType> {
     private isRequestValid(request: RequestType): boolean {
         const requestFields = Object.keys(request)
-        return this.getRequiredRequestFields().every(requiredField => requestFields.includes(requiredField))
+        return this.getRequiredRequestFields().every(requiredField => {
+            return requestFields.includes(requiredField)
+                && request[requiredField] !== undefined
+        })
     }
 
     async execute(request: RequestType) {

@@ -32,6 +32,14 @@ useCase('should return REQUEST_FIELD_NOT_VALID when a required field is not pres
         Response.withDomainError(new RequiredRequestFieldIsMissingError()))
 })
 
+useCase('should return REQUEST_FIELD_NOT_VALID when a required field is present in request with undefined value', async () => {
+    // @ts-ignore
+    assert.equal(
+    // @ts-ignore
+        await new TestableUseCase().execute({fieldA: 'someData', fieldB: undefined}),
+        Response.withDomainError(new RequiredRequestFieldIsMissingError()))
+})
+
 useCase('should permit extra fields in addition to the required ones', async () => {
     assert.equal(
         await new TestableUseCase().execute({fieldA: 'someData', fieldB: 'someDataB', extraField: 'someExtraData'}),
@@ -40,10 +48,11 @@ useCase('should permit extra fields in addition to the required ones', async () 
 
 useCase('should be capable of insert a not documented error thrown from internalExecute into a response', async () => {
     const useCase = new TestableUseCase()
-    useCase.throwError(new TypeError())
+    const error = new TypeError()
+    useCase.throwError(error)
     assert.equal(
         await useCase.execute({fieldA: 'someData', fieldB: 'otherData'}),
-        Response.withError(new TypeError()))
+        Response.withError(error))
 })
 
 useCase.run()
