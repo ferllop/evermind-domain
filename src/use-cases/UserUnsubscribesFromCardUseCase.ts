@@ -13,8 +13,9 @@ import {UserNotFoundError} from '../domain/errors/UserNotFoundError.js'
 import {CardNotFoundError} from '../domain/errors/CardNotFoundError.js'
 
 export class UserUnsubscribesFromCardUseCase extends UseCase<UserUnsubscribesFromCardRequest, null> {
-    protected getRequiredRequestFields(): string[] {
-        return ['userId', 'cardId']
+
+    constructor() {
+        super(['userId', 'cardId'])
     }
 
     protected async internalExecute(request: UserUnsubscribesFromCardRequest) {

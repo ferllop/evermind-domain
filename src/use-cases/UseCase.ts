@@ -2,18 +2,24 @@ import {Response} from './Response.js'
 import {DomainError} from '../domain/errors/DomainError.js'
 import {RequiredRequestFieldIsMissingError} from '../domain/errors/RequiredRequestFieldIsMissingError.js'
 
-export abstract class UseCase<RequestType extends Record<string, any>, ResponseType> {
-    private isRequestValid(request: RequestType): boolean {
+type JSON = Record<string, any>
+
+export abstract class UseCase<RequestType extends JSON, ResponseType> {
+
+    constructor(private readonly requiredFields: string[]) {
+    }
+
+    private isJsonAValidRequest(request: JSON): request is RequestType {
         const requestFields = Object.keys(request)
-        return this.getRequiredRequestFields().every(requiredField => {
+        return this.requiredFields.every(requiredField => {
             return requestFields.includes(requiredField)
                 && request[requiredField] !== undefined
         })
     }
 
-    async execute(request: RequestType) {
+    async execute(request: JSON) {
         try {
-            if (!this.isRequestValid(request)) {
+            if (!this.isJsonAValidRequest(request)) {
                 return Response.withDomainError(new RequiredRequestFieldIsMissingError())
             }
             return await this.internalExecute(request)
@@ -28,5 +34,4 @@ export abstract class UseCase<RequestType extends Record<string, any>, ResponseT
 
     protected abstract internalExecute(request: RequestType): Promise<Response<ResponseType>>
 
-    protected abstract getRequiredRequestFields(): string[]
 }

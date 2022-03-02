@@ -8,8 +8,9 @@ import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js
 import {CardNotFoundError} from '../domain/errors/CardNotFoundError.js'
 
 export class UserReadsACardUseCase extends UseCase<UserReadsACardRequest, CardDto|null>{
-    protected getRequiredRequestFields(): string[] {
-        return ['id']
+
+    constructor() {
+        super(['id'])
     }
 
     protected async internalExecute(request: UserReadsACardRequest): Promise<Response<CardDto|null>> {

@@ -7,8 +7,9 @@ import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js
 import {CardNotFoundError} from '../domain/errors/CardNotFoundError.js'
 
 export class UserRemovesCardUseCase extends UseCase<UserRemovesCardRequest, null> {
-    protected getRequiredRequestFields(): string[] {
-        return ['id']
+
+    constructor() {
+        super(['id'])
     }
 
     protected async internalExecute(request: UserRemovesCardRequest): Promise<Response<null>> {

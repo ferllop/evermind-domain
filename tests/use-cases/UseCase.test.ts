@@ -7,8 +7,8 @@ import {RequiredRequestFieldIsMissingError} from '../../src/domain/errors/Requir
 class TestableUseCase extends UseCase<Request, null> {
     error?: Error
 
-    getRequiredRequestFields(): string[] {
-        return ['fieldA', 'fieldB']
+    constructor() {
+        super(['fieldA', 'fieldB'])
     }
 
     async internalExecute(): Promise<Response<null>> {

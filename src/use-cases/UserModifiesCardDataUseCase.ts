@@ -9,8 +9,9 @@ import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js
 import {CardNotFoundError} from '../domain/errors/CardNotFoundError.js'
 
 export class UserModifiesCardDataUseCase extends UseCase<UserModifiesCardDataRequest, CardDto | null> {
-    protected getRequiredRequestFields(): string[] {
-        return ['id', 'userId']
+
+    constructor() {
+        super(['id', 'userId'])
     }
 
     protected async internalExecute(request: UserModifiesCardDataRequest) {

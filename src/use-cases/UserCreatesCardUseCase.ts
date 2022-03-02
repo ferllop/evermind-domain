@@ -10,11 +10,12 @@ import {UseCase} from './UseCase.js'
 import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js'
 
 export class UserCreatesCardUseCase extends UseCase<UserCreatesCardRequest, null> {
-    protected getRequiredRequestFields(): string[] {
-        return ['userId',
+
+    constructor() {
+        super(['userId',
             'question',
             'answer',
-            'labelling']
+            'labelling'])
     }
 
     protected async internalExecute(request: UserCreatesCardRequest): Promise<Response<null>> {

@@ -8,8 +8,9 @@ import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js
 import {UserNotFoundError} from '../domain/errors/UserNotFoundError.js'
 
 export class UserModifiesUserDataUseCase extends UseCase<UserModifiesUserDataRequest, null> {
-    protected getRequiredRequestFields(): string[] {
-        return ['id']
+
+    constructor() {
+        super(['id'])
     }
 
     protected async internalExecute(dto: UserModifiesUserDataRequest) {

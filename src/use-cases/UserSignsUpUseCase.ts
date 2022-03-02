@@ -10,8 +10,8 @@ import {UserDto} from '../domain/user/UserDto.js'
 
 export class UserSignsUpUseCase extends UseCase<UserSignsUpRequest, UserDto> {
 
-    protected getRequiredRequestFields(): string[] {
-        return ['name', 'username']
+    constructor() {
+        super(['name', 'username'])
     }
 
     protected async internalExecute(request: UserSignsUpRequest) {

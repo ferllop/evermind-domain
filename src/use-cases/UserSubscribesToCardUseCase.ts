@@ -11,8 +11,9 @@ import {UserIsAlreadySubscribedToCardError} from '../domain/errors/UserIsAlready
 import {CardNotFoundError} from '../domain/errors/CardNotFoundError.js'
 
 export class UserSubscribesToCardUseCase extends UseCase<UserSubscribesToCardRequest, null> {
-    protected getRequiredRequestFields(): string[] {
-        return ['userId', 'cardId']
+
+    constructor() {
+        super(['userId', 'cardId'])
     }
 
     protected async internalExecute(request: UserSubscribesToCardRequest) {

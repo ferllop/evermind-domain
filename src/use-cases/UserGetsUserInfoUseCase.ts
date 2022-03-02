@@ -9,8 +9,8 @@ import {UserNotFoundError} from '../domain/errors/UserNotFoundError.js'
 
 export class UserGetsUserInfoUseCase extends UseCase<UserGetsUserInfoRequest, UserDto|null>{
 
-    protected getRequiredRequestFields(): string[] {
-        return ['id']
+    constructor() {
+        super(['id'])
     }
 
     protected async internalExecute(request: UserGetsUserInfoRequest) {

@@ -7,8 +7,9 @@ import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js
 import {UserNotFoundError} from '../domain/errors/UserNotFoundError.js'
 
 export class UserRemovesAccountUseCase extends UseCase<UserRemovesAccountRequest, null> {
-    protected getRequiredRequestFields(): string[] {
-        return ['id']
+
+    constructor() {
+        super(['id'])
     }
 
     protected async internalExecute(request: UserRemovesAccountRequest): Promise<Response<null>> {
