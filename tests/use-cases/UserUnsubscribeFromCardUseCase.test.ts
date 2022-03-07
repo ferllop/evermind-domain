@@ -11,7 +11,7 @@ import {
     assertSubscriptionIsNotStored,
     assertSubscriptionIsStored,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
-import {SubscriptionNotExistsError} from '../../src/domain/errors/SubscriptionNotExistsError.js'
+import {SubscriptionNotFoundError} from '../../src/domain/errors/SubscriptionNotFoundError.js'
 import {UserNotFoundError} from '../../src/domain/errors/UserNotFoundError.js'
 import {CardNotFoundError} from '../../src/domain/errors/CardNotFoundError.js'
 
@@ -60,7 +60,7 @@ userUnsubscribesFromCard('given a previous unsubscription, when unsubscribing ag
     await new UserUnsubscribesFromCardUseCase().execute(request)
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
 
-    assert.equal(result, Response.withDomainError(new SubscriptionNotExistsError()))
+    assert.equal(result, Response.withDomainError(new SubscriptionNotFoundError()))
 })
 
 userUnsubscribesFromCard('given an existing user id not subscribed to an existing card id, then return a SUBSCRIPTION_NOT_EXISTS', async () => {
@@ -73,7 +73,7 @@ userUnsubscribesFromCard('given an existing user id not subscribed to an existin
 
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
 
-    assert.equal(result, Response.withDomainError(new SubscriptionNotExistsError()))
+    assert.equal(result, Response.withDomainError(new SubscriptionNotFoundError()))
 })
 
 

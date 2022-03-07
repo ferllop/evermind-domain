@@ -10,8 +10,8 @@ import {SubscriptionIdentification} from '../../../domain/subscription/Subscript
 import {UserIdentification} from '../../../domain/user/UserIdentification.js'
 import {InMemoryDatastore} from './InMemoryDatastore.js'
 import {InputDataNotValidError} from '../../../domain/errors/InputDataNotValidError.js'
-import {ResourceNotFoundError} from '../../../domain/errors/ResourceNotFoundError.js'
 import {DataFromStorageNotValidError} from '../../../domain/errors/DataFromStorageNotValidError.js'
+import {SubscriptionNotFoundError} from '../../../domain/errors/SubscriptionNotFoundError.js'
 
 
 export class SubscriptionInMemoryDao implements SubscriptionDao {
@@ -32,12 +32,12 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
         }
 
         if (!await this.datastore.hasTable(this.tableName)) {
-            throw new ResourceNotFoundError()
+            throw new SubscriptionNotFoundError()
         }
 
         const deleted = await this.datastore.delete(this.tableName, id.getId())
         if (!deleted) {
-            throw new ResourceNotFoundError()
+            throw new SubscriptionNotFoundError()
         }
 
     }
@@ -57,11 +57,11 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
 
     async update(entity: Subscription) {
         if (!await this.datastore.hasTable(this.tableName)) {
-            throw new ResourceNotFoundError()
+            throw new SubscriptionNotFoundError()
         }
         const updated = this.datastore.update(this.tableName, entity.toDto())
         if (!updated) {
-            throw new ResourceNotFoundError()
+            throw new SubscriptionNotFoundError()
         }
     }
 

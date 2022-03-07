@@ -9,7 +9,6 @@ import {CardDto} from '../../../domain/card/CardDto.js'
 import {AuthorIdentification} from '../../../domain/card/AuthorIdentification.js'
 import {Labelling} from '../../../domain/card/Labelling.js'
 import {Criteria} from './Criteria.js'
-import {ResourceNotFoundError} from '../../../domain/errors/ResourceNotFoundError.js'
 import {DataFromStorageNotValidError} from '../../../domain/errors/DataFromStorageNotValidError.js'
 import {CardNotFoundError} from '../../../domain/errors/CardNotFoundError.js'
 
@@ -34,7 +33,7 @@ export class CardInMemoryDao implements CardDao {
         }
         const deleted = await this.datastore.delete(this.tableName, id.getId())
         if (!deleted) {
-            throw new ResourceNotFoundError()
+            throw new CardNotFoundError()
         }
 
     }

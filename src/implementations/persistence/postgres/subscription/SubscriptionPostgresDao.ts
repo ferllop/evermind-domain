@@ -8,7 +8,7 @@ import {SubscriptionPostgresDatastore} from './SubscriptionPostgresDatastore.js'
 import {SubscriptionSqlQuery} from './SubscriptionSqlQuery.js'
 import {PostgresErrorType} from '../PostgresErrorType.js'
 import {PostgresDatastoreError} from '../PostgresDatastoreError.js'
-import {SubscriptionNotExistsError} from '../../../../domain/errors/SubscriptionNotExistsError.js'
+import {SubscriptionNotFoundError} from '../../../../domain/errors/SubscriptionNotFoundError.js'
 import {UserIsAlreadySubscribedToCardError} from '../../../../domain/errors/UserIsAlreadySubscribedToCardError.js'
 import {CardNotFoundError} from '../../../../domain/errors/CardNotFoundError.js'
 import {DataFromStorageNotValidError} from '../../../../domain/errors/DataFromStorageNotValidError.js'
@@ -54,7 +54,7 @@ export class SubscriptionPostgresDao implements SubscriptionDao {
         const query = this.sqlQuery.update(subscription)
         const result = await this.datastore.query(query)
         if (result.rowCount === 0) {
-            throw new SubscriptionNotExistsError()
+            throw new SubscriptionNotFoundError()
         }
     }
 
