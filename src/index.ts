@@ -11,3 +11,4 @@ export { UserSearchesForCardsUseCase } from './use-cases/UserSearchesForCardsUse
 export { UserSignsUpUseCase } from './use-cases/UserSignsUpUseCase.js'
 export { UserSubscribesToCardUseCase } from './use-cases/UserSubscribesToCardUseCase.js'
 export { UserUnsubscribesFromCardUseCase } from './use-cases/UserUnsubscribesFromCardUseCase.js'
+export { DomainErrorCode } from './domain/errors/DomainErrorCode.js'
