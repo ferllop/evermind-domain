@@ -1,5 +1,5 @@
 export enum DomainErrorCode {
-    NULL,
+    NO_ERROR,
     UNDOCUMENTED,
     INPUT_DATA_NOT_VALID,
     RESOURCE_NOT_FOUND,

@@ -3,6 +3,6 @@ import {DomainError} from './DomainError.js'
 
 export class NullError extends DomainError {
     constructor() {
-        super(DomainErrorCode.NULL, 'No error')
+        super(DomainErrorCode.NO_ERROR, 'No error')
     }
 }
