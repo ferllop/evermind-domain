@@ -3,17 +3,14 @@
   "version": "0.1.0",
   "description": "Domain code for evermind",
   "type": "module",
-  "main": "build/use-cases/index.js",
+  "main": "build/index.js",
   "exports": {
-    ".": "./build/use-cases/index.js"
+    ".": "./build/index.js"
   },
   "scripts": {
     "tests": "uvu -r tsm tests",
-    "compile": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json",
     "tsc:watch": "tsc --noEmit --watch",
-    "create-index": "ls src/use-cases/ | grep -v index[.]ts | sed s/[.]ts// | awk -v q=\"'\" '{print \"export {\" $0 \"} from \" q \"./\" $0 \".js\" q \";\"}' | sed '1s;^;// File created automatically. Do not modify manually\\n;' > ./src/use-cases/index.ts",
-    "remove-index": "rm ./src/use-cases/index.ts",
-    "build": "npm run create-index && npm run compile; npm run remove-index",
     "prepare": "npm run build"
   },
   "repository": {
