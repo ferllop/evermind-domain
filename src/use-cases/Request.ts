@@ -1,1 +1,1 @@
-export type Request = Record<string, string | number | boolean>
+export type Request = Record<string, any>
