@@ -16,13 +16,17 @@ userCreatesCardUseCase.before( async () => await givenACleanInMemoryDatabase())
 userCreatesCardUseCase(
     'given data representing a card, ' +
     'when execute this use case, ' +
-    'an object should be returned with either error and data properties being null', async () => {
+    'an object should be returned with no error and card data', async () => {
         const {id: userId} = await givenAStoredUser()
-        const result = await new UserCreatesCardUseCase().execute({
-            ...new CardBuilder().buildDto(),
-            userId
-        })
-        assert.equal(result, Response.OkWithoutData())
+        const {id, authorID, ...card} = new CardBuilder().buildDto()
+        const request = {
+            ...card,
+            userId,
+        }
+        const result = await new UserCreatesCardUseCase().execute(request)
+        const expectedCard = {...card, authorID: userId, id: result.data!.id}
+        assert.equal(result,
+            Response.OkWithData(expectedCard))
     })
 
 userCreatesCardUseCase(

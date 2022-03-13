@@ -8,8 +8,9 @@ import {UserCreatesCardRequest} from './UserCreatesCardRequest.js'
 import {CardRepository} from '../domain/card/CardRepository.js'
 import {UseCase} from './UseCase.js'
 import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js'
+import {CardDto} from '../domain/card/CardDto.js'
 
-export class UserCreatesCardUseCase extends UseCase<UserCreatesCardRequest, null> {
+export class UserCreatesCardUseCase extends UseCase<UserCreatesCardRequest, CardDto> {
 
     constructor() {
         super(['userId',
@@ -18,7 +19,7 @@ export class UserCreatesCardUseCase extends UseCase<UserCreatesCardRequest, null
             'labelling'])
     }
 
-    protected async internalExecute(request: UserCreatesCardRequest): Promise<Response<null>> {
+    protected async internalExecute(request: UserCreatesCardRequest): Promise<Response<CardDto>> {
         if (!new CardFactory().isDtoValid({...request, authorID: request.userId})) {
             throw new InputDataNotValidError()
         }
@@ -31,7 +32,7 @@ export class UserCreatesCardUseCase extends UseCase<UserCreatesCardRequest, null
         )
         await new CardRepository().add(card)
 
-        return Response.OkWithoutData()
+        return Response.OkWithData(card.toDto())
     }
 
 }
