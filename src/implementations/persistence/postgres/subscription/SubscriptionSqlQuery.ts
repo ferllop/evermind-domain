@@ -28,8 +28,8 @@ export class SubscriptionSqlQuery {
                                                                   ${SubscriptionDatabaseMap.LEVEL},
                                                                   ${SubscriptionDatabaseMap.LAST_REVIEW})
                 VALUES ('${subscription.getId().getId()}',
-                        '${subscription.getUserID().getId()}',
-                        '${subscription.getCardID().getId()}',
+                        '${subscription.getUserId().getId()}',
+                        '${subscription.getCardId().getId()}',
                         ${subscription.getLevel().getValue()},
                         '${subscription.getLastReview().toDtoFormat()}')`
     }

@@ -38,7 +38,7 @@ cardSqlQuery('should provide the correct create cards table query', async () => 
 
 cardSqlQuery('should provide the correct insert query', async () => {
     const card = new CardBuilder().withLabels(['label1','label2']).build()
-    const {id, authorID, question, answer} = card.toDto()
+    const {id, authorId, question, answer} = card.toDto()
 
     const sut = new CardSqlQuery().insert(card)
 
@@ -50,7 +50,7 @@ cardSqlQuery('should provide the correct insert query', async () => {
         answer
         ) VALUES (
         '${id}',
-        '${authorID}',
+        '${authorId}',
         '${question}',
         '${answer}');
     INSERT INTO labelling 
@@ -63,7 +63,7 @@ cardSqlQuery('should provide the correct insert query', async () => {
 
 cardSqlQuery('should provide a working insert card query', async () => {
     const user = await givenAnExistingUser()
-    const card = new CardBuilder().setAuthorID(user.getId() as AuthorIdentification).build()
+    const card = new CardBuilder().setAuthorId(user.getId() as AuthorIdentification).build()
 
     const sut = new CardSqlQuery().insert(card)
 

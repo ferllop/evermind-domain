@@ -26,11 +26,11 @@ export class Subscription extends Entity {
         this.lastReview = lastReview
     }
 
-    getUserID() {
+    getUserId() {
         return this.userId
     }
 
-    getCardID() {
+    getCardId() {
         return this.cardId
     }
 
@@ -56,15 +56,15 @@ export class Subscription extends Entity {
     }
 
     equals(subscription: Subscription) {
-        return this.getUserID().equals(subscription.getUserID()) &&
-            this.getCardID().equals(subscription.getCardID())
+        return this.getUserId().equals(subscription.getUserId()) &&
+            this.getCardId().equals(subscription.getCardId())
     }
 
     toDto(): SubscriptionDto {
         return {
             id: this.getId().getId(),
-            userId: this.getUserID().getId(),
-            cardId: this.getCardID().getId(),
+            userId: this.getUserId().getId(),
+            cardId: this.getCardId().getId(),
             level: this.getLevel().getOrdinal(),
             lastReview: this.getLastReview().toDtoFormat()
         }

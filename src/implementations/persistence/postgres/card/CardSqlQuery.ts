@@ -16,7 +16,7 @@ export class CardSqlQuery {
             ${CardDatabaseMap.ANSWER}
             ) VALUES (
             '${card.getId().getId()}',
-            '${card.getAuthorID().getId()}',
+            '${card.getAuthorId().getId()}',
             '${card.getQuestion().getValue()}',
             '${card.getAnswer().getValue()}');
             ${this.getInsertLabellingQuery(card.getId(), card.getLabelling())};

@@ -20,7 +20,7 @@ export class UserCreatesCardUseCase extends UseCase<UserCreatesCardRequest, Card
     }
 
     protected async internalExecute(request: UserCreatesCardRequest): Promise<Response<CardDto>> {
-        if (!new CardFactory().isDtoValid({...request, authorID: request.userId})) {
+        if (!new CardFactory().isDtoValid({...request, authorId: request.userId})) {
             throw new InputDataNotValidError()
         }
 

@@ -8,14 +8,14 @@ import {Question} from './Question.js'
 
 export class Card extends Entity {
 
-    private readonly authorID: AuthorIdentification
+    private readonly authorId: AuthorIdentification
     private readonly question: Question
     private readonly answer: Answer
     private readonly labelling: Labelling
 
-    protected constructor(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: CardIdentification) {
+    protected constructor(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: CardIdentification) {
         super(id)
-        this.authorID = authorID
+        this.authorId = authorId
         this.question = question
         this.answer = answer
         this.labelling = labels
@@ -23,7 +23,7 @@ export class Card extends Entity {
 
     clone(): Card {
         return new Card(
-            new AuthorIdentification(this.getAuthorID().getId()),
+            new AuthorIdentification(this.getAuthorId().getId()),
             this.getQuestion().clone(),
             this.getAnswer().clone(),
             this.getLabelling().clone(),
@@ -31,8 +31,8 @@ export class Card extends Entity {
         )
     }
 
-    getAuthorID(): AuthorIdentification {
-        return this.authorID
+    getAuthorId(): AuthorIdentification {
+        return this.authorId
     }
 
     getQuestion(): Question {
@@ -48,11 +48,11 @@ export class Card extends Entity {
     }
 
     hasSameAuthor(card: Card) {
-        return this.authorID === card.authorID
+        return this.authorId === card.authorId
     }
 
     hasAuthorId(authorId: AuthorIdentification) {
-        return this.authorID.equals(authorId)
+        return this.authorId.equals(authorId)
     }
 
     equals(card: Card) {
@@ -62,7 +62,7 @@ export class Card extends Entity {
     toDto(){
         return {
             id: this.getId().getId(),
-            authorID: this.getAuthorID().getId(),
+            authorId: this.getAuthorId().getId(),
             question: this.getQuestion().getValue() as string,
             answer: this.getAnswer().getValue() as string,
             labelling: this.getLabelling().getLabels().map(label => label.toString())

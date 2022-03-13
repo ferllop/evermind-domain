@@ -21,7 +21,7 @@ export async function assertCardIsStored(card: CardDto) {
 
 export async function assertUserHasStoredACard(unidentifiedCard: Omit<CardDto, 'id'>) {
     const cards = await datastore.findMany<CardDto>('cards',
-        (row) => row.authorID === unidentifiedCard.authorID)
+        (row) => row.authorId === unidentifiedCard.authorId)
     assert.equal(cards.length, 1)
     assert.equal(cards[0], {...unidentifiedCard, id: cards[0].id})
 }

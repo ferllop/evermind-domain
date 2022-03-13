@@ -3,10 +3,10 @@ import {Card} from '../../../../../src/domain/card/Card.js'
 
 export class CardPostgresMapperTestHelper extends CardPostgresMapper {
     cardToRow = (card: Card) => {
-        const {authorID, ...rest} = card.toDto()
+        const {authorId, ...rest} = card.toDto()
         return {
             ...rest,
-            author_id: authorID,
+            author_id: authorId,
         }
     }
 }

@@ -18,13 +18,13 @@ userCreatesCardUseCase(
     'when execute this use case, ' +
     'an object should be returned with no error and card data', async () => {
         const {id: userId} = await givenAStoredUser()
-        const {id, authorID, ...card} = new CardBuilder().buildDto()
+        const {id, authorId, ...card} = new CardBuilder().buildDto()
         const request = {
             ...card,
             userId,
         }
         const result = await new UserCreatesCardUseCase().execute(request)
-        const expectedCard = {...card, authorID: userId, id: result.data!.id}
+        const expectedCard = {...card, authorId: userId, id: result.data!.id}
         assert.equal(result,
             Response.OkWithData(expectedCard))
     })
@@ -35,7 +35,7 @@ userCreatesCardUseCase(
     'the card should remain in storage', async () => {
         const {id: userId} = await givenAStoredUser()
         const card = new CardBuilder().buildDto()
-        const {id, authorID, ...unidentifiedCard} = card
+        const {id, authorId, ...unidentifiedCard} = card
 
         await new UserCreatesCardUseCase().execute({
             ...unidentifiedCard,
@@ -44,7 +44,7 @@ userCreatesCardUseCase(
 
         await assertUserHasStoredACard({
             ...card,
-            authorID: userId
+            authorId: userId
         })
     })
 

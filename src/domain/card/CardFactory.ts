@@ -15,7 +15,7 @@ import {Identification} from '../shared/value/Identification.js'
 import {EntityFactory} from '../shared/EntityFactory.js'
 
 export class CardFactory extends EntityFactory<Card, CardDto> {
-    private cardConstructor = Card.prototype.constructor as { new(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: CardIdentification): Card}
+    private cardConstructor = Card.prototype.constructor as { new(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: CardIdentification): Card}
 
     getValidators(): Map<string, Validator> {
         return new Map()
@@ -23,13 +23,13 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
             .set('answer', WrittenAnswer.isValid)
             .set('question', WrittenQuestion.isValid)
             .set('labelling', Labelling.isValid)
-            .set('authorID', AuthorIdentification.isValid)
+            .set('authorId', AuthorIdentification.isValid)
     }
 
     isDtoValid(dto: MayBeIdentified<CardDto>): boolean {
         return Boolean(dto) &&
             this.isValid(
-                dto.authorID,
+                dto.authorId,
                 dto.question,
                 dto.answer,
                 dto.labelling,
@@ -37,8 +37,8 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
             )
     }
 
-    isValid(authorID: string, question: string, answer: string, labels: string[], id?: string) {
-        return Identification.isValid(authorID) &&
+    isValid(authorId: string, question: string, answer: string, labels: string[], id?: string) {
+        return Identification.isValid(authorId) &&
             WrittenQuestion.isValid(question) &&
             WrittenAnswer.isValid(answer) &&
             Labelling.isValid(labels) &&
@@ -47,7 +47,7 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
 
     fromDto(dto: CardDto): Card {
         precondition(this.isDtoValid(dto))
-        return this.recreate(new AuthorIdentification(dto.authorID), new WrittenQuestion(dto.question), new WrittenAnswer(dto.answer), new Labelling(dto.labelling.map(labelStr => new Label(labelStr))), new CardIdentification(dto.id))
+        return this.recreate(new AuthorIdentification(dto.authorId), new WrittenQuestion(dto.question), new WrittenAnswer(dto.answer), new Labelling(dto.labelling.map(labelStr => new Label(labelStr))), new CardIdentification(dto.id))
     }
 
     fromDtoArray(dtoArray: CardDto[]): Card[] {
@@ -58,8 +58,8 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
         return new this.cardConstructor(userId, question, answer, labels, Identification.create())
     }
 
-    recreate(authorID: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: Identification){
-        return new this.cardConstructor(authorID, question, answer, labels, id)
+    recreate(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: Identification){
+        return new this.cardConstructor(authorId, question, answer, labels, id)
     }
 
     apply(card: Card, data: Omit<Partial<CardDto>, 'id'>) {

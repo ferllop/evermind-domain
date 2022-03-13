@@ -31,14 +31,14 @@ userModifiesCardDataUseCase(
     'given a previously stored card and data to update it, ' +
     'the card should be updated in storage', async () => {
         const card = await givenAStoredCard()
-        const newAuthorID = 'newAuthorId'
+        const newAuthorId = 'newAuthorId'
         await new UserModifiesCardDataUseCase().execute({
             userId: 'notRelevant',
             ...card,
-            authorID: newAuthorID,
+            authorId: newAuthorId,
         })
         const storedCard = await new InMemoryDatastore().read<CardDto>('cards', card.id)
-        assert.equal(storedCard!.authorID, newAuthorID)
+        assert.equal(storedCard!.authorId, newAuthorId)
     })
 
 userModifiesCardDataUseCase(
@@ -64,7 +64,7 @@ userModifiesCardDataUseCase(
             {
                 userId: 'notRelevant',
                 ...card,
-                authorID: 'updatedAuthor'
+                authorId: 'updatedAuthor'
             })
         assert.equal(result, Response.OkWithoutData())
     })

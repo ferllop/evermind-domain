@@ -12,14 +12,14 @@ import {CardFactory} from '../../../src/domain/card/CardFactory.js'
 export class CardBuilder {
 
     id: Identification
-    authorID: AuthorIdentification
+    authorId: AuthorIdentification
     question: Question
     answer: Answer
     labelling: Labelling
 
     constructor() {
         this.id = Identification.create()
-        this.authorID = AuthorIdentification.create() as AuthorIdentification
+        this.authorId = AuthorIdentification.create() as AuthorIdentification
         this.question = new WrittenQuestion('question')
         this.answer = new WrittenAnswer('answer')
         this.labelling = new Labelling([new Label('labelling')])
@@ -30,8 +30,8 @@ export class CardBuilder {
         return this
     }
 
-    setAuthorID(authorID: AuthorIdentification) {
-        this.authorID = authorID
+    setAuthorId(authorId: AuthorIdentification) {
+        this.authorId = authorId
         return this
     }
 
@@ -56,7 +56,7 @@ export class CardBuilder {
     }
 
     withAuthorId(id: string) {
-        this.authorID = new AuthorIdentification(id)
+        this.authorId = new AuthorIdentification(id)
         return this
     }
 
@@ -66,7 +66,7 @@ export class CardBuilder {
     }
 
     build() {
-        return new CardFactory().recreate(this.authorID, this.question, this.answer, this.labelling, this.id)
+        return new CardFactory().recreate(this.authorId, this.question, this.answer, this.labelling, this.id)
     }
 
     buildDto() {

@@ -62,7 +62,7 @@ export class CardInMemoryDao implements CardDao {
 
     async findByAuthorId(authorId: AuthorIdentification): Promise<Card[]> {
         const criteria = (card: CardDto) => {
-            return authorId.equals(new Identification(card.authorID))
+            return authorId.equals(new Identification(card.authorId))
         }
         return this.find(criteria)
     }

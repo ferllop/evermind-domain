@@ -36,7 +36,7 @@ userRemovesCardUseCase(
     'given an unexisting card id into an existing cards table, ' +
     'it should return an object with data property as null and ' +
     'error property as CARD_NOT_FOUND DomainError', async () => {
-        const result = await new UserRemovesCardUseCase().execute({ id: 'unexistingID' })
+        const result = await new UserRemovesCardUseCase().execute({ id: 'unexistingId' })
         assert.equal(result, Response.withDomainError(new CardNotFoundError()))
     })
 

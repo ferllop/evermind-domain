@@ -6,7 +6,7 @@ import {CardRow} from './CardRow.js'
 export class CardPostgresMapper {
     pgCardMap: Record<string, keyof CardDto> = {
         id: 'id',
-        author_id: 'authorID',
+        author_id: 'authorId',
         question: 'question',
         answer: 'answer',
         labelling: 'labelling',

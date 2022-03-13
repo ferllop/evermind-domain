@@ -1,6 +1,6 @@
 export type CardDto = {
     id: string,
-    authorID: string,
+    authorId: string,
     question: string,
     answer: string,
     labelling: string[]

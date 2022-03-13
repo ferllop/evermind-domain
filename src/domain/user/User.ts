@@ -47,7 +47,7 @@ export class User extends Entity {
 
     getSubscription(card: Card) {
         return this.subscriptions.find(
-            subscription => subscription.getCardID().equals(card.getId())
+            subscription => subscription.getCardId().equals(card.getId())
         )
     }
 
