@@ -1,6 +1,5 @@
-import { UserDto } from '../domain/user/UserDto.js'
-import { OnlyRequired } from '../domain/shared/value/OnlyRequired.js'
+import {UserDto} from '../domain/user/UserDto.js'
 
-export type UserModifiesUserDataRequest = OnlyRequired<UserDto, 'id'>;
+export type UserModifiesUserDataRequest = UserDto
 
 

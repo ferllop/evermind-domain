@@ -9,6 +9,7 @@ import {assertUserIsStored} from '../implementations/persistence/in-memory/InMem
 import {UserBuilder} from '../domain/user/UserBuilder.js'
 import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
 import {UserNotFoundError} from '../../src/domain/errors/UserNotFoundError.js'
+import {RequiredRequestFieldIsMissingError} from '../../src/domain/errors/RequiredRequestFieldIsMissingError.js'
 
 const userModifiesUserDataUseCase = suite("User modifies user data use case")
 
@@ -52,6 +53,16 @@ userModifiesUserDataUseCase(
         }
         const result = await new UserModifiesUserDataUseCase().execute(invalidRequest)
         assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
+    })
+
+userModifiesUserDataUseCase(
+    'given wrong user data, ' +
+    'should return an object with null as data property and ' +
+    'INPUT_DATA_NOT_VALID DomainError', async () => {
+        const {name, ...incompleteRequest} = new UserBuilder().buildDto()
+
+        const result = await new UserModifiesUserDataUseCase().execute(incompleteRequest)
+        assert.equal(result, Response.withDomainError(new RequiredRequestFieldIsMissingError()))
     })
 
 userModifiesUserDataUseCase.run()

@@ -10,7 +10,7 @@ import {UserNotFoundError} from '../domain/errors/UserNotFoundError.js'
 export class UserModifiesUserDataUseCase extends UseCase<UserModifiesUserDataRequest, null> {
 
     constructor() {
-        super(['id'])
+        super(['id', 'name', 'username', 'dayStartTime'])
     }
 
     protected async internalExecute(dto: UserModifiesUserDataRequest) {
