@@ -9,22 +9,28 @@ export abstract class UseCase<RequestType extends JSON, ResponseType> {
     constructor(private readonly requiredFields: string[]) {
     }
 
-    private isJsonAValidRequest(request: JSON): request is RequestType {
-        const requestFields = Object.keys(request)
-        return this.requiredFields.every(requiredField => {
-            return requestFields.includes(requiredField)
-                && request[requiredField] !== undefined
+    private getMissingFields(request: JSON): string[] {
+        const result: string[] = []
+        this.requiredFields.forEach(requiredField => {
+            if (request[requiredField] === undefined) {
+                result.push(requiredField)
+            }
         })
+        return result
+    }
+
+    private isJsonAValidRequest(request: JSON): request is RequestType {
+        return this.getMissingFields(request).length === 0
     }
 
     async execute(request: JSON) {
         try {
             if (!this.isJsonAValidRequest(request)) {
-                return Response.withDomainError(new RequiredRequestFieldIsMissingError())
+                return Response.withDomainError(new RequiredRequestFieldIsMissingError(this.getMissingFields(request)))
             }
             return await this.internalExecute(request)
         } catch (error) {
-            if(error instanceof DomainError){
+            if (error instanceof DomainError) {
                 return Response.withDomainError(error)
             } else {
                 return Response.withError(error as Error)

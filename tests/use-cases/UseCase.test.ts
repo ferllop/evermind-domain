@@ -29,7 +29,7 @@ const useCase = suite('Use Case')
 useCase('should return REQUEST_FIELD_NOT_VALID when a required field is not present in request', async () => {
     assert.equal(
         await new TestableUseCase().execute({fieldA: 'someData'}),
-        Response.withDomainError(new RequiredRequestFieldIsMissingError()))
+        Response.withDomainError(new RequiredRequestFieldIsMissingError(['fieldB'])))
 })
 
 useCase('should return REQUEST_FIELD_NOT_VALID when a required field is present in request with undefined value', async () => {
@@ -37,7 +37,7 @@ useCase('should return REQUEST_FIELD_NOT_VALID when a required field is present 
     assert.equal(
     // @ts-ignore
         await new TestableUseCase().execute({fieldA: 'someData', fieldB: undefined}),
-        Response.withDomainError(new RequiredRequestFieldIsMissingError()))
+        Response.withDomainError(new RequiredRequestFieldIsMissingError(['fieldB'])))
 })
 
 useCase('should permit extra fields in addition to the required ones', async () => {

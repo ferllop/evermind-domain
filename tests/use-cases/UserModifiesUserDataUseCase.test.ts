@@ -62,7 +62,7 @@ userModifiesUserDataUseCase(
         const {name, ...incompleteRequest} = new UserBuilder().buildDto()
 
         const result = await new UserModifiesUserDataUseCase().execute(incompleteRequest)
-        assert.equal(result, Response.withDomainError(new RequiredRequestFieldIsMissingError()))
+        assert.equal(result, Response.withDomainError(new RequiredRequestFieldIsMissingError(['name'])))
     })
 
 userModifiesUserDataUseCase.run()
