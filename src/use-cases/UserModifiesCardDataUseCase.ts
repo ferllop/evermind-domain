@@ -11,7 +11,7 @@ import {CardNotFoundError} from '../domain/errors/CardNotFoundError.js'
 export class UserModifiesCardDataUseCase extends UseCase<UserModifiesCardDataRequest, CardDto | null> {
 
     constructor() {
-        super(['id', 'userId'])
+        super(['id', 'userId', 'question', 'answer', 'labelling'])
     }
 
     protected async internalExecute(request: UserModifiesCardDataRequest) {
