@@ -9,7 +9,7 @@ export abstract class UseCase<RequestType extends JSON, ResponseType> {
     constructor(private readonly requiredFields: string[]) {
     }
 
-    private getMissingFields(request: JSON): string[] {
+    private getMissingFields(request: RequestType): string[] {
         const result: string[] = []
         this.requiredFields.forEach(requiredField => {
             if (request[requiredField] === undefined) {
@@ -19,11 +19,11 @@ export abstract class UseCase<RequestType extends JSON, ResponseType> {
         return result
     }
 
-    private isJsonAValidRequest(request: JSON): request is RequestType {
+    private isJsonAValidRequest(request: RequestType): request is RequestType {
         return this.getMissingFields(request).length === 0
     }
 
-    async execute(request: JSON) {
+    async execute(request: RequestType) {
         try {
             if (!this.isJsonAValidRequest(request)) {
                 return Response.withDomainError(new RequiredRequestFieldIsMissingError(this.getMissingFields(request)))

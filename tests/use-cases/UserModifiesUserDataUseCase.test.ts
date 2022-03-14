@@ -60,7 +60,7 @@ userModifiesUserDataUseCase(
     'should return an object with null as data property and ' +
     'INPUT_DATA_NOT_VALID DomainError', async () => {
         const {name, ...incompleteRequest} = new UserBuilder().buildDto()
-
+        // @ts-ignore
         const result = await new UserModifiesUserDataUseCase().execute(incompleteRequest)
         assert.equal(result, Response.withDomainError(new RequiredRequestFieldIsMissingError(['name'])))
     })
