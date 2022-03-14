@@ -1,5 +1,5 @@
 import {DomainErrorCode} from './DomainErrorCode.js'
-import {ErrorDto} from '../../use-cases/ErrorDto.js'
+import {ErrorDto} from './ErrorDto.js'
 
 export abstract class DomainError extends Error {
 
