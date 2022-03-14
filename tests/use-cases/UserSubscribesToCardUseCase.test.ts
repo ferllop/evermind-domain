@@ -12,6 +12,7 @@ import {
 import {UserIsAlreadySubscribedToCardError} from '../../src/domain/errors/UserIsAlreadySubscribedToCardError.js'
 import {UserNotFoundError} from '../../src/domain/errors/UserNotFoundError.js'
 import {CardNotFoundError} from '../../src/domain/errors/CardNotFoundError.js'
+import {SubscriptionBuilder} from '../domain/subscription/SubscriptionBuilder.js'
 
 const userSubscribesToCard = suite("User subscribes to card")
 
@@ -34,6 +35,21 @@ userSubscribesToCard('given an existing user id and an existing card id, then cr
         cardId,
     })
     await assertSubscriptionHasCertainLevel(userId, cardId, 0)
+})
+
+userSubscribesToCard('given an existing user id and an existing card id, then return the subscription dto', async () => {
+    const {id: userId} = await givenAStoredUser()
+    const {id: cardId} = await givenAStoredCard()
+    const subscription = await new UserSubscribesToCardUseCase().execute({
+        userId,
+        cardId,
+    })
+    const expectedSubscription = new SubscriptionBuilder()
+        .setId(subscription.data!.id)
+        .setCardId(cardId)
+        .setUserId(userId)
+        .setLastReview(new Date(subscription.data!.lastReview)).build().toDto()
+    assert.equal(subscription.data, expectedSubscription)
 })
 
 userSubscribesToCard('given a non existing user id and an existing card id, then the subscription is not done and return a USER_NOT_FOUND error', async () => {

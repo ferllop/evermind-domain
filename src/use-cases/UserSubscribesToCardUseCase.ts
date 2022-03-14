@@ -9,8 +9,9 @@ import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js
 import {UserNotFoundError} from '../domain/errors/UserNotFoundError.js'
 import {UserIsAlreadySubscribedToCardError} from '../domain/errors/UserIsAlreadySubscribedToCardError.js'
 import {CardNotFoundError} from '../domain/errors/CardNotFoundError.js'
+import {SubscriptionDto} from '../domain/subscription/SusbcriptionDto.js'
 
-export class UserSubscribesToCardUseCase extends UseCase<UserSubscribesToCardRequest, null> {
+export class UserSubscribesToCardUseCase extends UseCase<UserSubscribesToCardRequest, SubscriptionDto> {
 
     constructor() {
         super(['userId', 'cardId'])
@@ -37,6 +38,6 @@ export class UserSubscribesToCardUseCase extends UseCase<UserSubscribesToCardReq
         }
         await subscriptionRepository.add(subscription)
 
-        return Response.OkWithoutData()
+        return Response.OkWithData(subscription.toDto())
     }
 }
