@@ -23,6 +23,8 @@ export { UserSearchesForCardsRequest } from './use-cases/UserSearchesForCardsReq
 export { UserSignsUpRequest } from './use-cases/UserSignsUpRequest.js'
 export { UserSubscribesToCardRequest } from './use-cases/UserSubscribesToCardRequest.js'
 export { UserUnsubscribesFromCardRequest } from './use-cases/UserUnsubscribesFromCardRequest.js'
+export { UserGetsUserSubscriptionsUseCase } from './use-cases/UserGetsUserSubscriptionsUseCase.js'
+export { UserGetsUserSubscriptionsRequest } from './use-cases/UserGetsUserSubscriptionsRequest.js'
 export { DomainErrorCode } from './domain/errors/DomainErrorCode.js'
 export { ErrorDto } from './domain/errors/ErrorDto.js'
 export { CardDto } from './domain/card/CardDto.js'
