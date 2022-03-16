@@ -1,12 +1,13 @@
 import {Response} from './Response.js'
 import {DomainError} from '../domain/errors/DomainError.js'
 import {RequiredRequestFieldIsMissingError} from '../domain/errors/RequiredRequestFieldIsMissingError.js'
+import {Request} from './Request.js'
 
-type JSON = Record<string, any>
-
-export abstract class UseCase<RequestType extends JSON, ResponseType> {
-
-    constructor(private readonly requiredFields: string[]) {
+export abstract class UseCase<RequestType extends Request, ResponseType> {
+    readonly requiredFields: string[]
+    constructor(requiredFields: string[]) {
+        // this.requiredFields = requiredFields.concat(['requesterId'])
+        this.requiredFields = requiredFields
     }
 
     private getMissingFields(request: RequestType): string[] {

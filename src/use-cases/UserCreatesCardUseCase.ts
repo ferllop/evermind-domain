@@ -9,28 +9,31 @@ import {CardRepository} from '../domain/card/CardRepository.js'
 import {UseCase} from './UseCase.js'
 import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js'
 import {CardDto} from '../domain/card/CardDto.js'
+import {Id} from '../domain/shared/value/Id.js'
+import {RequesterIdentification} from '../domain/authorization/permission/RequesterIdentification.js'
 
-export class UserCreatesCardUseCase extends UseCase<UserCreatesCardRequest, CardDto> {
+export class UserCreatesCardUseCase extends UseCase<UserCreatesCardRequest & {requesterId: Id}, CardDto> {
 
     constructor() {
-        super(['userId',
+        super(['authorId',
             'question',
             'answer',
             'labelling'])
     }
 
-    protected async internalExecute(request: UserCreatesCardRequest): Promise<Response<CardDto>> {
-        if (!new CardFactory().isDtoValid({...request, authorId: request.userId})) {
+    protected async internalExecute(request: UserCreatesCardRequest & {requesterId: Id}): Promise<Response<CardDto>> {
+        if (!new CardFactory().isDtoValid({...request, authorId: request.authorId})) {
             throw new InputDataNotValidError()
         }
 
+        const {authorId, question, answer, labelling, requesterId} = request
         const card = new CardFactory().create(
-            new AuthorIdentification(request.userId),
-            new WrittenQuestion(request.question),
-            new WrittenAnswer(request.answer),
-            Labelling.fromStringLabels(request.labelling),
+            new AuthorIdentification(authorId),
+            new WrittenQuestion(question),
+            new WrittenAnswer(answer),
+            Labelling.fromStringLabels(labelling),
         )
-        await new CardRepository().add(card)
+        await new CardRepository().add(card, new RequesterIdentification(requesterId))
 
         return Response.OkWithData(card.toDto())
     }

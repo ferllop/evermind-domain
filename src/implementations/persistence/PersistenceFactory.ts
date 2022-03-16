@@ -7,6 +7,8 @@ import {SubscriptionInMemoryDao} from './in-memory/SubscriptionInMemoryDao.js'
 import {PersistenceType} from './PersistenceType.js'
 import {Config} from '../Config.js'
 import {PersistenceMethodNotDeclaredError} from '../../domain/errors/PersistenceMethodNotDeclaredError.js'
+import {PermissionInMemoryDao} from './in-memory/PermissionInMemoryDao.js'
+import {PermissionPostgresDao} from './postgres/permission/PermissionPostgresDao.js'
 
 export class PersistenceFactory {
 
@@ -38,6 +40,17 @@ export class PersistenceFactory {
                 return new SubscriptionPostgresDao()
             case 'memory':
                 return new SubscriptionInMemoryDao()
+            default:
+                throw new PersistenceMethodNotDeclaredError()
+        }
+    }
+
+    static getPermissionDao() {
+        switch (Config.persistenceType) {
+            case 'postgres':
+                return new PermissionPostgresDao()
+            case 'memory':
+                return new PermissionInMemoryDao()
             default:
                 throw new PersistenceMethodNotDeclaredError()
         }

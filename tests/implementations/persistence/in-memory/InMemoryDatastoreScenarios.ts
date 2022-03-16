@@ -4,6 +4,9 @@ import {PersistenceFactory} from '../../../../src/implementations/persistence/Pe
 import {CardDto} from '../../../../src/domain/card/CardDto.js'
 import {CardBuilder} from '../../../domain/card/CardBuilder.js'
 import {UserBuilder} from '../../../domain/user/UserBuilder.js'
+import {UserIdentification} from '../../../../src/domain/user/UserIdentification.js'
+import {Permission} from '../../../../src/domain/authorization/permission/Permission.js'
+import {PermissionRepository} from '../../../../src/domain/authorization/permission/PermissionRepository.js'
 
 const datastore = new InMemoryDatastore()
 const usersTable = 'users'
@@ -30,9 +33,23 @@ export async function givenTheStoredUser(user: UserDto) {
     await datastore.create(usersTable, user)
 }
 
+export async function givenAStoredUserWithPermissions(Permissions: (new (userId: UserIdentification) => Permission)[]) {
+    const user = await givenAStoredUser()
+    await withPermissions(user, ...Permissions)
+    return user
+}
+
 export async function givenAStoredUser() {
     const user = new UserBuilder().buildDto()
     await givenTheStoredUser(user)
+    return user
+}
+
+export async function withPermissions(user: UserDto, ...Permissions: (new (userId: UserIdentification) => Permission)[]) {
+    for await (const Permission of Permissions) {
+        const permission = new Permission(new UserIdentification(user.id))
+        await new PermissionRepository().add(permission)
+    }
     return user
 }
 

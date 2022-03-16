@@ -1,0 +1,1 @@
+export type PermissionValue = 'CREATE_OWN_CARD' | 'CREATE_CARD_FOR_OTHER'
