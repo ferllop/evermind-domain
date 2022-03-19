@@ -17,8 +17,8 @@ export class CardRepository {
     }
 
     async add(card: Card, requesterId: RequesterIdentification) {
-            await Authorization.assert(requesterId).can(CreateCard, card)
-            await this.dao.insert(card)
+        await Authorization.assert(requesterId).can(CreateCard, card)
+        await this.dao.insert(card)
     }
 
     async delete(card: Card) {

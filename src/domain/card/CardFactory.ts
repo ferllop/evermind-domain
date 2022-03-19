@@ -1,4 +1,3 @@
-import {precondition} from '../../implementations/preconditions.js'
 import {AuthorIdentification} from './AuthorIdentification.js'
 import {Card} from './Card.js'
 import {CardDto} from './CardDto.js'
@@ -8,14 +7,15 @@ import {WrittenQuestion} from './WrittenQuestion.js'
 import {Validator} from '../shared/Validator.js'
 import {MayBeIdentified} from '../shared/value/MayBeIdentified.js'
 import {CardIdentification} from './CardIdentification.js'
-import {Label} from './Label.js'
 import {Question} from './Question.js'
 import {Answer} from './Answer.js'
 import {Identification} from '../shared/value/Identification.js'
 import {EntityFactory} from '../shared/EntityFactory.js'
+import {InputDataNotValidError} from '../errors/InputDataNotValidError.js'
+import {Unidentified} from '../shared/value/Unidentified.js'
 
 export class CardFactory extends EntityFactory<Card, CardDto> {
-    private cardConstructor = Card.prototype.constructor as { new(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: CardIdentification): Card}
+    private cardConstructor = Card.prototype.constructor as { new(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: CardIdentification): Card }
 
     getValidators(): Map<string, Validator> {
         return new Map()
@@ -33,7 +33,7 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
                 dto.question,
                 dto.answer,
                 dto.labelling,
-                'id' in dto ? dto.id : undefined
+                'id' in dto ? dto.id : undefined,
             )
     }
 
@@ -45,25 +45,40 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
             (Boolean(id) ? Identification.isValid(id) : true)
     }
 
-    fromDto(dto: CardDto): Card {
-        precondition(this.isDtoValid(dto))
-        return this.recreate(new AuthorIdentification(dto.authorId), new WrittenQuestion(dto.question), new WrittenAnswer(dto.answer), new Labelling(dto.labelling.map(labelStr => new Label(labelStr))), new CardIdentification(dto.id))
+    fromDto(dto: MayBeIdentified<CardDto>): Card {
+        if (!this.isDtoValid(dto)) {
+            throw new InputDataNotValidError()
+        }
+        if ('id' in dto) {
+            return this.recreate(
+                new AuthorIdentification(dto.authorId),
+                new WrittenQuestion(dto.question),
+                new WrittenAnswer(dto.answer),
+                Labelling.fromStringLabels(dto.labelling),
+                new CardIdentification(dto.id))
+        }
+        return this.create(
+            new AuthorIdentification(dto.authorId),
+            new WrittenQuestion(dto.question),
+            new WrittenAnswer(dto.answer),
+            Labelling.fromStringLabels(dto.labelling),
+        )
     }
 
     fromDtoArray(dtoArray: CardDto[]): Card[] {
         return dtoArray.map(cardDto => this.fromDto(cardDto))
     }
 
-    create(userId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling){
+    create(userId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling) {
         return new this.cardConstructor(userId, question, answer, labels, Identification.create())
     }
 
-    recreate(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: Identification){
+    recreate(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: Identification) {
         return new this.cardConstructor(authorId, question, answer, labels, id)
     }
 
-    apply(card: Card, data: Omit<Partial<CardDto>, 'id'>) {
-        const modifiedCard = { ...card.toDto(), ...data}
+    apply(card: Card, data: Unidentified<Partial<CardDto>>) {
+        const modifiedCard = {...card.toDto(), ...data}
         return this.fromDto(modifiedCard)
     }
 

@@ -1,1 +1,3 @@
-export type MayBeIdentified<T> = Omit<T, 'id'> | T;
+import {Unidentified} from './Unidentified.js'
+
+export type MayBeIdentified<T> = Unidentified<T> | T;
