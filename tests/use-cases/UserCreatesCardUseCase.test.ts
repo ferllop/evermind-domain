@@ -8,7 +8,6 @@ import {
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {assertUserHasStoredACard} from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
 import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
-import {CreateOwnCard} from '../../src/domain/authorization/permission/permissions/CreateOwnCard.js'
 import {UserIsNotAuthorizedError} from '../../src/domain/errors/UserIsNotAuthorizedError.js'
 import {UserIdentification} from '../../src/domain/user/UserIdentification.js'
 
@@ -20,7 +19,7 @@ userCreatesCardUseCase(
     'given data representing a card, ' +
     'when execute this use case, ' +
     'an object should be returned with no error and card data', async () => {
-        const user = await givenAStoredUserWithPermissions([CreateOwnCard])
+        const user = await givenAStoredUserWithPermissions(['CREATE_OWN_CARD'])
         const {id, authorId, ...card} = new CardBuilder().buildDto()
         const request = {
             ...card,
@@ -37,7 +36,7 @@ userCreatesCardUseCase(
     'given data representing a card, ' +
     'when execute this use case, ' +
     'the card should remain in storage', async () => {
-        const user = await givenAStoredUserWithPermissions([CreateOwnCard])
+        const user = await givenAStoredUserWithPermissions(['CREATE_OWN_CARD'])
         const card = new CardBuilder().buildDto()
         const {id, authorId, ...unidentifiedCard} = card
 

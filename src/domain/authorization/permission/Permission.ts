@@ -3,8 +3,9 @@ import {precondition} from '../../../implementations/preconditions.js'
 import {PermissionValue} from './PermissionValue.js'
 import {PermissionDto} from './PermissionDto.js'
 import {AsyncPermissionValidator} from '../../shared/AsyncPermissionValidator.js'
+import {PermissionRepository} from './PermissionRepository.js'
 
-export abstract class Permission implements AsyncPermissionValidator {
+export class Permission implements AsyncPermissionValidator {
     constructor(private userId: UserIdentification, private value: PermissionValue) {
     }
 
@@ -29,8 +30,10 @@ export abstract class Permission implements AsyncPermissionValidator {
         }
     }
 
-    abstract validate(obj: unknown): Promise<PermissionValue[]>
-
+    async validate(): Promise<PermissionValue[]> {
+        const hasPermission = await new PermissionRepository().has(this)
+        return hasPermission ? [] : [this.getValue()]
+    }
 }
 
 
