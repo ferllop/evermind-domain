@@ -1,5 +1,5 @@
-import {precondition} from '../../../implementations/preconditions.js'
 import {NodeNativeUuid} from '../NodeNativeUuidGenerator.js'
+import {InputDataNotValidError} from '../../errors/InputDataNotValidError.js'
 
 export class Identification {
     static NULL = new Identification('')
@@ -16,7 +16,9 @@ export class Identification {
     }
     
     static recreate(value: string) {
-        precondition(Identification.isValid(value))
+        if (!Identification.isValid(value)) {
+            throw new InputDataNotValidError()
+        }
         return new Identification(value)
     }
 

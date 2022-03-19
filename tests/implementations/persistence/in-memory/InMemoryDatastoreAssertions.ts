@@ -15,8 +15,8 @@ export async function assertUserIsNotStored(user: UserDto) {
     assert.equal(await datastore.read('users', user.id), null)
 }
 
-export async function assertCardIsStored(card: CardDto) {
-    assert.equal(await datastore.read('cards', card.id), card)
+export async function assertCardIsStored(card: CardDto, message?: string) {
+    assert.equal(await datastore.read('cards', card.id), card, message)
 }
 
 export async function assertUserHasStoredACard(unidentifiedCard: Omit<CardDto, 'id'>) {
@@ -26,8 +26,8 @@ export async function assertUserHasStoredACard(unidentifiedCard: Omit<CardDto, '
     assert.equal(cards[0], {...unidentifiedCard, id: cards[0].id})
 }
 
-export async function assertCardIsNotStored(card: CardDto) {
-    assert.equal(await datastore.read('cards', card.id), null)
+export async function assertCardIsNotStored(card: CardDto, message?: string) {
+    assert.equal(await datastore.read('cards', card.id), null, message)
 }
 
 export async function assertSubscriptionIsStored(userId: Id, cardId: Id) {

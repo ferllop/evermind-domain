@@ -3,7 +3,7 @@ import {assert, suite} from '../test-config.js'
 import {UserRemovesCardUseCase} from '../../src/use-cases/UserRemovesCardUseCase.js'
 import {
     givenACleanInMemoryDatabase,
-    givenAStoredCard,
+    givenAStoredCard, givenAStoredCardFromUser, givenAStoredUserWithPermissions,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {
     assertCardIsNotStored,
@@ -11,32 +11,30 @@ import {
 } from '../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
 import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
 import {CardNotFoundError} from '../../src/domain/errors/CardNotFoundError.js'
+import {UserIsNotAuthorizedError} from '../../src/domain/errors/UserIsNotAuthorizedError.js'
+import {Id} from 'in-memory-database/build/Id'
 
-const userRemovesCardUseCase = suite("User removes card use case")
+const userRemovesCardUseCase = suite('User removes card use case')
 
 userRemovesCardUseCase.before.each(async () => await givenACleanInMemoryDatabase())
 
 userRemovesCardUseCase(
-    'given an existing card id, ' +
-    'should return an object with either ' +
+    'given an existing card id, and a user with permission to delete own cards' +
+    'should remove the card and return an object with either ' +
     'data and error properties as null', async () => {
-        const {id} = await givenAStoredCard()
-        const result = await new UserRemovesCardUseCase().execute({id})
+        const user = await givenAStoredUserWithPermissions(['DELETE_OWN_CARD'])
+        const card = await givenAStoredCardFromUser(user)
+        await assertCardIsStored(card, 'Before delete use case')
+        const result = await new UserRemovesCardUseCase().execute(({id: card.id, requesterId: user.id}))
+        await assertCardIsNotStored(card, 'After delete use case')
         assert.equal(result, Response.OkWithoutData())
     })
-
-userRemovesCardUseCase('given an existing card id, should remove it', async () => {
-    const card = await givenAStoredCard()
-    await assertCardIsStored(card)
-    await new UserRemovesCardUseCase().execute({id: card.id})
-    await assertCardIsNotStored(card)
-})
 
 userRemovesCardUseCase(
     'given an unexisting card id into an existing cards table, ' +
     'it should return an object with data property as null and ' +
     'error property as CARD_NOT_FOUND DomainError', async () => {
-        const result = await new UserRemovesCardUseCase().execute({ id: 'unexistingId' })
+        const result = await new UserRemovesCardUseCase().execute(withAnyRequester({id: 'unexistingId'}))
         assert.equal(result, Response.withDomainError(new CardNotFoundError()))
     })
 
@@ -45,10 +43,48 @@ userRemovesCardUseCase(
     'should return an object with data property as null ' +
     'and error property as INPUT_DATA_NOT_VALID DomainError', async () => {
         const invalidRequest = {
-            id: ''
+            id: '',
         }
-        const result = await new UserRemovesCardUseCase().execute(invalidRequest)
+        const result = await new UserRemovesCardUseCase().execute(withAnyRequester(invalidRequest))
         assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
     })
 
+userRemovesCardUseCase('given an existing card id, ' +
+    'should return an object with error UserIsNotAuthorized and null data', async () => {
+    const card = await givenAStoredCard()
+    await assertCardIsStored(card, 'Before delete')
+    const result = await new UserRemovesCardUseCase().execute({id: card.id, requesterId: card.authorId})
+    await assertCardIsStored(card, 'After delete')
+    assert.equal(
+        result,
+        Response.withDomainError(
+            new UserIsNotAuthorizedError(['DELETE_OWN_CARD'])))
+})
+
+userRemovesCardUseCase('given an existing card id, and a user with permission to delete cards from other users' +
+    'should return an object with error UserIsNotAuthorized and null data', async () => {
+    const notAuthorUser = await givenAStoredUserWithPermissions(['DELETE_CARD_FROM_OTHER'])
+    const card = await givenAStoredCard()
+    await assertCardIsStored(card, 'Before delete use case')
+    await new UserRemovesCardUseCase().execute({id: card.id, requesterId: notAuthorUser.id})
+    await assertCardIsNotStored(card, 'After delete use case')
+})
+
+userRemovesCardUseCase('given an existing card id, and a user without permission to delete cards from other users' +
+    'should return an object with error UserIsNotAuthorized DELETE_CARDS_FROM_OTHERS and null data', async () => {
+    const notAuthorUser = await givenAStoredUserWithPermissions([])
+    const card = await givenAStoredCard()
+    await assertCardIsStored(card, 'Before delete use case')
+    const result = await new UserRemovesCardUseCase().execute({id: card.id, requesterId: notAuthorUser.id})
+    await assertCardIsStored(card, 'After delete use case')
+    assert.equal(
+        result,
+        Response.withDomainError(
+            new UserIsNotAuthorizedError(['DELETE_CARD_FROM_OTHER'])))
+})
+
 userRemovesCardUseCase.run()
+
+function withAnyRequester<T>(request: T): T & { requesterId: Id } {
+    return {...request, requesterId: 'any-requester-id'}
+}
