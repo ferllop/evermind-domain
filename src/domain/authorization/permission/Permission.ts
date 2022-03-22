@@ -2,10 +2,10 @@ import {UserIdentification} from '../../user/UserIdentification.js'
 import {precondition} from '../../../implementations/preconditions.js'
 import {PermissionValue} from './PermissionValue.js'
 import {PermissionDto} from './PermissionDto.js'
-import {AsyncPermissionValidator} from '../../shared/AsyncPermissionValidator.js'
+import {PermissionValidator} from './PermissionValidator.js'
 import {PermissionRepository} from './PermissionRepository.js'
 
-export class Permission implements AsyncPermissionValidator {
+export class Permission implements PermissionValidator {
     constructor(private userId: UserIdentification, private value: PermissionValue) {
     }
 

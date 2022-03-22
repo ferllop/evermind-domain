@@ -1,9 +1,9 @@
 import {UserIdentification} from '../../../user/UserIdentification.js'
 import {Card} from '../../../card/Card.js'
-import {AsyncPermissionValidator} from '../../../shared/AsyncPermissionValidator.js'
+import {PermissionValidator} from '../PermissionValidator.js'
 import {Permission} from '../Permission.js'
 
-export class CreateCard implements AsyncPermissionValidator {
+export class CreateCard implements PermissionValidator {
     constructor(private userId: UserIdentification) {
     }
 
