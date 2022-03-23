@@ -1,5 +1,4 @@
-import { CardDto } from '../domain/card/CardDto.js'
-import { Id } from '../domain/shared/value/Id.js'
-import { OnlyRequired } from '../domain/shared/value/OnlyRequired.js'
+import {CardDto} from '../domain/card/CardDto.js'
+import {WithRequesterRequest} from './WithRequesterRequest.js'
 
-export type UserModifiesCardDataRequest = OnlyRequired<CardDto, 'id'> & {userId: Id};
+export type UserModifiesCardDataRequest = WithRequesterRequest & CardDto

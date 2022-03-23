@@ -6,7 +6,6 @@ import {Request} from './Request.js'
 export abstract class UseCase<RequestType extends Request, ResponseType> {
     readonly requiredFields: string[]
     constructor(requiredFields: string[]) {
-        // this.requiredFields = requiredFields.concat(['requesterId'])
         this.requiredFields = requiredFields
     }
 
@@ -42,3 +41,4 @@ export abstract class UseCase<RequestType extends Request, ResponseType> {
     protected abstract internalExecute(request: RequestType): Promise<Response<ResponseType>>
 
 }
+

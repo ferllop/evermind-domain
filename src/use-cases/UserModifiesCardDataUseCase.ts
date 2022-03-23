@@ -1,36 +1,24 @@
 import {CardRepository} from '../domain/card/CardRepository.js'
-import {CardIdentification} from '../domain/card/CardIdentification.js'
+import {RequesterIdentification} from '../domain/authorization/permission/RequesterIdentification.js'
 import {CardFactory} from '../domain/card/CardFactory.js'
-import {Response} from './Response.js'
 import {UserModifiesCardDataRequest} from './UserModifiesCardDataRequest.js'
-import {CardDto} from '../domain/card/CardDto.js'
-import {UseCase} from './UseCase.js'
-import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js'
-import {CardNotFoundError} from '../domain/errors/CardNotFoundError.js'
+import {CardIdentification} from '../domain/card/CardIdentification.js'
+import {Response} from './Response.js'
+import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 
-export class UserModifiesCardDataUseCase extends UseCase<UserModifiesCardDataRequest, CardDto | null> {
-
+export class UserModifiesCardDataUseCase extends WithAuthorizationUseCase<UserModifiesCardDataRequest, null> {
     constructor() {
-        super(['id', 'userId', 'question', 'answer', 'labelling'])
+        super(['id', 'question', 'answer', 'labelling'])
     }
 
     protected async internalExecute(request: UserModifiesCardDataRequest) {
-        const {userId, ...cardData} = request
-        if (!new CardFactory().arePropertiesValid(cardData)) {
-            throw new InputDataNotValidError()
-        }
-
-        const {id, ...data} = cardData
+        const {requesterId, id, authorId, ...cardData } = request
         const cardRepository = new CardRepository()
-        const card = await cardRepository.findById(new CardIdentification(id))
-        if (card.isNull()) {
-            throw new CardNotFoundError()
-        }
-        await cardRepository.update(new CardFactory().apply(card, data))
-
+        const originalCard = await cardRepository.findById(new CardIdentification(id))
+        const updatedCard = new CardFactory().apply(originalCard, cardData)
+        await new CardRepository().updateData(updatedCard, RequesterIdentification.recreate(requesterId))
         return Response.OkWithoutData()
     }
-
 }
 
 

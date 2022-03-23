@@ -80,7 +80,7 @@ export class CardInMemoryDao implements CardDao {
             return []
         }
         const result = await this.datastore.findMany(this.tableName, criteria)
-        return result.map(dto => this.mapper.fromDto(dto))
+        return new CardFactory().fromDtos(result)
     }
 
     getNull() {

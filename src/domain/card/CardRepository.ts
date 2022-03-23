@@ -8,6 +8,9 @@ import {Authorization} from '../authorization/Authorization.js'
 import {RequesterIdentification} from '../authorization/permission/RequesterIdentification.js'
 import {CreateCard} from '../authorization/permission/permissions/CreateCard.js'
 import {DeleteCard} from '../authorization/permission/permissions/DeleteCard.js'
+import {UpdateCard} from '../authorization/permission/permissions/UpdateCard.js'
+import {TransferCard} from '../authorization/permission/permissions/TransferCard.js'
+import {User} from '../user/User.js'
 
 export class CardRepository {
 
@@ -31,8 +34,15 @@ export class CardRepository {
         return this.dao.findById(id)
     }
 
-    async update(entity: Card) {
-        return this.dao.update(entity)
+    async updateData(card: Card, requesterId: RequesterIdentification) {
+        await Authorization.assert(requesterId).can(UpdateCard, card)
+        return this.dao.update(card)
+    }
+
+    async transfer(card: Card, user: User, requesterId: RequesterIdentification) {
+        const transferredCard = card.transferTo(user)
+        await Authorization.assert(requesterId).can(TransferCard, card)
+        return this.dao.update(transferredCard)
     }
 
     async findByLabelling(labelling: Labelling): Promise<Card[]> {

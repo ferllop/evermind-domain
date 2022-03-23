@@ -1,7 +1,7 @@
-import { Id } from '../domain/shared/value/Id.js'
-import {Request} from './Request.js'
+import {Id} from '../domain/shared/value/Id.js'
+import {WithRequesterRequest} from './WithRequesterRequest.js'
 
-export type UserCreatesCardRequest = Request & {
+export type UserCreatesCardRequest = WithRequesterRequest & {
     authorId: Id,
     question: string,
     answer: string,

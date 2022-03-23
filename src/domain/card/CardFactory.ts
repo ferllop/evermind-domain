@@ -65,7 +65,7 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
         )
     }
 
-    fromDtoArray(dtoArray: CardDto[]): Card[] {
+    fromDtos(dtoArray: CardDto[]): Card[] {
         return dtoArray.map(cardDto => this.fromDto(cardDto))
     }
 
@@ -77,9 +77,11 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
         return new this.cardConstructor(authorId, question, answer, labels, id)
     }
 
-    apply(card: Card, data: Unidentified<Partial<CardDto>>) {
-        const modifiedCard = {...card.toDto(), ...data}
-        return this.fromDto(modifiedCard)
+    apply(card: Card, data: Unidentified<Partial<Omit<CardDto, 'authorId'>>>) {
+        const modifiedCard = {
+            ...card.toDto(),
+            ...data
+        }
+        return new CardFactory().fromDto(modifiedCard)
     }
-
 }

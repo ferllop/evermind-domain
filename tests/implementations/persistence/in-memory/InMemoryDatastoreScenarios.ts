@@ -8,6 +8,7 @@ import {UserIdentification} from '../../../../src/domain/user/UserIdentification
 import {Permission} from '../../../../src/domain/authorization/permission/Permission.js'
 import {PermissionRepository} from '../../../../src/domain/authorization/permission/PermissionRepository.js'
 import {PermissionValue} from '../../../../src/domain/authorization/permission/PermissionValue.js'
+import {Id} from 'in-memory-database/build/Id.js'
 
 const datastore = new InMemoryDatastore()
 const usersTable = 'users'
@@ -85,4 +86,8 @@ export async function givenAStoredCardFromUser(user: UserDto) {
     const card = new CardBuilder().withAuthorId(user.id).buildDto()
     await givenTheStoredCard(card)
     return card
+}
+
+export function withAnyRequester<T>(request: T): T & { requesterId: Id } {
+    return {...request, requesterId: 'any-requester-id'}
 }

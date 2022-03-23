@@ -3,7 +3,10 @@ import {assert, suite} from '../test-config.js'
 import {UserRemovesCardUseCase} from '../../src/use-cases/UserRemovesCardUseCase.js'
 import {
     givenACleanInMemoryDatabase,
-    givenAStoredCard, givenAStoredCardFromUser, givenAStoredUserWithPermissions,
+    givenAStoredCard,
+    givenAStoredCardFromUser,
+    givenAStoredUserWithPermissions,
+    withAnyRequester,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {
     assertCardIsNotStored,
@@ -12,7 +15,6 @@ import {
 import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
 import {CardNotFoundError} from '../../src/domain/errors/CardNotFoundError.js'
 import {UserIsNotAuthorizedError} from '../../src/domain/errors/UserIsNotAuthorizedError.js'
-import {Id} from 'in-memory-database/build/Id'
 
 const userRemovesCardUseCase = suite('User removes card use case')
 
@@ -84,7 +86,3 @@ userRemovesCardUseCase('given an existing card id, and a user without permission
 })
 
 userRemovesCardUseCase.run()
-
-function withAnyRequester<T>(request: T): T & { requesterId: Id } {
-    return {...request, requesterId: 'any-requester-id'}
-}

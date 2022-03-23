@@ -1,1 +1,2 @@
-export type Request = Record<string, any>
+export type Request = Record<string, unknown>
+
