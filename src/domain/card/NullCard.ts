@@ -11,7 +11,7 @@ export class NullCard extends Card {
 
     private constructor() {
         super(
-            new AuthorIdentification(''),
+            AuthorIdentification.NULL,
             new NullQuestion(),
             new NullAnswer(),
             Labelling.NULL,
@@ -30,11 +30,18 @@ export class NullCard extends Card {
         return super.toDto()
     }
 
-    override transferTo() {
+    override getAuthorId() {
         if (this.isNull()) {
             throw new CardNotFoundError()
         }
-        return this
+        return super.getAuthorId()
+    }
+
+    override hasAuthorId(id: AuthorIdentification) {
+        if (this.isNull()) {
+            throw new CardNotFoundError()
+        }
+        return super.hasAuthorId(id)
     }
 
     override isNull() {

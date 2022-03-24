@@ -1,17 +1,15 @@
-import {UserIdentification} from '../../../user/UserIdentification.js'
-import {Card} from '../../../card/Card.js'
 import {PermissionValidator} from '../PermissionValidator.js'
-import {Permission} from '../Permission.js'
+import {Card} from '../../../card/Card.js'
+import {PermissionValue} from '../PermissionValue.js'
+import {UserPermissions} from '../../UserPermissions.js'
 
 export class TransferCard implements PermissionValidator {
-    constructor(private userId: UserIdentification) {
+    constructor(private userPermissions: UserPermissions) {
     }
 
-    async validate(card: Card) {
-        if (card.hasAuthorId(this.userId)) {
-            return new Permission(this.userId, 'TRANSFER_OWN_CARD').validate()
-        }
-        return new Permission(this.userId, 'TRANSFER_CARD_FROM_ANOTHER').validate()
+    validate(card: Card) {
+        const permissionToCheck: PermissionValue = card.hasAuthorId(this.userPermissions.getUserId())
+            ? 'TRANSFER_OWN_CARD' : 'TRANSFER_CARD_FROM_ANOTHER'
+        return this.userPermissions.has(permissionToCheck) ? [] : [permissionToCheck]
     }
 }
-

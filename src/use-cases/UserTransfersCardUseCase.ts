@@ -6,6 +6,8 @@ import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 import {CardIdentification} from '../domain/card/CardIdentification.js'
 import {Response} from './Response.js'
 import {UserTransfersCardRequest} from './UserTransfersCardRequest.js'
+import {CardFactory} from '../domain/card/CardFactory.js'
+import {PermissionRepository} from '../domain/authorization/permission/PermissionRepository.js'
 
 export class UserTransfersCardUseCase extends WithAuthorizationUseCase<UserTransfersCardRequest, null> {
     constructor() {
@@ -16,8 +18,10 @@ export class UserTransfersCardUseCase extends WithAuthorizationUseCase<UserTrans
         const {requesterId, cardId, authorId } = request
         const cardRepository = new CardRepository()
         const card = await cardRepository.findById(CardIdentification.recreate(cardId))
-        const user = await new UserRepository().findById(AuthorIdentification.recreate(authorId))
-        await cardRepository.transfer(card, user, RequesterIdentification.recreate(requesterId))
+        const receiverUser = await new UserRepository().findById(AuthorIdentification.recreate(authorId))
+        const requesterPermissions = await new PermissionRepository().findUserPermissions(RequesterIdentification.recreate(requesterId))
+        const transferredCard = new CardFactory().transferCardToUser(card, receiverUser, requesterPermissions)
+        await cardRepository.update(transferredCard)
         return Response.OkWithoutData()
     }
 }

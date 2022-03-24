@@ -1,5 +1,6 @@
 export { Response } from './use-cases/Response.js'
 export { Request } from './use-cases/Request.js'
+export { RequesterDto } from './use-cases/RequesterDto.js'
 export { WithRequesterRequest } from './use-cases/WithRequesterRequest.js'
 export { UseCase } from './use-cases/UseCase.js'
 export { WithAuthorizationUseCase } from './use-cases/WithAuthorizationUseCase.js'

@@ -3,5 +3,5 @@ import {PermissionValue} from './PermissionValue.js'
 
 export type PermissionDto = {
     userId: Id,
-    permission: PermissionValue,
+    value: PermissionValue,
 }

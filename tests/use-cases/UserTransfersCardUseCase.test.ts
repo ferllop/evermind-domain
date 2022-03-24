@@ -25,15 +25,15 @@ userTransfersCardUseCase.before.each(async () => await givenACleanInMemoryDataba
 
 userTransfersCardUseCase(
     'given an unexisting card, ' +
-    'when transferring an unexisting card' +
+    'when a user with permissions, tries to transfer an unexisting card ' +
     'should return an object with null as data property and ' +
     'CARD_NOT_FOUND DomainError', async () => {
-        const receivingUser = await givenAStoredUser()
-        const notStoredCard = new CardBuilder().buildDto()
+        const requester = await givenAStoredUserWithPermissions(['TRANSFER_OWN_CARD'])
+        const notStoredCard = new CardBuilder().withAuthorId(requester.id).buildDto()
         const result = await new UserTransfersCardUseCase().execute({
-            requesterId: notStoredCard.authorId,
+            requesterId: requester.id,
             cardId: notStoredCard.id,
-            authorId: receivingUser.id,
+            authorId: UserIdentification.create().getId(),
         })
         assert.equal(result, Response.withDomainError(new CardNotFoundError()))
     })
@@ -43,11 +43,13 @@ userTransfersCardUseCase(
     'when transferring to an unexisting user' +
     'should return an object with null as data property and ' +
     'USER_NOT_FOUND DomainError', async () => {
-        const card = await givenAStoredCard()
+        const user = await givenAStoredUserWithPermissions(['TRANSFER_OWN_CARD'])
+        const card = await givenAStoredCardFromUser(user)
+        const unexistingUser = UserIdentification.create().getId()
         const result = await new UserTransfersCardUseCase().execute({
-            requesterId: card.authorId,
+            requesterId: user.id,
             cardId: card.id,
-            authorId: UserIdentification.create().getId(),
+            authorId: unexistingUser,
         })
         assert.equal(result, Response.withDomainError(new UserNotFoundError()))
     })

@@ -22,21 +22,16 @@ export class Identification {
         return new Identification(value)
     }
 
-
-    equals(identification: Identification): boolean {
-        return this.id === identification.id
+    clone() {
+        return Identification.recreate(this.getId())
     }
 
-    equalsString(identification: string) {
-        return this.equals(new Identification(identification))
+    equals(identification: Identification): boolean {
+        return this.getId() === identification.getId()
     }
 
     getId(): string {
         return this.id
-    }
-
-    merge<T extends Identification>(identification: Identification, separator = ''): T {
-        return Identification.recreate(this.getId() + separator + identification.getId()) as T
     }
 
     isNull() {
@@ -47,4 +42,3 @@ export class Identification {
         return typeof data === 'string' && data.length > 0
     }
 }
-

@@ -4,11 +4,9 @@ import {PersistenceFactory} from '../../../../src/implementations/persistence/Pe
 import {CardDto} from '../../../../src/domain/card/CardDto.js'
 import {CardBuilder} from '../../../domain/card/CardBuilder.js'
 import {UserBuilder} from '../../../domain/user/UserBuilder.js'
-import {UserIdentification} from '../../../../src/domain/user/UserIdentification.js'
-import {Permission} from '../../../../src/domain/authorization/permission/Permission.js'
 import {PermissionRepository} from '../../../../src/domain/authorization/permission/PermissionRepository.js'
 import {PermissionValue} from '../../../../src/domain/authorization/permission/PermissionValue.js'
-import {Id} from 'in-memory-database/build/Id.js'
+import {RequesterDto} from '../../../../src/use-cases/RequesterDto.js'
 
 const datastore = new InMemoryDatastore()
 const usersTable = 'users'
@@ -49,7 +47,7 @@ export async function givenAStoredUser() {
 
 export async function withPermissions(user: UserDto, ...permissionValues: PermissionValue[]) {
     for await (const permissionValue of permissionValues) {
-        const permission = new Permission(new UserIdentification(user.id), permissionValue)
+        const permission = {userId: user.id, value: permissionValue}
         await new PermissionRepository().add(permission)
     }
     return user
@@ -88,6 +86,6 @@ export async function givenAStoredCardFromUser(user: UserDto) {
     return card
 }
 
-export function withAnyRequester<T>(request: T): T & { requesterId: Id } {
+export function withAnyRequester<T>(request: T): T & RequesterDto {
     return {...request, requesterId: 'any-requester-id'}
 }

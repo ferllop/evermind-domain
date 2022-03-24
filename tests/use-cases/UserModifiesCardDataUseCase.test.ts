@@ -25,9 +25,11 @@ userModifiesCardDataUseCase(
     'given an unexisting table, ' +
     'should return an object with null as data property and ' +
     'CARD_NOT_FOUND DomainError', async () => {
-        const result = await new UserModifiesCardDataUseCase().execute(withAnyRequester({
-            ...new CardBuilder().buildDto(),
-        }))
+        const card = new CardBuilder().buildDto()
+        const result = await new UserModifiesCardDataUseCase().execute({
+            ...card,
+            requesterId: card.authorId,
+        })
         assert.equal(result, Response.withDomainError(new CardNotFoundError()))
     })
 
@@ -89,30 +91,36 @@ userModifiesCardDataUseCase(
     })
 
 userModifiesCardDataUseCase(
-    'given wrong card data, ' +
+    'given a user with permissions ' +
+    'when tries to update an own card with wrong card data, ' +
     'should return an object with null as data property and ' +
     'INPUT_DATA_NOT_VALID DomainError', async () => {
-        const card = await givenAStoredCard()
+        const user = await givenAStoredUserWithPermissions(['UPDATE_OWN_CARD'])
+        const card = await givenAStoredCardFromUser(user)
         const invalidCardData = {
+            requesterId: user.id,
             ...card,
             question: '',
         }
-        const result = await new UserModifiesCardDataUseCase().execute(withAnyRequester({
+        const result = await new UserModifiesCardDataUseCase().execute({
             ...invalidCardData,
-        }))
+        })
         assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
     })
 
 userModifiesCardDataUseCase(
-    'given wrong labelling in card data, ' +
+    'given a user with permissions ' +
+    'when tries to modify a card providing wrong labelling ' +
     'should return an object with null as data property and ' +
     'INPUT_DATA_NOT_VALID DomainError', async () => {
-        const card = await givenAStoredCard()
+        const user = await givenAStoredUserWithPermissions(['UPDATE_OWN_CARD'])
+        const card = await givenAStoredCardFromUser(user)
         const invalidLabelling = ['']
-        const result = await new UserModifiesCardDataUseCase().execute(withAnyRequester({
+        const result = await new UserModifiesCardDataUseCase().execute({
+            requesterId: user.id,
             ...card,
             labelling: invalidLabelling,
-        }))
+        })
         assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
     })
 

@@ -1,4 +1,4 @@
 import {Request} from './Request.js'
-import {Id} from '../domain/shared/value/Id.js'
+import {RequesterDto} from './RequesterDto.js'
 
-export type WithRequesterRequest = Request & { requesterId: Id};
+export type WithRequesterRequest = Request & RequesterDto

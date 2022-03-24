@@ -1,18 +1,18 @@
-import {RequesterIdentification} from './permission/RequesterIdentification.js'
-import {UserIsNotAuthorizedError} from '../errors/UserIsNotAuthorizedError.js'
 import {PermissionValidator} from './permission/PermissionValidator.js'
+import {UserIsNotAuthorizedError} from '../errors/UserIsNotAuthorizedError.js'
+import {UserPermissions} from './UserPermissions.js'
 
 export class Authorization {
-    static assert(requesterId: RequesterIdentification) {
-        return new Authorization(requesterId)
+    static assertUserWithPermissions(permissions: UserPermissions) {
+        return new Authorization(permissions)
     }
 
-    constructor(private requesterId: RequesterIdentification) {
+    constructor(private userPermissions: UserPermissions) {
     }
 
-    async can(Permission: (new (requesterId: RequesterIdentification) => PermissionValidator), ...obj: unknown[]) {
-        const permission = new Permission(this.requesterId)
-        const missingPermissions = await permission.validate(...obj)
+    can(Permission: (new (userPermissions: UserPermissions) => PermissionValidator), ...obj: unknown[]) {
+        const permission = new Permission(this.userPermissions)
+        const missingPermissions = permission.validate(...obj)
         if (missingPermissions.length > 0) {
             throw new UserIsNotAuthorizedError(missingPermissions)
         }

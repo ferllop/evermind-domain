@@ -13,6 +13,12 @@ import {Identification} from '../shared/value/Identification.js'
 import {EntityFactory} from '../shared/EntityFactory.js'
 import {InputDataNotValidError} from '../errors/InputDataNotValidError.js'
 import {Unidentified} from '../shared/value/Unidentified.js'
+import {UpdateCard} from '../authorization/permission/permissions/UpdateCard.js'
+import {Authorization} from '../authorization/Authorization.js'
+import {CreateCard} from '../authorization/permission/permissions/CreateCard.js'
+import {User} from '../user/User.js'
+import {TransferCard} from '../authorization/permission/permissions/TransferCard.js'
+import {UserPermissions} from '../authorization/UserPermissions.js'
 
 export class CardFactory extends EntityFactory<Card, CardDto> {
     private cardConstructor = Card.prototype.constructor as { new(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: CardIdentification): Card }
@@ -65,6 +71,20 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
         )
     }
 
+    createFromDto(dto: Unidentified<CardDto>, userPermissions: UserPermissions): Card {
+        if (!this.isDtoValid(dto)) {
+            throw new InputDataNotValidError()
+        }
+        const card = this.create(
+            new AuthorIdentification(dto.authorId),
+            new WrittenQuestion(dto.question),
+            new WrittenAnswer(dto.answer),
+            Labelling.fromStringLabels(dto.labelling),
+        )
+        Authorization.assertUserWithPermissions(userPermissions).can(CreateCard, card)
+        return card
+    }
+
     fromDtos(dtoArray: CardDto[]): Card[] {
         return dtoArray.map(cardDto => this.fromDto(cardDto))
     }
@@ -77,11 +97,23 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
         return new this.cardConstructor(authorId, question, answer, labels, id)
     }
 
-    apply(card: Card, data: Unidentified<Partial<Omit<CardDto, 'authorId'>>>) {
+    apply(card: Card, data: Unidentified<Partial<Omit<CardDto, 'authorId'>>>, userPermissions: UserPermissions) {
+        Authorization.assertUserWithPermissions(userPermissions).can(UpdateCard, card)
         const modifiedCard = {
             ...card.toDto(),
             ...data
         }
         return new CardFactory().fromDto(modifiedCard)
+    }
+
+    transferCardToUser(card: Card, user: User, userPermissions: UserPermissions) {
+        Authorization.assertUserWithPermissions(userPermissions).can(TransferCard, card)
+        return this.recreate(
+            user.getId().clone(),
+            card.getQuestion().clone(),
+            card.getAnswer().clone(),
+            card.getLabelling().clone(),
+            card.getId().clone())
+
     }
 }

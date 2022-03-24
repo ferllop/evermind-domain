@@ -15,6 +15,7 @@ import {
 import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
 import {CardNotFoundError} from '../../src/domain/errors/CardNotFoundError.js'
 import {UserIsNotAuthorizedError} from '../../src/domain/errors/UserIsNotAuthorizedError.js'
+import {CardBuilder} from '../domain/card/CardBuilder.js'
 
 const userRemovesCardUseCase = suite('User removes card use case')
 
@@ -36,7 +37,12 @@ userRemovesCardUseCase(
     'given an unexisting card id into an existing cards table, ' +
     'it should return an object with data property as null and ' +
     'error property as CARD_NOT_FOUND DomainError', async () => {
-        const result = await new UserRemovesCardUseCase().execute(withAnyRequester({id: 'unexistingId'}))
+        const requester = await givenAStoredUserWithPermissions(['DELETE_OWN_CARD'])
+        const unexistingCard = new CardBuilder().withAuthorId(requester.id).build().toDto()
+        const result = await new UserRemovesCardUseCase().execute({
+            requesterId: requester.id,
+            id: unexistingCard.id,
+        })
         assert.equal(result, Response.withDomainError(new CardNotFoundError()))
     })
 
