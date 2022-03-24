@@ -10,7 +10,7 @@ export class Authorization {
     constructor(private userPermissions: UserPermissions) {
     }
 
-    can(Permission: (new (userPermissions: UserPermissions) => PermissionValidator), ...obj: unknown[]) {
+    can<T>(Permission: (new (userPermissions: UserPermissions) => PermissionValidator<T>), ...obj: T[]) {
         const permission = new Permission(this.userPermissions)
         const missingPermissions = permission.validate(...obj)
         if (missingPermissions.length > 0) {

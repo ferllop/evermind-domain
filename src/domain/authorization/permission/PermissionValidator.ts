@@ -1,5 +1,5 @@
 import {PermissionValue} from './PermissionValue.js'
 
-export interface PermissionValidator {
-    validate(...obj: unknown[]): PermissionValue[]
+export interface PermissionValidator<T> {
+    validate(...obj: T[]): PermissionValue[]
 }
