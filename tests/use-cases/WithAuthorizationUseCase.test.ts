@@ -2,6 +2,7 @@ import {assert, suite} from '../test-config.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {RequiredRequestFieldIsMissingError} from '../../src/domain/errors/RequiredRequestFieldIsMissingError.js'
 import {WithAuthorizationUseCase, WithRequesterRequest} from '../../src/index.js'
+import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
 
 class TestableUseCase extends WithAuthorizationUseCase<WithRequesterRequest, null> {
     constructor() {
@@ -9,6 +10,7 @@ class TestableUseCase extends WithAuthorizationUseCase<WithRequesterRequest, nul
     }
 
     async internalExecute(): Promise<Response<null>> {
+        await this.getRequesterPermissions()
         return Response.OkWithoutData()
     }
 }
@@ -39,5 +41,24 @@ useCase('should return REQUEST_FIELD_NOT_VALID ' +
         await new TestableUseCase().execute(missingRequesterRequest),
         Response.withDomainError(new RequiredRequestFieldIsMissingError(['requesterId'])))
 })
+
+useCase(
+    'given wrong requesterId, ' +
+    'should return an object with null as data property and ' +
+    'INPUT_DATA_NOT_VALID DomainError', async () => {
+        const invalidRequesterRequest = {
+            requesterId: '',
+            fieldA: 'someData',
+            fieldB: 'someData',
+        }
+        try {
+        const result = await new TestableUseCase().execute(invalidRequesterRequest)
+        assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
+
+        } catch (error) {
+            console.log(error)
+        }
+    })
+
 
 useCase.run()

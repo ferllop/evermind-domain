@@ -1,8 +1,24 @@
 import {WithRequesterRequest} from './WithRequesterRequest.js'
 import {UseCase} from './UseCase.js'
+import {Response} from './Response.js'
+import {PermissionRepository} from '../domain/authorization/permission/PermissionRepository.js'
+import {RequesterIdentification} from '../domain/authorization/permission/RequesterIdentification.js'
+import {Id} from '../domain/shared/value/Id.js'
 
 export abstract class WithAuthorizationUseCase<Request extends WithRequesterRequest, ResponseType> extends UseCase<Request, ResponseType> {
-    constructor(requiredFields: string[]) {
-        super(requiredFields.concat(['requesterId']))
+    requesterId?: Id
+
+    constructor(requestedFields: string[]) {
+        super(requestedFields.concat('requesterId'))
+    }
+
+    override async execute(request: Request): Promise<Response<null> | Response<ResponseType>> {
+        this.requesterId = request.requesterId
+        return super.execute(request)
+    }
+
+    protected async getRequesterPermissions() {
+        return await new PermissionRepository().findUserPermissions(
+            RequesterIdentification.recreate(this.requesterId!))
     }
 }
