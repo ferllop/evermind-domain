@@ -1,5 +1,6 @@
 import {UserIdentification} from '../user/UserIdentification.js'
 import {PermissionValue} from './permission/PermissionValue.js'
+import {User} from '../user/User.js'
 
 export class UserPermissions {
 
@@ -8,6 +9,13 @@ export class UserPermissions {
 
     getUserId() {
         return this.userId
+    }
+
+    areFromUser(user: UserIdentification): boolean
+    areFromUser(user: User | UserIdentification): boolean {
+        return user instanceof User
+            ? user.getId().equals(this.userId)
+            : user.equals(this.userId)
     }
 
     has(permissionAskingFor: PermissionValue) {

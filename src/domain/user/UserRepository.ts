@@ -6,6 +6,7 @@ import {PersistenceFactory} from '../../implementations/persistence/PersistenceF
 import {UserPermissions} from '../authorization/UserPermissions.js'
 import {Authorization} from '../authorization/Authorization.js'
 import {RemoveUserAccount} from '../authorization/permission/permissions/RemoveUserAccount.js'
+import {GetDataFromOtherUser} from '../authorization/permission/permissions/GetDataFromOtherUser.js'
 
 export class UserRepository {
 
@@ -24,9 +25,15 @@ export class UserRepository {
         await this.dao.delete(user.getId())
     }
 
-    async findById(id: UserIdentification) {
-        return await this.dao.findById(id)
+    async findById(userId: UserIdentification) {
+        return await this.dao.findById(userId)
     }
+
+    async getById(userId: UserIdentification, permissions: UserPermissions) {
+        Authorization.assertUserWithPermissions(permissions).can(GetDataFromOtherUser, userId)
+        return await this.dao.findById(userId)
+    }
+
     async findByUsername(username: Username) {
         return await this.dao.findByUsername(username)
     }
