@@ -128,33 +128,6 @@ userTransfersCardUseCase(
         assert.equal(storedCard!.authorId, card.authorId)
     })
 
-// userTransfersCardUseCase(
-//     'given a previously stored card and data to update it, ' +
-//     'should return an object with null as error property and ' +
-//     'null as data property', async () => {
-//         const user = await givenAStoredUserWithPermissions(['UPDATE_OWN_CARD'])
-//         const card = await givenAStoredCardFromUser(user)
-//         const result = await new UserModifiesCardDataUseCase().execute(
-//             {
-//                 ...card,
-//                 question: 'updatedQuestion',
-//                 requesterId: card.authorId,
-//             })
-//         assert.equal(result, Response.OkWithoutData())
-//     })
-//
-// userTransfersCardUseCase(
-//     'given an unexisting card in an existing table, ' +
-//     'should return an object with null as data property and ' +
-//     'CARD_NOT_FOUND DomainError as error', async () => {
-//         const card = await givenAStoredCard()
-//         const result = await new UserModifiesCardDataUseCase().execute(withAnyRequester({
-//             ...card,
-//             id: 'notExistingId',
-//         }))
-//         assert.equal(result, Response.withDomainError(new CardNotFoundError()))
-//     })
-//
 userTransfersCardUseCase(
     'given wrong cardId, ' +
     'should return an object with null as data property and ' +
@@ -177,20 +150,6 @@ userTransfersCardUseCase(
             cardId: card.id,
             authorId: '',
         })
-        const result = await new UserTransfersCardUseCase().execute(invalidCardIdRequest)
-        assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
-    })
-
-userTransfersCardUseCase(
-    'given wrong requesterId, ' +
-    'should return an object with null as data property and ' +
-    'INPUT_DATA_NOT_VALID DomainError', async () => {
-        const card = await givenAStoredCard()
-        const invalidCardIdRequest = {
-            requesterId: '',
-            cardId: card.id,
-            authorId: card.authorId,
-        }
         const result = await new UserTransfersCardUseCase().execute(invalidCardIdRequest)
         assert.equal(result, Response.withDomainError(new InputDataNotValidError()))
     })
