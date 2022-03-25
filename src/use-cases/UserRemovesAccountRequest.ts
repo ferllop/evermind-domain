@@ -1,3 +1,4 @@
-import { IdDto } from '../domain/shared/value/IdDto.js'
+import {RequesterDto} from './RequesterDto.js'
+import {Id} from '../domain/shared/value/Id.js'
 
-export type UserRemovesAccountRequest = IdDto
+export type UserRemovesAccountRequest = RequesterDto & {userId: Id}

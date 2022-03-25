@@ -1,29 +1,19 @@
 import {UserRepository} from '../domain/user/UserRepository.js'
-import {Identification} from '../domain/shared/value/Identification.js'
 import {Response} from './Response.js'
 import {UserRemovesAccountRequest} from './UserRemovesAccountRequest.js'
-import {UseCase} from './UseCase.js'
-import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js'
-import {UserNotFoundError} from '../domain/errors/UserNotFoundError.js'
+import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
+import {UserIdentification} from '../domain/user/UserIdentification.js'
 
-export class UserRemovesAccountUseCase extends UseCase<UserRemovesAccountRequest, null> {
+export class UserRemovesAccountUseCase extends WithAuthorizationUseCase<UserRemovesAccountRequest, null> {
 
     constructor() {
-        super(['id'])
+        super(['userId'])
     }
 
     protected async internalExecute(request: UserRemovesAccountRequest): Promise<Response<null>> {
-        if (!Identification.isValid(request.id)) {
-            throw new InputDataNotValidError()
-        }
-
         const userRepository = await new UserRepository()
-        const user = await userRepository.findById(new Identification(request.id))
-        if (user.isNull()) {
-            throw new UserNotFoundError()
-        }
-        await new UserRepository().delete(user)
-
+        const user = await userRepository.findById(UserIdentification.recreate(request.userId))
+        await userRepository.delete(user, await this.getRequesterPermissions())
         return Response.OkWithoutData()
     }
 
