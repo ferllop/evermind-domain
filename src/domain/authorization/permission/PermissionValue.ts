@@ -6,6 +6,7 @@ type CardPermissionValue = 'CREATE_OWN_CARD'
     | 'UPDATE_CARD_FROM_OTHER'
     | 'TRANSFER_OWN_CARD'
     | 'TRANSFER_CARD_FROM_ANOTHER'
+    | 'GET_CARD_FROM_OTHER'
 
 type UserPermissionValue = 'REMOVE_OWN_ACCOUNT'
     | 'REMOVE_ACCOUNT_FROM_OTHER'

@@ -7,6 +7,8 @@ import {PersistenceFactory} from '../../implementations/persistence/PersistenceF
 import {Authorization} from '../authorization/Authorization.js'
 import {DeleteCard} from '../authorization/permission/permissions/DeleteCard.js'
 import {UserPermissions} from '../authorization/UserPermissions.js'
+import {CardIdentification} from './CardIdentification.js'
+import {GetCardFromOther} from '../authorization/permission/permissions/GetCardFromOther.js'
 
 export class CardRepository {
 
@@ -25,8 +27,14 @@ export class CardRepository {
         await this.dao.delete(card.getId())
     }
 
-    async findById(id: Identification): Promise<Card> {
-        return this.dao.findById(id)
+    async findById(cardId: CardIdentification): Promise<Card> {
+        return this.dao.findById(cardId)
+    }
+
+    async getById(cardId: CardIdentification, permissions: UserPermissions): Promise<Card> {
+        const card = await this.dao.findById(cardId)
+        Authorization.assertUserWithPermissions(permissions).can(GetCardFromOther, card)
+        return card
     }
 
     async update(card: Card) {

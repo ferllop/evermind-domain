@@ -1,3 +1,6 @@
-import { IdDto } from '../domain/shared/value/IdDto.js'
+import {WithRequesterRequest} from './WithRequesterRequest.js'
+import {Id} from '../domain/shared/value/Id.js'
 
-export type UserReadsACardRequest = IdDto
+export type UserReadsACardRequest = WithRequesterRequest & {
+    cardId: Id,
+}
