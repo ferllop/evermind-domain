@@ -1,6 +1,6 @@
 import {Id} from '../domain/shared/value/Id.js'
-import {RequesterDto} from './RequesterDto.js'
+import {WithRequesterRequest} from './WithRequesterRequest.js'
 
-export type UserGetsUserSubscriptionsRequest = {
+export type UserGetsUserSubscriptionsRequest = WithRequesterRequest & {
     userId: Id,
-} & RequesterDto
+}
