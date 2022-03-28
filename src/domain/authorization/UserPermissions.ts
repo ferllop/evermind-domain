@@ -11,7 +11,6 @@ export class UserPermissions {
         return this.userId
     }
 
-    areFromUser(user: UserIdentification): boolean
     areFromUser(user: User | UserIdentification): boolean {
         return user instanceof User
             ? user.getId().equals(this.userId)
