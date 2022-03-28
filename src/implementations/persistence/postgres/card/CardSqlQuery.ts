@@ -13,12 +13,14 @@ export class CardSqlQuery {
             ${CardDatabaseMap.ID},
             ${CardDatabaseMap.AUTHOR},
             ${CardDatabaseMap.QUESTION},
-            ${CardDatabaseMap.ANSWER}
+            ${CardDatabaseMap.ANSWER},
+            ${CardDatabaseMap.VISIBILITY}
             ) VALUES (
             '${card.getId().getId()}',
             '${card.getAuthorId().getId()}',
             '${card.getQuestion().getValue()}',
-            '${card.getAnswer().getValue()}');
+            '${card.getAnswer().getValue()}',
+            '${card.getVisibility()}');
             ${this.getInsertLabellingQuery(card.getId(), card.getLabelling())};
             COMMIT;`
     }
@@ -27,7 +29,8 @@ export class CardSqlQuery {
         return `BEGIN;
             UPDATE ${CardDatabaseMap.TABLE_NAME} SET 
             ${CardDatabaseMap.QUESTION} = '${card.getQuestion().getValue()}',
-            ${CardDatabaseMap.ANSWER} = '${card.getAnswer().getValue()}'
+            ${CardDatabaseMap.ANSWER} = '${card.getAnswer().getValue()}',
+            ${CardDatabaseMap.VISIBILITY} = '${card.getVisibility()}'
             WHERE ${CardDatabaseMap.ID} = '${card.getId().getId()}';
             DELETE FROM ${LabellingDatabaseMap.TABLE_NAME} WHERE ${LabellingDatabaseMap.CARD_ID} = '${card.getId().getId()}';
             ${this.getInsertLabellingQuery(card.getId(), card.getLabelling())};
@@ -54,6 +57,7 @@ export class CardSqlQuery {
                        ${CardDatabaseMap.AUTHOR},
                        ${CardDatabaseMap.QUESTION},
                        ${CardDatabaseMap.ANSWER},
+                        ${CardDatabaseMap.VISIBILITY},
                        array(SELECT ${LabellingDatabaseMap.LABEL}
                              FROM ${LabellingDatabaseMap.TABLE_NAME}
                              WHERE ${LabellingDatabaseMap.CARD_ID} = ${CardDatabaseMap.ID}) as labelling
@@ -86,6 +90,7 @@ export class CardSqlQuery {
                     ${CardDatabaseMap.AUTHOR}   UUID,
                     ${CardDatabaseMap.QUESTION} TEXT,
                     ${CardDatabaseMap.ANSWER}   TEXT,
+                    ${CardDatabaseMap.VISIBILITY} TEXT,
                     FOREIGN KEY (${CardDatabaseMap.AUTHOR})
                         REFERENCES ${UserDatabaseMap.TABLE_NAME} (${UserDatabaseMap.ID}) ON DELETE CASCADE
                 );`

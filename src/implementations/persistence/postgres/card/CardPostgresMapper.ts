@@ -10,6 +10,7 @@ export class CardPostgresMapper {
         question: 'question',
         answer: 'answer',
         labelling: 'labelling',
+        visibility: 'visibility'
     }
 
     rowToCard = (row: CardRow): Card => {

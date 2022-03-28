@@ -15,6 +15,7 @@ export class NullCard extends Card {
             new NullQuestion(),
             new NullAnswer(),
             Labelling.NULL,
+            'PUBLIC',
             CardIdentification.NULL,
         )
     }

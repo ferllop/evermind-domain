@@ -3,7 +3,7 @@ import {PermissionValidator} from '../PermissionValidator.js'
 import {PermissionValue} from '../PermissionValue.js'
 import {UserPermissions} from '../../UserPermissions.js'
 
-export class GetCardFromOther implements PermissionValidator<Card> {
+export class GetPrivateCardFromOther implements PermissionValidator<Card> {
     constructor(private userPermissions: UserPermissions) {
     }
 
@@ -11,7 +11,7 @@ export class GetCardFromOther implements PermissionValidator<Card> {
         if (this.userPermissions.areFromUser(card.getAuthorId())) {
             return []
         }
-        const permissionToBeChecked: PermissionValue = 'GET_CARD_FROM_OTHER'
+        const permissionToBeChecked: PermissionValue = 'GET_PRIVATE_CARD_FROM_OTHER'
         return this.userPermissions.has(permissionToBeChecked) ? [] : [permissionToBeChecked]
     }
 }

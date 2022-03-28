@@ -4,4 +4,5 @@ export enum CardDatabaseMap {
     AUTHOR = 'author_id',
     QUESTION = 'question',
     ANSWER = 'answer',
+    VISIBILITY = 'visibility',
 }

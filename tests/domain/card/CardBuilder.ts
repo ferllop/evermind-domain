@@ -8,6 +8,7 @@ import {Identification} from '../../../src/domain/shared/value/Identification.js
 import {Label} from '../../../src/domain/card/Label.js'
 import {CardIdentification} from '../../../src/domain/card/CardIdentification.js'
 import {CardFactory} from '../../../src/domain/card/CardFactory.js'
+import {Visibility} from '../../../src/domain/card/Card.js'
 
 export class CardBuilder {
 
@@ -16,6 +17,7 @@ export class CardBuilder {
     question: Question
     answer: Answer
     labelling: Labelling
+    visibility: Visibility
 
     constructor() {
         this.id = Identification.create()
@@ -23,6 +25,7 @@ export class CardBuilder {
         this.question = new WrittenQuestion('question')
         this.answer = new WrittenAnswer('answer')
         this.labelling = new Labelling([new Label('labelling')])
+        this.visibility = 'PUBLIC'
     }
 
     setId(id: Identification) {
@@ -66,7 +69,7 @@ export class CardBuilder {
     }
 
     build() {
-        return new CardFactory().recreate(this.authorId, this.question, this.answer, this.labelling, this.id)
+        return new CardFactory().recreate(this.authorId, this.question, this.answer, this.labelling, this.visibility, this.id)
     }
 
     buildDto() {

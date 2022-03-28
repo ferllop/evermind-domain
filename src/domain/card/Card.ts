@@ -5,7 +5,9 @@ import {AuthorIdentification} from './AuthorIdentification.js'
 import {CardIdentification} from './CardIdentification.js'
 import {Labelling} from './Labelling.js'
 import {Question} from './Question.js'
-import {User} from '../user/User.js'
+import {CardDto} from './CardDto.js'
+
+export type Visibility = 'PUBLIC' | 'PRIVATE'
 
 export class Card extends Entity {
 
@@ -13,13 +15,15 @@ export class Card extends Entity {
     private readonly question: Question
     private readonly answer: Answer
     private readonly labelling: Labelling
+    private readonly visibility: Visibility
 
-    protected constructor(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: CardIdentification) {
+    protected constructor(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, visibility: Visibility, id: CardIdentification) {
         super(id)
         this.authorId = authorId
         this.question = question
         this.answer = answer
         this.labelling = labels
+        this.visibility = visibility
     }
 
     clone(): Card {
@@ -28,6 +32,7 @@ export class Card extends Entity {
             this.getQuestion().clone(),
             this.getAnswer().clone(),
             this.getLabelling().clone(),
+            this.getVisibility(),
             Identification.create()
         )
     }
@@ -48,8 +53,8 @@ export class Card extends Entity {
         return this.labelling
     }
 
-    hasSameAuthor(card: Card) {
-        return this.authorId === card.authorId
+    getVisibility() {
+        return this.visibility
     }
 
     hasAuthorId(authorId: AuthorIdentification) {
@@ -60,23 +65,14 @@ export class Card extends Entity {
         return this.getId().equals(card.getId())
     }
 
-    transferTo(user: User) {
-        return new Card(
-            AuthorIdentification.recreate(user.getId().getId()),
-            this.getQuestion().clone(),
-            this.getAnswer().clone(),
-            this.getLabelling().clone(),
-            CardIdentification.recreate(this.getId().getId())
-        )
-    }
-
-    toDto(){
+    toDto(): CardDto{
         return {
             id: this.getId().getId(),
             authorId: this.getAuthorId().getId(),
             question: this.getQuestion().getValue() as string,
             answer: this.getAnswer().getValue() as string,
-            labelling: this.getLabelling().getLabels().map(label => label.toString())
+            labelling: this.getLabelling().getLabels().map(label => label.toString()),
+            visibility: this.getVisibility(),
         }
     }
 }

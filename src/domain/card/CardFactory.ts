@@ -1,5 +1,5 @@
 import {AuthorIdentification} from './AuthorIdentification.js'
-import {Card} from './Card.js'
+import {Card, Visibility} from './Card.js'
 import {CardDto} from './CardDto.js'
 import {Labelling} from './Labelling.js'
 import {WrittenAnswer} from './WrittenAnswer.js'
@@ -21,7 +21,7 @@ import {TransferCard} from '../authorization/permission/permissions/TransferCard
 import {UserPermissions} from '../authorization/UserPermissions.js'
 
 export class CardFactory extends EntityFactory<Card, CardDto> {
-    private cardConstructor = Card.prototype.constructor as { new(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: CardIdentification): Card }
+    private cardConstructor = Card.prototype.constructor as { new(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, visibility: Visibility, id: CardIdentification): Card }
 
     getValidators(): Map<string, Validator> {
         return new Map()
@@ -61,6 +61,7 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
                 new WrittenQuestion(dto.question),
                 new WrittenAnswer(dto.answer),
                 Labelling.fromStringLabels(dto.labelling),
+                dto.visibility,
                 new CardIdentification(dto.id))
         }
         return this.create(
@@ -68,6 +69,7 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
             new WrittenQuestion(dto.question),
             new WrittenAnswer(dto.answer),
             Labelling.fromStringLabels(dto.labelling),
+            dto.visibility,
         )
     }
 
@@ -80,6 +82,7 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
             new WrittenQuestion(dto.question),
             new WrittenAnswer(dto.answer),
             Labelling.fromStringLabels(dto.labelling),
+            dto.visibility,
         )
         Authorization.assertUserWithPermissions(userPermissions).can(CreateCard, card)
         return card
@@ -89,12 +92,12 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
         return dtoArray.map(cardDto => this.fromDto(cardDto))
     }
 
-    create(userId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling) {
-        return new this.cardConstructor(userId, question, answer, labels, Identification.create())
+    create(userId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, visibility: Visibility) {
+        return new this.cardConstructor(userId, question, answer, labels, visibility, Identification.create())
     }
 
-    recreate(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, id: Identification) {
-        return new this.cardConstructor(authorId, question, answer, labels, id)
+    recreate(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, visibility: Visibility, id: Identification) {
+        return new this.cardConstructor(authorId, question, answer, labels, visibility, id)
     }
 
     apply(card: Card, data: Unidentified<Partial<Omit<CardDto, 'authorId'>>>, userPermissions: UserPermissions) {
@@ -113,7 +116,7 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
             card.getQuestion().clone(),
             card.getAnswer().clone(),
             card.getLabelling().clone(),
+            card.getVisibility(),
             card.getId().clone())
-
     }
 }

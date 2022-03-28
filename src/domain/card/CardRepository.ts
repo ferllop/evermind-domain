@@ -8,7 +8,7 @@ import {Authorization} from '../authorization/Authorization.js'
 import {DeleteCard} from '../authorization/permission/permissions/DeleteCard.js'
 import {UserPermissions} from '../authorization/UserPermissions.js'
 import {CardIdentification} from './CardIdentification.js'
-import {GetCardFromOther} from '../authorization/permission/permissions/GetCardFromOther.js'
+import {GetCardFromOther} from '../authorization/permission/rejections/GetCardFromOther.js'
 
 export class CardRepository {
 
@@ -43,6 +43,11 @@ export class CardRepository {
 
     async findByLabelling(labelling: Labelling): Promise<Card[]> {
         return this.dao.findByLabelling(labelling)
+    }
+
+    async getByLabelling(labelling: Labelling, permissions: UserPermissions): Promise<Card[]> {
+        const cards = await this.dao.findByLabelling(labelling)
+        return cards.filter(card => Authorization.userWithPermissions(permissions).can(GetCardFromOther, card))
     }
 
     async findByAuthorId(authorId: Identification): Promise<Card[]> {

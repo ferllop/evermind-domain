@@ -4,4 +4,5 @@ export type CardRow = {
     question: string,
     answer: string,
     labelling: string[],
+    visibility: string,
 }
