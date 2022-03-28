@@ -12,12 +12,14 @@ import {PostgresDatastoreError} from '../PostgresDatastoreError.js'
 import {CardAlreadyExistsError} from '../../../../domain/errors/CardAlreadyExistsError.js'
 import {CardNotFoundError} from '../../../../domain/errors/CardNotFoundError.js'
 import {DataFromStorageNotValidError} from '../../../../domain/errors/DataFromStorageNotValidError.js'
+import {Authorization} from '../../../../domain/authorization/Authorization.js'
 
 export class CardPostgresDao implements CardDao {
 
     private sqlQuery = new CardSqlQuery()
 
-    constructor(private datastore: CardPostgresDatastore = new CardPostgresDatastore()) {
+    constructor(private authorization: Authorization,
+                private datastore: CardPostgresDatastore = new CardPostgresDatastore()) {
     }
 
     async insert(card: Card) {
@@ -53,7 +55,7 @@ export class CardPostgresDao implements CardDao {
     async findByAuthorId(id: AuthorIdentification): Promise<Card[]> {
         const query = this.sqlQuery.selectCardByAuthorId(id)
         const result = await this.datastore.query(query)
-        return result.rows.map(new CardPostgresMapper().rowToCard)
+        return result.rows.map(new CardPostgresMapper(this.authorization).rowToCard)
     }
 
     async findById(id: CardIdentification): Promise<Card> {
@@ -62,13 +64,13 @@ export class CardPostgresDao implements CardDao {
         if (result.rowCount > 1) {
             throw new DataFromStorageNotValidError()
         }
-        return result.rowCount === 1 ? new CardPostgresMapper().rowToCard(result.rows[0]) : NullCard.getInstance()
+        return result.rowCount === 1 ? new CardPostgresMapper(this.authorization).rowToCard(result.rows[0]) : NullCard.getInstance()
     }
 
     async findByLabelling(labelling: Labelling): Promise<Card[]> {
         const query = this.sqlQuery.selectCardByLabelling(labelling)
         const result = await this.datastore.query(query)
-        return result.rows.map(new CardPostgresMapper().rowToCard)
+        return result.rows.map(new CardPostgresMapper(this.authorization).rowToCard)
     }
 }
 

@@ -11,6 +11,7 @@ import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js
 import {SubscriptionNotFoundError} from '../domain/errors/SubscriptionNotFoundError.js'
 import {UserNotFoundError} from '../domain/errors/UserNotFoundError.js'
 import {CardNotFoundError} from '../domain/errors/CardNotFoundError.js'
+import {AlwaysAuthorizedAuthorization} from '../../tests/implementations/AlwaysAuthorizedAuthorization.js'
 
 export class UserUnsubscribesFromCardUseCase extends UseCase<UserUnsubscribesFromCardRequest, null> {
 
@@ -27,7 +28,8 @@ export class UserUnsubscribesFromCardUseCase extends UseCase<UserUnsubscribesFro
         if (user.isNull()) {
             throw new UserNotFoundError()
         }
-        const card = await new CardRepository().findById(new CardIdentification(request.cardId))
+        const cardRepository = new CardRepository(new AlwaysAuthorizedAuthorization())
+        const card = await cardRepository.findById(new CardIdentification(request.cardId))
         if (card.isNull()) {
             throw new CardNotFoundError()
         }

@@ -1,6 +1,5 @@
 import {CardDao} from '../../../domain/card/CardDao.js'
 import {NullCard} from '../../../domain/card/NullCard.js'
-import {CardFactory} from '../../../domain/card/CardFactory.js'
 import {Identification} from '../../../domain/shared/value/Identification.js'
 import {InMemoryDatastore} from './InMemoryDatastore.js'
 import {Card} from '../../../domain/card/Card.js'
@@ -11,14 +10,16 @@ import {Labelling} from '../../../domain/card/Labelling.js'
 import {Criteria} from './Criteria.js'
 import {DataFromStorageNotValidError} from '../../../domain/errors/DataFromStorageNotValidError.js'
 import {CardNotFoundError} from '../../../domain/errors/CardNotFoundError.js'
+import {CardFactory} from '../../../domain/card/CardFactory.js'
+import {Authorization} from '../../../domain/authorization/Authorization.js'
 
 export class CardInMemoryDao implements CardDao {
     private readonly tableName = 'cards'
-    private mapper = new CardFactory()
 
-
-    constructor(protected datastore: InMemoryDatastore = new InMemoryDatastore()){
-    }
+    constructor(
+        private authorization: Authorization,
+        protected datastore: InMemoryDatastore = new InMemoryDatastore(),
+    ){}
 
     async insert(card: Card) {
         const result = await this.datastore.create(this.tableName, card.toDto())
@@ -43,11 +44,12 @@ export class CardInMemoryDao implements CardDao {
             return this.getNull()
         }
         const result = await this.datastore.read<CardDto>(this.tableName, id.getId())
-        if (!result || !this.mapper.isDtoValid(result)) {
+        const cardFactory = new CardFactory(this.authorization)
+        if (!result || !cardFactory.isDtoValid(result)) {
             return this.getNull()
         }
 
-        return this.mapper.fromDto(result)
+        return cardFactory.fromDto(result)
     }
 
     async update(card: Card) {
@@ -80,7 +82,7 @@ export class CardInMemoryDao implements CardDao {
             return []
         }
         const result = await this.datastore.findMany(this.tableName, criteria)
-        return new CardFactory().fromDtos(result)
+        return new CardFactory(this.authorization).recreateFromDtos(result)
     }
 
     getNull() {

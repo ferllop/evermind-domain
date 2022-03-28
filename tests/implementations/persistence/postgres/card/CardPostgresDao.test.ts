@@ -14,6 +14,7 @@ import {assertObjectListsAreEqualsInAnyOrder} from '../AssertObjectListsAreEqual
 import {PostgresErrorType} from '../../../../../src/implementations/persistence/postgres/PostgresErrorType.js'
 import {CardAlreadyExistsError} from '../../../../../src/domain/errors/CardAlreadyExistsError.js'
 import {CardNotFoundError} from '../../../../../src/domain/errors/CardNotFoundError.js'
+import {AlwaysAuthorizedAuthorization} from '../../../AlwaysAuthorizedAuthorization.js'
 
 type Context = {
     mock: PostgresDatastoreMock,
@@ -24,7 +25,8 @@ const cardDao = suite<Context>('Card DAO')
 
 cardDao.before.each(context => {
     context.mock = new PostgresDatastoreMock()
-    context.sut = new CardPostgresDao(context.mock)
+    const authorization = new AlwaysAuthorizedAuthorization()
+    context.sut = new CardPostgresDao(authorization, context.mock)
 })
 
 cardDao('should throw a CARD_ALREADY_EXISTS error when inserting a card that already exists', async ({mock, sut}) => {

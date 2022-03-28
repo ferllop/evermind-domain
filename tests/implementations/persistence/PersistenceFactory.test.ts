@@ -4,32 +4,41 @@ import {CardPostgresDao} from '../../../src/implementations/persistence/postgres
 import {CardInMemoryDao} from '../../../src/implementations/persistence/in-memory/CardInMemoryDao.js'
 import {Config} from '../../../src/implementations/Config.js'
 import {PersistenceMethodNotDeclaredError} from '../../../src/domain/errors/PersistenceMethodNotDeclaredError.js'
+import {AlwaysAuthorizedAuthorization} from '../AlwaysAuthorizedAuthorization.js'
+import {Authorization} from '../../../src/domain/authorization/Authorization.js'
 
-const persistenceFactory = suite('Persistence Factory')
+type Context = {
+    stub: Authorization
+}
 
-persistenceFactory.before.each(() => {Config.persistenceType = undefined})
+const persistenceFactory = suite<Context>('Persistence Factory')
 
-persistenceFactory('should throw error when no persistence type is provided', () => {
+persistenceFactory.before.each((context) => {
+    context.stub = new AlwaysAuthorizedAuthorization()
+})
+
+persistenceFactory('should throw error when no persistence type is provided', ({stub}) => {
+    Config.persistenceType = undefined
     assert.throws(
-        () => PersistenceFactory.getCardDao(),
+        () => PersistenceFactory.getCardDao(stub),
         (error: Error) => error instanceof PersistenceMethodNotDeclaredError)
 })
 
-persistenceFactory('should throw error when an unexisting persistence type is provided', () => {
+persistenceFactory('should throw error when an unexisting persistence type is provided', ({stub}) => {
     Config.persistenceType = 'unexisting-persistence-type'
     assert.throws(
-        () => PersistenceFactory.getCardDao(),
+        () => PersistenceFactory.getCardDao(stub),
         (error: Error) => error instanceof PersistenceMethodNotDeclaredError)
 })
 
-persistenceFactory('should provide CardPostgresDao when postgres is provided as type', () => {
+persistenceFactory('should provide CardPostgresDao when postgres is provided as type', ({stub}) => {
     Config.persistenceType = 'postgres'
-    assert.instance(PersistenceFactory.getCardDao(), CardPostgresDao)
+    assert.instance(PersistenceFactory.getCardDao(stub), CardPostgresDao)
 })
 
-persistenceFactory('should provide CardInMemoryDao when memory is provided as type', () => {
+persistenceFactory('should provide CardInMemoryDao when memory is provided as type', ({stub}) => {
     Config.persistenceType = 'memory'
-    assert.instance(PersistenceFactory.getCardDao(), CardInMemoryDao)
+    assert.instance(PersistenceFactory.getCardDao(stub), CardInMemoryDao)
 })
 
 persistenceFactory.run()

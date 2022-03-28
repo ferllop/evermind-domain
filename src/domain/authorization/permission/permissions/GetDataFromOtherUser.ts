@@ -1,6 +1,6 @@
 import {PermissionValidator} from '../PermissionValidator.js'
 import {PermissionValue} from '../PermissionValue.js'
-import {UserPermissions} from '../../UserPermissions.js'
+import {UserPermissions} from '../UserPermissions.js'
 import {UserIdentification} from '../../../user/UserIdentification.js'
 
 export class GetDataFromOtherUser implements PermissionValidator<UserIdentification> {

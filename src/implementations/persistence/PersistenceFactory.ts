@@ -9,15 +9,16 @@ import {Config} from '../Config.js'
 import {PersistenceMethodNotDeclaredError} from '../../domain/errors/PersistenceMethodNotDeclaredError.js'
 import {PermissionInMemoryDao} from './in-memory/PermissionInMemoryDao.js'
 import {PermissionPostgresDao} from './postgres/permission/PermissionPostgresDao.js'
+import {Authorization} from '../../domain/authorization/Authorization.js'
 
 export class PersistenceFactory {
 
-    static getCardDao() {
+    static getCardDao(authorization: Authorization) {
         switch (Config.persistenceType) {
             case 'postgres':
-                return new CardPostgresDao()
+                return new CardPostgresDao(authorization)
             case 'memory':
-                return new CardInMemoryDao()
+                return new CardInMemoryDao(authorization)
             default:
                 throw new PersistenceMethodNotDeclaredError()
         }

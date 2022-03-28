@@ -5,9 +5,9 @@ import {WithAuthorizationUseCase, WithRequesterRequest} from '../../src/index.js
 import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
 import {RequesterIdentification} from '../../src/domain/authorization/permission/RequesterIdentification.js'
 import {UserIsNotAuthorizedError} from '../../src/domain/errors/UserIsNotAuthorizedError.js'
-import {Authorization} from '../../src/domain/authorization/Authorization.js'
+import {UserPermissionsAuthorization} from '../../src/domain/authorization/permission/UserPermissionsAuthorization.js'
 import {PermissionValidator} from '../../src/domain/authorization/permission/PermissionValidator.js'
-import {UserPermissions} from '../../src/domain/authorization/UserPermissions.js'
+import {UserPermissions} from '../../src/domain/authorization/permission/UserPermissions.js'
 import {PermissionValue} from '../../src/domain/authorization/permission/PermissionValue.js'
 import {
     givenACleanInMemoryDatabase,
@@ -30,7 +30,7 @@ class TestableUseCase extends WithAuthorizationUseCase<WithRequesterRequest, nul
     async internalExecute(): Promise<Response<null>> {
         const permissions = await this.getRequesterPermissions()
         if(this.Permission){
-            Authorization.userWithPermissions(permissions).assertCan(this.Permission)
+            UserPermissionsAuthorization.userWithPermissions(permissions).assertCan(this.Permission)
         }
         return Response.OkWithoutData()
     }

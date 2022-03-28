@@ -9,6 +9,7 @@ import {Label} from '../../../src/domain/card/Label.js'
 import {CardIdentification} from '../../../src/domain/card/CardIdentification.js'
 import {CardFactory} from '../../../src/domain/card/CardFactory.js'
 import {Visibility} from '../../../src/domain/card/Card.js'
+import {AlwaysAuthorizedAuthorization} from '../../implementations/AlwaysAuthorizedAuthorization.js'
 
 export class CardBuilder {
 
@@ -68,8 +69,14 @@ export class CardBuilder {
         return this
     }
 
+    withVisibility(visibility: Visibility) {
+        this.visibility = visibility
+        return this
+    }
+
     build() {
-        return new CardFactory().recreate(this.authorId, this.question, this.answer, this.labelling, this.visibility, this.id)
+        const cardFactory = new CardFactory(new AlwaysAuthorizedAuthorization())
+        return cardFactory.recreate(this.authorId, this.question, this.answer, this.labelling, this.visibility, this.id)
     }
 
     buildDto() {

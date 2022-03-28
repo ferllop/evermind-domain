@@ -14,10 +14,12 @@ export class UserTransfersCardUseCase extends WithAuthorizationUseCase<UserTrans
 
     protected async internalExecute(request: UserTransfersCardRequest) {
         const {cardId, authorId} = request
-        const cardRepository = new CardRepository()
+        const authorization = await this.getAuthorization()
+        const cardRepository = new CardRepository(authorization)
         const card = await cardRepository.findById(CardIdentification.recreate(cardId))
         const receiverUser = await new UserRepository().findById(AuthorIdentification.recreate(authorId))
-        const transferredCard = new CardFactory().transferCardToUser(card, receiverUser, await this.getRequesterPermissions())
+        const transferredCard = new CardFactory(authorization)
+            .transferCardToUser(card, receiverUser)
         await cardRepository.update(transferredCard)
         return Response.OkWithoutData()
     }

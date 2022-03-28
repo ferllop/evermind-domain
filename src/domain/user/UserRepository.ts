@@ -3,8 +3,8 @@ import {UserDao} from './UserDao.js'
 import {UserIdentification} from './UserIdentification.js'
 import {Username} from './Username.js'
 import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory.js'
-import {UserPermissions} from '../authorization/UserPermissions.js'
-import {Authorization} from '../authorization/Authorization.js'
+import {UserPermissions} from '../authorization/permission/UserPermissions.js'
+import {UserPermissionsAuthorization} from '../authorization/permission/UserPermissionsAuthorization.js'
 import {RemoveUserAccount} from '../authorization/permission/permissions/RemoveUserAccount.js'
 import {GetDataFromOtherUser} from '../authorization/permission/permissions/GetDataFromOtherUser.js'
 
@@ -21,7 +21,7 @@ export class UserRepository {
     }
 
     async delete(user: User, permissions: UserPermissions) {
-        Authorization.userWithPermissions(permissions).assertCan(RemoveUserAccount, user)
+        UserPermissionsAuthorization.userWithPermissions(permissions).assertCan(RemoveUserAccount, user)
         await this.dao.delete(user.getId())
     }
 
@@ -30,7 +30,7 @@ export class UserRepository {
     }
 
     async getById(userId: UserIdentification, permissions: UserPermissions) {
-        Authorization.userWithPermissions(permissions).assertCan(GetDataFromOtherUser, userId)
+        UserPermissionsAuthorization.userWithPermissions(permissions).assertCan(GetDataFromOtherUser, userId)
         return await this.dao.findById(userId)
     }
 

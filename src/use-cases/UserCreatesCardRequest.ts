@@ -1,9 +1,5 @@
-import {Id} from '../domain/shared/value/Id.js'
 import {WithRequesterRequest} from './WithRequesterRequest.js'
+import {CardDto} from '../domain/card/CardDto.js'
+import {Unidentified} from '../domain/shared/value/Unidentified.js'
 
-export type UserCreatesCardRequest = WithRequesterRequest & {
-    authorId: Id,
-    question: string,
-    answer: string,
-    labelling: string[]
-}
+export type UserCreatesCardRequest = WithRequesterRequest & Unidentified<CardDto>

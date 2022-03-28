@@ -4,6 +4,7 @@ import {AuthorIdentification} from '../../../../../src/domain/card/AuthorIdentif
 import {Labelling} from '../../../../../src/domain/card/Labelling.js'
 import {CardPostgresDao} from '../../../../../src/implementations/persistence/postgres/card/CardPostgresDao.js'
 import {CardIdentification} from '../../../../../src/domain/card/CardIdentification.js'
+import {AlwaysAuthorizedAuthorization} from '../../../AlwaysAuthorizedAuthorization.js'
 
 export async function givenTheExistingCardWithId(id: CardIdentification) {
     const user = await givenAnExistingUser()
@@ -12,7 +13,8 @@ export async function givenTheExistingCardWithId(id: CardIdentification) {
         .setId(id)
         .setAuthorId(user.getId() as AuthorIdentification)
         .build()
-    await new CardPostgresDao().insert(card)
+    const authorization = new AlwaysAuthorizedAuthorization()
+    await new CardPostgresDao(authorization).insert(card)
     return card
 }
 
@@ -23,7 +25,8 @@ export async function givenTheExistingCardWithLabels(...labels: string[]) {
         .setAuthorId(user.getId() as AuthorIdentification)
         .setLabelling(Labelling.fromStringLabels(labels))
         .build()
-    await new CardPostgresDao().insert(card)
+    const authorization = new AlwaysAuthorizedAuthorization()
+    await new CardPostgresDao(authorization).insert(card)
     return card
 }
 
@@ -32,7 +35,8 @@ export async function givenAnExistingCard() {
     const card = new CardBuilder()
         .setAuthorId(user.getId() as AuthorIdentification)
         .build()
-    await new CardPostgresDao().insert(card)
+    const authorization = new AlwaysAuthorizedAuthorization()
+    await new CardPostgresDao(authorization).insert(card)
     return card
 }
 
@@ -42,7 +46,8 @@ export async function givenSomeExistingCardsFromSameUser(quantity: number) {
         const card = new CardBuilder()
             .setAuthorId(user.getId() as AuthorIdentification)
             .build()
-        await new CardPostgresDao().insert(card)
+        const authorization = new AlwaysAuthorizedAuthorization()
+        await new CardPostgresDao(authorization).insert(card)
     }
     return user
 }

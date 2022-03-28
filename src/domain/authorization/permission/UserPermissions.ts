@@ -1,8 +1,10 @@
-import {UserIdentification} from '../user/UserIdentification.js'
-import {PermissionValue} from './permission/PermissionValue.js'
-import {User} from '../user/User.js'
+import {UserIdentification} from '../../user/UserIdentification.js'
+import {PermissionValue} from './PermissionValue.js'
+import {User} from '../../user/User.js'
 
 export class UserPermissions {
+
+    static readonly NULL = new UserPermissions(UserIdentification.NULL, [])
 
     constructor(private userId: UserIdentification, private permissions: PermissionValue[]) {
     }

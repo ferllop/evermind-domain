@@ -1,8 +1,8 @@
 import {CardRepository} from '../domain/card/CardRepository.js'
-import {Identification} from '../domain/shared/value/Identification.js'
 import {Response} from './Response.js'
 import {UserRemovesCardRequest} from './UserRemovesCardRequest.js'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
+import {CardIdentification} from '../domain/card/CardIdentification.js'
 
 export class UserRemovesCardUseCase extends WithAuthorizationUseCase<UserRemovesCardRequest, null> {
 
@@ -11,9 +11,10 @@ export class UserRemovesCardUseCase extends WithAuthorizationUseCase<UserRemoves
     }
 
     protected async internalExecute(request: UserRemovesCardRequest): Promise<Response<null>> {
-        const cardRepository = await new CardRepository()
-        const card = await cardRepository.findById(Identification.recreate(request.id))
-        await cardRepository.delete(card, await this.getRequesterPermissions())
+        const cardId = CardIdentification.recreate(request.id)
+        const cardRepository = await new CardRepository(await this.getAuthorization())
+        const card = await cardRepository.findById(cardId)
+        await cardRepository.delete(card)
         return Response.OkWithoutData()
     }
 

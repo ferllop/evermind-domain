@@ -3,6 +3,8 @@ import {SearchService} from '../domain/search/SearchService.js'
 import {Response} from './Response.js'
 import {UserSearchesForCardsRequest} from './UserSearchesForCardsRequest.js'
 import {UseCase} from './UseCase.js'
+import {CardRepository} from '../domain/card/CardRepository.js'
+import {AlwaysAuthorizedAuthorization} from '../../tests/implementations/AlwaysAuthorizedAuthorization.js'
 
 export class UserSearchesForCardsUseCase extends UseCase<UserSearchesForCardsRequest, CardDto[]>{
 
@@ -11,7 +13,8 @@ export class UserSearchesForCardsUseCase extends UseCase<UserSearchesForCardsReq
     }
 
     protected async internalExecute(request: UserSearchesForCardsRequest): Promise<Response<CardDto[]>> {
-        const cards = await new SearchService().executeQuery(request)
+        const cardRepository = new CardRepository(new AlwaysAuthorizedAuthorization())
+        const cards = await new SearchService().executeQuery(request, cardRepository)
         return Response.OkWithData(cards.map(card => card.toDto()))
     }
 }

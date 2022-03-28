@@ -4,26 +4,25 @@ import {Identification} from '../shared/value/Identification.js'
 import {CardDao} from './CardDao.js'
 import {AuthorIdentification} from './AuthorIdentification.js'
 import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory.js'
-import {Authorization} from '../authorization/Authorization.js'
 import {DeleteCard} from '../authorization/permission/permissions/DeleteCard.js'
-import {UserPermissions} from '../authorization/UserPermissions.js'
 import {CardIdentification} from './CardIdentification.js'
-import {GetCardFromOther} from '../authorization/permission/rejections/GetCardFromOther.js'
+import {GetCard} from '../authorization/permission/permissions/GetCard.js'
+import {Authorization} from '../authorization/Authorization.js'
 
 export class CardRepository {
 
     protected dao: CardDao
 
-    constructor() {
-        this.dao = PersistenceFactory.getCardDao()
+    constructor(private authorization: Authorization) {
+        this.dao = PersistenceFactory.getCardDao(authorization)
     }
 
     async add(card: Card) {
         await this.dao.insert(card)
     }
 
-    async delete(card: Card, userPermissions: UserPermissions) {
-        Authorization.userWithPermissions(userPermissions).assertCan(DeleteCard, card)
+    async delete(card: Card) {
+        this.authorization.assertCan(DeleteCard, card)
         await this.dao.delete(card.getId())
     }
 
@@ -31,9 +30,9 @@ export class CardRepository {
         return this.dao.findById(cardId)
     }
 
-    async getById(cardId: CardIdentification, permissions: UserPermissions): Promise<Card> {
+    async getById(cardId: CardIdentification): Promise<Card> {
         const card = await this.dao.findById(cardId)
-        Authorization.userWithPermissions(permissions).assertCan(GetPrivateCardFromOther, card)
+        this.authorization.assertCan(GetCard, card)
         return card
     }
 
@@ -43,11 +42,6 @@ export class CardRepository {
 
     async findByLabelling(labelling: Labelling): Promise<Card[]> {
         return this.dao.findByLabelling(labelling)
-    }
-
-    async getByLabelling(labelling: Labelling, permissions: UserPermissions): Promise<Card[]> {
-        const cards = await this.dao.findByLabelling(labelling)
-        return cards.filter(card => Authorization.userWithPermissions(permissions).can(GetCardFromOther, card))
     }
 
     async findByAuthorId(authorId: Identification): Promise<Card[]> {

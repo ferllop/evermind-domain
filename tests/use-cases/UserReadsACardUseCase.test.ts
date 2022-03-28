@@ -53,7 +53,7 @@ userReadsACardUseCase(
     'given an existing card, ' +
     'when another user with permissions tries to get it ' +
     'should get an object with null as error and card as data', async () => {
-        const user = await givenAStoredUserWithPermissions(['GET_CARD_FROM_OTHER'])
+        const user = await givenAStoredUserWithPermissions(['GET_PRIVATE_CARD_FROM_OTHER'])
         const card = await givenAStoredCard()
         const request = {
             requesterId: user.id,

@@ -34,14 +34,31 @@ userModifiesCardDataUseCase(
     })
 
 userModifiesCardDataUseCase(
-    'given a previously stored card and data to update it, ' +
-    'the card should be updated in storage', async () => {
+    'given data to update a previously stored card, ' +
+    'when the author of the card, that has permissions to update its own cards tries to update an own card ' +
+    'the card should be updated in storage and Response either data and error should be null', async () => {
         const user = await givenAStoredUserWithPermissions(['UPDATE_OWN_CARD'])
         const card = await givenAStoredCardFromUser(user)
         const result = await new UserModifiesCardDataUseCase().execute({
             ...card,
             question: 'newQuestion',
             requesterId: card.authorId,
+        })
+        const storedCard = await new InMemoryDatastore().read<CardDto>('cards', card.id)
+        assert.equal(result, Response.OkWithoutData())
+        assert.equal(storedCard!.question, 'newQuestion')
+    })
+
+userModifiesCardDataUseCase(
+    'given a previously stored card and data to update it, ' +
+    'when a user with permissions to update cards from other users tries to update a card from other user' +
+    'the card should be updated in storage', async () => {
+        const requester = await givenAStoredUserWithPermissions(['UPDATE_CARD_FROM_OTHER'])
+        const card = await givenAStoredCard()
+        const result = await new UserModifiesCardDataUseCase().execute({
+            ...card,
+            question: 'newQuestion',
+            requesterId: requester.id,
         })
         const storedCard = await new InMemoryDatastore().read<CardDto>('cards', card.id)
         assert.equal(result, Response.OkWithoutData())
@@ -63,20 +80,6 @@ userModifiesCardDataUseCase(
         assert.equal(storedCard!.labelling, newLabelling)
     })
 
-userModifiesCardDataUseCase(
-    'given a previously stored card and data to update it, ' +
-    'should return an object with null as error property and ' +
-    'null as data property', async () => {
-        const user = await givenAStoredUserWithPermissions(['UPDATE_OWN_CARD'])
-        const card = await givenAStoredCardFromUser(user)
-        const result = await new UserModifiesCardDataUseCase().execute(
-            {
-                ...card,
-                question: 'updatedQuestion',
-                requesterId: card.authorId,
-            })
-        assert.equal(result, Response.OkWithoutData())
-    })
 
 userModifiesCardDataUseCase(
     'given an unexisting card in an existing table, ' +

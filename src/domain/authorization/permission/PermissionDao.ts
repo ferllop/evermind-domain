@@ -1,5 +1,5 @@
 import {UserIdentification} from '../../user/UserIdentification.js'
-import {UserPermissions} from '../UserPermissions.js'
+import {UserPermissions} from './UserPermissions.js'
 import {PermissionDto} from './PermissionDto.js'
 
 export interface PermissionDao {

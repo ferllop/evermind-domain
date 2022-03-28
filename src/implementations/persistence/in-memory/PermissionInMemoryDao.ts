@@ -7,7 +7,7 @@ import {IdDto} from '../../../domain/shared/value/IdDto.js'
 import {UserIdentification} from '../../../domain/user/UserIdentification.js'
 import {Id} from '../../../domain/shared/value/Id.js'
 import {PermissionValue} from '../../../domain/authorization/permission/PermissionValue.js'
-import {UserPermissions} from '../../../domain/authorization/UserPermissions.js'
+import {UserPermissions} from '../../../domain/authorization/permission/UserPermissions.js'
 
 type PermissionId = `${Id}#${PermissionValue}`
 

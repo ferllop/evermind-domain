@@ -2,7 +2,7 @@ import {PermissionDao} from '../../../../domain/authorization/permission/Permiss
 import {PermissionSqlQuery} from './PermissionSqlQuery.js'
 import {PermissionPostgresDatastore} from './PermissionPostgresDatastore.js'
 import {UserIdentification} from '../../../../domain/user/UserIdentification.js'
-import {UserPermissions} from '../../../../domain/authorization/UserPermissions.js'
+import {UserPermissions} from '../../../../domain/authorization/permission/UserPermissions.js'
 import {PermissionDto} from '../../../../domain/authorization/permission/PermissionDto.js'
 
 export class PermissionPostgresDao implements PermissionDao {

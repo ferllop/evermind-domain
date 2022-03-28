@@ -1,6 +1,6 @@
 import {PermissionValidator} from '../PermissionValidator.js'
 import {PermissionValue} from '../PermissionValue.js'
-import {UserPermissions} from '../../UserPermissions.js'
+import {UserPermissions} from '../UserPermissions.js'
 import {User} from '../../../user/User.js'
 
 export class RemoveUserAccount implements PermissionValidator<User> {

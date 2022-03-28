@@ -16,6 +16,7 @@ import {
 import {cleanDatabase} from '../PostgresTestHelper.js'
 import {CardFactory} from '../../../../../src/domain/card/CardFactory.js'
 import {CardPostgresDatastore} from '../../../../../src/implementations/persistence/postgres/card/CardPostgresDatastore.js'
+import {AlwaysAuthorizedAuthorization} from '../../../AlwaysAuthorizedAuthorization.js'
 
 const cardSqlQuery = suite('Card Sql Query')
 
@@ -117,12 +118,13 @@ cardSqlQuery('should provide a working card update query', async () => {
         answer: 'updated answer',
         labelling: ['updated-labelling', 'other']
     }
-    const sut = new CardSqlQuery().update(new CardFactory().fromDto(updatedCard))
+    const cardFactory = new CardFactory(new AlwaysAuthorizedAuthorization())
+    const sut = new CardSqlQuery().update(cardFactory.fromDto(updatedCard))
 
     await new CardPostgresDatastore().query(sut)
     const storedCards = await new CardPostgresDatastore().query(new CardSqlQuery().selectCardById(card.getId()))
 
-    assertAllRowsAreEqualToCards(storedCards.rows, [new CardFactory().fromDto(updatedCard)])
+    assertAllRowsAreEqualToCards(storedCards.rows, [cardFactory.fromDto(updatedCard)])
 })
 
 cardSqlQuery('should send the proper query to find a card by it\'s author', async () => {

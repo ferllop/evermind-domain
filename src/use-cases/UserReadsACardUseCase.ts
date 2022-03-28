@@ -12,9 +12,8 @@ export class UserReadsACardUseCase extends WithAuthorizationUseCase<UserReadsACa
     }
 
     protected async internalExecute(request: UserReadsACardRequest): Promise<Response<CardDto|null>> {
-        const card = await new CardRepository().getById(
-                CardIdentification.recreate(request.cardId),
-                await this.getRequesterPermissions())
+        const cardId = CardIdentification.recreate(request.cardId)
+        const card = await new CardRepository(await this.getAuthorization()).getById(cardId)
         return Response.OkWithData(card.toDto())
     }
     

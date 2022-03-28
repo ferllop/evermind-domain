@@ -6,6 +6,7 @@ import {CardIdentification} from './CardIdentification.js'
 import {Labelling} from './Labelling.js'
 import {Question} from './Question.js'
 import {CardDto} from './CardDto.js'
+import {User} from '../user/User.js'
 
 export type Visibility = 'PUBLIC' | 'PRIVATE'
 
@@ -63,6 +64,17 @@ export class Card extends Entity {
 
     equals(card: Card) {
         return this.getId().equals(card.getId())
+    }
+
+    transferTo(user: User) {
+        return new Card(
+            user.getId(),
+            this.getQuestion().clone(),
+            this.getAnswer().clone(),
+            this.getLabelling().clone(),
+            this.getVisibility(),
+            this.getId()
+        )
     }
 
     toDto(): CardDto{

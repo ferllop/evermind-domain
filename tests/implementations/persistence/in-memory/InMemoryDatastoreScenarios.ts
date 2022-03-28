@@ -86,6 +86,13 @@ export async function givenAStoredCardFromUser(user: UserDto) {
     return card
 }
 
+export async function givenAStoredPrivateCardFromUser(user: UserDto) {
+    const card = new CardBuilder()
+        .withVisibility('PRIVATE').withAuthorId(user.id).buildDto()
+    await givenTheStoredCard(card)
+    return card
+}
+
 export function withAnyRequester<T>(request: T): T & RequesterDto {
     return {...request, requesterId: 'any-requester-id'}
 }

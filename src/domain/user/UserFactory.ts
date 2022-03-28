@@ -10,8 +10,8 @@ import {Username} from './Username.js'
 import {precondition} from '../../implementations/preconditions.js'
 import {EntityFactory} from '../shared/EntityFactory.js'
 import {InputDataNotValidError} from '../errors/InputDataNotValidError.js'
-import {Authorization} from '../authorization/Authorization.js'
-import {UserPermissions} from '../authorization/UserPermissions.js'
+import {UserPermissionsAuthorization} from '../authorization/permission/UserPermissionsAuthorization.js'
+import {UserPermissions} from '../authorization/permission/UserPermissions.js'
 import {UpdatePrivateUserData} from '../authorization/permission/permissions/UpdatePrivateUserData.js'
 
 export class UserFactory extends EntityFactory<User, UserDto> {
@@ -52,7 +52,7 @@ export class UserFactory extends EntityFactory<User, UserDto> {
     }
 
     apply(user: User, data: Omit<Partial<UserDto>, 'id'>, permissions: UserPermissions) {
-        Authorization.userWithPermissions(permissions).assertCan(UpdatePrivateUserData, user)
+        UserPermissionsAuthorization.userWithPermissions(permissions).assertCan(UpdatePrivateUserData, user)
         const modifiedUser = { ...user.toDto(), ...data }
         if (!this.arePropertiesValid(modifiedUser)) {
             throw new InputDataNotValidError()

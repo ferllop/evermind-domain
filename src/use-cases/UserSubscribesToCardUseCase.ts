@@ -10,6 +10,7 @@ import {UserNotFoundError} from '../domain/errors/UserNotFoundError.js'
 import {UserIsAlreadySubscribedToCardError} from '../domain/errors/UserIsAlreadySubscribedToCardError.js'
 import {CardNotFoundError} from '../domain/errors/CardNotFoundError.js'
 import {SubscriptionDto} from '../domain/subscription/SusbcriptionDto.js'
+import {AlwaysAuthorizedAuthorization} from '../../tests/implementations/AlwaysAuthorizedAuthorization.js'
 
 export class UserSubscribesToCardUseCase extends UseCase<UserSubscribesToCardRequest, SubscriptionDto> {
 
@@ -26,7 +27,8 @@ export class UserSubscribesToCardUseCase extends UseCase<UserSubscribesToCardReq
         if (user.isNull()) {
             throw new UserNotFoundError()
         }
-        const card = await new CardRepository().findById(new Identification(request.cardId))
+        const cardRepository = new CardRepository(new AlwaysAuthorizedAuthorization())
+        const card = await cardRepository.findById(new Identification(request.cardId))
         if (card.isNull()) {
             throw new CardNotFoundError()
         }
