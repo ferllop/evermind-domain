@@ -23,7 +23,7 @@ export class CardRepository {
     }
 
     async delete(card: Card, userPermissions: UserPermissions) {
-        Authorization.assertUserWithPermissions(userPermissions).can(DeleteCard, card)
+        Authorization.userWithPermissions(userPermissions).assertCan(DeleteCard, card)
         await this.dao.delete(card.getId())
     }
 
@@ -33,7 +33,7 @@ export class CardRepository {
 
     async getById(cardId: CardIdentification, permissions: UserPermissions): Promise<Card> {
         const card = await this.dao.findById(cardId)
-        Authorization.assertUserWithPermissions(permissions).can(GetCardFromOther, card)
+        Authorization.userWithPermissions(permissions).assertCan(GetPrivateCardFromOther, card)
         return card
     }
 

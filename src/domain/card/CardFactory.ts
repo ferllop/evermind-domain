@@ -84,7 +84,7 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
             Labelling.fromStringLabels(dto.labelling),
             dto.visibility,
         )
-        Authorization.assertUserWithPermissions(userPermissions).can(CreateCard, card)
+        Authorization.userWithPermissions(userPermissions).assertCan(CreateCard, card)
         return card
     }
 
@@ -101,7 +101,7 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
     }
 
     apply(card: Card, data: Unidentified<Partial<Omit<CardDto, 'authorId'>>>, userPermissions: UserPermissions) {
-        Authorization.assertUserWithPermissions(userPermissions).can(UpdateCard, card)
+        Authorization.userWithPermissions(userPermissions).assertCan(UpdateCard, card)
         const modifiedCard = {
             ...card.toDto(),
             ...data
@@ -110,7 +110,7 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
     }
 
     transferCardToUser(card: Card, user: User, userPermissions: UserPermissions) {
-        Authorization.assertUserWithPermissions(userPermissions).can(TransferCard, card)
+        Authorization.userWithPermissions(userPermissions).assertCan(TransferCard, card)
         return this.recreate(
             user.getId().clone(),
             card.getQuestion().clone(),

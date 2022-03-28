@@ -21,7 +21,7 @@ export class UserRepository {
     }
 
     async delete(user: User, permissions: UserPermissions) {
-        Authorization.assertUserWithPermissions(permissions).can(RemoveUserAccount, user)
+        Authorization.userWithPermissions(permissions).assertCan(RemoveUserAccount, user)
         await this.dao.delete(user.getId())
     }
 
@@ -30,7 +30,7 @@ export class UserRepository {
     }
 
     async getById(userId: UserIdentification, permissions: UserPermissions) {
-        Authorization.assertUserWithPermissions(permissions).can(GetDataFromOtherUser, userId)
+        Authorization.userWithPermissions(permissions).assertCan(GetDataFromOtherUser, userId)
         return await this.dao.findById(userId)
     }
 

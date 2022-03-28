@@ -30,7 +30,7 @@ class TestableUseCase extends WithAuthorizationUseCase<WithRequesterRequest, nul
     async internalExecute(): Promise<Response<null>> {
         const permissions = await this.getRequesterPermissions()
         if(this.Permission){
-            Authorization.assertUserWithPermissions(permissions).can(this.Permission)
+            Authorization.userWithPermissions(permissions).assertCan(this.Permission)
         }
         return Response.OkWithoutData()
     }

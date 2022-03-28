@@ -36,7 +36,7 @@ export class SubscriptionRepository {
     }
 
     async getByUserId(user: User, permissions: UserPermissions) {
-        Authorization.assertUserWithPermissions(permissions).can(ReadSubscriptions, user)
+        Authorization.userWithPermissions(permissions).assertCan(ReadSubscriptions, user)
         return await this.dao.findByUserId(user.getId())
     }
 

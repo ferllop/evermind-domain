@@ -52,7 +52,7 @@ export class UserFactory extends EntityFactory<User, UserDto> {
     }
 
     apply(user: User, data: Omit<Partial<UserDto>, 'id'>, permissions: UserPermissions) {
-        Authorization.assertUserWithPermissions(permissions).can(UpdatePrivateUserData, user)
+        Authorization.userWithPermissions(permissions).assertCan(UpdatePrivateUserData, user)
         const modifiedUser = { ...user.toDto(), ...data }
         if (!this.arePropertiesValid(modifiedUser)) {
             throw new InputDataNotValidError()
