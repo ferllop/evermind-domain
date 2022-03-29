@@ -4,8 +4,6 @@ import {User} from '../../user/User.js'
 
 export class UserPermissions {
 
-    static readonly NULL = new UserPermissions(UserIdentification.NULL, [])
-
     constructor(private userId: UserIdentification, private permissions: PermissionValue[]) {
     }
 
@@ -23,3 +21,4 @@ export class UserPermissions {
         return this.permissions.some(permission => permission === permissionAskingFor)
     }
 }
+

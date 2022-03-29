@@ -86,6 +86,18 @@ export async function givenAStoredCardFromUser(user: UserDto) {
     return card
 }
 
+export async function givenAStoredCardWithLabels(...labels: string[]) {
+    const card = new CardBuilder().withLabels(labels).buildDto()
+    await givenTheStoredCard(card)
+    return card
+}
+
+export async function givenAStoredPrivateCardWithLabels(...labels: string[]) {
+    const card = new CardBuilder().withVisibility('PRIVATE').withLabels(labels).buildDto()
+    await givenTheStoredCard(card)
+    return card
+}
+
 export async function givenAStoredPrivateCardFromUser(user: UserDto) {
     const card = new CardBuilder()
         .withVisibility('PRIVATE').withAuthorId(user.id).buildDto()

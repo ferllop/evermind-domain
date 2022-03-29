@@ -3,7 +3,7 @@ import {User} from '../user/User.js'
 import {Identification} from '../shared/value/Identification.js'
 import {SubscriptionDao} from './SubscriptionDao.js'
 import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory.js'
-import {UserPermissionsAuthorization} from '../authorization/permission/UserPermissionsAuthorization.js'
+import {UserAuthorization} from '../authorization/permission/UserAuthorization.js'
 import {UserPermissions} from '../authorization/permission/UserPermissions.js'
 import {ReadSubscriptions} from '../authorization/permission/permissions/ReadSubscriptions.js'
 
@@ -36,7 +36,7 @@ export class SubscriptionRepository {
     }
 
     async getByUserId(user: User, permissions: UserPermissions) {
-        UserPermissionsAuthorization.userWithPermissions(permissions).assertCan(ReadSubscriptions, user)
+        UserAuthorization.userWithPermissions(permissions).assertCan(ReadSubscriptions, user)
         return await this.dao.findByUserId(user.getId())
     }
 

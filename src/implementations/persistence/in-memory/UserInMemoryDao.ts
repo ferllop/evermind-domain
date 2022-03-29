@@ -52,7 +52,6 @@ export class UserInMemoryDao implements UserDao {
         if (!result) {
             return this.getNull()
         }
-
         return this.mapper.fromDto(result)
 
     }

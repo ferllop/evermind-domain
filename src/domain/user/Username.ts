@@ -1,7 +1,10 @@
 export class Username {
     static NULL = new Username('')
-    
-    constructor(private value: string) {}
+    private readonly value: string
+
+    constructor(value: string) {
+        this.value = value.toLowerCase()
+    }
 
     getValue() {
         return this.value

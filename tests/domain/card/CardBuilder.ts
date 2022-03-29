@@ -22,7 +22,7 @@ export class CardBuilder {
 
     constructor() {
         this.id = Identification.create()
-        this.authorId = AuthorIdentification.create() as AuthorIdentification
+        this.authorId = AuthorIdentification.create()
         this.question = new WrittenQuestion('question')
         this.answer = new WrittenAnswer('answer')
         this.labelling = new Labelling([new Label('labelling')])

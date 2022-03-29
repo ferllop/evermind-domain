@@ -2,12 +2,15 @@ import {PermissionValidator} from './PermissionValidator.js'
 import {UserPermissions} from './UserPermissions.js'
 import {UserIsNotAuthorizedError} from '../../errors/UserIsNotAuthorizedError.js'
 import {Authorization} from '../Authorization.js'
+import {AnonymousUserPermissions} from './AnonymousUserPermissions.js'
 
 export type NewablePermission<T> = (new (userPermissions: UserPermissions) => PermissionValidator<T>)
 
-export class UserPermissionsAuthorization implements Authorization {
+export class UserAuthorization implements Authorization {
+    static ANONYMOUS = new UserAuthorization(new AnonymousUserPermissions())
+
     static userWithPermissions(permissions: UserPermissions) {
-        return new UserPermissionsAuthorization(permissions)
+        return new UserAuthorization(permissions)
     }
 
     constructor(private userPermissions: UserPermissions) {

@@ -24,7 +24,7 @@ import {Authorization} from '../authorization/Authorization.js'
 export class CardFactory extends EntityFactory<Card, CardDto> {
     private cardConstructor = Card.prototype.constructor as { new(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, visibility: Visibility, id: CardIdentification): Card }
 
-    constructor(private authorizationStrategy: Authorization){
+    constructor(private authorization: Authorization){
         super()
     }
 
@@ -61,14 +61,14 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
             throw new InputDataNotValidError()
         }
         if ('id' in dto) {
-            return this.recreate(
-                new AuthorIdentification(dto.authorId),
-                new WrittenQuestion(dto.question),
-                new WrittenAnswer(dto.answer),
-                Labelling.fromStringLabels(dto.labelling),
-                dto.visibility,
-                new CardIdentification(dto.id),
-            )
+            return this.recreateFromDto(dto)
+        }
+        return this.createFromDto(dto)
+    }
+
+    createFromDto(dto: Unidentified<CardDto>): Card {
+        if (!this.isDtoValid(dto)) {
+            throw new InputDataNotValidError()
         }
         return this.create(
             new AuthorIdentification(dto.authorId),
@@ -79,41 +79,39 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
         )
     }
 
-    createFromDto(dto: Unidentified<CardDto>): Card {
+    recreateFromDto(dto: CardDto) {
         if (!this.isDtoValid(dto)) {
             throw new InputDataNotValidError()
         }
-        const card = this.create(
+        return this.recreate(
             new AuthorIdentification(dto.authorId),
             new WrittenQuestion(dto.question),
             new WrittenAnswer(dto.answer),
             Labelling.fromStringLabels(dto.labelling),
             dto.visibility,
+            new CardIdentification(dto.id),
         )
-        this.authorizationStrategy.assertCan(CreateCard, card)
-        return card
     }
 
     recreateFromDtos(dtoArray: CardDto[]): Card[] {
-        return dtoArray.map(cardDto => this.fromDto(cardDto))
+        return dtoArray.map(cardDto => this.recreateFromDto(cardDto))
     }
 
     create(userId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, visibility: Visibility) {
         const card = new this.cardConstructor(userId, question, answer, labels, visibility, Identification.create())
-        this.authorizationStrategy.assertCan(GetCard, card)
+        this.authorization.assertCan(CreateCard, card)
         return card
     }
 
     recreate(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, visibility: Visibility, id: Identification) {
         const card = new this.cardConstructor(authorId, question, answer, labels, visibility, id)
-        return this.authorizationStrategy.can(GetCard, card)
+        return this.authorization.can(GetCard, card)
             ? card
             : NullCard.getInstance()
-
     }
 
     apply(card: Card, data: Unidentified<Partial<Omit<CardDto, 'authorId'>>>) {
-        this.authorizationStrategy.assertCan(UpdateCard, card)
+        this.authorization.assertCan(UpdateCard, card)
         const modifiedCard = {
             ...card.toDto(),
             ...data
@@ -122,7 +120,7 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
     }
 
     transferCardToUser(card: Card, user: User) {
-    this.authorizationStrategy.assertCan(TransferCard, card)
+    this.authorization.assertCan(TransferCard, card)
         return card.transferTo(user)
     }
 }

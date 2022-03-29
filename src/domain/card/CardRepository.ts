@@ -1,6 +1,5 @@
 import {Card} from './Card.js'
 import {Labelling} from './Labelling.js'
-import {Identification} from '../shared/value/Identification.js'
 import {CardDao} from './CardDao.js'
 import {AuthorIdentification} from './AuthorIdentification.js'
 import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory.js'
@@ -41,11 +40,13 @@ export class CardRepository {
     }
 
     async findByLabelling(labelling: Labelling): Promise<Card[]> {
-        return this.dao.findByLabelling(labelling)
+        const cards = await this.dao.findByLabelling(labelling)
+        return cards.filter(card => !card.isNull())
     }
 
-    async findByAuthorId(authorId: Identification): Promise<Card[]> {
-        return this.dao.findByAuthorId(authorId as AuthorIdentification)
+    async findByAuthorId(authorId: AuthorIdentification): Promise<Card[]> {
+        const cards = await this.dao.findByAuthorId(authorId)
+        return cards.filter(card => !card.isNull())
     }
 
 }

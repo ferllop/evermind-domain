@@ -4,7 +4,7 @@ import {Response} from './Response.js'
 import {PermissionRepository} from '../domain/authorization/permission/PermissionRepository.js'
 import {RequesterIdentification} from '../domain/authorization/permission/RequesterIdentification.js'
 import {Id} from '../domain/shared/value/Id.js'
-import {UserPermissionsAuthorization} from '../domain/authorization/permission/UserPermissionsAuthorization.js'
+import {UserAuthorization} from '../domain/authorization/permission/UserAuthorization.js'
 
 export abstract class WithAuthorizationUseCase<Request extends WithRequesterRequest, ResponseType> extends UseCase<Request, ResponseType> {
     requesterId?: Id
@@ -26,6 +26,6 @@ export abstract class WithAuthorizationUseCase<Request extends WithRequesterRequ
     protected async getAuthorization() {
         const permissions = await new PermissionRepository().findUserPermissions(
             RequesterIdentification.recreate(this.requesterId!))
-        return new UserPermissionsAuthorization(permissions)
+        return new UserAuthorization(permissions)
     }
 }

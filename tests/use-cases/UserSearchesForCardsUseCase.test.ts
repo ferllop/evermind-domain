@@ -4,7 +4,11 @@ import {
     givenACleanInMemoryDatabase,
     givenAStoredCard,
     givenAStoredCardFromUser,
+    givenAStoredCardWithLabels,
+    givenAStoredPrivateCardFromUser,
+    givenAStoredPrivateCardWithLabels,
     givenAStoredUser,
+    givenAStoredUserWithPermissions,
     givenTheStoredCard,
     givenTheStoredUser,
     givenXStoredCards,
@@ -113,6 +117,146 @@ userSearchesForCards('having 1 coincident cards, when searching by author and la
     const result = await new UserSearchesForCardsUseCase().execute({
         query: '@real-username, real-label1'})
     assert.is(result.data!.length, 1)
+})
+
+userSearchesForCards('given 1 coincident private cards, ' +
+    'when a user with permissions to get private cards from others, searches by author, ' +
+    'then return a Result with with a one item array as data and null as error', async () => {
+    const requester = await givenAStoredUserWithPermissions(['GET_PRIVATE_CARD_FROM_OTHER'])
+    const user = new UserBuilder().setUsername('the-username').buildDto()
+    await givenTheStoredUser(user)
+    const card = await givenAStoredPrivateCardFromUser(user)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        requesterId: requester.id,
+        query: '@' + user.username
+    })
+    assert.is(result.data!.length, 1)
+    assert.equal(result.data![0], card)
+})
+
+userSearchesForCards('given 1 private card and 1 public card from the same author ' +
+    'when the author without permissions to get private cards from others, searches by author, ' +
+    'then return a Result with the two cards array as data and null as error', async () => {
+    const requester = await givenAStoredUserWithPermissions([])
+    const privateCard = await givenAStoredPrivateCardFromUser(requester)
+    const publicCard = await givenAStoredCardFromUser(requester)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        requesterId: requester.id,
+        query: '@' + requester.username
+    })
+    assert.equal(result.data!, [privateCard, publicCard])
+    assert.is(result.data!.length, 2)
+})
+
+userSearchesForCards('given 2 private cards and 2 public cards from the same author' +
+    'when a user with permissions to get private cards from others, searches by author, ' +
+    'then return a Result with with a the four cards array as data and null as error', async () => {
+    const requester = await givenAStoredUserWithPermissions(['GET_PRIVATE_CARD_FROM_OTHER'])
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
+    await givenTheStoredUser(user)
+    const privateCard1 = await givenAStoredPrivateCardFromUser(user)
+    const publicCard1 = await givenAStoredCardFromUser(user)
+    const privateCard2 = await givenAStoredPrivateCardFromUser(user)
+    const publicCard2 = await givenAStoredCardFromUser(user)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        requesterId: requester.id,
+        query: '@' + user.username
+    })
+    assert.is(result.data!.length, 4)
+    assert.equal(result.data!, [privateCard1, publicCard1, privateCard2, publicCard2])
+})
+
+userSearchesForCards('given 2 private cards and 2 public cards from the same author' +
+    'when a user without permissions to get private cards from others, searches by author, ' +
+    'then return a Result with with a the two public cards array as data and null as error', async () => {
+    const requester = await givenAStoredUserWithPermissions([])
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
+    await givenTheStoredUser(user)
+    await givenAStoredPrivateCardFromUser(user)
+    const publicCard1 = await givenAStoredCardFromUser(user)
+    await givenAStoredPrivateCardFromUser(user)
+    const publicCard2 = await givenAStoredCardFromUser(user)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        requesterId: requester.id,
+        query: '@' + user.username
+    })
+    assert.is(result.data!.length, 2)
+    assert.equal(result.data!, [publicCard1, publicCard2])
+})
+
+userSearchesForCards('given 1 coincident private cards, ' +
+    'when a user without permissions to get private cards from others, searches by author, ' +
+    'then return a Result with with an empty array as data and null as error', async () => {
+    const requester = await givenAStoredUserWithPermissions([])
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
+    await givenTheStoredUser(user)
+    await givenAStoredPrivateCardFromUser(user)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        requesterId: requester.id,
+        query: '@' + user.username
+    })
+    assert.is(result.data!.length, 0)
+})
+
+userSearchesForCards('given 1 coincident private cards, ' +
+    'when an anonymous user, searches by author, ' +
+    'then return a Result empty array as data and null as error', async () => {
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
+    await givenTheStoredUser(user)
+    await givenAStoredPrivateCardFromUser(user)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        query: '@' + user.username
+    })
+    assert.is(result.data!.length, 0)
+})
+
+userSearchesForCards('given 1 coincident private card and 2 public cards, ' +
+    'when an anonymous user, searches by author, ' +
+    'then return a Result with the public cards as array data and null as error', async () => {
+    const user = new UserBuilder().setUsername('real-username').buildDto()
+    await givenTheStoredUser(user)
+    const cardToFind1 = await givenAStoredCardFromUser(user)
+    await givenAStoredPrivateCardFromUser(user)
+    const cardToFind2 = await givenAStoredCardFromUser(user)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        query: '@' + user.username
+    })
+    assert.is(result.data!.length, 2)
+    assert.equal(result.data!, [cardToFind1, cardToFind2])
+})
+
+userSearchesForCards('given 2 private cards and 2 public cards with the same labels ' +
+    'when another user with permissions to get private cards from others, searches by label, ' +
+    'then return a Result with with a the four cards array as data and null as error', async () => {
+    const requester = await givenAStoredUserWithPermissions(['GET_PRIVATE_CARD_FROM_OTHER'])
+    const label = 'label1'
+    const privateCard1 = await givenAStoredPrivateCardWithLabels(label)
+    const publicCard1 = await givenAStoredCardWithLabels(label)
+    const privateCard2 = await givenAStoredPrivateCardWithLabels(label)
+    const publicCard2 = await givenAStoredCardWithLabels(label)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        requesterId: requester.id,
+        query: label,
+    })
+    assert.equal(result.data!, [privateCard1, publicCard1, privateCard2, publicCard2])
+    assert.is(result.data!.length, 4)
+})
+
+userSearchesForCards('given 2 private cards and 2 public cards with the same label ' +
+    'when another user without permissions searches by label, ' +
+    'then return a Result with with a the two public cards array as data and null as error', async () => {
+    const requester = await givenAStoredUserWithPermissions([])
+    const label = 'label1'
+    await givenAStoredPrivateCardWithLabels(label)
+    const publicCard1 = await givenAStoredCardWithLabels(label)
+    await givenAStoredPrivateCardWithLabels(label)
+    const publicCard2 = await givenAStoredCardWithLabels(label)
+    const result = await new UserSearchesForCardsUseCase().execute({
+        requesterId: requester.id,
+        query: label,
+    })
+    assert.equal(result.data!, [publicCard1, publicCard2])
+    assert.is(result.data!.length, 2)
 })
 
 userSearchesForCards.run()
