@@ -15,8 +15,11 @@ import {
 } from './CardScenario.js'
 import {cleanDatabase} from '../PostgresTestHelper.js'
 import {CardFactory} from '../../../../../src/domain/card/CardFactory.js'
-import {CardPostgresDatastore} from '../../../../../src/implementations/persistence/postgres/card/CardPostgresDatastore.js'
+import {
+    CardPostgresDatastore,
+} from '../../../../../src/implementations/persistence/postgres/card/CardPostgresDatastore.js'
 import {AlwaysAuthorizedAuthorization} from '../../../AlwaysAuthorizedAuthorization.js'
+import {CardDto} from '../../../../../src/index.js'
 
 const cardSqlQuery = suite('Card Sql Query')
 
@@ -24,13 +27,13 @@ cardSqlQuery.before.each(async () => await cleanDatabase())
 
 cardSqlQuery('should provide the correct create cards table query', async () => {
     const sut = new CardSqlQuery().createCardsTable()
-
     const expectedQuery = `CREATE TABLE cards
                 (
                     id       UUID PRIMARY KEY,
                     author_id   UUID,
                     question TEXT,
                     answer   TEXT,
+                    visibility TEXT,
                     FOREIGN KEY (author_id)
                         REFERENCES users (id) ON DELETE CASCADE
                 );`
@@ -39,7 +42,7 @@ cardSqlQuery('should provide the correct create cards table query', async () => 
 
 cardSqlQuery('should provide the correct insert query', async () => {
     const card = new CardBuilder().withLabels(['label1','label2']).build()
-    const {id, authorId, question, answer} = card.toDto()
+    const {id, authorId, question, answer, visibility} = card.toDto()
 
     const sut = new CardSqlQuery().insert(card)
 
@@ -48,12 +51,14 @@ cardSqlQuery('should provide the correct insert query', async () => {
         id, 
         author_id, 
         question, 
-        answer
+        answer,
+        visibility
         ) VALUES (
         '${id}',
         '${authorId}',
         '${question}',
-        '${answer}');
+        '${answer}',
+        '${visibility}');
     INSERT INTO labelling 
     VALUES 
         ('${card.getId().getId()}','label1'),('${
@@ -101,7 +106,8 @@ cardSqlQuery('should provide the correct card update query', async () => {
     const expectedQuery = `BEGIN;
         UPDATE cards SET
         question = '${card.getQuestion().getValue()}',
-        answer = '${card.getAnswer().getValue()}'
+        answer = '${card.getAnswer().getValue()}',
+        visibility = '${card.getVisibility()}'
         WHERE id = '${card.getId().getId()}';
         DELETE FROM labelling WHERE card_id = '${card.getId().getId()}';
         INSERT INTO labelling VALUES ('${card.getId().getId()}','${card.getLabelling().getLabels()[0]}');
@@ -112,11 +118,12 @@ cardSqlQuery('should provide the correct card update query', async () => {
 cardSqlQuery('should provide a working card update query', async () => {
     const card = await givenAnExistingCard()
 
-    const updatedCard = {
+    const updatedCard: CardDto = {
         ...card.toDto(),
         question: 'updated question',
         answer: 'updated answer',
-        labelling: ['updated-labelling', 'other']
+        labelling: ['updated-labelling', 'other'],
+        visibility: 'PRIVATE',
     }
     const cardFactory = new CardFactory(new AlwaysAuthorizedAuthorization())
     const sut = new CardSqlQuery().update(cardFactory.fromDto(updatedCard))
@@ -130,11 +137,10 @@ cardSqlQuery('should provide a working card update query', async () => {
 cardSqlQuery('should send the proper query to find a card by it\'s author', async () => {
     const authorId = AuthorIdentification.create()
     const sut = new CardSqlQuery().selectCardByAuthorId(authorId)
-    const expectedQuery = `SELECT id, author_id, question, answer, array(SELECT label FROM labelling WHERE card_id = id) as labelling
+    const expectedQuery = `SELECT id, author_id, question, answer, visibility, array(SELECT label FROM labelling WHERE card_id = id) as labelling
         FROM cards 
         WHERE author_id = '${authorId.getId()}'`
     assertQueriesAreEqual(sut, expectedQuery)
-
 })
 
 cardSqlQuery('should send a working query to find a card by it\'s author', async () => {
@@ -150,7 +156,7 @@ cardSqlQuery('should send a working query to find a card by it\'s author', async
 cardSqlQuery('should send the proper query to find a card by one label', async () => {
     const labelling = Labelling.fromStringLabels(['label1'])
     const sut = new CardSqlQuery().selectCardByLabelling(labelling)
-    const expectedQuery = `SELECT id, author_id, question, answer, array(SELECT label FROM labelling WHERE card_id = id) as labelling
+    const expectedQuery = `SELECT id, author_id, question, answer, visibility, array(SELECT label FROM labelling WHERE card_id = id) as labelling
         FROM cards
         WHERE id in (SELECT card_id 
             FROM labelling 
@@ -163,7 +169,7 @@ cardSqlQuery('should send the proper query to find a card by one label', async (
 cardSqlQuery('should send the proper query to find a card by two labels', async () => {
     const labelling = Labelling.fromStringLabels(['label1', 'label2'])
     const sut = new CardSqlQuery().selectCardByLabelling(labelling)
-    const expectedQuery = `SELECT id, author_id, question, answer, array(SELECT label FROM labelling WHERE card_id = id) as labelling
+    const expectedQuery = `SELECT id, author_id, question, answer, visibility, array(SELECT label FROM labelling WHERE card_id = id) as labelling
         FROM cards 
         WHERE id in (SELECT card_id FROM labelling WHERE label = 'label1' OR label = 'label2' GROUP BY card_id HAVING COUNT(label) = 2)`
     assertQueriesAreEqual(sut, expectedQuery)
@@ -182,7 +188,7 @@ cardSqlQuery('should return the found cards when searching by labelling', async 
 cardSqlQuery('should send the proper query to find a card by id', async () => {
     const cardId = CardIdentification.create()
     const sut = new CardSqlQuery().selectCardById(cardId)
-    const expectedQuery = `SELECT id, author_id, question, answer, array(SELECT label FROM labelling WHERE card_id = id) as labelling
+    const expectedQuery = `SELECT id, author_id, question, answer, visibility, array(SELECT label FROM labelling WHERE card_id = id) as labelling
         FROM cards 
         WHERE id = '${cardId.getId()}'`
     assertQueriesAreEqual(sut, expectedQuery)
@@ -201,7 +207,3 @@ cardSqlQuery('should send a working query to find a card by id', async () => {
 })
 
 cardSqlQuery.run()
-
-
-
-
