@@ -8,6 +8,9 @@ export class GetCard implements PermissionValidator<Card> {
     }
 
     validate(card: Card) {
+        if (card.hasAuthorId(this.userPermissions.getUserId())){
+            return []
+        }
         if (card.getVisibility() === 'PRIVATE') {
             const permissionToBeChecked: PermissionValue = 'GET_PRIVATE_CARD_FROM_OTHER'
             return this.userPermissions.has(permissionToBeChecked) ? [] : [permissionToBeChecked]
