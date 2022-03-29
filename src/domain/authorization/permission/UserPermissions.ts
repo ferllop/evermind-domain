@@ -7,6 +7,10 @@ export class UserPermissions {
     constructor(private userId: UserIdentification, private permissions: PermissionValue[]) {
     }
 
+    isUserAnonymous() {
+        return this.getUserId().isNull()
+    }
+
     getUserId() {
         return this.userId
     }

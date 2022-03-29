@@ -3,6 +3,6 @@ import {UserPermissions} from './UserPermissions.js'
 
 export class AnonymousUserPermissions extends UserPermissions {
     constructor() {
-        super(RequesterIdentification.NULL, [])
+        super(RequesterIdentification.NULL, ['CREATE_OWN_USER_ACCOUNT'])
     }
 }

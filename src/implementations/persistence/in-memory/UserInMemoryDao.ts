@@ -12,7 +12,7 @@ import {DataFromStorageNotValidError} from '../../../domain/errors/DataFromStora
 export class UserInMemoryDao implements UserDao {
 
     protected readonly tableName = 'users'
-    protected mapper = new UserFactory()
+    protected userFactory = new UserFactory()
     protected datastore: InMemoryDatastore
 
     constructor() {
@@ -32,11 +32,11 @@ export class UserInMemoryDao implements UserDao {
         }
 
         const result = await this.datastore.read<UserDto>(this.tableName, id.getId())
-        if (!result || !this.mapper.isDtoValid(result)) {
+        if (!result || !this.userFactory.isDtoValid(result)) {
             return this.getNull()
         }
 
-        return this.mapper.fromDto(result)
+        return this.userFactory.fromDto(result)
     }
 
     async findByUsername(username: Username) {
@@ -52,8 +52,7 @@ export class UserInMemoryDao implements UserDao {
         if (!result) {
             return this.getNull()
         }
-        return this.mapper.fromDto(result)
-
+        return this.userFactory.fromDto(result)
     }
 
     async update(user: User) {
@@ -75,7 +74,6 @@ export class UserInMemoryDao implements UserDao {
         if (!deleted) {
             throw new UserNotFoundError()
         }
-
     }
 
     getNull() {

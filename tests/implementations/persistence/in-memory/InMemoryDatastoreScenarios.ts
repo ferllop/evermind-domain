@@ -35,7 +35,7 @@ export async function givenTheStoredUser(user: UserDto) {
 
 export async function givenAStoredUserWithPermissions(Permissions: PermissionValue[]) {
     const user = await givenAStoredUser()
-    await withPermissions(user, ...Permissions)
+    await givenTheStoredUserPermissions(user, ...Permissions)
     return user
 }
 
@@ -45,7 +45,7 @@ export async function givenAStoredUser() {
     return user
 }
 
-export async function withPermissions(user: UserDto, ...permissionValues: PermissionValue[]) {
+export async function givenTheStoredUserPermissions(user: UserDto, ...permissionValues: PermissionValue[]) {
     for await (const permissionValue of permissionValues) {
         const permission = {userId: user.id, value: permissionValue}
         await new PermissionRepository().add(permission)

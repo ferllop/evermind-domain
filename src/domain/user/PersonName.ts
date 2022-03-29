@@ -1,3 +1,5 @@
+import {InputDataNotValidError} from '../errors/InputDataNotValidError.js'
+
 export class PersonName {
     static NULL = new PersonName('')
 
@@ -15,4 +17,10 @@ export class PersonName {
         return name.length > 0
     }
 
+    static create(name: string) {
+        if(!this.isValid(name)){
+            throw new InputDataNotValidError()
+        }
+        return new PersonName(name)
+    }
 }

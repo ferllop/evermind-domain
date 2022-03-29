@@ -42,4 +42,9 @@ export class UserRepository {
         await this.dao.update(user)
     }
 
+    async hasUsername(username: Username) {
+        const user = await this.dao.findByUsername(username)
+        return ! user.isNull()
+    }
+
 }

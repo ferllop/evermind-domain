@@ -24,7 +24,6 @@ export class SearchService {
         if (user.isNull()) {
             return []
         }
-
         if (search.hasLabels()) {
             userCards = await cardRepository.findByAuthorId(user.getId())
             if (userCards.length === 0) {

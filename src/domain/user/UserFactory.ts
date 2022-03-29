@@ -18,6 +18,10 @@ export class UserFactory extends EntityFactory<User, UserDto> {
 
     private userConstructor = User.prototype.constructor as { new(name: PersonName, username: Username, dayStartTime: DayStartTime, id: UserIdentification): User}
 
+    constructor() {
+        super()
+    }
+
     getValidators(): Map<string, Validator> {
         return new Map()
             .set('id', UserIdentification.isValid)
@@ -41,10 +45,6 @@ export class UserFactory extends EntityFactory<User, UserDto> {
     fromDto(dto: UserDto): User {
         precondition(this.isDtoValid(dto))
         return this.recreate(new PersonName(dto.name), new Username(dto.username), new DayStartTime(dto.dayStartTime), new Identification(dto.id))
-    }
-
-    create(name: PersonName, username: Username) {
-        return new this.userConstructor(name, username, new DayStartTime(), Identification.create())
     }
 
      recreate(name: PersonName, username: Username, dayStartTime: DayStartTime, id: Identification) {
