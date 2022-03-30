@@ -103,14 +103,15 @@ cardSqlQuery('should provide a working delete card query', async () => {
 cardSqlQuery('should provide the correct card update query', async () => {
     const card = new CardBuilder().build()
     const sut = new CardSqlQuery().update(card)
+    const dto = card.toDto()
     const expectedQuery = `BEGIN;
         UPDATE cards SET
-        question = '${card.getQuestion().getValue()}',
-        answer = '${card.getAnswer().getValue()}',
-        visibility = '${card.getVisibility()}'
-        WHERE id = '${card.getId().getId()}';
-        DELETE FROM labelling WHERE card_id = '${card.getId().getId()}';
-        INSERT INTO labelling VALUES ('${card.getId().getId()}','${card.getLabelling().getLabels()[0]}');
+        question = '${dto.question}',
+        answer = '${dto.answer}',
+        visibility = '${dto.visibility}'
+        WHERE id = '${dto.id}';
+        DELETE FROM labelling WHERE card_id = '${dto.id}';
+        INSERT INTO labelling VALUES ('${dto.id}','${dto.labelling[0]}');
         COMMIT;`
     assertQueriesAreEqual(sut, expectedQuery)
 })

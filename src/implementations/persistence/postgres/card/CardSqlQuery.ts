@@ -5,9 +5,11 @@ import {AuthorIdentification} from '../../../../domain/card/AuthorIdentification
 import {CardDatabaseMap} from './CardDatabaseMap.js'
 import {LabellingDatabaseMap} from './LabellingDatabaseMap.js'
 import {UserDatabaseMap} from '../user/UserDatabaseMap.js'
+import {Id} from '../../../../domain/shared/value/Id.js'
 
 export class CardSqlQuery {
     insert(card: Card) {
+        const {id, authorId, question, answer, labelling, visibility} = card.toDto()
         return `BEGIN;
         INSERT INTO ${CardDatabaseMap.TABLE_NAME}(
             ${CardDatabaseMap.ID},
@@ -16,24 +18,25 @@ export class CardSqlQuery {
             ${CardDatabaseMap.ANSWER},
             ${CardDatabaseMap.VISIBILITY}
             ) VALUES (
-            '${card.getId().getId()}',
-            '${card.getAuthorId().getId()}',
-            '${card.getQuestion().getValue()}',
-            '${card.getAnswer().getValue()}',
-            '${card.getVisibility()}');
-            ${this.getInsertLabellingQuery(card.getId(), card.getLabelling())};
+            '${id}',
+            '${authorId}',
+            '${question}',
+            '${answer}',
+            '${visibility}');
+            ${this.getInsertLabellingQuery(id, labelling)};
             COMMIT;`
     }
 
     update(card: Card) {
+        const {id, question, answer, labelling, visibility} = card.toDto()
         return `BEGIN;
             UPDATE ${CardDatabaseMap.TABLE_NAME} SET 
-            ${CardDatabaseMap.QUESTION} = '${card.getQuestion().getValue()}',
-            ${CardDatabaseMap.ANSWER} = '${card.getAnswer().getValue()}',
-            ${CardDatabaseMap.VISIBILITY} = '${card.getVisibility()}'
-            WHERE ${CardDatabaseMap.ID} = '${card.getId().getId()}';
-            DELETE FROM ${LabellingDatabaseMap.TABLE_NAME} WHERE ${LabellingDatabaseMap.CARD_ID} = '${card.getId().getId()}';
-            ${this.getInsertLabellingQuery(card.getId(), card.getLabelling())};
+            ${CardDatabaseMap.QUESTION} = '${question}',
+            ${CardDatabaseMap.ANSWER} = '${answer}',
+            ${CardDatabaseMap.VISIBILITY} = '${visibility}'
+            WHERE ${CardDatabaseMap.ID} = '${id}';
+            DELETE FROM ${LabellingDatabaseMap.TABLE_NAME} WHERE ${LabellingDatabaseMap.CARD_ID} = '${id}';
+            ${this.getInsertLabellingQuery(id, labelling)};
             COMMIT;`
     }
 
@@ -43,9 +46,9 @@ export class CardSqlQuery {
                 WHERE ${CardDatabaseMap.ID} = '${id.getId()}'`
     }
 
-    private getInsertLabellingQuery(cardId: CardIdentification, labelling: Labelling) {
-        const labelsValuesString = labelling.getLabels().reduce<string[]>((accum, label) => {
-            const result = `('${cardId.getId()}','${label}')`
+    private getInsertLabellingQuery(cardId: Id, labelling: string[]) {
+        const labelsValuesString = labelling.reduce<string[]>((accum, label) => {
+            const result = `('${cardId}','${label}')`
             return accum.concat(result)
         }, [])
         return `INSERT INTO ${LabellingDatabaseMap.TABLE_NAME}
@@ -73,7 +76,7 @@ export class CardSqlQuery {
     }
 
     selectCardByLabelling(labelling: Labelling) {
-        const labels = labelling.getLabels().map(label => label.getValue())
+        const labels = labelling.getValue()
         const whereClause = `${LabellingDatabaseMap.LABEL} = '` + labels.join(`' OR ${LabellingDatabaseMap.LABEL} = '`) + `'`
         return `${this.selectAllCards()} WHERE ${CardDatabaseMap.ID} in 
             (SELECT ${LabellingDatabaseMap.CARD_ID}

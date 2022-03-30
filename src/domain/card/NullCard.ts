@@ -31,13 +31,6 @@ export class NullCard extends Card {
         return super.toDto()
     }
 
-    override getAuthorId() {
-        if (this.isNull()) {
-            throw new CardNotFoundError()
-        }
-        return super.getAuthorId()
-    }
-
     override hasAuthorId(id: AuthorIdentification) {
         if (this.isNull()) {
             throw new CardNotFoundError()

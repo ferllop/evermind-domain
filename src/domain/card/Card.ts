@@ -7,8 +7,7 @@ import {Labelling} from './Labelling.js'
 import {Question} from './Question.js'
 import {CardDto} from './CardDto.js'
 import {User} from '../user/User.js'
-
-export type Visibility = 'PUBLIC' | 'PRIVATE'
+import {Visibility} from './Visibility.js'
 
 export class Card extends Entity {
 
@@ -29,33 +28,17 @@ export class Card extends Entity {
 
     clone(): Card {
         return new Card(
-            new AuthorIdentification(this.getAuthorId().getId()),
-            this.getQuestion().clone(),
-            this.getAnswer().clone(),
-            this.getLabelling().clone(),
-            this.getVisibility(),
+            new AuthorIdentification(this.authorId.getId()),
+            this.question.clone(),
+            this.answer.clone(),
+            this.labelling.clone(),
+            this.visibility,
             Identification.create()
         )
     }
 
-    getAuthorId(): AuthorIdentification {
-        return this.authorId
-    }
-
-    getQuestion(): Question {
-        return this.question
-    }
-
-    getAnswer(): Answer {
-        return this.answer
-    }
-
-    getLabelling(): Labelling {
-        return this.labelling
-    }
-
-    getVisibility() {
-        return this.visibility
+    isPublic() {
+        return this.visibility === 'PUBLIC'
     }
 
     hasAuthorId(authorId: AuthorIdentification) {
@@ -69,10 +52,10 @@ export class Card extends Entity {
     transferTo(user: User) {
         return new Card(
             user.getId(),
-            this.getQuestion().clone(),
-            this.getAnswer().clone(),
-            this.getLabelling().clone(),
-            this.getVisibility(),
+            this.question.clone(),
+            this.answer.clone(),
+            this.labelling.clone(),
+            this.visibility,
             this.getId()
         )
     }
@@ -80,11 +63,11 @@ export class Card extends Entity {
     toDto(): CardDto{
         return {
             id: this.getId().getId(),
-            authorId: this.getAuthorId().getId(),
-            question: this.getQuestion().getValue() as string,
-            answer: this.getAnswer().getValue() as string,
-            labelling: this.getLabelling().getLabels().map(label => label.toString()),
-            visibility: this.getVisibility(),
+            authorId: this.authorId.getId(),
+            question: this.question.getValue() as string,
+            answer: this.answer.getValue() as string,
+            labelling: this.labelling.getValue(),
+            visibility: this.visibility,
         }
     }
 }

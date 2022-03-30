@@ -8,8 +8,8 @@ import {Identification} from '../../../src/domain/shared/value/Identification.js
 import {Label} from '../../../src/domain/card/Label.js'
 import {CardIdentification} from '../../../src/domain/card/CardIdentification.js'
 import {CardFactory} from '../../../src/domain/card/CardFactory.js'
-import {Visibility} from '../../../src/domain/card/Card.js'
 import {AlwaysAuthorizedAuthorization} from '../../implementations/AlwaysAuthorizedAuthorization.js'
+import {Visibility} from '../../../src/domain/card/Visibility.js'
 
 export class CardBuilder {
 

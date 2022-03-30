@@ -16,8 +16,8 @@ export class Label {
         return this.value
     }
 
-    toString() {
-        return this.getValue()
+    clone() {
+        return new Label(this.value)
     }
 
     static isValid(label: string): boolean {

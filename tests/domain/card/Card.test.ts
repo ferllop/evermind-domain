@@ -7,7 +7,7 @@ card('should know how to clone itself', () => {
     const card = new CardBuilder().build()
     const clone = card.clone()
     assert.is.not(card, clone)
-    assert.equal(card.getQuestion(), clone.getQuestion())
+    assert.equal(card.toDto().question, clone.toDto().question)
 })
 
 card.run()

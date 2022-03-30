@@ -1,5 +1,5 @@
 import {AuthorIdentification} from './AuthorIdentification.js'
-import {Card, Visibility} from './Card.js'
+import {Card} from './Card.js'
 import {CardDto} from './CardDto.js'
 import {Labelling} from './Labelling.js'
 import {WrittenAnswer} from './WrittenAnswer.js'
@@ -20,6 +20,7 @@ import {NullCard} from './NullCard.js'
 import {UpdateCard} from '../authorization/permission/permissions/UpdateCard.js'
 import {TransferCard} from '../authorization/permission/permissions/TransferCard.js'
 import {Authorization} from '../authorization/Authorization.js'
+import {Visibility} from './Visibility.js'
 
 export class CardFactory extends EntityFactory<Card, CardDto> {
     private cardConstructor = Card.prototype.constructor as { new(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, visibility: Visibility, id: CardIdentification): Card }

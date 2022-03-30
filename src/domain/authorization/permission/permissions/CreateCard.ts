@@ -8,7 +8,7 @@ export class CreateCard implements PermissionValidator<Card> {
     }
 
     validate(card: Card) {
-        const permissionToCheck: PermissionValue = card.getAuthorId().equals(this.userPermissions.getUserId())
+        const permissionToCheck: PermissionValue = card.hasAuthorId(this.userPermissions.getUserId())
             ? 'CREATE_OWN_CARD' : 'CREATE_CARD_FOR_OTHER'
         return this.userPermissions.has(permissionToCheck) ? [] : [permissionToCheck]
     }

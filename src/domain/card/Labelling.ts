@@ -25,8 +25,8 @@ export class Labelling {
         return result.substring(0, result.length - 2)
     }
 
-    getLabels() {
-        return this.labels
+    getValue() {
+        return this.labels.map(label => label.getValue())
     }
 
     getLabel(index: number) {
@@ -43,7 +43,7 @@ export class Labelling {
     }
 
     clone() {
-        return new Labelling(this.getLabels())
+        return new Labelling(this.labels.map(label => label.clone()))
     }
 
     static isValid(labels: string[]): boolean {

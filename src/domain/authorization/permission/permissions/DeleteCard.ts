@@ -8,7 +8,7 @@ export class DeleteCard implements PermissionValidator<Card> {
     }
 
     validate(card: Card) {
-        const permissionToCheck: PermissionValue = card.getAuthorId().equals(this.userPermissions.getUserId()) ?
+        const permissionToCheck: PermissionValue = card.hasAuthorId(this.userPermissions.getUserId()) ?
             'DELETE_OWN_CARD' : 'DELETE_CARD_FROM_OTHER'
         return this.userPermissions.has(permissionToCheck) ? [] : [permissionToCheck]
     }
