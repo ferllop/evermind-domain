@@ -35,12 +35,12 @@ export class PersistenceFactory {
         }
     }
 
-    static getSubscriptionDao() {
+    static getSubscriptionDao(authorization: Authorization) {
         switch (Config.persistenceType) {
             case 'postgres':
-                return new SubscriptionPostgresDao()
+                return new SubscriptionPostgresDao(authorization)
             case 'memory':
-                return new SubscriptionInMemoryDao()
+                return new SubscriptionInMemoryDao(authorization)
             default:
                 throw new PersistenceMethodNotDeclaredError()
         }

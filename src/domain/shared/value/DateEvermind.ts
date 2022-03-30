@@ -54,6 +54,10 @@ export class DateEvermind extends Date {
         return DateEvermind.fromDate(new Date(this.getTime() + MILLISECONDS_IN_A_DAY * days))
     }
 
+    clone() {
+        return new DateEvermind(this.toISOString() as DateISO)
+    }
+
     static isISOString(dateString: string): boolean {
         if (! /\dT\d.*Z$/.test(dateString)) {
             return false

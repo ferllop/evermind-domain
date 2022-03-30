@@ -6,13 +6,16 @@ import {PersistenceFactory} from '../../implementations/persistence/PersistenceF
 import {UserAuthorization} from '../authorization/permission/UserAuthorization.js'
 import {UserPermissions} from '../authorization/permission/UserPermissions.js'
 import {ReadSubscriptions} from '../authorization/permission/permissions/ReadSubscriptions.js'
+import {Authorization} from '../authorization/Authorization.js'
 
 export class SubscriptionRepository {
 
     private dao: SubscriptionDao
 
-    constructor() {
-        this.dao = PersistenceFactory.getSubscriptionDao()
+    constructor(
+        authorization: Authorization
+    ) {
+        this.dao = PersistenceFactory.getSubscriptionDao(authorization)
     }
 
     async add(subscription: Subscription) {

@@ -14,7 +14,7 @@ export class UserGetsUserSubscriptionsUseCase extends WithAuthorizationUseCase<U
 
     protected async internalExecute(request: UserGetsUserSubscriptionsRequest) {
         const user = await new UserRepository().findById(UserIdentification.recreate(request.userId))
-        const subscriptions = await new SubscriptionRepository().getByUserId(user, await this.getRequesterPermissions())
+        const subscriptions = await new SubscriptionRepository(await this.getAuthorization()).getByUserId(user, await this.getRequesterPermissions())
         return Response.OkWithData(subscriptions.map(subscription => subscription.toDto()))
     }
 }

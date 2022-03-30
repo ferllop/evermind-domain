@@ -5,9 +5,9 @@ import {
     givenAStoredCard,
     givenAStoredUser,
     givenAStoredUserWithPermissions,
+    givenASubscription,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
-import {UserSubscribesToCardUseCase} from '../../src/index.js'
 import {UserGetsUserSubscriptionsUseCase} from '../../src/use-cases/UserGetsUserSubscriptionsUseCase.js'
 import {UserNotFoundError} from '../../src/domain/errors/UserNotFoundError.js'
 
@@ -22,15 +22,15 @@ useCase(
         const requester = await givenAStoredUserWithPermissions(['READ_OWN_SUBSCRIPTIONS'])
         const card1 = await givenAStoredCard()
         const card2 = await givenAStoredCard()
-        const subscription1 = await new UserSubscribesToCardUseCase().execute({userId: requester.id, cardId: card1.id})
-        const subscription2 = await new UserSubscribesToCardUseCase().execute({userId: requester.id, cardId: card2.id})
+        const subscription1 = await givenASubscription(requester, card1)
+        const subscription2 = await givenASubscription(requester, card2)
 
         const request = {
             requesterId: requester.id,
             userId: requester.id,
         }
         const result = await new UserGetsUserSubscriptionsUseCase().execute(request)
-        assert.equal(result, Response.OkWithData([subscription1.data, subscription2.data]))
+        assert.equal(result, Response.OkWithData([subscription1, subscription2]))
     })
 
 useCase(
@@ -38,18 +38,18 @@ useCase(
     'when reading the two existing subscriptions of another user, ' +
     'should return an object with the subscriptions array as data and no error as error', async () => {
         const requester = await givenAStoredUserWithPermissions(['READ_SUBSCRIPTIONS_FROM_ANOTHER'])
-        const {id: userId} = await givenAStoredUser()
+        const user = await givenAStoredUser()
         const card1 = await givenAStoredCard()
         const card2 = await givenAStoredCard()
-        const subscription1 = await new UserSubscribesToCardUseCase().execute({userId, cardId: card1.id})
-        const subscription2 = await new UserSubscribesToCardUseCase().execute({userId, cardId: card2.id})
+        const subscription1 = await givenASubscription(user, card1)
+        const subscription2 = await givenASubscription(user, card2)
 
         const request = {
             requesterId: requester.id,
-            userId,
+            userId: user.id,
         }
         const result = await new UserGetsUserSubscriptionsUseCase().execute(request)
-        assert.equal(result, Response.OkWithData([subscription1.data, subscription2.data]))
+        assert.equal(result, Response.OkWithData([subscription1, subscription2]))
     })
 
 useCase(

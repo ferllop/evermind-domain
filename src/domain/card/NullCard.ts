@@ -38,6 +38,13 @@ export class NullCard extends Card {
         return super.hasAuthorId(id)
     }
 
+    override getId() {
+        if (this.isNull()) {
+            throw new CardNotFoundError()
+        }
+        return super.getId()
+    }
+
     override isNull() {
         return true
     }

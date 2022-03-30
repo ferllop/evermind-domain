@@ -7,6 +7,7 @@ import {Hour} from '../shared/value/Hour.js'
 import {Level} from './Level.js'
 import {SubscriptionIdentification} from './SubscriptionIdentification.js'
 import {SubscriptionDto} from './SusbcriptionDto.js'
+import {Card} from '../card/Card.js'
 
 export class Subscription extends Entity {
     
@@ -58,6 +59,23 @@ export class Subscription extends Entity {
     equals(subscription: Subscription) {
         return this.getUserId().equals(subscription.getUserId()) &&
             this.getCardId().equals(subscription.getCardId())
+    }
+
+    hasCard(card: Card) {
+        return this.cardId.equals(card.getId())
+    }
+
+    hasUser(userId: UserIdentification) {
+        return this.userId.equals(userId)
+    }
+
+    clone() {
+        return new Subscription(
+            this.getId().clone(),
+            this.userId.clone(),
+            this.cardId.clone(),
+            this.level,
+            this.lastReview.clone())
     }
 
     toDto(): SubscriptionDto {

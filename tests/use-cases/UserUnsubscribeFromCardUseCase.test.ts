@@ -1,11 +1,12 @@
 import {assert, suite} from '../test-config.js'
 import {Response} from '../../src/use-cases/Response.js'
-import {UserSubscribesToCardUseCase} from '../../src/use-cases/UserSubscribesToCardUseCase.js'
 import {UserUnsubscribesFromCardUseCase} from '../../src/use-cases/UserUnsubscribesFromCardUseCase.js'
 import {
     givenACleanInMemoryDatabase,
     givenAStoredCard,
     givenAStoredUser,
+    givenASubscription,
+    withAnyRequester,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {
     assertSubscriptionIsNotStored,
@@ -14,48 +15,52 @@ import {
 import {SubscriptionNotFoundError} from '../../src/domain/errors/SubscriptionNotFoundError.js'
 import {UserNotFoundError} from '../../src/domain/errors/UserNotFoundError.js'
 import {CardNotFoundError} from '../../src/domain/errors/CardNotFoundError.js'
+import {UserBuilder} from '../domain/user/UserBuilder.js'
 
 const userUnsubscribesFromCard = suite("User unsubscribes from card")
 
 userUnsubscribesFromCard.before.each( async () => await givenACleanInMemoryDatabase())
 
-userUnsubscribesFromCard('given an existing user id subscribed to an existing card id, then unsubscribe', async () => {
+userUnsubscribesFromCard(
+    'given an existing user subscribed to an existing card id, ' +
+    'when user unsubscribe from card ' +
+    'then unsubscribe', async () => {
     const card = await givenAStoredCard()
     const user = await givenAStoredUser()
-
+    await givenASubscription(user, card)
+    await assertSubscriptionIsStored(user.id, card.id)
     const request = {
         userId: user.id,
         cardId: card.id
     }
-    await new UserSubscribesToCardUseCase().execute(request)
-    await assertSubscriptionIsStored(user.id, card.id)
-
     await new UserUnsubscribesFromCardUseCase().execute(request)
     await assertSubscriptionIsNotStored(user.id, card.id)
 })
 
-userUnsubscribesFromCard('given an existing user id subscribed to an existing card id, then return a ok without data response', async () => {
+userUnsubscribesFromCard(
+    'given an existing user id subscribed to an existing card id, ' +
+    'then return a ok without data response', async () => {
     const card = await givenAStoredCard()
     const user = await givenAStoredUser()
+    await givenASubscription(user, card)
     const request = {
         userId: user.id,
         cardId: card.id
     }
-    await new UserSubscribesToCardUseCase().execute(request)
-
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
-
     assert.equal(result, Response.OkWithoutData())
 })
 
-userUnsubscribesFromCard('given a previous unsubscription, when unsubscribing again, then return a SUBSCRIPTION_NOT_EXISTS error', async () => {
+userUnsubscribesFromCard('given a previous unsubscription, ' +
+    'when unsubscribing again, ' +
+    'then return a SUBSCRIPTION_NOT_EXISTS error', async () => {
     const card = await givenAStoredCard()
     const user = await givenAStoredUser()
+    await givenASubscription(user, card)
     const request = {
         userId: user.id,
         cardId: card.id
     }
-    await new UserSubscribesToCardUseCase().execute(request)
 
     await new UserUnsubscribesFromCardUseCase().execute(request)
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
@@ -78,15 +83,14 @@ userUnsubscribesFromCard('given an existing user id not subscribed to an existin
 
 
 userUnsubscribesFromCard('given a non existing userid, then return a USER_NOT_FOUND', async () => {
+    const nonStoredUser = new UserBuilder().buildDto()
     const card = await givenAStoredCard()
-    const request = {
-        userId: 'non-existing-userid',
+    await givenASubscription(nonStoredUser, card)
+    const request = withAnyRequester({
+        userId: nonStoredUser.id,
         cardId: card.id
-    }
-    await new UserSubscribesToCardUseCase().execute(request)
-
+    })
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
-
     assert.equal(result, Response.withDomainError(new UserNotFoundError()))
 })
 

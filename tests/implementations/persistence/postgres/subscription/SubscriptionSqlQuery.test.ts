@@ -15,6 +15,7 @@ import {SubscriptionIdentification} from '../../../../../src/domain/subscription
 import {givenAnExistingSubscription, givenAnExistingSubscriptionFromUserId} from './SubscriptionScenario.js'
 import {cleanDatabase} from '../PostgresTestHelper.js'
 import {UserIdentification} from '../../../../../src/domain/user/UserIdentification.js'
+import {AlwaysAuthorizedAuthorization} from '../../../AlwaysAuthorizedAuthorization.js'
 
 const subscriptionSqlQuery = suite('Subscription Sql Query')
 
@@ -110,10 +111,11 @@ subscriptionSqlQuery('should provide a working subscription update query', async
         ...subscription.toDto(),
         level: 3,
     }
-    const sut = new SubscriptionSqlQuery().update(new SubscriptionFactory().fromDto(updatedSubscription))
+    const sut = new SubscriptionSqlQuery().update(
+        new SubscriptionFactory(new AlwaysAuthorizedAuthorization()).fromDto(updatedSubscription))
     await new SubscriptionPostgresDatastore().query(sut)
     const storedSubscriptions = await new SubscriptionPostgresDatastore().query('SELECT * FROM subscriptions')
-    assertAllRowsAreEqualToSubscriptions(storedSubscriptions.rows, [new SubscriptionFactory().fromDto(updatedSubscription)])
+    assertAllRowsAreEqualToSubscriptions(storedSubscriptions.rows, [new SubscriptionFactory(new AlwaysAuthorizedAuthorization()).fromDto(updatedSubscription)])
 })
 
 subscriptionSqlQuery('should send the proper query to find a subscription by user', async () => {

@@ -7,26 +7,37 @@ import {UserBuilder} from '../../../domain/user/UserBuilder.js'
 import {PermissionRepository} from '../../../../src/domain/authorization/permission/PermissionRepository.js'
 import {PermissionValue} from '../../../../src/domain/authorization/permission/PermissionValue.js'
 import {RequesterDto} from '../../../../src/use-cases/RequesterDto.js'
+import {SubscriptionBuilder} from '../../../domain/subscription/SubscriptionBuilder.js'
 
 const datastore = new InMemoryDatastore()
 const usersTable = 'users'
 const cardsTable = 'cards'
+const subscriptionsTable = 'subscriptions'
 
 export async function givenACleanInMemoryDatabase() {
     PersistenceFactory.setType('memory')
     await datastore.clean()
-    await createUsersTable()
-    await createCardsTable()
+    const user = await givenAnEmptyUsersTable()
+    const card = await givenAnEmptyCardsTable()
+    await givenAnEmptySubscriptionsTable(user, card)
 }
 
-async function createUsersTable() {
+async function givenAnEmptyUsersTable() {
     const user = await givenAStoredUser()
     await datastore.delete(usersTable, user.id)
+    return user
 }
 
-async function createCardsTable() {
+async function givenAnEmptyCardsTable() {
     const card = await givenAStoredCard()
     await datastore.delete(cardsTable, card.id)
+    return card
+}
+
+async function givenAnEmptySubscriptionsTable(user: UserDto, card: CardDto) {
+    const subscription = await givenASubscription(user, card)
+    await datastore.delete(subscriptionsTable, subscription.id)
+    return subscription
 }
 
 export async function givenTheStoredUser(user: UserDto) {
@@ -69,6 +80,12 @@ export async function givenTheStoredCard(card: CardDto) {
 
 export async function givenAStoredCard() {
     return await givenTheStoredCard(new CardBuilder().buildDto())
+}
+
+export async function givenASubscription(user: UserDto, card: CardDto) {
+    const subscription = new SubscriptionBuilder().setUserId(user.id).setCardId(card.id).build().toDto()
+    await datastore.create(subscriptionsTable, subscription)
+    return subscription
 }
 
 export async function givenXStoredCards(quantity: number) {

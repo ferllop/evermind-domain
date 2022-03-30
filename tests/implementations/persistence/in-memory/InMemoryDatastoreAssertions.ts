@@ -48,5 +48,6 @@ export async function assertSubscriptionHasCertainLevel(userId: Id, cardId: Id, 
     const storedSubscription = await datastore.findOne<SubscriptionDto>('subscriptions', (subscription) => {
         return cardId === subscription.cardId && userId === subscription.userId
     })
+    assert.not.equal(storedSubscription, null)
     assert.equal(storedSubscription!.level, level)
 }

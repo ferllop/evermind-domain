@@ -8,7 +8,6 @@ import {UserUnsubscribesFromCardRequest} from './UserUnsubscribesFromCardRequest
 import {Identification} from '../domain/shared/value/Identification.js'
 import {UseCase} from './UseCase.js'
 import {InputDataNotValidError} from '../domain/errors/InputDataNotValidError.js'
-import {SubscriptionNotFoundError} from '../domain/errors/SubscriptionNotFoundError.js'
 import {UserNotFoundError} from '../domain/errors/UserNotFoundError.js'
 import {CardNotFoundError} from '../domain/errors/CardNotFoundError.js'
 import {UserAuthorization} from '../domain/authorization/permission/UserAuthorization.js'
@@ -33,12 +32,9 @@ export class UserUnsubscribesFromCardUseCase extends UseCase<UserUnsubscribesFro
         if (card.isNull()) {
             throw new CardNotFoundError()
         }
-        const subscriptionRepository = new SubscriptionRepository()
+        const subscriptionRepository = new SubscriptionRepository(UserAuthorization.ANONYMOUS)
         const subscriptions = await subscriptionRepository.findByUserId(user)
         const subscription = user.subscribedTo(subscriptions).unsubscribeFrom(card)
-        if (!subscription) {
-            throw new SubscriptionNotFoundError()
-        }
         await subscriptionRepository.delete(subscription)
 
         return Response.OkWithoutData()

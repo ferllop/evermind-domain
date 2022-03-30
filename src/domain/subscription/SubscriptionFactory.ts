@@ -10,6 +10,8 @@ import {DateEvermind} from '../shared/value/DateEvermind.js'
 import {EntityFactory} from '../shared/EntityFactory.js'
 import {DateISO} from '../shared/value/DateISO.js'
 import {Identification} from '../shared/value/Identification.js'
+import {Authorization} from '../authorization/Authorization.js'
+import {SubscribeToCard} from '../authorization/permission/permissions/SubscribeToCard.js'
 
 export class SubscriptionFactory extends EntityFactory<Subscription, SubscriptionDto> {
 
@@ -20,6 +22,10 @@ export class SubscriptionFactory extends EntityFactory<Subscription, Subscriptio
             level: Level,
             lastReview: DateEvermind
         ): Subscription}
+
+    constructor(private authorization: Authorization){
+        super()
+    }
 
     getValidators(): Map<string, Validator> {
         return new Map()
@@ -50,7 +56,9 @@ export class SubscriptionFactory extends EntityFactory<Subscription, Subscriptio
 
     create(userId: UserIdentification, cardId: CardIdentification) {
         const id  = SubscriptionIdentification.create()
-        return new this.subscriptionConstructor(id, userId, cardId, Level.LEVEL_0, DateEvermind.fromNow())
+        const subscription = new this.subscriptionConstructor(id, userId, cardId, Level.LEVEL_0, DateEvermind.fromNow())
+        this.authorization.assertCan(SubscribeToCard, subscription)
+        return subscription
     }
 
     recreate(id: SubscriptionIdentification, userId: UserIdentification, cardId: CardIdentification, level: Level, lastReview: DateEvermind) {

@@ -5,6 +5,7 @@ import {DateISO} from '../../../src/domain/shared/value/DateISO.js'
 import {UserIdentification} from '../../../src/domain/user/UserIdentification.js'
 import {CardIdentification} from '../../../src/domain/card/CardIdentification.js'
 import {SubscriptionFactory} from '../../../src/domain/subscription/SubscriptionFactory.js'
+import {AlwaysAuthorizedAuthorization} from '../../implementations/AlwaysAuthorizedAuthorization.js'
 
 export class SubscriptionBuilder {
     private id: SubscriptionIdentification
@@ -60,6 +61,8 @@ export class SubscriptionBuilder {
     }
 
     build() {
-        return new SubscriptionFactory().recreate(this.id, this.userId, this.cardId, this.level, this.lastReview)
+        const subscriptionFactory = new SubscriptionFactory(new AlwaysAuthorizedAuthorization())
+        return subscriptionFactory.recreate(
+            this.id, this.userId, this.cardId, this.level, this.lastReview)
     }
 }

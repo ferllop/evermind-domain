@@ -5,15 +5,17 @@ import {Username} from './Username.js'
 import {Subscription} from '../subscription/Subscription.js'
 import {Card} from '../card/Card.js'
 import {UserIdentification} from './UserIdentification.js'
-import {SubscriptionFactory} from '../subscription/SubscriptionFactory.js'
+import {UserIsAlreadySubscribedToCardError} from '../errors/UserIsAlreadySubscribedToCardError.js'
+import {precondition} from '../../implementations/preconditions.js'
+import {NullSubscription} from '../subscription/NullSubscription.js'
 
 export class User extends Entity {
 
-    subscriptions: Subscription[]
+    subscriptions: Subscription[] | null
 
     protected constructor(private name: PersonName, private username: Username, private dayStartTime: DayStartTime, id: UserIdentification) {
         super(id)
-        this.subscriptions = []
+        this.subscriptions = null
     }
 
     getName() {
@@ -33,30 +35,50 @@ export class User extends Entity {
         return this
     }
 
-    subscribeTo(card: Card) {
-        if (this.getSubscription(card)) {
-            return null
+    hasSubscription(subscription: Subscription) {
+        return this.subscriptions !== null &&
+            this.subscriptions.some(existingSubscription => existingSubscription.equals(subscription))
+    }
+
+    subscribe(subscription: Subscription) {
+        precondition(this.subscriptions !== null)
+        if (this.hasSubscription(subscription)) {
+            throw new UserIsAlreadySubscribedToCardError()
         }
-        return new SubscriptionFactory().create(this.getId(), card.getId())
+        this.subscriptions = this.subscriptions!.concat(subscription.clone())
+        return subscription
+    }
+
+    isSubscribedTo(card: Card) {
+        return this.subscriptions !== null &&
+            this.subscriptions.some(subscription => subscription.hasCard(card))
     }
 
     unsubscribeFrom(card: Card) {
-        const subscription = this.getSubscription(card)
-        return subscription || null
+        return this.getSubscription(card)
     }
 
     getSubscription(card: Card) {
-        return this.subscriptions.find(
-            subscription => subscription.getCardId().equals(card.getId())
-        )
+        if (this.subscriptions === null) {
+            return NullSubscription.getInstance()
+        }
+        const subscription = this.subscriptions.find(subscription =>
+            subscription.getCardId().equals(card.getId()))
+        return subscription !== undefined
+            ? subscription
+            : NullSubscription.getInstance()
     }
 
-    toDto(){
+    getSubscriptionsCount() {
+        return this.subscriptions === null ? 0 : this.subscriptions.length
+    }
+
+    toDto() {
         return {
             id: this.getId().getId(),
             name: this.getName().toString(),
             username: this.getUsername().toString(),
-            dayStartTime: this.getDayStartTime().getValue()
+            dayStartTime: this.getDayStartTime().getValue(),
         }
     }
 }

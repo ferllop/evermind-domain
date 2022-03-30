@@ -12,12 +12,17 @@ import {InMemoryDatastore} from './InMemoryDatastore.js'
 import {InputDataNotValidError} from '../../../domain/errors/InputDataNotValidError.js'
 import {DataFromStorageNotValidError} from '../../../domain/errors/DataFromStorageNotValidError.js'
 import {SubscriptionNotFoundError} from '../../../domain/errors/SubscriptionNotFoundError.js'
+import {Authorization} from '../../../domain/authorization/Authorization.js'
 
 
 export class SubscriptionInMemoryDao implements SubscriptionDao {
     protected readonly tableName = SubscriptionField.TABLE_NAME
-    protected mapper = new SubscriptionFactory()
     protected datastore = new InMemoryDatastore()
+
+    constructor(
+        private authorization: Authorization,
+    ){}
+
 
     async insert(subscription: Subscription) {
         const result = await this.datastore.create(this.tableName, subscription.toDto())
@@ -48,11 +53,11 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
         }
 
         const result = await this.datastore.read<SubscriptionDto>(this.tableName, id.getId())
-        if (!result || !this.mapper.isDtoValid(result)) {
+        if (!result || !new SubscriptionFactory(this.authorization).isDtoValid(result)) {
             return NullSubscription.getInstance()
         }
 
-        return this.mapper.fromDto(result)
+        return new SubscriptionFactory(this.authorization).fromDto(result)
     }
 
     async update(entity: Subscription) {
@@ -70,7 +75,7 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
             return []
         }
         const result = await this.datastore.findMany(this.tableName, criteria)
-        return result.map((dto: SubscriptionDto) => this.mapper.fromDto(dto))
+        return result.map((dto: SubscriptionDto) => new SubscriptionFactory(this.authorization).fromDto(dto))
     }
 
     async findOne(criteria: Criteria<SubscriptionDto>) {
@@ -84,7 +89,7 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
             return NullSubscription.getInstance()
         }
 
-        return this.mapper.fromDto(result)
+        return new SubscriptionFactory(this.authorization).fromDto(result)
     }
 
     async findByUserId(id: UserIdentification) {

@@ -5,6 +5,7 @@ import { Subscription } from './Subscription.js'
 import { UserIdentification } from '../user/UserIdentification.js'
 import { CardIdentification } from '../card/CardIdentification.js'
 import { DateEvermind } from '../shared/value/DateEvermind.js'
+import {SubscriptionNotFoundError} from '../errors/SubscriptionNotFoundError.js'
 
 export class NullSubscription extends Subscription {
     private static instance = null
@@ -25,6 +26,13 @@ export class NullSubscription extends Subscription {
 
     override isNull() {
         return true
+    }
+
+    override getId() {
+        if (this.isNull()) {
+            throw new SubscriptionNotFoundError()
+        }
+        return super.getId()
     }
 
 }

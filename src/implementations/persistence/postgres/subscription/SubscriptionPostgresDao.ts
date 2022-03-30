@@ -12,12 +12,15 @@ import {SubscriptionNotFoundError} from '../../../../domain/errors/SubscriptionN
 import {UserIsAlreadySubscribedToCardError} from '../../../../domain/errors/UserIsAlreadySubscribedToCardError.js'
 import {CardNotFoundError} from '../../../../domain/errors/CardNotFoundError.js'
 import {DataFromStorageNotValidError} from '../../../../domain/errors/DataFromStorageNotValidError.js'
+import {Authorization} from '../../../../domain/authorization/Authorization.js'
 
 export class SubscriptionPostgresDao implements SubscriptionDao {
     private sqlQuery = new SubscriptionSqlQuery()
 
-    constructor(private datastore: SubscriptionPostgresDatastore = new SubscriptionPostgresDatastore()) {
-    }
+    constructor(
+        private authorization: Authorization,
+        private datastore: SubscriptionPostgresDatastore = new SubscriptionPostgresDatastore()
+    ) { }
 
     async insert(subscription: Subscription) {
         const query = this.sqlQuery.insert(subscription)
@@ -47,7 +50,7 @@ export class SubscriptionPostgresDao implements SubscriptionDao {
         if (result.rowCount > 1) {
             throw new DataFromStorageNotValidError()
         }
-        return result.rowCount === 1 ? new SubscriptionPostgresMapper().rowToSubscription(result.rows[0]) : NullSubscription.getInstance()
+        return result.rowCount === 1 ? new SubscriptionPostgresMapper(this.authorization).rowToSubscription(result.rows[0]) : NullSubscription.getInstance()
     }
 
     async update(subscription: Subscription) {
@@ -61,7 +64,7 @@ export class SubscriptionPostgresDao implements SubscriptionDao {
     async findByUserId(id: UserIdentification) {
         const query = this.sqlQuery.findByUserId(id)
         const result = await this.datastore.query(query)
-        return result.rows.map(new SubscriptionPostgresMapper().rowToSubscription)
+        return result.rows.map(new SubscriptionPostgresMapper(this.authorization).rowToSubscription)
     }
 
 }

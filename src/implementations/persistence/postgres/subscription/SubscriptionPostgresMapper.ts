@@ -2,6 +2,7 @@ import {SubscriptionDto} from '../../../../domain/subscription/SusbcriptionDto.j
 import {SubscriptionRow} from './SubscriptionRow.js'
 import {Subscription} from '../../../../domain/subscription/Subscription.js'
 import {SubscriptionFactory} from '../../../../domain/subscription/SubscriptionFactory.js'
+import {Authorization} from '../../../../domain/authorization/Authorization.js'
 
 export class SubscriptionPostgresMapper {
     pgSubscriptionMap: Record<string, keyof SubscriptionDto> = {
@@ -10,6 +11,9 @@ export class SubscriptionPostgresMapper {
         card_id: 'cardId',
         level: 'level',
         last_review: 'lastReview',
+    }
+
+    constructor(private authorization: Authorization) {
     }
 
     rowToSubscription = (row: SubscriptionRow): Subscription => {
@@ -22,6 +26,6 @@ export class SubscriptionPostgresMapper {
 
         }, {})
 
-        return new SubscriptionFactory().fromDto(subscriptionDto as SubscriptionDto)
+        return new SubscriptionFactory(this.authorization).fromDto(subscriptionDto as SubscriptionDto)
     }
 }
