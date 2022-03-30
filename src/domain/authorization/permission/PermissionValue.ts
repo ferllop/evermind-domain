@@ -19,5 +19,7 @@ type UserPermissionValue = 'REMOVE_OWN_ACCOUNT'
     | 'CREATE_ACCOUNT_FOR_OTHER'
     | 'SUBSCRIBE_ITSELF_TO_CARD'
     | 'SUBSCRIBE_OTHER_TO_CARD'
+    | 'UNSUBSCRIBE_ITSELF_FROM_CARD'
+    | 'UNSUBSCRIBE_OTHER_FROM_CARD'
 
 export type PermissionValue = CardPermissionValue | UserPermissionValue

@@ -8,6 +8,8 @@ import {UserIdentification} from './UserIdentification.js'
 import {UserIsAlreadySubscribedToCardError} from '../errors/UserIsAlreadySubscribedToCardError.js'
 import {precondition} from '../../implementations/preconditions.js'
 import {NullSubscription} from '../subscription/NullSubscription.js'
+import {Authorization} from '../authorization/Authorization.js'
+import {UnsubscribeFromCard} from '../authorization/permission/permissions/UnsubscribeFromCard.js'
 
 export class User extends Entity {
 
@@ -54,16 +56,26 @@ export class User extends Entity {
             this.subscriptions.some(subscription => subscription.hasCard(card))
     }
 
-    unsubscribeFrom(card: Card) {
-        return this.getSubscription(card)
+    unsubscribeFrom(card: Card, authorization: Authorization) {
+        const subscription = this.getSubscription(card)
+        authorization.assertCan(UnsubscribeFromCard, subscription)
+        return this.unsubscribe(subscription)
+    }
+
+    private unsubscribe(subscription: Subscription) {
+        precondition(this.subscriptions !== null)
+        this.subscriptions = this.subscriptions!.filter(
+            storedSubscription => !storedSubscription.equals(subscription))
+        return subscription
     }
 
     getSubscription(card: Card) {
         if (this.subscriptions === null) {
             return NullSubscription.getInstance()
         }
+        const cardId = card.getId()
         const subscription = this.subscriptions.find(subscription =>
-            subscription.getCardId().equals(card.getId()))
+            subscription.getCardId().equals(cardId))
         return subscription !== undefined
             ? subscription
             : NullSubscription.getInstance()

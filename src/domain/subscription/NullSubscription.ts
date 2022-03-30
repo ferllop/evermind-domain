@@ -35,4 +35,11 @@ export class NullSubscription extends Subscription {
         return super.getId()
     }
 
+    override hasUser(userId: UserIdentification) {
+        if(this.isNull()) {
+            throw new SubscriptionNotFoundError()
+        }
+        return super.hasUser(userId)
+    }
+
 }
