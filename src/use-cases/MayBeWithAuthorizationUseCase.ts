@@ -1,21 +1,32 @@
 import {WithRequesterRequest} from './WithRequesterRequest.js'
 import {RequesterDto} from './RequesterDto.js'
 import {UseCase} from './UseCase.js'
-import {AnonymousUserPermissions} from '../domain/authorization/permission/AnonymousUserPermissions.js'
 import {RequesterIdentification} from '../domain/authorization/permission/RequesterIdentification.js'
 import {PermissionRepository} from '../domain/authorization/permission/PermissionRepository.js'
+import {UserAuthorization} from '../domain/authorization/permission/UserAuthorization.js'
+import {Response} from './Response.js'
+import {AnonymousUserAuthorization} from '../domain/authorization/permission/AnonymousUserAuthorization.js'
+import {Request} from './Request.js'
 
-export abstract class MayBeWithAuthorizationUseCase<RequestType extends WithRequesterRequest | Omit<WithRequesterRequest, keyof RequesterDto>, Response>
-    extends UseCase<RequestType, Response> {
-    protected async getUserPermissions(request: any) {
-        if (!this.hasRequester(request)) {
-            return new AnonymousUserPermissions()
-        }
-        const requesterId = RequesterIdentification.recreate(request.requesterId)
-        return await new PermissionRepository().findUserPermissions(requesterId)
+export abstract class MayBeWithAuthorizationUseCase<RequestType extends WithRequesterRequest | Omit<WithRequesterRequest, keyof RequesterDto>, ResponseType>
+    extends UseCase<RequestType, ResponseType> {
+    request!: Request
+
+    override async execute(request: RequestType): Promise<Response<null> | Response<ResponseType>> {
+        this.request = request
+        return super.execute(request)
     }
 
-    private hasRequester(request: any): request is WithRequesterRequest {
+    protected async getAuthorization() {
+        if (!this.hasRequester(this.request)) {
+            return new AnonymousUserAuthorization()
+        }
+        const requesterId = RequesterIdentification.recreate(this.request.requesterId)
+        const permissions = await new PermissionRepository().findUserPermissions(requesterId)
+        return new UserAuthorization(permissions)
+    }
+
+    private hasRequester(request: Request): request is WithRequesterRequest {
         return 'requesterId' in request && request.requesterId !== undefined
     }
 }

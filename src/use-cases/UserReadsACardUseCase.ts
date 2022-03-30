@@ -2,10 +2,10 @@ import {CardRepository} from '../domain/card/CardRepository.js'
 import {CardDto} from '../domain/card/CardDto.js'
 import {Response} from './Response.js'
 import {UserReadsACardRequest} from './UserReadsACardRequest.js'
-import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 import {CardIdentification} from '../domain/card/CardIdentification.js'
+import {MayBeWithAuthorizationUseCase} from './MayBeWithAuthorizationUseCase.js'
 
-export class UserReadsACardUseCase extends WithAuthorizationUseCase<UserReadsACardRequest, CardDto|null>{
+export class UserReadsACardUseCase extends MayBeWithAuthorizationUseCase<UserReadsACardRequest, CardDto|null>{
 
     constructor() {
         super(['cardId'])
