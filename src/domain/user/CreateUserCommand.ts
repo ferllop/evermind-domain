@@ -4,7 +4,6 @@ import {Username} from './Username.js'
 import {DayStartTime} from '../shared/value/DayStartTime.js'
 import {UserIdentification} from './UserIdentification.js'
 import {Authorization} from '../authorization/Authorization.js'
-import {AlwaysAuthorizedAuthorization} from '../../../tests/implementations/AlwaysAuthorizedAuthorization.js'
 import {UserRepository} from './UserRepository.js'
 import {UserAlreadyExistsError} from '../errors/UserAlreadyExistsError.js'
 import {Identification} from '../shared/value/Identification.js'
@@ -13,7 +12,7 @@ import {CreateUserAccount} from '../authorization/permission/permissions/CreateU
 export class CreateUserCommand {
     private userConstructor = User.prototype.constructor as { new(name: PersonName, username: Username, dayStartTime: DayStartTime, id: UserIdentification): User }
 
-    constructor(private authorization: Authorization = new AlwaysAuthorizedAuthorization()) {
+    constructor(private authorization: Authorization) {
     }
 
     async create(name: PersonName, username: Username) {
