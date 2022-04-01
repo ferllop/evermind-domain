@@ -3,6 +3,6 @@ import {DomainError} from './DomainError.js'
 
 export class UndocumentedError extends DomainError {
     constructor(error: Error) {
-        super(DomainErrorCode.UNDOCUMENTED, error.stack)
+        super(DomainErrorCode.UNDOCUMENTED, error.message)
     }
 }
