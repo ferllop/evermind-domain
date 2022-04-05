@@ -1,10 +1,10 @@
 import {assert, suite} from '../../../test-config.js'
 import {TestableApp} from '../TestableApp.js'
-import {FakeUseCase} from '../FakeUseCase.js'
 import {FakeRouter} from './FakeRouter.js'
 import {FakeDomainAction} from '../actions/FakeDomainAction.js'
 import {DomainError} from '../../../../src/domain/errors/DomainError.js'
 import {UndocumentedError} from '../../../../src/domain/errors/UndocumentedError.js'
+import {FakeUseCase} from '../../../use-cases/FakeUseCase.js'
 
 const router = suite('Router')
 
@@ -40,8 +40,9 @@ export function assertBodyIsEmpty(body:object) {
 }
 
 router('should obtain data from app', async () => {
-    const app = new TestableApp(new FakeRouter(new FakeDomainAction(new FakeUseCase())))
     const name = 'carla'
+    const usecase = new FakeUseCase().withResponseData({name})
+    const app = new TestableApp(new FakeRouter(new FakeDomainAction(usecase)))
     const result = await app.get('/test/' + name)
     assertBodyHasDomainData(result.body, {name})
 })
