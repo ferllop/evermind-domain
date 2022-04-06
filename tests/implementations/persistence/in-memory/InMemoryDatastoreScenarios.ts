@@ -88,6 +88,11 @@ export async function givenASubscription(user: UserDto, card: CardDto) {
     return subscription
 }
 
+export async function givenAStoredSubscriptionFromUser(user: UserDto) {
+    const card = await givenAStoredCard()
+    return givenASubscription(user, card)
+}
+
 export async function givenXStoredCards(quantity: number) {
     const cards: CardDto[] = []
     for (let i = 1; i <= quantity; i++) {

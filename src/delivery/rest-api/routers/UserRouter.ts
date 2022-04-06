@@ -5,6 +5,7 @@ import {SignUp} from '../actions/SignUp.js'
 import {ModifyUser} from '../actions/ModifyUser.js'
 import {GetUser} from '../actions/GetUser.js'
 import {RemoveUserAccount} from '../actions/RemoveUserAccount.js'
+import {GetUserSubscriptions} from '../actions/GetUserSubscriptions.js'
 
 export class UserRouter extends Router {
     constructor() {
@@ -15,6 +16,7 @@ export class UserRouter extends Router {
             new RemoveUserAccount(),
             new SubscribeToCard(),
             new UnsubscribeToCard(),
+            new GetUserSubscriptions(),
         )
     }
 }

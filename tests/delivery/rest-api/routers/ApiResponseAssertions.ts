@@ -35,8 +35,7 @@ class DomainResponseAssertions {
     }
 
     is(domainResponse: DomainResponse<any>) {
-        assert.equal(this.domainResponse.data, domainResponse.data)
-        assert.equal(this.domainResponse.error, domainResponse.error)
+        assert.equal(this.domainResponse, {...domainResponse})
         return this
     }
 }

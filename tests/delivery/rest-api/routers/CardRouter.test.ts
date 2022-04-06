@@ -90,7 +90,7 @@ cardRouter('when deleting a card should delete the card return empty and 204 htt
 
 cardRouter('given a user with permissions, ' +
     'when transferring a card, ' +
-    'then the card is transferred and get 201 stuts code', async ({app}) => {
+    'then the card is transferred and get 201 status code', async ({app}) => {
     const user = await givenAStoredUserWithPermissions(['TRANSFER_OWN_CARD'])
     const card = await givenAStoredCardFromUser(user)
     const receivingUser = await givenAStoredUser()

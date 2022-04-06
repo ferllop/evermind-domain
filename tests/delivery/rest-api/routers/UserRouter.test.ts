@@ -4,6 +4,7 @@ import {UserRouter} from '../../../../src/delivery/rest-api/routers/UserRouter.j
 import {
     givenACleanInMemoryDatabase,
     givenAStoredCardFromUser,
+    givenAStoredSubscriptionFromUser,
     givenAStoredUser,
     givenAStoredUserWithPermissions,
     givenASubscription,
@@ -15,6 +16,7 @@ import {
     assertUserIsStored,
 } from '../../../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
 import {UserBuilder} from '../../../domain/user/UserBuilder.js'
+import {Response} from '../../../../src/index.js'
 
 type Context = {
     app: TestableApp
@@ -105,6 +107,19 @@ userRouter('when unsubscribing a user from a card should get empty array and 204
         .hasStatusCode(204)
         .hasEmptyData()
     await assertSubscriptionIsNotStored(user.id, card.id)
+})
+
+userRouter('given a user with subscriptions, ' +
+    'when asking for its subscriptions' +
+    'then get the subscriptions and 200 http status code', async ({app}) => {
+    const user = await givenAStoredUserWithPermissions(['READ_OWN_SUBSCRIPTIONS'])
+    const subscription1 = await givenAStoredSubscriptionFromUser(user)
+    const subscription2 = await givenAStoredSubscriptionFromUser(user)
+    await app.get(`/users/${user.id}/subscriptions`, {requesterId: user.id})
+    app.assert()
+        .hasStatusCode(200)
+        .domain()
+        .is(Response.OkWithData([subscription1, subscription2]))
 })
 
 userRouter.run()
