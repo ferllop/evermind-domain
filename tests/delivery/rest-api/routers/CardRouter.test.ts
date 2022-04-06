@@ -4,7 +4,7 @@ import {CardDto, UserCreatesCardRequest, UserModifiesCardDataRequest} from '../.
 import {CardRouter} from '../../../../src/delivery/rest-api/routers/CardRouter.js'
 import {
     givenACleanInMemoryDatabase,
-    givenAStoredCardFromUser,
+    givenAStoredCardFromUser, givenAStoredUser,
     givenAStoredUserWithPermissions,
 } from '../../../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {givenAnExistingCard} from '../../../implementations/persistence/postgres/card/CardScenario.js'
@@ -86,6 +86,19 @@ cardRouter('when deleting a card should delete the card return empty and 204 htt
         .hasStatusCode(204)
         .hasEmptyData()
     assertCardIsNotStored(card)
+})
+
+cardRouter('given a user with permissions, ' +
+    'when transferring a card, ' +
+    'then the card is transferred and get 201 stuts code', async ({app}) => {
+    const user = await givenAStoredUserWithPermissions(['TRANSFER_OWN_CARD'])
+    const card = await givenAStoredCardFromUser(user)
+    const receivingUser = await givenAStoredUser()
+    await app.post(`/cards/${card.id}/transfer/${receivingUser.id}`, {requesterId: user.id})
+    app.assert()
+        .hasStatusCode(204)
+        .hasEmptyData()
+    await assertCardIsStored({...card, authorId: receivingUser.id})
 })
 
 cardRouter.run()

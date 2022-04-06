@@ -3,6 +3,7 @@ import {CreateCard} from '../actions/CreateCard.js'
 import {ModifyCard} from '../actions/ModifyCard.js'
 import {GetCard} from '../actions/GetCard.js'
 import {DeleteCard} from '../actions/DeleteCard.js'
+import {TransferCard} from '../actions/TransferCard.js'
 
 export class CardRouter extends Router {
     constructor() {
@@ -12,6 +13,7 @@ export class CardRouter extends Router {
             new ModifyCard(),
             new GetCard(),
             new DeleteCard(),
+            new TransferCard(),
         )
     }
 }
