@@ -12,10 +12,17 @@ export class App {
     }
 
     setRouters(...routers: Router[]){
+        this.emptyRoutersStack()
         routers.forEach(router => {
             router.registerIn(this.express)
         })
         new NotFoundRouter().registerIn(this.express)
+    }
+
+    private emptyRoutersStack() {
+        this.express._router.stack = this.express._router.stack.filter((layer: any) => {
+            return layer.handle.name !== 'router'
+        })
     }
 
     start(port: number, hostname: string) {

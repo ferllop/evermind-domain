@@ -1,4 +1,4 @@
-import {assert, suite} from '../../../test-config.js'
+import {suite} from '../../../test-config.js'
 import {TestableApp} from '../TestableApp.js'
 import {CardDto, UserCreatesCardRequest, UserModifiesCardDataRequest} from '../../../../src/index.js'
 import {CardRouter} from '../../../../src/delivery/rest-api/routers/CardRouter.js'
@@ -7,7 +7,6 @@ import {
     givenAStoredCardFromUser,
     givenAStoredUserWithPermissions,
 } from '../../../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
-import {assertBodyHasDomainData, assertBodyHasDomainError, assertBodyIsEmpty} from './Router.test.js'
 import {givenAnExistingCard} from '../../../implementations/persistence/postgres/card/CardScenario.js'
 import {RequiredRequestFieldIsMissingError} from '../../../../src/domain/errors/RequiredRequestFieldIsMissingError.js'
 import {
@@ -16,7 +15,11 @@ import {
 } from '../../../implementations/persistence/in-memory/InMemoryDatastoreAssertions.js'
 import {CardBuilder} from '../../../domain/card/CardBuilder.js'
 
-const cardRouter = suite("Card router")
+type Context = {
+    app: TestableApp
+}
+
+const cardRouter = suite<Context>("Card router")
 
 cardRouter.before.each(async context => {
     await givenACleanInMemoryDatabase()
@@ -29,30 +32,35 @@ cardRouter('given a user with permissions,' +
     const user = await givenAStoredUserWithPermissions(['CREATE_OWN_CARD'])
     const {id, ...card} = new CardBuilder().withAuthorId(user.id).buildDto()
     const request: UserCreatesCardRequest = {...card, requesterId: user.id}
-    const result = await app.post('/cards').send(request)
+    const result = await app.post('/cards', request)
     const expectedCard: CardDto = {
         id: result.body.domain.data.id,
         ...card
     }
-    assertBodyHasDomainData(result.body, expectedCard)
-    assert.equal(result.status, 201)
+    app.assert()
+        .hasStatusCode(201)
+        .domain().hasData(expectedCard)
 })
 
 cardRouter('given a request with missing requesterId field ' +
     'when creating a card' +
     'should return an RequiredRequestFieldIsMissingError with 400 http response', async ({app}) => {
     const card = await givenAnExistingCard()
-    const result = await app.post('/cards').send({...card})
-    assertBodyHasDomainError(result.body, new RequiredRequestFieldIsMissingError(['requesterId']))
-    assert.equal(result.status, 400)
+    await app.post('/cards', {...card})
+    app.assert()
+        .hasStatusCode(400)
+        .domain()
+        .hasError(new RequiredRequestFieldIsMissingError(['requesterId']))
 })
 
 cardRouter('when getting by its id should return card and 200 http response', async ({app}) => {
     const user = await givenAStoredUserWithPermissions([])
     const card = await givenAStoredCardFromUser(user)
-    const result = await app.get('/cards/' + card.id)
-    assertBodyHasDomainData(result.body, card)
-    assert.equal(result.status, 200)
+    await app.get('/cards/' + card.id)
+    app.assert()
+        .hasStatusCode(200)
+        .domain()
+        .hasData(card)
 })
 
 cardRouter('when modifying a card should modify the card return empty and 204 http response', async ({app}) => {
@@ -63,20 +71,21 @@ cardRouter('when modifying a card should modify the card return empty and 204 ht
         requesterId: user.id,
         ...modifiedCard,
     }
-    const result = await app.put('/cards/' + card.id).send(request)
-    assertBodyIsEmpty(result.body)
-    assert.equal(result.status, 204)
+    await app.put('/cards/' + card.id, request)
+    app.assert()
+        .hasStatusCode(204)
+        .hasEmptyData()
     assertCardIsStored(modifiedCard)
 })
 
 cardRouter('when deleting a card should delete the card return empty and 204 http response', async ({app}) => {
     const user = await givenAStoredUserWithPermissions(['DELETE_OWN_CARD'])
     const card = await givenAStoredCardFromUser(user)
-    const result = await app.delete('/cards/' + card.id).send({requesterId: user.id})
-    assert.equal(result.status, 204)
-    assertBodyIsEmpty(result.body)
+    await app.delete('/cards/' + card.id, {requesterId: user.id})
+    app.assert()
+        .hasStatusCode(204)
+        .hasEmptyData()
     assertCardIsNotStored(card)
 })
 
 cardRouter.run()
-
