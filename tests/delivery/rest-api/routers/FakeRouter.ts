@@ -1,8 +1,8 @@
-import {Action} from '../../../../src/delivery/rest-api/actions/Action.js'
+import {Route} from '../../../../src/delivery/rest-api/routes/Route.js'
 import {Router} from '../../../../src/delivery/rest-api/routers/Router.js'
 
 export class FakeRouter extends Router {
-    constructor(...actions: Action[]) {
+    constructor(...actions: Route[]) {
         super('/test', ...actions)
     }
 }

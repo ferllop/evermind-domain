@@ -1,6 +1,6 @@
 import {Router} from './Router.js'
-import {Action} from '../actions/Action.js'
-import {ActionResult} from '../actions/ActionResult.js'
+import {Route} from '../routes/Route.js'
+import {RouteResult} from '../routes/RouteResult.js'
 
 export class NotFoundRouter extends Router {
     constructor() {
@@ -10,12 +10,12 @@ export class NotFoundRouter extends Router {
     }
 
 }
-class NotFoundAction extends Action {
+class NotFoundAction extends Route {
     constructor(){
         super('all', '/')
     }
 
-    override execute(): Promise<ActionResult> {
+    override execute(): Promise<RouteResult> {
         return Promise.resolve({statusCode: 404, data: {}})
     }
 }

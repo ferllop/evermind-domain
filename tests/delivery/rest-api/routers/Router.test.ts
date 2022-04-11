@@ -1,7 +1,7 @@
 import {suite} from '../../../test-config.js'
 import {TestableApp} from '../TestableApp.js'
 import {FakeRouter} from './FakeRouter.js'
-import {FakeDomainAction} from '../actions/FakeDomainAction.js'
+import {DomainRouteStub} from '../routes/DomainRouteStub.js'
 import {UndocumentedError} from '../../../../src/domain/errors/UndocumentedError.js'
 import {FakeUseCase} from '../../../use-cases/FakeUseCase.js'
 
@@ -18,7 +18,7 @@ router.before.each(context => {
 router('should obtain data from app', async ({app}) => {
     const name = 'carla'
     const usecase = new FakeUseCase().withResponseData({name})
-    app.setRouters(new FakeRouter(new FakeDomainAction(usecase)))
+    app.setRouters(new FakeRouter(new DomainRouteStub(usecase)))
     await app.get('/test/' + name)
     app.assert().domain().hasData( {name})
 })
@@ -26,7 +26,7 @@ router('should obtain data from app', async ({app}) => {
 router('should return the error from within the usecase', async ({app}) => {
     const error = new Error('the-error')
     const usecase = new FakeUseCase().withError(error)
-    const router = new FakeRouter(new FakeDomainAction(usecase))
+    const router = new FakeRouter(new DomainRouteStub(usecase))
     app.setRouters(router)
     await app.get('/test/carla')
     app.assert().domain().hasError(new UndocumentedError(error))

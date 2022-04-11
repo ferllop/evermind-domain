@@ -1,13 +1,13 @@
 import {Request as ExpressRequest} from 'express'
-import {DomainAction} from './DomainAction.js'
+import {DomainRoute} from './DomainRoute.js'
 import {HttpStatusCode} from '../http/HttpStatusCode.js'
 import {DomainErrorCode} from '../../../domain/errors/DomainErrorCode.js'
-import {UserRemovesAccountRequest} from '../../../use-cases/UserRemovesAccountRequest.js'
-import {UserRemovesAccountUseCase} from '../../../use-cases/UserRemovesAccountUseCase.js'
+import {UserUnsubscribesFromCardUseCase} from '../../../use-cases/UserUnsubscribesFromCardUseCase.js'
+import {UserUnsubscribesFromCardRequest} from '../../../use-cases/UserUnsubscribesFromCardRequest.js'
 
-export class RemoveUserAccount extends DomainAction<UserRemovesAccountRequest> {
+export class UnsubscribeToCard extends DomainRoute<UserUnsubscribesFromCardRequest> {
     constructor() {
-        super('delete', '/:userId', new UserRemovesAccountUseCase())
+        super('delete', '/:userId/cards/:cardId', new UserUnsubscribesFromCardUseCase())
         this.setHttpStatusCode(DomainErrorCode.NO_ERROR, HttpStatusCode.NO_CONTENT)
     }
 
@@ -15,6 +15,8 @@ export class RemoveUserAccount extends DomainAction<UserRemovesAccountRequest> {
         return {
             requesterId: request.body.requesterId,
             userId: request.params.userId,
+            cardId: request.params.cardId,
         }
     }
 }
+

@@ -1,12 +1,12 @@
 import {HttpMethod} from '../http/HttpMethod.js'
 import {StatusCodeMapper} from '../http/StatusCodeMapper.js'
 import {Request as ExpressRequest} from 'express'
-import {ActionResult} from './ActionResult.js'
+import {RouteResult} from './RouteResult.js'
 import {Router} from '../routers/Router.js'
 import {HttpStatusCode} from '../http/HttpStatusCode.js'
 import {DomainErrorCode} from '../../../domain/errors/DomainErrorCode.js'
 
-export abstract class Action {
+export abstract class Route {
     private statusCodeMapper: StatusCodeMapper = new StatusCodeMapper()
 
     protected constructor(
@@ -26,6 +26,6 @@ export abstract class Action {
         return this.statusCodeMapper.setHttpStatusCode(domainErrorCode, httpStatusCode)
     }
 
-    abstract execute(request: ExpressRequest): Promise<ActionResult>
+    abstract execute(request: ExpressRequest): Promise<RouteResult>
 
 }

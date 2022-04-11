@@ -1,4 +1,4 @@
-export type ActionResult = {
+export type RouteResult = {
     statusCode: number,
     data: unknown,
 }

@@ -1,11 +1,11 @@
 import {Router} from './Router.js'
-import {SubscribeToCard} from '../actions/SubscribeToCard.js'
-import {UnsubscribeToCard} from '../actions/UnsubscribeToCard.js'
-import {SignUp} from '../actions/SignUp.js'
-import {ModifyUser} from '../actions/ModifyUser.js'
-import {GetUser} from '../actions/GetUser.js'
-import {RemoveUserAccount} from '../actions/RemoveUserAccount.js'
-import {GetUserSubscriptions} from '../actions/GetUserSubscriptions.js'
+import {SubscribeToCard} from '../routes/SubscribeToCard.js'
+import {UnsubscribeToCard} from '../routes/UnsubscribeToCard.js'
+import {SignUp} from '../routes/SignUp.js'
+import {ModifyUser} from '../routes/ModifyUser.js'
+import {GetUser} from '../routes/GetUser.js'
+import {RemoveUserAccount} from '../routes/RemoveUserAccount.js'
+import {GetUserSubscriptions} from '../routes/GetUserSubscriptions.js'
 
 export class UserRouter extends Router {
     constructor() {

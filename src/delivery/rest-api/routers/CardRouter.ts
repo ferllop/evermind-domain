@@ -1,9 +1,9 @@
 import {Router} from './Router.js'
-import {CreateCard} from '../actions/CreateCard.js'
-import {ModifyCard} from '../actions/ModifyCard.js'
-import {GetCard} from '../actions/GetCard.js'
-import {DeleteCard} from '../actions/DeleteCard.js'
-import {TransferCard} from '../actions/TransferCard.js'
+import {CreateCard} from '../routes/CreateCard.js'
+import {ModifyCard} from '../routes/ModifyCard.js'
+import {GetCard} from '../routes/GetCard.js'
+import {DeleteCard} from '../routes/DeleteCard.js'
+import {TransferCard} from '../routes/TransferCard.js'
 
 export class CardRouter extends Router {
     constructor() {

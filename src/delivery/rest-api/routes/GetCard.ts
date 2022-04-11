@@ -1,9 +1,9 @@
 import {Request as ExpressRequest} from 'express'
-import {DomainAction} from './DomainAction.js'
+import {DomainRoute} from './DomainRoute.js'
 import {UserReadsACardUseCase} from '../../../use-cases/UserReadsACardUseCase.js'
 import {UserReadsACardRequest} from '../../../use-cases/UserReadsACardRequest.js'
 
-export class GetCard extends DomainAction<UserReadsACardRequest> {
+export class GetCard extends DomainRoute<UserReadsACardRequest> {
     constructor() {
         super('get', '/:cardId', new UserReadsACardUseCase())
     }

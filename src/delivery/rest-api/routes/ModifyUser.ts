@@ -1,13 +1,13 @@
 import {Request as ExpressRequest} from 'express'
-import {DomainAction} from './DomainAction.js'
+import {DomainRoute} from './DomainRoute.js'
 import {HttpStatusCode} from '../http/HttpStatusCode.js'
 import {DomainErrorCode} from '../../../domain/errors/DomainErrorCode.js'
-import {UserModifiesCardDataUseCase} from '../../../use-cases/UserModifiesCardDataUseCase.js'
-import {UserModifiesCardDataRequest} from '../../../use-cases/UserModifiesCardDataRequest.js'
+import {UserModifiesUserDataRequest} from '../../../use-cases/UserModifiesUserDataRequest.js'
+import {UserModifiesUserDataUseCase} from '../../../use-cases/UserModifiesUserDataUseCase.js'
 
-export class ModifyCard extends DomainAction<UserModifiesCardDataRequest> {
+export class ModifyUser extends DomainRoute<UserModifiesUserDataRequest> {
     constructor() {
-        super('put', '/:id', new UserModifiesCardDataUseCase())
+        super('put', '/:id', new UserModifiesUserDataUseCase())
         this.setHttpStatusCode(DomainErrorCode.NO_ERROR, HttpStatusCode.NO_CONTENT)
     }
 

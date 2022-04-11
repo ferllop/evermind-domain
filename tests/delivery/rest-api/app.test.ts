@@ -1,6 +1,6 @@
 import {TestableApp} from './TestableApp.js'
-import {Action} from '../../../src/delivery/rest-api/actions/Action.js'
-import {ActionResult} from '../../../src/delivery/rest-api/actions/ActionResult.js'
+import {Route} from '../../../src/delivery/rest-api/routes/Route.js'
+import {RouteResult} from '../../../src/delivery/rest-api/routes/RouteResult.js'
 import {Router} from '../../../src/delivery/rest-api/routers/Router.js'
 import {assert, suite} from '../../test-config.js'
 
@@ -10,7 +10,7 @@ type Context = {
 
 const app = suite<Context>("App")
 
-class FoundAction extends Action {
+class FoundAction extends Route {
     constructor(){
         super('get', '/existing')
     }
@@ -19,7 +19,7 @@ class FoundAction extends Action {
         return {}
     }
 
-    override execute(): Promise<ActionResult> {
+    override execute(): Promise<RouteResult> {
         return Promise.resolve({statusCode: 200, data: {message: 'Found'}})
     }
 }
