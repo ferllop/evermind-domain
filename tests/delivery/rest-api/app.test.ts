@@ -2,7 +2,6 @@ import {TestableApp} from './TestableApp.js'
 import {Action} from '../../../src/delivery/rest-api/actions/Action.js'
 import {ActionResult} from '../../../src/delivery/rest-api/actions/ActionResult.js'
 import {Router} from '../../../src/delivery/rest-api/routers/Router.js'
-import {HttpMethod} from '../../../src/delivery/rest-api/http/HttpMethod.js'
 import {assert, suite} from '../../test-config.js'
 
 type Context = {
@@ -12,11 +11,8 @@ type Context = {
 const app = suite<Context>("App")
 
 class FoundAction extends Action {
-    protected readonly HTTP_METHOD: HttpMethod = 'get'
-    protected readonly PATH: string = '/existing'
-
     constructor(){
-        super()
+        super('get', '/existing')
     }
 
     extractInputDataFromRequest(): {  } {

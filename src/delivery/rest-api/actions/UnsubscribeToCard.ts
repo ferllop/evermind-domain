@@ -6,11 +6,8 @@ import {UserUnsubscribesFromCardUseCase} from '../../../use-cases/UserUnsubscrib
 import {UserUnsubscribesFromCardRequest} from '../../../use-cases/UserUnsubscribesFromCardRequest.js'
 
 export class UnsubscribeToCard extends DomainAction<UserUnsubscribesFromCardRequest> {
-    protected readonly HTTP_METHOD = 'delete'
-    protected readonly PATH = '/:userId/cards/:cardId'
-
     constructor() {
-        super(new UserUnsubscribesFromCardUseCase())
+        super('delete', '/:userId/cards/:cardId', new UserUnsubscribesFromCardUseCase())
         this.setHttpStatusCode(DomainErrorCode.NO_ERROR, HttpStatusCode.NO_CONTENT)
     }
 

@@ -6,11 +6,8 @@ import {UserTransfersCardUseCase} from '../../../use-cases/UserTransfersCardUseC
 import {UserTransfersCardRequest} from '../../../use-cases/UserTransfersCardRequest.js'
 
 export class TransferCard extends DomainAction<UserTransfersCardRequest> {
-    protected readonly HTTP_METHOD = 'post'
-    protected readonly PATH = '/:cardId/transfer/:userId'
-
     constructor() {
-        super(new UserTransfersCardUseCase())
+        super('post', '/:cardId/transfer/:userId', new UserTransfersCardUseCase())
         this.setHttpStatusCode(DomainErrorCode.NO_ERROR, HttpStatusCode.NO_CONTENT)
     }
 

@@ -6,11 +6,8 @@ import {UserRemovesAccountRequest} from '../../../use-cases/UserRemovesAccountRe
 import {UserRemovesAccountUseCase} from '../../../use-cases/UserRemovesAccountUseCase.js'
 
 export class RemoveUserAccount extends DomainAction<UserRemovesAccountRequest> {
-    protected readonly HTTP_METHOD = 'delete'
-    protected readonly PATH = '/:userId'
-
     constructor() {
-        super(new UserRemovesAccountUseCase())
+        super('delete', '/:userId', new UserRemovesAccountUseCase())
         this.setHttpStatusCode(DomainErrorCode.NO_ERROR, HttpStatusCode.NO_CONTENT)
     }
 

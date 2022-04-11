@@ -11,11 +11,8 @@ export class NotFoundRouter extends Router {
 
 }
 class NotFoundAction extends Action {
-    protected override readonly PATH = '/'
-    protected override readonly HTTP_METHOD = 'all'
-
     constructor(){
-        super()
+        super('all', '/')
     }
 
     override execute(): Promise<ActionResult> {

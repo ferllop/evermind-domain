@@ -4,11 +4,8 @@ import {UserGetsUserInfoUseCase} from '../../../use-cases/UserGetsUserInfoUseCas
 import {UserGetsUserInfoRequest} from '../../../use-cases/UserGetsUserInfoRequest.js'
 
 export class GetUser extends DomainAction<UserGetsUserInfoRequest> {
-    protected readonly HTTP_METHOD = 'get'
-    protected readonly PATH = '/:userId'
-
     constructor() {
-        super(new UserGetsUserInfoUseCase())
+        super('get', '/:userId', new UserGetsUserInfoUseCase())
     }
 
     extractInputDataFromRequest(request: ExpressRequest) {

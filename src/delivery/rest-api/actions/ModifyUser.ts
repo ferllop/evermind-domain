@@ -6,11 +6,8 @@ import {UserModifiesUserDataRequest} from '../../../use-cases/UserModifiesUserDa
 import {UserModifiesUserDataUseCase} from '../../../use-cases/UserModifiesUserDataUseCase.js'
 
 export class ModifyUser extends DomainAction<UserModifiesUserDataRequest> {
-    protected readonly HTTP_METHOD = 'put'
-    protected readonly PATH = '/:id'
-
     constructor() {
-        super(new UserModifiesUserDataUseCase())
+        super('put', '/:id', new UserModifiesUserDataUseCase())
         this.setHttpStatusCode(DomainErrorCode.NO_ERROR, HttpStatusCode.NO_CONTENT)
     }
 

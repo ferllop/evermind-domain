@@ -4,11 +4,8 @@ import {UserGetsUserSubscriptionsRequest} from '../../../use-cases/UserGetsUserS
 import {UserGetsUserSubscriptionsUseCase} from '../../../use-cases/UserGetsUserSubscriptionsUseCase.js'
 
 export class GetUserSubscriptions extends DomainAction<UserGetsUserSubscriptionsRequest> {
-    protected readonly HTTP_METHOD = 'get'
-    protected readonly PATH = '/:userId/subscriptions'
-
     constructor() {
-        super(new UserGetsUserSubscriptionsUseCase())
+        super('get', '/:userId/subscriptions',  new UserGetsUserSubscriptionsUseCase())
     }
 
     extractInputDataFromRequest(request: ExpressRequest) {

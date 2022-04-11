@@ -7,10 +7,11 @@ import {UseCase} from '../../../use-cases/UseCase.js'
 
 export abstract class DomainAction<R extends Request> extends Action {
 
-    protected abstract override readonly HTTP_METHOD: HttpMethod
-
-    protected constructor(protected useCase: UseCase<Record<string, any>, unknown>) {
-        super()
+    protected constructor(
+        httpMethod: HttpMethod,
+        path: string,
+        protected useCase: UseCase<Record<string, any>, unknown>) {
+        super(httpMethod, path)
     }
 
     async execute(request: ExpressRequest): Promise<ActionResult> {

@@ -6,11 +6,8 @@ import {UserModifiesCardDataUseCase} from '../../../use-cases/UserModifiesCardDa
 import {UserModifiesCardDataRequest} from '../../../use-cases/UserModifiesCardDataRequest.js'
 
 export class ModifyCard extends DomainAction<UserModifiesCardDataRequest> {
-    protected readonly HTTP_METHOD = 'put'
-    protected readonly PATH = '/:id'
-
     constructor() {
-        super(new UserModifiesCardDataUseCase())
+        super('put', '/:id', new UserModifiesCardDataUseCase())
         this.setHttpStatusCode(DomainErrorCode.NO_ERROR, HttpStatusCode.NO_CONTENT)
     }
 

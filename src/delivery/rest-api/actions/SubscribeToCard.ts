@@ -6,11 +6,8 @@ import {DomainErrorCode} from '../../../domain/errors/DomainErrorCode.js'
 import {UserSubscribesToCardRequest} from '../../../use-cases/UserSubscribesToCardRequest.js'
 
 export class SubscribeToCard extends DomainAction<UserSubscribesToCardRequest> {
-    protected readonly HTTP_METHOD = 'post'
-    protected readonly PATH = '/:userId/cards/:cardId'
-
     constructor() {
-        super(new UserSubscribesToCardUseCase())
+        super('post', '/:userId/cards/:cardId', new UserSubscribesToCardUseCase())
         this.setHttpStatusCode(DomainErrorCode.NO_ERROR, HttpStatusCode.CREATED)
     }
 

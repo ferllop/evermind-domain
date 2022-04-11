@@ -6,11 +6,8 @@ import {UserSignsUpUseCase} from '../../../use-cases/UserSignsUpUseCase.js'
 import {UserSignsUpRequest} from '../../../use-cases/UserSignsUpRequest.js'
 
 export class SignUp extends DomainAction<UserSignsUpRequest> {
-    protected readonly HTTP_METHOD = 'post'
-    protected readonly PATH = '/'
-
     constructor() {
-        super(new UserSignsUpUseCase())
+        super('post', '/', new UserSignsUpUseCase())
         this.setHttpStatusCode(DomainErrorCode.NO_ERROR, HttpStatusCode.CREATED)
     }
 

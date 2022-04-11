@@ -6,11 +6,8 @@ import {UserRemovesCardRequest} from '../../../use-cases/UserRemovesCardRequest.
 import {UserRemovesCardUseCase} from '../../../use-cases/UserRemovesCardUseCase.js'
 
 export class DeleteCard extends DomainAction<UserRemovesCardRequest> {
-    protected readonly HTTP_METHOD = 'delete'
-    protected readonly PATH = '/:id'
-
     constructor() {
-        super(new UserRemovesCardUseCase())
+        super('delete', '/:id', new UserRemovesCardUseCase())
         this.setHttpStatusCode(DomainErrorCode.NO_ERROR, HttpStatusCode.NO_CONTENT)
     }
 

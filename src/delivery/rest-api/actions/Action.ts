@@ -7,12 +7,15 @@ import {HttpStatusCode} from '../http/HttpStatusCode.js'
 import {DomainErrorCode} from '../../../domain/errors/DomainErrorCode.js'
 
 export abstract class Action {
-    protected abstract readonly PATH: string
-    protected abstract readonly HTTP_METHOD: HttpMethod
     private statusCodeMapper: StatusCodeMapper = new StatusCodeMapper()
 
+    protected constructor(
+        protected readonly httpMethod: HttpMethod,
+        protected readonly path: string) {
+    }
+
     register(router: Router) {
-        router[this.HTTP_METHOD](this.PATH, this)
+        router[this.httpMethod](this.path, this)
     }
 
     getHttpStatusCode(domainErrorCode: DomainErrorCode){
