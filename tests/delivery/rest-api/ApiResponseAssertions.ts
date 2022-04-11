@@ -1,7 +1,7 @@
-import {DomainError} from '../../../../src/domain/errors/DomainError.js'
-import {assert} from '../../../test-config.js'
+import {DomainError} from '../../../src/domain/errors/DomainError.js'
+import {assert} from '../../test-config.js'
 import request from 'supertest'
-import {Response, Response as DomainResponse} from '../../../../src/use-cases/Response.js'
+import {Response, Response as DomainResponse} from '../../../src/use-cases/Response.js'
 
 export class ApiAssertions {
     constructor(private response: request.Response) {}

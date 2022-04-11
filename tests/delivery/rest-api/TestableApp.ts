@@ -1,6 +1,6 @@
 import request, {Test} from 'supertest'
 import {App} from '../../../src/delivery/rest-api/app.js'
-import {ApiAssertions} from './routers/ApiResponseAssertions.js'
+import {ApiAssertions} from './ApiResponseAssertions.js'
 
 export class TestableApp extends App {
 
