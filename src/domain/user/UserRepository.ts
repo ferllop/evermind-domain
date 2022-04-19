@@ -7,6 +7,7 @@ import {UserPermissions} from '../authorization/permission/UserPermissions.js'
 import {UserAuthorization} from '../authorization/permission/UserAuthorization.js'
 import {RemoveUserAccount} from '../authorization/permission/permissions/RemoveUserAccount.js'
 import {GetDataFromOtherUser} from '../authorization/permission/permissions/GetDataFromOtherUser.js'
+import {Email} from './Email.js'
 
 export class UserRepository {
 
@@ -47,4 +48,7 @@ export class UserRepository {
         return ! user.isNull()
     }
 
+    async findByEmail(email: Email) {
+        return this.dao.findByEmail(email)
+    }
 }

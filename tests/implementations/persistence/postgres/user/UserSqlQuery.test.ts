@@ -11,6 +11,7 @@ import {UserIdentification} from '../../../../../src/domain/user/UserIdentificat
 import {givenAnExistingUser} from './UserScenario.js'
 import {Username} from '../../../../../src/domain/user/Username.js'
 import {cleanDatabase} from '../PostgresTestHelper.js'
+import {Email} from '../../../../../src/domain/user/Email.js'
 
 const userSqlQuery = suite('User Sql Query')
 
@@ -18,17 +19,19 @@ userSqlQuery.before.each(async () => await cleanDatabase())
 
 userSqlQuery('should provide the correct insert query', async () => {
     const user = new UserBuilder().build()
-    const {id, name, username, dayStartTime} = user.toDto()
+    const {id, name, username, email, dayStartTime} = user.toDto()
 
     const sut = new UserSqlQuery().insert(user)
 
     const expectedQuery = `INSERT INTO users(id,
                                              name,
                                              username,
+                                             email,
                                              day_start_time)
                            VALUES ('${id}',
                                    '${name}',
                                    '${username}',
+                                   '${email}',
                                    ${dayStartTime})`
     assertQueriesAreEqual(sut, expectedQuery)
 })
@@ -70,6 +73,7 @@ userSqlQuery('should provide the correct user update query', async () => {
     const expectedQuery = `UPDATE users
                            SET name           = '${user.getName().getValue()}',
                                username       = '${user.getUsername().getValue()}',
+                               email          = '${user.getEmail().getValue()}',
                                day_start_time = ${user.getDayStartTime().getValue()}
                            WHERE id = '${user.getId().getId()}'`
     assertQueriesAreEqual(sut, expectedQuery)
@@ -81,6 +85,7 @@ userSqlQuery('should provide a working user update query', async () => {
         ...user.toDto(),
         name: 'updated name',
         username: 'updated username',
+        email: 'other@email.org'
     })
 
     const sut = new UserSqlQuery().update(updatedUser)
@@ -93,7 +98,7 @@ userSqlQuery('should provide a working user update query', async () => {
 userSqlQuery('should send the proper query to find a user by id', async () => {
     const userId = UserIdentification.create()
     const sut = new UserSqlQuery().selectUserById(userId)
-    const expectedQuery = `SELECT id, name, username, day_start_time
+    const expectedQuery = `SELECT id, name, username, email, day_start_time
                            FROM users
                            WHERE id = '${userId.getId()}'`
     assertQueriesAreEqual(sut, expectedQuery)
@@ -113,7 +118,7 @@ userSqlQuery('should send a working query to find a user by id', async () => {
 userSqlQuery('should send the proper query to find a user by username', async () => {
     const username = new Username('the-username')
     const sut = new UserSqlQuery().selectUserByUsername(username)
-    const expectedQuery = `SELECT id, name, username, day_start_time
+    const expectedQuery = `SELECT id, name, username, email, day_start_time
                            FROM users
                            WHERE username = '${username.getValue()}'`
     assertQueriesAreEqual(sut, expectedQuery)
@@ -123,6 +128,26 @@ userSqlQuery('should send a working query to find a user by username', async () 
     const user = await givenAnExistingUser()
 
     const sut = new UserSqlQuery().selectUserByUsername(user.getUsername())
+
+    const foundUser = await new UserPostgresDatastore().query(sut)
+
+    assert.equal(foundUser.rowCount, 1)
+    assertAllRowsAreEqualToUsers(foundUser.rows, [user])
+})
+
+userSqlQuery('should send the proper query to find a user by email', async () => {
+    const email = new Email('theemail@email.org')
+    const sut = new UserSqlQuery().selectUserByEmail(email)
+    const expectedQuery = `SELECT id, name, username, email, day_start_time
+                           FROM users
+                           WHERE email = '${email.getValue()}'`
+    assertQueriesAreEqual(sut, expectedQuery)
+})
+
+userSqlQuery('should send a working query to find a user by email', async () => {
+    const user = await givenAnExistingUser()
+
+    const sut = new UserSqlQuery().selectUserByEmail(user.getEmail())
 
     const foundUser = await new UserPostgresDatastore().query(sut)
 

@@ -8,6 +8,7 @@ import {NullUser} from '../../../domain/user/NullUser.js'
 import {Username} from '../../../domain/user/Username.js'
 import {UserNotFoundError} from '../../../domain/errors/UserNotFoundError.js'
 import {DataFromStorageNotValidError} from '../../../domain/errors/DataFromStorageNotValidError.js'
+import {Email} from '../../../domain/user/Email.js'
 
 export class UserInMemoryDao implements UserDao {
 
@@ -74,6 +75,22 @@ export class UserInMemoryDao implements UserDao {
         if (!deleted) {
             throw new UserNotFoundError()
         }
+    }
+
+    async findByEmail(email: Email): Promise<User> {
+        if (!await this.datastore.hasTable(this.tableName)) {
+            return this.getNull()
+        }
+
+        const criteria = (user: UserDto) => {
+            return user.email === email.getValue()
+        }
+        const result = await this.datastore.findOne(this.tableName, criteria)
+
+        if (!result) {
+            return this.getNull()
+        }
+        return this.userFactory.fromDto(result)
     }
 
     getNull() {

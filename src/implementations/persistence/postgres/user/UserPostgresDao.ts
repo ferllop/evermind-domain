@@ -11,6 +11,7 @@ import {PostgresDatastoreError} from '../PostgresDatastoreError.js'
 import {UserAlreadyExistsError} from '../../../../domain/errors/UserAlreadyExistsError.js'
 import {UserNotFoundError} from '../../../../domain/errors/UserNotFoundError.js'
 import {DataFromStorageNotValidError} from '../../../../domain/errors/DataFromStorageNotValidError.js'
+import {Email} from '../../../../domain/user/Email.js'
 
 export class UserPostgresDao implements UserDao {
 
@@ -69,6 +70,13 @@ export class UserPostgresDao implements UserDao {
         const query = this.sqlQuery.selectUserByUsername(username)
         return this.findOne(query)
     }
+
+    findByEmail(email: Email): Promise<User> {
+        const query = this.sqlQuery.selectUserByEmail(email)
+        return this.findOne(query)
+    }
+
+
 
 
 

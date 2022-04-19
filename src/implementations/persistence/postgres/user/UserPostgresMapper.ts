@@ -8,6 +8,7 @@ export class UserPostgresMapper {
         id: 'id',
         name: 'name',
         username: 'username',
+        email: 'email',
         day_start_time: 'dayStartTime',
     }
 

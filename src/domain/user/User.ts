@@ -10,12 +10,20 @@ import {precondition} from '../../implementations/preconditions.js'
 import {NullSubscription} from '../subscription/NullSubscription.js'
 import {Authorization} from '../authorization/Authorization.js'
 import {UnsubscribeFromCard} from '../authorization/permission/permissions/UnsubscribeFromCard.js'
+import {Email} from './Email.js'
+import {UserDto} from './UserDto.js'
 
 export class User extends Entity {
 
     subscriptions: Subscription[] | null
 
-    protected constructor(private name: PersonName, private username: Username, private dayStartTime: DayStartTime, id: UserIdentification) {
+    protected constructor(
+        private name: PersonName,
+        private username: Username,
+        private email: Email,
+        private dayStartTime: DayStartTime,
+        id: UserIdentification
+    ) {
         super(id)
         this.subscriptions = null
     }
@@ -26,6 +34,10 @@ export class User extends Entity {
 
     getUsername() {
         return this.username
+    }
+
+    getEmail() {
+        return this.email
     }
 
     getDayStartTime() {
@@ -85,11 +97,12 @@ export class User extends Entity {
         return this.subscriptions === null ? 0 : this.subscriptions.length
     }
 
-    toDto() {
+    toDto(): UserDto {
         return {
             id: this.getId().getId(),
             name: this.getName().toString(),
             username: this.getUsername().toString(),
+            email: this.email.getValue(),
             dayStartTime: this.getDayStartTime().getValue(),
         }
     }

@@ -6,6 +6,7 @@ import {UserSignsUpRequest} from './UserSignsUpRequest.js'
 import {UserDto} from '../domain/user/UserDto.js'
 import {MayBeWithAuthorizationUseCase} from './MayBeWithAuthorizationUseCase.js'
 import {CreateUserCommand} from '../domain/user/CreateUserCommand.js'
+import {Email} from '../domain/user/Email.js'
 
 export class UserSignsUpUseCase extends MayBeWithAuthorizationUseCase<UserSignsUpRequest, UserDto> {
 
@@ -15,10 +16,11 @@ export class UserSignsUpUseCase extends MayBeWithAuthorizationUseCase<UserSignsU
 
     protected async internalExecute(request: UserSignsUpRequest) {
         const authorization = await this.getAuthorization()
-        const user = await new CreateUserCommand(authorization)
-            .create(PersonName.create(request.name), Username.create(request.username))
+        const user = await new CreateUserCommand(authorization).create(
+            PersonName.create(request.name),
+            Username.create(request.username),
+            new Email(request.email))
         await new UserRepository().add(user)
-
         return Response.OkWithData(user.toDto())
     }
 

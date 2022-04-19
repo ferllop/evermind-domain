@@ -4,10 +4,11 @@ import {CardDto, UserCreatesCardRequest, UserModifiesCardDataRequest} from '../.
 import {CardRouter} from '../../../../src/delivery/rest-api/routers/CardRouter.js'
 import {
     givenACleanInMemoryDatabase,
-    givenAStoredCardFromUser, givenAStoredUser,
+    givenAStoredCard,
+    givenAStoredCardFromUser,
+    givenAStoredUser,
     givenAStoredUserWithPermissions,
 } from '../../../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
-import {givenAnExistingCard} from '../../../implementations/persistence/postgres/card/CardScenario.js'
 import {RequiredRequestFieldIsMissingError} from '../../../../src/domain/errors/RequiredRequestFieldIsMissingError.js'
 import {
     assertCardIsNotStored,
@@ -26,7 +27,7 @@ cardRouter.before.each(async context => {
     context.app = new TestableApp(new CardRouter())
 })
 
-cardRouter('given a user with permissions,' +
+cardRouter('given a user with permissions, ' +
     'when creating a card ' +
     'should return card and 201 http response', async ({app}) => {
     const user = await givenAStoredUserWithPermissions(['CREATE_OWN_CARD'])
@@ -43,9 +44,9 @@ cardRouter('given a user with permissions,' +
 })
 
 cardRouter('given a request with missing requesterId field ' +
-    'when creating a card' +
+    'when creating a card ' +
     'should return an RequiredRequestFieldIsMissingError with 400 http response', async ({app}) => {
-    const card = await givenAnExistingCard()
+    const card = await givenAStoredCard()
     await app.post('/cards', {...card})
     app.assert()
         .hasStatusCode(400)
