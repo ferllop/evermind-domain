@@ -45,6 +45,7 @@
   "dependencies": {
     "express": "4.17.3",
     "in-memory-database": "github:ferllop/in-memory-typescript-database#semver:1.x.x",
+    "jsonwebtoken": "8.5.1",
     "node-postgres": "0.6.2",
     "pg": "8.7.1",
     "pg-format": "1.0.4",
