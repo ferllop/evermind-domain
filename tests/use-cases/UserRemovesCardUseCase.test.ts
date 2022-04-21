@@ -38,7 +38,7 @@ userRemovesCardUseCase(
     'it should return an object with data property as null and ' +
     'error property as CARD_NOT_FOUND DomainError', async () => {
         const requester = await givenAStoredUserWithPermissions(['DELETE_OWN_CARD'])
-        const unexistingCard = new CardBuilder().withAuthorId(requester.id).build().toDto()
+        const unexistingCard = new CardBuilder().withAuthorId(requester.id).buildDto()
         const result = await new UserRemovesCardUseCase().execute({
             requesterId: requester.id,
             id: unexistingCard.id,

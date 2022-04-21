@@ -65,4 +65,8 @@ export class SubscriptionBuilder {
         return subscriptionFactory.recreate(
             this.id, this.userId, this.cardId, this.level, this.lastReview)
     }
+
+    buildDto() {
+        return this.build().toDto()
+    }
 }

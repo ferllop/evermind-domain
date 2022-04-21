@@ -79,7 +79,7 @@ userSearchesForCards('having 0 coincident cards, when searching by author, then 
 })
 
 userSearchesForCards('having 1 coincident cards, when searching by author, then return a Result with with a one element array  as data and null as error', async () => {
-    const user = new UserBuilder().setId('real-id').setUsername('real-username').build().toDto()
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
     await givenTheStoredUser(user)
     const cardToBeFound = new CardBuilder().withAuthorId(user.id).buildDto()
     await givenTheStoredCard(cardToBeFound)
@@ -91,7 +91,7 @@ userSearchesForCards('having 1 coincident cards, when searching by author, then 
 })
 
 userSearchesForCards('having 0 coincident cards, when searching by author and label, then return a Result with an empty array as data and null as error', async () => {
-    const user = new UserBuilder().setId('real-id').setUsername('real-username').build().toDto()
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
     await givenXStoredCards(3)
     await givenAStoredCardFromUser(user)
     const result = await new UserSearchesForCardsUseCase().execute({
@@ -104,7 +104,7 @@ userSearchesForCards('having 1 coincident cards, when searching by author and la
     const user = new UserBuilder()
         .setId('real-id')
         .setUsername('real-username')
-        .build().toDto()
+        .buildDto()
     await givenTheStoredUser(user)
 
     await givenXStoredCards(3)
@@ -122,7 +122,7 @@ userSearchesForCards('given 1 coincident private cards, ' +
     'when a user with permissions to get private cards from others, searches by author, ' +
     'then return a Result with with a one item array as data and null as error', async () => {
     const requester = await givenAStoredUserWithPermissions(['GET_PRIVATE_CARD_FROM_OTHER'])
-    const user = new UserBuilder().setUsername('the-username').build().toDto()
+    const user = new UserBuilder().setUsername('the-username').buildDto()
     await givenTheStoredUser(user)
     const card = await givenAStoredPrivateCardFromUser(user)
     const result = await new UserSearchesForCardsUseCase().execute({
@@ -151,7 +151,7 @@ userSearchesForCards('given 2 private cards and 2 public cards from the same aut
     'when a user with permissions to get private cards from others, searches by author, ' +
     'then return a Result with with a the four cards array as data and null as error', async () => {
     const requester = await givenAStoredUserWithPermissions(['GET_PRIVATE_CARD_FROM_OTHER'])
-    const user = new UserBuilder().setId('real-id').setUsername('real-username').build().toDto()
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
     await givenTheStoredUser(user)
     const privateCard1 = await givenAStoredPrivateCardFromUser(user)
     const publicCard1 = await givenAStoredCardFromUser(user)
@@ -169,7 +169,7 @@ userSearchesForCards('given 2 private cards and 2 public cards from the same aut
     'when a user without permissions to get private cards from others, searches by author, ' +
     'then return a Result with with a the two public cards array as data and null as error', async () => {
     const requester = await givenAStoredUserWithPermissions([])
-    const user = new UserBuilder().setId('real-id').setUsername('real-username').build().toDto()
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
     await givenTheStoredUser(user)
     await givenAStoredPrivateCardFromUser(user)
     const publicCard1 = await givenAStoredCardFromUser(user)
@@ -187,7 +187,7 @@ userSearchesForCards('given 1 coincident private cards, ' +
     'when a user without permissions to get private cards from others, searches by author, ' +
     'then return a Result with with an empty array as data and null as error', async () => {
     const requester = await givenAStoredUserWithPermissions([])
-    const user = new UserBuilder().setId('real-id').setUsername('real-username').build().toDto()
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
     await givenTheStoredUser(user)
     await givenAStoredPrivateCardFromUser(user)
     const result = await new UserSearchesForCardsUseCase().execute({
@@ -200,7 +200,7 @@ userSearchesForCards('given 1 coincident private cards, ' +
 userSearchesForCards('given 1 coincident private cards, ' +
     'when an anonymous user, searches by author, ' +
     'then return a Result empty array as data and null as error', async () => {
-    const user = new UserBuilder().setId('real-id').setUsername('real-username').build().toDto()
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
     await givenTheStoredUser(user)
     await givenAStoredPrivateCardFromUser(user)
     const result = await new UserSearchesForCardsUseCase().execute({
@@ -212,7 +212,7 @@ userSearchesForCards('given 1 coincident private cards, ' +
 userSearchesForCards('given 1 coincident private card and 2 public cards, ' +
     'when an anonymous user, searches by author, ' +
     'then return a Result with the public cards as array data and null as error', async () => {
-    const user = new UserBuilder().setUsername('real-username').build().toDto()
+    const user = new UserBuilder().setUsername('real-username').buildDto()
     await givenTheStoredUser(user)
     const cardToFind1 = await givenAStoredCardFromUser(user)
     await givenAStoredPrivateCardFromUser(user)

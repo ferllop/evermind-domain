@@ -52,7 +52,7 @@ export async function givenAStoredUserWithPermissions(Permissions: PermissionVal
 }
 
 export async function givenAStoredUser() {
-    const user = new UserBuilder().build().toDto()
+    const user = new UserBuilder().buildDto()
     return await givenTheStoredUser(user)
 }
 
@@ -75,7 +75,7 @@ export async function givenAStoredCard() {
 
 export async function givenASubscription(user: UserDto, card: CardDto) {
     const subscription = new SubscriptionBuilder()
-        .setUserId(user.id).setCardId(card.id).build().toDto()
+        .setUserId(user.id).setCardId(card.id).buildDto()
     await datastore.create(subscriptionsTable, subscription)
     return subscription
 }

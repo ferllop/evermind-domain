@@ -62,7 +62,7 @@ userSubscribesToCard(
             .setId(subscription.data!.id)
             .setCardId(cardId)
             .setUserId(userId)
-            .setLastReview(new Date(subscription.data!.lastReview)).build().toDto()
+            .setLastReview(new Date(subscription.data!.lastReview)).buildDto()
         assert.equal(subscription.data, expectedSubscription)
     })
 
