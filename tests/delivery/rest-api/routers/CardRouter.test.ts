@@ -31,8 +31,8 @@ cardRouter('given a user with permissions, ' +
     'when creating a card ' +
     'should return card and 201 http response', async ({app}) => {
     const user = await givenAStoredUserWithPermissions(['CREATE_OWN_CARD'])
-    const {id, ...card} = new CardBuilder().setAuthorId(user.getId()).buildDto()
-    const request: UserCreatesCardRequest = {...card, requesterId: user.getId().getId()}
+    const {id, ...card} = new CardBuilder().withAuthorId(user.id).buildDto()
+    const request: UserCreatesCardRequest = {...card, requesterId: user.id}
     const result = await app.post('/cards', request)
     const expectedCard: CardDto = {
         id: result.body.domain.data.id,
@@ -69,7 +69,7 @@ cardRouter('when modifying a card should modify the card return empty and 204 ht
     const card = await givenAStoredCardFromUser(user)
     const modifiedCard: CardDto = {...card, question: 'different question'}
     const request: UserModifiesCardDataRequest = {
-        requesterId: user.getId().getId(),
+        requesterId: user.id,
         ...modifiedCard,
     }
     await app.put('/cards/' + card.id, request)
@@ -82,7 +82,7 @@ cardRouter('when modifying a card should modify the card return empty and 204 ht
 cardRouter('when deleting a card should delete the card return empty and 204 http response', async ({app}) => {
     const user = await givenAStoredUserWithPermissions(['DELETE_OWN_CARD'])
     const card = await givenAStoredCardFromUser(user)
-    await app.delete('/cards/' + card.id, {requesterId: user.getId().getId()})
+    await app.delete('/cards/' + card.id, {requesterId: user.id})
     app.assert()
         .hasStatusCode(204)
         .hasEmptyData()
@@ -95,11 +95,11 @@ cardRouter('given a user with permissions, ' +
     const user = await givenAStoredUserWithPermissions(['TRANSFER_OWN_CARD'])
     const card = await givenAStoredCardFromUser(user)
     const receivingUser = await givenAStoredUser()
-    await app.post(`/cards/${card.id}/transfer/${receivingUser.getId().getId()}`, {requesterId: user.getId().getId()})
+    await app.post(`/cards/${card.id}/transfer/${receivingUser.id}`, {requesterId: user.id})
     app.assert()
         .hasStatusCode(204)
         .hasEmptyData()
-    await assertCardIsStored({...card, authorId: receivingUser.getId().getId()})
+    await assertCardIsStored({...card, authorId: receivingUser.id})
 })
 
 cardRouter.run()

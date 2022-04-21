@@ -23,11 +23,11 @@ userCreatesCardUseCase(
         const {id, authorId, ...card} = new CardBuilder().buildDto()
         const request = {
             ...card,
-            authorId: user.getId().getId(),
-            requesterId: user.getId().getId(),
+            authorId: user.id,
+            requesterId: user.id,
         }
         const result = await new UserCreatesCardUseCase().execute(request)
-        const expectedCard = {...card, authorId: user.getId().getId(), id: result.data!.id}
+        const expectedCard = {...card, authorId: user.id, id: result.data!.id}
         assert.equal(result,
             Response.OkWithData(expectedCard))
     })
@@ -42,13 +42,13 @@ userCreatesCardUseCase(
 
         await new UserCreatesCardUseCase().execute({
             ...unidentifiedCard,
-            authorId: user.getId().getId(),
-            requesterId: user.getId().getId(),
+            authorId: user.id,
+            requesterId: user.id,
         })
 
         await assertUserHasStoredACard({
             ...card,
-            authorId: user.getId().getId()
+            authorId: user.id
         })
     })
 
@@ -60,8 +60,8 @@ userCreatesCardUseCase(
         const {id, authorId, ...card} = new CardBuilder().buildDto()
         const request = {
             ...card,
-            authorId: user.getId().getId(),
-            requesterId: user.getId().getId(),
+            authorId: user.id,
+            requesterId: user.id,
         }
         const result = await new UserCreatesCardUseCase().execute(request)
         assert.equal(result,
@@ -76,7 +76,7 @@ userCreatesCardUseCase(
         const {id, authorId, ...card} = new CardBuilder().buildDto()
         const request = {
             ...card,
-            authorId: user.getId().getId(),
+            authorId: user.id,
             requesterId: UserIdentification.create().getId(),
         }
         const result = await new UserCreatesCardUseCase().execute(request)

@@ -26,8 +26,8 @@ useCase(
         const subscription2 = await givenASubscription(requester, card2)
 
         const request = {
-            requesterId: requester.getId().getId(),
-            userId: requester.getId().getId(),
+            requesterId: requester.id,
+            userId: requester.id,
         }
         const result = await new UserGetsUserSubscriptionsUseCase().execute(request)
         assert.equal(result, Response.OkWithData([subscription1, subscription2]))
@@ -45,8 +45,8 @@ useCase(
         const subscription2 = await givenASubscription(user, card2)
 
         const request = {
-            requesterId: requester.getId().getId(),
-            userId: user.getId().getId(),
+            requesterId: requester.id,
+            userId: user.id,
         }
         const result = await new UserGetsUserSubscriptionsUseCase().execute(request)
         assert.equal(result, Response.OkWithData([subscription1, subscription2]))
@@ -57,8 +57,8 @@ useCase(
     'should return an object with an empty array as data and no error as error', async () => {
         const requester = await givenAStoredUserWithPermissions(['READ_OWN_SUBSCRIPTIONS'])
         const request = {
-            requesterId: requester.getId().getId(),
-            userId: requester.getId().getId(),
+            requesterId: requester.id,
+            userId: requester.id,
         }
         const result = await new UserGetsUserSubscriptionsUseCase().execute(request)
         assert.equal(result, Response.OkWithData([]))
@@ -70,7 +70,7 @@ useCase(
     'and UserNotFound DomainError', async () => {
         const requester = await givenAStoredUserWithPermissions(['READ_SUBSCRIPTIONS_FROM_ANOTHER'])
         const request = {
-            requesterId: requester.getId().getId(),
+            requesterId: requester.id,
             userId: 'nonExistingId',
         }
         const result = await new UserGetsUserSubscriptionsUseCase().execute(request)
@@ -83,7 +83,7 @@ useCase(
     'error property as INPUT_DATA_NOT_VALID DomainError', async () => {
         const requester = await givenAStoredUserWithPermissions(['READ_SUBSCRIPTIONS_FROM_ANOTHER'])
         const invalidRequest = {
-            requesterId: requester.getId().getId(),
+            requesterId: requester.id,
             userId: '',
         }
         const result = await new UserGetsUserSubscriptionsUseCase().execute(invalidRequest)

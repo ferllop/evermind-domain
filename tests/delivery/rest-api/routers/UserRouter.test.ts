@@ -44,16 +44,16 @@ userRouter('should return user when post a user and 201 http response', async ({
 
 userRouter('when getting by its id should return user and 200 http response', async ({app}) => {
     const user = await givenAStoredUser()
-    await app.get('/users/' + user.getId().getId(), {requesterId: user.getId().getId()})
+    await app.get('/users/' + user.id, {requesterId: user.id})
     app.assert()
         .hasStatusCode(200)
         .domain()
-        .hasData(user.toDto())
+        .hasData(user)
 })
 
 userRouter('when modifying a user should modify user return empty and 204 http response', async ({app}) => {
     const user = await givenAStoredUserWithPermissions(['UPDATE_OWN_PRIVATE_DATA'])
-    const {id, ...createdUser} = user.toDto()
+    const {id, ...createdUser} = user
     const renamedUser = {...createdUser, name: 'Carla'}
     await app.put('/users/' + id, {requesterId: id, ...renamedUser})
     app.assert()
@@ -64,7 +64,7 @@ userRouter('when modifying a user should modify user return empty and 204 http r
 
 userRouter('when modifying an incomplete user return null and 400 http response and user remains unmodified', async ({app}) => {
     const user = await givenAStoredUserWithPermissions(['UPDATE_OWN_PRIVATE_DATA'])
-    const {id, ...createdUser} = user.toDto()
+    const {id, ...createdUser} = user
     const renamedToCarla = {name: 'Carla'}
     await app.put('/users/' + id, renamedToCarla)
     app.assert()
@@ -74,20 +74,20 @@ userRouter('when modifying an incomplete user return null and 400 http response 
 
 userRouter('when deleting a user should delete the user return empty and 204 http response', async ({app}) => {
     const user = await givenAStoredUserWithPermissions(['REMOVE_OWN_ACCOUNT'])
-    await app.delete('/users/' + user.getId().getId(), {requesterId: user.getId().getId()})
+    await app.delete('/users/' + user.id, {requesterId: user.id})
     app.assert()
         .hasStatusCode(204)
         .hasEmptyData()
-    await assertUserIsNotStored(user.toDto())
+    await assertUserIsNotStored(user)
 })
 
 userRouter('when subscribing a user to a card should get the subscription data and 201 http response', async ({app}) => {
     const user = await givenAStoredUserWithPermissions(['SUBSCRIBE_ITSELF_TO_CARD'])
     const {id: cardId} = await givenAStoredCardFromUser(user)
-    const result = await app.post('/users/' + user.getId().getId() + '/cards/' + cardId, {requesterId: user.getId().getId()})
+    const result = await app.post('/users/' + user.id + '/cards/' + cardId, {requesterId: user.id})
     const expectedSubscription = {
         id: result.body.domain.data.id,
-        userId: user.getId().getId(),
+        userId: user.id,
         cardId,
         level: 0,
         lastReview: result.body.domain.data.lastReview,
@@ -96,19 +96,19 @@ userRouter('when subscribing a user to a card should get the subscription data a
         .hasStatusCode(201)
         .domain()
             .hasData(expectedSubscription)
-    await assertSubscriptionIsStored(user.getId().getId(), cardId)
+    await assertSubscriptionIsStored(user.id, cardId)
 })
 
 userRouter('when unsubscribing a user from a card should get empty array and 204 http response', async ({app}) => {
     const user = await givenAStoredUserWithPermissions(['UNSUBSCRIBE_ITSELF_FROM_CARD'])
     const card = await givenAStoredCardFromUser(user)
     await givenASubscription(user, card)
-    await app.post('/users/' + user.getId().getId() + '/cards/' + card.id)
-    await app.delete('/users/' + user.getId().getId() + '/cards/' + card.id, {requesterId: user.getId().getId()})
+    await app.post('/users/' + user.id + '/cards/' + card.id)
+    await app.delete('/users/' + user.id + '/cards/' + card.id, {requesterId: user.id})
     app.assert()
         .hasStatusCode(204)
         .hasEmptyData()
-    await assertSubscriptionIsNotStored(user.getId().getId(), user.getId().getId())
+    await assertSubscriptionIsNotStored(user.id, user.id)
 })
 
 userRouter('given a user with subscriptions, ' +
@@ -117,7 +117,7 @@ userRouter('given a user with subscriptions, ' +
     const user = await givenAStoredUserWithPermissions(['READ_OWN_SUBSCRIPTIONS'])
     const subscription1 = await givenAStoredSubscriptionFromUser(user)
     const subscription2 = await givenAStoredSubscriptionFromUser(user)
-    await app.get(`/users/${(user.getId().getId())}/subscriptions`, {requesterId: user.getId().getId()})
+    await app.get(`/users/${(user.id)}/subscriptions`, {requesterId: user.id})
     app.assert()
         .hasStatusCode(200)
         .domain()

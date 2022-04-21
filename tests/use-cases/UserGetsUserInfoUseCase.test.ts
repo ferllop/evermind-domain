@@ -20,7 +20,7 @@ userGetsUserInfoUseCase(
     'error property as INPUT_DATA_NOT_VALID DomainError', async () => {
         const requester = await givenAStoredUser()
         const invalidRequest = {
-            requesterId: requester.getId().getId(),
+            requesterId: requester.id,
             userId: '',
         }
         const result = await new UserGetsUserInfoUseCase().execute(invalidRequest)
@@ -33,7 +33,7 @@ userGetsUserInfoUseCase(
     'and USER_NOT_FOUND DomainError', async () => {
         const requester = await givenAStoredUserWithPermissions(['GET_DATA_FROM_OTHER_USER'])
         const request = {
-            requesterId: requester.getId().getId(),
+            requesterId: requester.id,
             userId: 'nonExistingId',
         }
         const result = await new UserGetsUserInfoUseCase().execute(request)
@@ -60,11 +60,11 @@ userGetsUserInfoUseCase(
         const requester = await givenAStoredUserWithPermissions(['GET_DATA_FROM_OTHER_USER'])
         const user = await givenAStoredUser()
         const request = {
-            requesterId: requester.getId().getId(),
-            userId: user.getId().getId(),
+            requesterId: requester.id,
+            userId: user.id,
         }
         const result = await new UserGetsUserInfoUseCase().execute(request)
-        assert.equal(result, Response.OkWithData(user.toDto()))
+        assert.equal(result, Response.OkWithData(user))
     })
 
 userGetsUserInfoUseCase.run()

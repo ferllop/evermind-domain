@@ -7,7 +7,7 @@ import {PermissionRepository} from '../../../../src/domain/authorization/permiss
 import {PermissionValue} from '../../../../src/domain/authorization/permission/PermissionValue.js'
 import {RequesterDto} from '../../../../src/use-cases/RequesterDto.js'
 import {SubscriptionBuilder} from '../../../domain/subscription/SubscriptionBuilder.js'
-import {StoredUser} from '../../../../src/domain/user/StoredUser.js'
+import {UserDto} from '../../../../src/index.js'
 
 const datastore = new InMemoryDatastore()
 const usersTable = 'users'
@@ -24,7 +24,7 @@ export async function givenACleanInMemoryDatabase() {
 
 async function givenAnEmptyUsersTable() {
     const user = await givenAStoredUser()
-    await datastore.delete(usersTable, user.getId().getId())
+    await datastore.delete(usersTable, user.id)
     return user
 }
 
@@ -34,14 +34,15 @@ async function givenAnEmptyCardsTable() {
     return card
 }
 
-async function givenAnEmptySubscriptionsTable(user: StoredUser, card: CardDto) {
+async function givenAnEmptySubscriptionsTable(user: UserDto, card: CardDto) {
     const subscription = await givenASubscription(user, card)
     await datastore.delete(subscriptionsTable, subscription.id)
     return subscription
 }
 
-export async function givenTheStoredUser(user: StoredUser) {
-    await datastore.create(usersTable, user.toDto())
+export async function givenTheStoredUser(user: UserDto) {
+    await datastore.create(usersTable, user)
+    return user
 }
 
 export async function givenAStoredUserWithPermissions(Permissions: PermissionValue[]) {
@@ -51,14 +52,13 @@ export async function givenAStoredUserWithPermissions(Permissions: PermissionVal
 }
 
 export async function givenAStoredUser() {
-    const user = new UserBuilder().build()
-    await givenTheStoredUser(user)
-    return user
+    const user = new UserBuilder().build().toDto()
+    return await givenTheStoredUser(user)
 }
 
-export async function givenTheStoredUserPermissions(user: StoredUser, ...permissionValues: PermissionValue[]) {
+export async function givenTheStoredUserPermissions(user: UserDto, ...permissionValues: PermissionValue[]) {
     for await (const permissionValue of permissionValues) {
-        const permission = {userId: user.getId().getId(), value: permissionValue}
+        const permission = {userId: user.id, value: permissionValue}
         await new PermissionRepository().add(permission)
     }
     return user
@@ -73,13 +73,14 @@ export async function givenAStoredCard() {
     return await givenTheStoredCard(new CardBuilder().buildDto())
 }
 
-export async function givenASubscription(user: StoredUser, card: CardDto) {
-    const subscription = new SubscriptionBuilder().setUserId(user.getId().getId()).setCardId(card.id).build().toDto()
+export async function givenASubscription(user: UserDto, card: CardDto) {
+    const subscription = new SubscriptionBuilder()
+        .setUserId(user.id).setCardId(card.id).build().toDto()
     await datastore.create(subscriptionsTable, subscription)
     return subscription
 }
 
-export async function givenAStoredSubscriptionFromUser(user: StoredUser) {
+export async function givenAStoredSubscriptionFromUser(user: UserDto) {
     const card = await givenAStoredCard()
     return givenASubscription(user, card)
 }
@@ -93,8 +94,8 @@ export async function givenXStoredCards(quantity: number) {
     return cards
 }
 
-export async function givenAStoredCardFromUser(user: StoredUser) {
-    const card = new CardBuilder().setAuthorId(user.getId()).buildDto()
+export async function givenAStoredCardFromUser(user: UserDto) {
+    const card = new CardBuilder().withAuthorId(user.id).buildDto()
     await givenTheStoredCard(card)
     return card
 }
@@ -111,9 +112,9 @@ export async function givenAStoredPrivateCardWithLabels(...labels: string[]) {
     return card
 }
 
-export async function givenAStoredPrivateCardFromUser(user: StoredUser) {
+export async function givenAStoredPrivateCardFromUser(user: UserDto) {
     const card = new CardBuilder()
-        .withVisibility('PRIVATE').withAuthorId(user.getId().getId()).buildDto()
+        .withVisibility('PRIVATE').withAuthorId(user.id).buildDto()
     await givenTheStoredCard(card)
     return card
 }

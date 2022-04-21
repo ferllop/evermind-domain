@@ -26,8 +26,8 @@ userSubscribesToCard('given a user subscribed to a card, ' +
     const card = await givenAStoredCard()
     await givenASubscription(user, card)
     const request = {
-        requesterId: user.getId().getId(),
-        userId: user.getId().getId(),
+        requesterId: user.id,
+        userId: user.id,
         cardId: card.id,
     }
     const result = await new UserSubscribesToCardUseCase().execute(request)
@@ -40,28 +40,28 @@ userSubscribesToCard(
         const user = await givenAStoredUserWithPermissions(['SUBSCRIBE_ITSELF_TO_CARD'])
         const {id: cardId} = await givenAStoredCard()
         await new UserSubscribesToCardUseCase().execute({
-            requesterId: user.getId().getId(),
-            userId: user.getId().getId(),
+            requesterId: user.id,
+            userId: user.id,
             cardId,
         })
-        await assertSubscriptionHasCertainLevel(user.getId().getId(), cardId, 0)
+        await assertSubscriptionHasCertainLevel(user.id, cardId, 0)
     })
 
 userSubscribesToCard(
     'given an existing user id and an existing card id, ' +
     'then return the subscription dto', async () => {
-        const user = await givenAStoredUserWithPermissions(['SUBSCRIBE_ITSELF_TO_CARD'])
+        const {id: userId} = await givenAStoredUserWithPermissions(['SUBSCRIBE_ITSELF_TO_CARD'])
         const {id: cardId} = await givenAStoredCard()
-        await assertSubscriptionIsNotStored(user.getId().getId(), cardId)
+        await assertSubscriptionIsNotStored(userId, cardId)
         const subscription = await new UserSubscribesToCardUseCase().execute({
-            requesterId: user.getId().getId(),
-            userId: user.getId().getId(),
+            requesterId: userId,
+            userId: userId,
             cardId,
         })
         const expectedSubscription = new SubscriptionBuilder()
             .setId(subscription.data!.id)
             .setCardId(cardId)
-            .withUserId(user.getId())
+            .setUserId(userId)
             .setLastReview(new Date(subscription.data!.lastReview)).build().toDto()
         assert.equal(subscription.data, expectedSubscription)
     })
@@ -73,15 +73,15 @@ userSubscribesToCard(
         const requester = await givenAStoredUserWithPermissions([])
         const card = await givenAStoredCard()
         const result = await new UserSubscribesToCardUseCase().execute({
-            requesterId: requester.getId().getId(),
-            userId: requester.getId().getId(),
+            requesterId: requester.id,
+            userId: requester.id,
             cardId: card.id,
         })
         assert.equal(
             result,
             Response.withDomainError(
                 new UserIsNotAuthorizedError(['SUBSCRIBE_ITSELF_TO_CARD'])))
-        await assertSubscriptionIsNotStored(requester.getId().getId(), card.id)
+        await assertSubscriptionIsNotStored(requester.id, card.id)
     })
 
 userSubscribesToCard(
@@ -92,11 +92,11 @@ userSubscribesToCard(
         const user = await givenAStoredUser()
         const card = await givenAStoredCard()
         await new UserSubscribesToCardUseCase().execute({
-            requesterId: requester.getId().getId(),
-            userId: user.getId().getId(),
+            requesterId: requester.id,
+            userId: user.id,
             cardId: card.id,
         })
-        await assertSubscriptionIsStored(user.getId().getId(), card.id)
+        await assertSubscriptionIsStored(user.id, card.id)
     })
 
 userSubscribesToCard(
@@ -107,15 +107,15 @@ userSubscribesToCard(
         const user = await givenAStoredUser()
         const card = await givenAStoredCard()
         const result = await new UserSubscribesToCardUseCase().execute({
-            requesterId: requester.getId().getId(),
-            userId: user.getId().getId(),
+            requesterId: requester.id,
+            userId: user.id,
             cardId: card.id,
         })
         assert.equal(
             result,
             Response.withDomainError(
                 new UserIsNotAuthorizedError(['SUBSCRIBE_OTHER_TO_CARD'])))
-        await assertSubscriptionIsNotStored(user.getId().getId(), card.id)
+        await assertSubscriptionIsNotStored(user.id, card.id)
     })
 
 userSubscribesToCard('given a non existing user id and an existing card id, then the subscription is not done and return a USER_NOT_FOUND error', async () => {
@@ -132,9 +132,9 @@ userSubscribesToCard(
     'then the subscription is not done and return a CARD_NOT_FOUND error', async () => {
         const user = await givenAStoredUser()
         const cardId = 'non-existent-card-id'
-        const subscription = withAnyRequester({userId: user.getId().getId(), cardId})
+        const subscription = withAnyRequester({userId: user.id, cardId})
         const result = await new UserSubscribesToCardUseCase().execute(subscription)
-        await assertSubscriptionIsNotStored(user.getId().getId(), cardId)
+        await assertSubscriptionIsNotStored(user.id, cardId)
         assert.equal(result.error, new CardNotFoundError().toDto())
     })
 

@@ -3,7 +3,8 @@ import {Response} from '../../src/use-cases/Response.js'
 import {
     givenACleanInMemoryDatabase,
     givenAStoredCard,
-    givenAStoredUser, givenAStoredUserWithPermissions,
+    givenAStoredUser,
+    givenAStoredUserWithPermissions,
     givenASubscription,
     withAnyRequester,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
@@ -16,8 +17,6 @@ import {UserNotFoundError} from '../../src/domain/errors/UserNotFoundError.js'
 import {CardNotFoundError} from '../../src/domain/errors/CardNotFoundError.js'
 import {UserBuilder} from '../domain/user/UserBuilder.js'
 import {UserIsNotAuthorizedError} from '../../src/domain/errors/UserIsNotAuthorizedError.js'
-import {Identification} from '../../src/domain/shared/value/Identification.js'
-import {StoredUser} from '../../src/domain/user/StoredUser.js'
 import {UserUnsubscribesFromCardUseCase} from '../../src/index.js'
 
 const userUnsubscribesFromCard = suite("User unsubscribes from card")
@@ -33,14 +32,14 @@ userUnsubscribesFromCard(
     const user = await givenAStoredUserWithPermissions(['UNSUBSCRIBE_ITSELF_FROM_CARD'])
     const card = await givenAStoredCard()
     await givenASubscription(user, card)
-    await assertSubscriptionIsStored(user.getId().getId(), card.id)
+    await assertSubscriptionIsStored(user.id, card.id)
     const request = {
-        requesterId: user.getId().getId(),
-        userId: user.getId().getId(),
+        requesterId: user.id,
+        userId: user.id,
         cardId: card.id
     }
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
-    await assertSubscriptionIsNotStored(user.getId().getId(), card.id)
+    await assertSubscriptionIsNotStored(user.id, card.id)
     assert.equal(result, Response.OkWithoutData())
 })
 
@@ -51,8 +50,8 @@ userUnsubscribesFromCard('given a previous unsubscription, ' +
     const card = await givenAStoredCard()
     await givenASubscription(user, card)
     const request = {
-        requesterId: user.getId().getId(),
-        userId: user.getId().getId(),
+        requesterId: user.id,
+        userId: user.id,
         cardId: card.id,
     }
     await new UserUnsubscribesFromCardUseCase().execute(request)
@@ -64,8 +63,8 @@ userUnsubscribesFromCard('given an existing user id not subscribed to an existin
     const user = await givenAStoredUserWithPermissions(['UNSUBSCRIBE_ITSELF_FROM_CARD'])
     const card = await givenAStoredCard()
     const request = {
-        requesterId: user.getId().getId(),
-        userId: user.getId().getId(),
+        requesterId: user.id,
+        userId: user.id,
         cardId: card.id,
     }
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
@@ -80,8 +79,8 @@ userUnsubscribesFromCard(
     const card = await givenAStoredCard()
     await givenASubscription(user, card)
     const request = {
-        requesterId: user.getId().getId(),
-        userId: user.getId().getId(),
+        requesterId: user.id,
+        userId: user.id,
         cardId: card.id,
     }
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
@@ -98,8 +97,8 @@ userUnsubscribesFromCard(
     const card = await givenAStoredCard()
     await givenASubscription(user, card)
     const request = {
-        requesterId: requester.getId().getId(),
-        userId: user.getId().getId(),
+        requesterId: requester.id,
+        userId: user.id,
         cardId: card.id,
     }
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
@@ -108,11 +107,11 @@ userUnsubscribesFromCard(
 })
 
 userUnsubscribesFromCard('given a non existing userid, then return a USER_NOT_FOUND', async () => {
-    const nonStoredUser = new StoredUser(new UserBuilder().build(), Identification.create())
+    const nonStoredUser = new UserBuilder().buildDto()
     const card = await givenAStoredCard()
     await givenASubscription(nonStoredUser, card)
     const request = withAnyRequester({
-        userId: nonStoredUser.getId().getId(),
+        userId: nonStoredUser.id,
         cardId: card.id,
     })
     const result = await new UserUnsubscribesFromCardUseCase().execute(request)
@@ -122,7 +121,7 @@ userUnsubscribesFromCard('given a non existing userid, then return a USER_NOT_FO
 userUnsubscribesFromCard('given a non existing card id, then return a CARD_NOT_FOUND', async () => {
     const user = await givenAStoredUser()
     const request = withAnyRequester({
-        userId: user.getId().getId(),
+        userId: user.id,
         cardId: 'non-existing-card',
     })
 

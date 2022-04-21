@@ -40,7 +40,7 @@ userSignsUpUseCase(
         const requester = await givenAStoredUserWithPermissions(['CREATE_ACCOUNT_FOR_OTHER'])
         const {id: _, ...user} = new UserBuilder().setUsername('new-username').buildDto()
         const request = {
-            requesterId: requester.getId().getId(),
+            requesterId: requester.id,
             ...user,
         }
         const result = await new UserSignsUpUseCase().execute(request)
@@ -62,7 +62,7 @@ userSignsUpUseCase(
         const requester = await givenAStoredUserWithPermissions([])
         const {id, ...user} = new UserBuilder().setUsername('the-new-username').buildDto()
         const request = {
-            requesterId: requester.getId().getId(),
+            requesterId: requester.id,
             ...user,
         }
         const result = await new UserSignsUpUseCase().execute(request)
@@ -78,18 +78,18 @@ userSignsUpUseCase(
     'when provides data to create another user with an existing username, ' +
     'an object should be returned with null data and UserAlreadyExistsError error ' +
     'and the user is not created', async () => {
-        const requester = new UserBuilder().setName('Requester').build()
+        const requester = new UserBuilder().setName('Requester').buildDto()
         await givenTheStoredUser(requester)
         await givenTheStoredUserPermissions(requester, 'CREATE_ACCOUNT_FOR_OTHER')
-        const {id, ...user} = new UserBuilder().setUsername(requester.getUsername().getValue()).buildDto()
+        const {id, ...user} = new UserBuilder().setUsername(requester.username).buildDto()
         const request = {
-            requesterId: requester.getId().getId(),
+            requesterId: requester.id,
             ...user,
         }
         const result = await new UserSignsUpUseCase().execute(request)
         const storedUser = await PersistenceFactory.getUserDao().findByUsername(new Username(user.username))
         assert.equal(result, Response.withDomainError(new UserAlreadyExistsError()))
-        assert.equal(storedUser.toDto(), requester.toDto())
+        assert.equal(storedUser.toDto(), requester)
     })
 
 userSignsUpUseCase(

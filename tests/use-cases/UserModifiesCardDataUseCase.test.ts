@@ -58,7 +58,7 @@ userModifiesCardDataUseCase(
         const result = await new UserModifiesCardDataUseCase().execute({
             ...card,
             question: 'newQuestion',
-            requesterId: requester.getId().getId(),
+            requesterId: requester.id,
         })
         const storedCard = await new InMemoryDatastore().read<CardDto>('cards', card.id)
         assert.equal(result, Response.OkWithoutData())
@@ -101,7 +101,7 @@ userModifiesCardDataUseCase(
         const user = await givenAStoredUserWithPermissions(['UPDATE_OWN_CARD'])
         const card = await givenAStoredCardFromUser(user)
         const invalidCardData = {
-            requesterId: user.getId().getId(),
+            requesterId: user.id,
             ...card,
             question: '',
         }
@@ -120,7 +120,7 @@ userModifiesCardDataUseCase(
         const card = await givenAStoredCardFromUser(user)
         const invalidLabelling = ['']
         const result = await new UserModifiesCardDataUseCase().execute({
-            requesterId: user.getId().getId(),
+            requesterId: user.id,
             ...card,
             labelling: invalidLabelling,
         })

@@ -58,7 +58,7 @@ userReadsACardUseCase(
         const user = await givenAStoredUserWithPermissions(['GET_PRIVATE_CARD_FROM_OTHER'])
         const card = await givenAStoredCard()
         const request = {
-            requesterId: user.getId().getId(),
+            requesterId: user.id,
             cardId: card.id
         }
         const result = await new UserReadsACardUseCase().execute(request)
@@ -72,7 +72,7 @@ userReadsACardUseCase(
         const user = await givenAStoredUserWithPermissions([])
         const card = await givenAStoredCardFromUser(user)
         const request = {
-            requesterId: user.getId().getId(),
+            requesterId: user.id,
             cardId: card.id
         }
         const result = await new UserReadsACardUseCase().execute(request)
