@@ -34,10 +34,10 @@ export class UserSqlQuery {
                 WHERE ${UserDatabaseMap.ID} = '${user.getId().getId()}'`
     }
 
-    delete(id: UserIdentification) {
+    delete(user: StoredUser) {
         return `DELETE
                 FROM ${UserDatabaseMap.TABLE_NAME}
-                WHERE ${UserDatabaseMap.ID} = '${id.getId()}'`
+                WHERE ${UserDatabaseMap.ID} = '${user.getId().getId()}'`
     }
 
     private selectAllUsers() {

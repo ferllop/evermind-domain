@@ -27,7 +27,7 @@ export class UserRepository {
 
     async delete(user: StoredUser, permissions: UserPermissions) {
         UserAuthorization.userWithPermissions(permissions).assertCan(RemoveUserAccount, user)
-        await this.dao.delete(user.getId())
+        await this.dao.delete(user)
     }
 
     async findById(userId: UserIdentification) {

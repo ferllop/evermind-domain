@@ -68,12 +68,8 @@ export class UserInMemoryDao implements UserDao {
         }
     }
 
-    async delete(id: UserIdentification) {
-        if (!await this.datastore.hasTable(this.tableName)) {
-            throw new UserNotFoundError()
-        }
-
-        const deleted = await this.datastore.delete(this.tableName, id.getId())
+    async delete(user: StoredUser) {
+        const deleted = await this.datastore.delete(this.tableName, user.getId().getId())
         if (!deleted) {
             throw new UserNotFoundError()
         }

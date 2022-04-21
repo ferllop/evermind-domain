@@ -45,7 +45,7 @@ userDao('should throw a USER_NOT_FOUND error when deleting a non-existing user',
     const noDeletedUsersResult = new QueryResultBuilder<UserRow>().withRowCount(deletedUsersCount).build()
     mock.returnResult(noDeletedUsersResult)
     try {
-        await sut.delete(UserIdentification.create())
+        await sut.delete(new UserBuilder().build())
         assert.unreachable()
     } catch (error) {
         if (error instanceof DomainError) {

@@ -47,18 +47,18 @@ userSqlQuery('should provide a working insert user query', async () => {
     assertAllRowsAreEqualToUsers(storedUsers.rows, [user])
 })
 
-userSqlQuery('should provide the correct query to delete the provided card', async () => {
-    const id = UserIdentification.create()
-    const sut = new UserSqlQuery().delete(id)
+userSqlQuery('should provide the correct query to delete the provided user', async () => {
+    const user = new UserBuilder().build()
+    const sut = new UserSqlQuery().delete(user)
     const expectedQuery = `DELETE
                            FROM users
-                           WHERE id = '${id.getId()}'`
+                           WHERE id = '${user.getId().getId()}'`
     assertQueriesAreEqual(sut, expectedQuery)
 })
 
 userSqlQuery('should provide a working delete user query', async () => {
     const user = await givenAnExistingUser()
-    const sut = new UserSqlQuery().delete(user.getId())
+    const sut = new UserSqlQuery().delete(user)
     const getStoredUsers = async () => new UserPostgresDatastore().query('SELECT * FROM users')
     assert.equal((await getStoredUsers()).rowCount, 1, 'User exists')
     await new UserPostgresDatastore().query(sut)

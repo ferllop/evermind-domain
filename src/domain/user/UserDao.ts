@@ -6,7 +6,7 @@ import {StoredUser} from './StoredUser.js'
 export interface UserDao {
     insert(user: User): Promise<StoredUser>
 
-    delete(id: UserIdentification): Promise<void>
+    delete(id: StoredUser): Promise<void>
 
     update(user: StoredUser): Promise<void>
 

@@ -36,8 +36,8 @@ export class UserPostgresDao implements UserDao {
         }
     }
 
-    async delete(id: UserIdentification) {
-        const query = this.sqlQuery.delete(id)
+    async delete(user: StoredUser) {
+        const query = this.sqlQuery.delete(user)
         const result = await this.datastore.query(query)
         if (result.rowCount === 0) {
             throw new UserNotFoundError()
