@@ -27,9 +27,9 @@ export class SubscriptionSqlQuery {
                                                                   ${SubscriptionDatabaseMap.CARD_ID},
                                                                   ${SubscriptionDatabaseMap.LEVEL},
                                                                   ${SubscriptionDatabaseMap.LAST_REVIEW})
-                VALUES ('${subscription.getId().getId()}',
-                        '${subscription.getUserId().getId()}',
-                        '${subscription.getCardId().getId()}',
+                VALUES ('${subscription.getId().getValue()}',
+                        '${subscription.getUserId().getValue()}',
+                        '${subscription.getCardId().getValue()}',
                         ${subscription.getLevel().getValue()},
                         '${subscription.getLastReview().toDtoFormat()}')`
     }
@@ -38,21 +38,21 @@ export class SubscriptionSqlQuery {
         return `UPDATE ${SubscriptionDatabaseMap.TABLE_NAME}
                 SET ${SubscriptionDatabaseMap.LEVEL}       = ${subscription.getLevel().getOrdinal()},
                     ${SubscriptionDatabaseMap.LAST_REVIEW} = '${subscription.getLastReview().toDtoFormat()}'
-                WHERE ${SubscriptionDatabaseMap.ID} = '${subscription.getId().getId()}'`
+                WHERE ${SubscriptionDatabaseMap.ID} = '${subscription.getId().getValue()}'`
     }
 
     delete(id: SubscriptionIdentification) {
         return `DELETE
                 FROM ${SubscriptionDatabaseMap.TABLE_NAME}
-                WHERE ${SubscriptionDatabaseMap.ID} = '${id.getId()}'`
+                WHERE ${SubscriptionDatabaseMap.ID} = '${id.getValue()}'`
     }
 
     findById(id: SubscriptionIdentification) {
-        return `${this.selectAllSubscriptions()} WHERE id = '${id.getId()}'`
+        return `${this.selectAllSubscriptions()} WHERE id = '${id.getValue()}'`
     }
 
     findByUserId(id: UserIdentification) {
-        return `${this.selectAllSubscriptions()} WHERE user_id = '${id.getId()}'`
+        return `${this.selectAllSubscriptions()} WHERE user_id = '${id.getValue()}'`
     }
 
     private selectAllSubscriptions() {

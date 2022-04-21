@@ -77,7 +77,7 @@ userCreatesCardUseCase(
         const request = {
             ...card,
             authorId: user.id,
-            requesterId: UserIdentification.create().getId(),
+            requesterId: UserIdentification.create().getValue(),
         }
         const result = await new UserCreatesCardUseCase().execute(request)
         assert.equal(result,

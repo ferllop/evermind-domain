@@ -52,7 +52,7 @@ userSqlQuery('should provide the correct query to delete the provided user', asy
     const sut = new UserSqlQuery().delete(user)
     const expectedQuery = `DELETE
                            FROM users
-                           WHERE id = '${user.getId().getId()}'`
+                           WHERE id = '${user.getId().getValue()}'`
     assertQueriesAreEqual(sut, expectedQuery)
 })
 
@@ -73,7 +73,7 @@ userSqlQuery('should provide the correct user update query', async () => {
                            SET name           = '${user.getName().getValue()}',
                                username       = '${user.getUsername().getValue()}',
                                day_start_time = ${user.getDayStartTime().getValue()}
-                           WHERE id = '${entity.getId().getId()}'`
+                           WHERE id = '${entity.getId().getValue()}'`
     assertQueriesAreEqual(sut, expectedQuery)
 })
 
@@ -97,7 +97,7 @@ userSqlQuery('should send the proper query to find a user by id', async () => {
     const sut = new UserSqlQuery().selectUserById(userId)
     const expectedQuery = `SELECT id, name, username, day_start_time
                            FROM users
-                           WHERE id = '${userId.getId()}'`
+                           WHERE id = '${userId.getValue()}'`
     assertQueriesAreEqual(sut, expectedQuery)
 })
 

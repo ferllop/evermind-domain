@@ -10,7 +10,7 @@ export class StoredUser extends User {
     override toDto(): UserDto {
         return {
             ...super.toDto(),
-            id: this.getId().getId(),
+            id: this.getId().getValue(),
         }
     }
 

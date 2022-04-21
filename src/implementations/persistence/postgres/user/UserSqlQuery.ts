@@ -20,7 +20,7 @@ export class UserSqlQuery {
                                                           ${UserDatabaseMap.NAME},
                                                           ${UserDatabaseMap.USERNAME},
                                                           ${UserDatabaseMap.DAY_START_TIME})
-                VALUES ('${user.getId().getId()}',
+                VALUES ('${user.getId().getValue()}',
                         '${user.getName().getValue()}',
                         '${user.getUsername().getValue()}',
                         ${user.getDayStartTime().getValue()})`
@@ -31,13 +31,13 @@ export class UserSqlQuery {
                 SET ${UserDatabaseMap.NAME}           = '${user.getName().getValue()}',
                     ${UserDatabaseMap.USERNAME}       = '${user.getUsername().getValue()}',
                     ${UserDatabaseMap.DAY_START_TIME} = ${user.getDayStartTime().getValue()}
-                WHERE ${UserDatabaseMap.ID} = '${user.getId().getId()}'`
+                WHERE ${UserDatabaseMap.ID} = '${user.getId().getValue()}'`
     }
 
     delete(user: StoredUser) {
         return `DELETE
                 FROM ${UserDatabaseMap.TABLE_NAME}
-                WHERE ${UserDatabaseMap.ID} = '${user.getId().getId()}'`
+                WHERE ${UserDatabaseMap.ID} = '${user.getId().getValue()}'`
     }
 
     private selectAllUsers() {
@@ -49,7 +49,7 @@ export class UserSqlQuery {
     }
 
     selectUserById(id: UserIdentification) {
-        return `${this.selectAllUsers()} WHERE ${UserDatabaseMap.ID} = '${id.getId()}'`
+        return `${this.selectAllUsers()} WHERE ${UserDatabaseMap.ID} = '${id.getValue()}'`
     }
 
     selectUserByUsername(username: Username) {

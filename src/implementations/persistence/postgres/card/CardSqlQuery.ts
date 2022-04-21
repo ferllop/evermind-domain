@@ -43,7 +43,7 @@ export class CardSqlQuery {
     delete(id: CardIdentification) {
         return `DELETE
                 FROM ${CardDatabaseMap.TABLE_NAME}
-                WHERE ${CardDatabaseMap.ID} = '${id.getId()}'`
+                WHERE ${CardDatabaseMap.ID} = '${id.getValue()}'`
     }
 
     private getInsertLabellingQuery(cardId: Id, labelling: string[]) {
@@ -68,11 +68,11 @@ export class CardSqlQuery {
     }
 
     selectCardById(id: CardIdentification) {
-        return `${this.selectAllCards()} WHERE ${CardDatabaseMap.ID} = '${id.getId()}'`
+        return `${this.selectAllCards()} WHERE ${CardDatabaseMap.ID} = '${id.getValue()}'`
     }
 
     selectCardByAuthorId(id: AuthorIdentification) {
-        return `${this.selectAllCards()} WHERE ${CardDatabaseMap.AUTHOR} = '${id.getId()}'`
+        return `${this.selectAllCards()} WHERE ${CardDatabaseMap.AUTHOR} = '${id.getValue()}'`
     }
 
     selectCardByLabelling(labelling: Labelling) {

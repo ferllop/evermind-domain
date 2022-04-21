@@ -93,7 +93,7 @@ userRemovesAccountUseCase(
         const requester = await givenAStoredUserWithPermissions(['REMOVE_ACCOUNT_FROM_OTHER'])
         const request = {
             requesterId: requester.id,
-            userId: UserIdentification.create().getId(),
+            userId: UserIdentification.create().getValue(),
         }
         const result = await new UserRemovesAccountUseCase().execute(request)
         assert.equal(result, Response.withDomainError(new UserNotFoundError()))
@@ -104,8 +104,8 @@ userRemovesAccountUseCase(
     'it should return an object with data property as null and ' +
     'error property as USER_NOT_FOUND DomainError', async () => {
         const request = {
-            requesterId: UserIdentification.create().getId(),
-            userId: UserIdentification.create().getId(),
+            requesterId: UserIdentification.create().getValue(),
+            userId: UserIdentification.create().getValue(),
         }
         const result = await new UserRemovesAccountUseCase().execute(request)
         assert.equal(result, Response.withDomainError(new UserNotFoundError()))

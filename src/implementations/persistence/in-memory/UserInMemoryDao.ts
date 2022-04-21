@@ -34,7 +34,7 @@ export class UserInMemoryDao implements UserDao {
             return NullStoredUser.getInstance()
         }
 
-        const result = await this.datastore.read<UserDto>(this.tableName, id.getId())
+        const result = await this.datastore.read<UserDto>(this.tableName, id.getValue())
         if (!result || !this.userFactory.isDtoValid(result)) {
             return NullStoredUser.getInstance()
         }
@@ -69,7 +69,7 @@ export class UserInMemoryDao implements UserDao {
     }
 
     async delete(user: StoredUser) {
-        const deleted = await this.datastore.delete(this.tableName, user.getId().getId())
+        const deleted = await this.datastore.delete(this.tableName, user.getId().getValue())
         if (!deleted) {
             throw new UserNotFoundError()
         }

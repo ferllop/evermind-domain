@@ -80,9 +80,9 @@ export class Subscription extends Entity {
 
     toDto(): SubscriptionDto {
         return {
-            id: this.getId().getId(),
-            userId: this.getUserId().getId(),
-            cardId: this.getCardId().getId(),
+            id: this.getId().getValue(),
+            userId: this.getUserId().getValue(),
+            cardId: this.getCardId().getValue(),
             level: this.getLevel().getOrdinal(),
             lastReview: this.getLastReview().toDtoFormat()
         }

@@ -26,7 +26,7 @@ userDao.before.each(context => {
 
 userDao('should throw a USER_ALREADY_EXISTS error when inserting a user that already exists', async ({mock, sut}) => {
     mock.throwErrorWithCode(PostgresErrorType.NOT_UNIQUE_FIELD)
-    const id = UserIdentification.create().getId()
+    const id = UserIdentification.create().getValue()
     const user = new UserBuilder().setId(id).build()
     try {
         await sut.insert(user)
@@ -73,7 +73,7 @@ userDao('should throw a USER_NOT_FOUND error when updating a non-existing user',
 
 userDao('should return the found user when searching by user id', async ({mock, sut}) => {
     const userId = UserIdentification.create()
-    const user = new UserBuilder().setId(userId.getId()).build()
+    const user = new UserBuilder().setId(userId.getValue()).build()
     const resultWithFoundUser = new QueryResultBuilder<UserRow>().withRows([new UserPostgresMapperTestHelper().userToRow(user)]).withRowCount(1).build()
     mock.returnResult(resultWithFoundUser)
     const result = await sut.findById(userId)

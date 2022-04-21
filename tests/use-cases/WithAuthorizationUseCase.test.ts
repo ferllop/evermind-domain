@@ -88,7 +88,7 @@ useCase(
     'should return an object with null as data property and ' +
     'UserIsNotAuthorizedError DomainError', async () => {
         await givenAStoredUser()
-        const nonexistentRequesterId = RequesterIdentification.create().getId()
+        const nonexistentRequesterId = RequesterIdentification.create().getValue()
         const invalidRequesterRequest = {
             requesterId: nonexistentRequesterId,
             fieldA: 'someData',
@@ -104,7 +104,7 @@ useCase(
     'given a nonexistent users table, ' +
     'should return an object with null as data property and ' +
     'UserIsNotAuthorizedError DomainError', async () => {
-        const nonexistentRequesterId = RequesterIdentification.create().getId()
+        const nonexistentRequesterId = RequesterIdentification.create().getValue()
         const invalidRequesterRequest = {
             requesterId: nonexistentRequesterId,
             fieldA: 'someData',

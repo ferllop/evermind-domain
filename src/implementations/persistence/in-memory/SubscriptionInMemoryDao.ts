@@ -40,7 +40,7 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
             throw new SubscriptionNotFoundError()
         }
 
-        const deleted = await this.datastore.delete(this.tableName, id.getId())
+        const deleted = await this.datastore.delete(this.tableName, id.getValue())
         if (!deleted) {
             throw new SubscriptionNotFoundError()
         }
@@ -52,7 +52,7 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
             return NullSubscription.getInstance()
         }
 
-        const result = await this.datastore.read<SubscriptionDto>(this.tableName, id.getId())
+        const result = await this.datastore.read<SubscriptionDto>(this.tableName, id.getValue())
         if (!result || !new SubscriptionFactory(this.authorization).isDtoValid(result)) {
             return NullSubscription.getInstance()
         }
@@ -94,7 +94,7 @@ export class SubscriptionInMemoryDao implements SubscriptionDao {
 
     async findByUserId(id: UserIdentification) {
         const criteria = (subscription: SubscriptionDto) => {
-            return subscription.userId === id.getId()
+            return subscription.userId === id.getValue()
         }
         return await this.find(criteria)
     }

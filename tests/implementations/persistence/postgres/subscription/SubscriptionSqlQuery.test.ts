@@ -78,7 +78,7 @@ subscriptionSqlQuery('should provide the correct query to delete the subscriptio
     const sut = new SubscriptionSqlQuery().delete(id)
     const expectedQuery = `DELETE
                            FROM subscriptions
-                           WHERE id = '${id.getId()}'`
+                           WHERE id = '${id.getValue()}'`
     assertQueriesAreEqual(sut, expectedQuery)
 })
 
@@ -100,7 +100,7 @@ subscriptionSqlQuery('should provide the correct subscription update query', asy
     const expectedQuery = `UPDATE subscriptions
                            SET level       = 3,
                                last_review = '${subscription.getLastReview().toDtoFormat()}'
-                           WHERE id = '${subscription.getId().getId()}'`
+                           WHERE id = '${subscription.getId().getValue()}'`
     assertQueriesAreEqual(sut, expectedQuery)
 })
 
@@ -127,7 +127,7 @@ subscriptionSqlQuery('should send the proper query to find a subscription by use
                                   level,
                                   last_review
                            FROM subscriptions
-                           WHERE user_id = '${userId.getId()}'`
+                           WHERE user_id = '${userId.getValue()}'`
     assertQueriesAreEqual(sut, expectedQuery)
 })
 
@@ -153,7 +153,7 @@ subscriptionSqlQuery('should send the proper query to find a subscription by id'
                                   level,
                                   last_review
                            FROM subscriptions
-                           WHERE id = '${id.getId()}'`
+                           WHERE id = '${id.getValue()}'`
     assertQueriesAreEqual(sut, expectedQuery)
 })
 

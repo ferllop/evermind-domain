@@ -32,7 +32,7 @@ export class CardInMemoryDao implements CardDao {
         if (!await this.datastore.hasTable(this.tableName)) {
             throw new CardNotFoundError()
         }
-        const deleted = await this.datastore.delete(this.tableName, id.getId())
+        const deleted = await this.datastore.delete(this.tableName, id.getValue())
         if (!deleted) {
             throw new CardNotFoundError()
         }
@@ -43,7 +43,7 @@ export class CardInMemoryDao implements CardDao {
         if (!await this.datastore.hasTable(this.tableName)) {
             return this.getNull()
         }
-        const result = await this.datastore.read<CardDto>(this.tableName, id.getId())
+        const result = await this.datastore.read<CardDto>(this.tableName, id.getValue())
         const cardFactory = new CardFactory(this.authorization)
         if (!result || !cardFactory.isDtoValid(result)) {
             return this.getNull()

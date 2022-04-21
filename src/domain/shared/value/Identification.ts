@@ -4,10 +4,7 @@ import {InputDataNotValidError} from '../../errors/InputDataNotValidError.js'
 export class Identification {
     static NULL = new Identification('')
 
-    private readonly id: string
-
-    constructor(value: string) {
-        this.id = value
+    constructor(private readonly value: string) {
     }
     
     static create(): Identification {
@@ -23,19 +20,19 @@ export class Identification {
     }
 
     clone() {
-        return Identification.recreate(this.getId())
+        return Identification.recreate(this.getValue())
     }
 
     equals(identification: Identification): boolean {
-        return this.getId() === identification.getId()
+        return this.getValue() === identification.getValue()
     }
 
-    getId(): string {
-        return this.id
+    getValue(): string {
+        return this.value
     }
 
     isNull() {
-        return this.id.length === 0
+        return this.value.length === 0
     }
     
     static isValid(data: any): boolean {

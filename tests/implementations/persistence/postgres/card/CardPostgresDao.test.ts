@@ -31,7 +31,7 @@ cardDao.before.each(context => {
 
 cardDao('should throw a CARD_ALREADY_EXISTS error when inserting a card that already exists', async ({mock, sut}) => {
     mock.throwErrorWithCode(PostgresErrorType.NOT_UNIQUE_FIELD)
-    const id = CardIdentification.create().getId()
+    const id = CardIdentification.create().getValue()
     const card = new CardBuilder().withId(id).build()
     try {
         await sut.insert(card)
@@ -88,8 +88,8 @@ cardDao('should return the found card when searching by card id', async ({mock, 
 cardDao('should return the found cards when searching by author id', async ({mock, sut}) => {
     const authorId = AuthorIdentification.create()
     const cards: Card[] = [
-        new CardBuilder().withAuthorId(authorId.getId()).build(),
-        new CardBuilder().withAuthorId(authorId.getId()).build(),
+        new CardBuilder().withAuthorId(authorId.getValue()).build(),
+        new CardBuilder().withAuthorId(authorId.getValue()).build(),
     ]
     const resultWithFoundCards = new QueryResultBuilder<CardRow>().withRows(cards.map(new CardPostgresMapperTestHelper().cardToRow)).withRowCount(1).build()
     mock.returnResult(resultWithFoundCards)

@@ -35,7 +35,7 @@ export class PermissionSqlQuery {
     }
 
     findByUserId(userId: UserIdentification) {
-        return `${this.selectAllSubscriptions()} WHERE ${PermissionDatabaseMap.USER_ID} = '${userId.getId()}'`
+        return `${this.selectAllSubscriptions()} WHERE ${PermissionDatabaseMap.USER_ID} = '${userId.getValue()}'`
     }
 
     private selectAllSubscriptions() {

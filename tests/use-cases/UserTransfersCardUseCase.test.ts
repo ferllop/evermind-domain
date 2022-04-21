@@ -33,7 +33,7 @@ userTransfersCardUseCase(
         const result = await new UserTransfersCardUseCase().execute({
             requesterId: requester.id,
             cardId: notStoredCard.id,
-            authorId: UserIdentification.create().getId(),
+            authorId: UserIdentification.create().getValue(),
         })
         assert.equal(result, Response.withDomainError(new CardNotFoundError()))
     })
@@ -45,7 +45,7 @@ userTransfersCardUseCase(
     'USER_NOT_FOUND DomainError', async () => {
         const user = await givenAStoredUserWithPermissions(['TRANSFER_OWN_CARD'])
         const card = await givenAStoredCardFromUser(user)
-        const unexistingUser = UserIdentification.create().getId()
+        const unexistingUser = UserIdentification.create().getValue()
         const result = await new UserTransfersCardUseCase().execute({
             requesterId: user.id,
             cardId: card.id,

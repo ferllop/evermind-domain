@@ -12,7 +12,7 @@ export class UserBuilder {
     private dayStartTime: number
 
     constructor() { 
-            this.id = UserIdentification.create().getId()
+            this.id = UserIdentification.create().getValue()
             this.name = 'aName'
             this.username = 'aUsername'
             this.dayStartTime = 9

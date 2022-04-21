@@ -4,7 +4,7 @@ import {UserPostgresDao} from '../../../../../src/implementations/persistence/po
 import {User} from '../../../../../src/domain/user/User.js'
 
 export async function givenAnExistingUser() {
-    const user = new UserBuilder().setId(UserIdentification.create().getId()).build()
+    const user = new UserBuilder().setId(UserIdentification.create().getValue()).build()
     return await new UserPostgresDao().insert(user)
 }
 

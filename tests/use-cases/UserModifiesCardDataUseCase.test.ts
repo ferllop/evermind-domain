@@ -153,7 +153,7 @@ userModifiesCardDataUseCase(
         const result = await new UserModifiesCardDataUseCase().execute(
             {
                 ...card,
-                requesterId: RequesterIdentification.create().getId(),
+                requesterId: RequesterIdentification.create().getValue(),
             })
         assert.equal(
             result,

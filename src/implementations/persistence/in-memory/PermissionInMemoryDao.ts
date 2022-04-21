@@ -27,7 +27,7 @@ export class PermissionInMemoryDao implements PermissionDao {
     }
 
     async insert(permission: PermissionDto) {
-        const id = Identification.recreate(this.computeId(permission)).getId()
+        const id = Identification.recreate(this.computeId(permission)).getValue()
         const result = await this.datastore.create(this.tableName, {id, ...permission})
         if (!result) {
             throw new DataFromStorageNotValidError()
@@ -55,7 +55,7 @@ export class PermissionInMemoryDao implements PermissionDao {
         }
         const result = await this.datastore.findMany<PermissionDto & IdDto>(
             this.tableName,
-                dto => this.extractUserId(dto.id as PermissionId) === userId.getId())
+                dto => this.extractUserId(dto.id as PermissionId) === userId.getValue())
         return new UserPermissions(userId, result.map(dto => dto.value))
     }
 

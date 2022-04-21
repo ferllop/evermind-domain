@@ -28,7 +28,7 @@ export class Card extends Entity {
 
     clone(): Card {
         return new Card(
-            new AuthorIdentification(this.authorId.getId()),
+            new AuthorIdentification(this.authorId.getValue()),
             this.question.clone(),
             this.answer.clone(),
             this.labelling.clone(),
@@ -62,8 +62,8 @@ export class Card extends Entity {
 
     toDto(): CardDto{
         return {
-            id: this.getId().getId(),
-            authorId: this.authorId.getId(),
+            id: this.getId().getValue(),
+            authorId: this.authorId.getValue(),
             question: this.question.getValue() as string,
             answer: this.answer.getValue() as string,
             labelling: this.labelling.getValue(),
