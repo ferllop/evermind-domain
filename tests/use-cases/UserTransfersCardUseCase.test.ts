@@ -29,9 +29,9 @@ userTransfersCardUseCase(
     'should return an object with null as data property and ' +
     'CARD_NOT_FOUND DomainError', async () => {
         const requester = await givenAStoredUserWithPermissions(['TRANSFER_OWN_CARD'])
-        const notStoredCard = new CardBuilder().withAuthorId(requester.id).buildDto()
+        const notStoredCard = new CardBuilder().setAuthorId(requester.getId()).buildDto()
         const result = await new UserTransfersCardUseCase().execute({
-            requesterId: requester.id,
+            requesterId: requester.getId().getId(),
             cardId: notStoredCard.id,
             authorId: UserIdentification.create().getId(),
         })
@@ -47,7 +47,7 @@ userTransfersCardUseCase(
         const card = await givenAStoredCardFromUser(user)
         const unexistingUser = UserIdentification.create().getId()
         const result = await new UserTransfersCardUseCase().execute({
-            requesterId: user.id,
+            requesterId: user.getId().getId(),
             cardId: card.id,
             authorId: unexistingUser,
         })
@@ -63,13 +63,13 @@ userTransfersCardUseCase(
         const authorUser = await givenAStoredUserWithPermissions(['TRANSFER_OWN_CARD'])
         const card = await givenAStoredCardFromUser(authorUser)
         const result = await new UserTransfersCardUseCase().execute({
-            requesterId: authorUser.id,
+            requesterId: authorUser.getId().getId(),
             cardId: card.id,
-            authorId: receivingUser.id,
+            authorId: receivingUser.getId().getId(),
         })
         const storedCard = await new InMemoryDatastore().read<CardDto>('cards', card.id)
         assert.equal(result, Response.OkWithoutData())
-        assert.equal(storedCard!.authorId, receivingUser.id)
+        assert.equal(storedCard!.authorId, receivingUser.getId().getId())
     })
 
 userTransfersCardUseCase(
@@ -82,9 +82,9 @@ userTransfersCardUseCase(
         const authorUser = await givenAStoredUserWithPermissions([])
         const card = await givenAStoredCardFromUser(authorUser)
         const result = await new UserTransfersCardUseCase().execute({
-            requesterId: authorUser.id,
+            requesterId: authorUser.getId().getId(),
             cardId: card.id,
-            authorId: receivingUser.id,
+            authorId: receivingUser.getId().getId(),
         })
         const storedCard = await new InMemoryDatastore().read<CardDto>('cards', card.id)
         assert.equal(result, Response.withDomainError(new UserIsNotAuthorizedError(['TRANSFER_OWN_CARD'])))
@@ -100,13 +100,13 @@ userTransfersCardUseCase(
         const receivingUser = await givenAStoredUser()
         const card = await givenAStoredCard()
         const result = await new UserTransfersCardUseCase().execute({
-            requesterId: requesterUser.id,
+            requesterId: requesterUser.getId().getId(),
             cardId: card.id,
-            authorId: receivingUser.id,
+            authorId: receivingUser.getId().getId(),
         })
         const storedCard = await new InMemoryDatastore().read<CardDto>(CardField.TABLE_NAME, card.id)
         assert.equal(result, Response.OkWithoutData())
-        assert.equal(storedCard!.authorId, receivingUser.id)
+        assert.equal(storedCard!.authorId, receivingUser.getId().getId())
     })
 
 userTransfersCardUseCase(
@@ -119,9 +119,9 @@ userTransfersCardUseCase(
         const receivingUser = await givenAStoredUser()
         const card = await givenAStoredCard()
         const result = await new UserTransfersCardUseCase().execute({
-            requesterId: requesterUser.id,
+            requesterId: requesterUser.getId().getId(),
             cardId: card.id,
-            authorId: receivingUser.id,
+            authorId: receivingUser.getId().getId(),
         })
         const storedCard = await new InMemoryDatastore().read<CardDto>(CardField.TABLE_NAME, card.id)
         assert.equal(result, Response.withDomainError(new UserIsNotAuthorizedError(['TRANSFER_CARD_FROM_ANOTHER'])))

@@ -62,5 +62,5 @@ user.run()
 function isUserValidWith(obj: object) {
     precondition(typeof obj === 'object')
     const dto = {...new UserBuilder().buildDto(), ...obj}
-    return new UserFactory().isValid(dto.name, dto.username, dto.email, dto.dayStartTime, undefined)
+    return new UserFactory().isValid(dto.name, dto.username, dto.dayStartTime, undefined)
 }

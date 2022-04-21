@@ -3,7 +3,9 @@ import {assert, suite} from '../test-config.js'
 import {UserReadsACardUseCase} from '../../src/use-cases/UserReadsACardUseCase.js'
 import {
     givenACleanInMemoryDatabase,
-    givenAStoredCard, givenAStoredCardFromUser, givenAStoredUserWithPermissions,
+    givenAStoredCard,
+    givenAStoredCardFromUser,
+    givenAStoredUserWithPermissions,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
 import {CardNotFoundError} from '../../src/domain/errors/CardNotFoundError.js'
@@ -56,7 +58,7 @@ userReadsACardUseCase(
         const user = await givenAStoredUserWithPermissions(['GET_PRIVATE_CARD_FROM_OTHER'])
         const card = await givenAStoredCard()
         const request = {
-            requesterId: user.id,
+            requesterId: user.getId().getId(),
             cardId: card.id
         }
         const result = await new UserReadsACardUseCase().execute(request)
@@ -70,7 +72,7 @@ userReadsACardUseCase(
         const user = await givenAStoredUserWithPermissions([])
         const card = await givenAStoredCardFromUser(user)
         const request = {
-            requesterId: user.id,
+            requesterId: user.getId().getId(),
             cardId: card.id
         }
         const result = await new UserReadsACardUseCase().execute(request)

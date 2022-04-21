@@ -1,5 +1,5 @@
 import {assert, suite} from '../../../test-config.js'
-import { InMemoryDatastore } from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
+import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 
 let sutDatastore: InMemoryDatastore
 
@@ -34,7 +34,9 @@ datastoreFinder('should return an array with all the coincidences', async () => 
     await sutDatastore.create(table, dtoC)
     const result = await sutDatastore.findMany('aTable', (row: any) => row.label === 'labelA')
     assert.is(result.length, 2)
-    assert.ok(result.some(dto => dto.id === 'a') && result.some(dto => dto.id === 'b') && !result.some(dto => dto.id === 'c'))
+    assert.ok(result.some(dto => dto.id === 'a') &&
+        result.some(dto => dto.id === 'b') &&
+        !result.some(dto => dto.id === 'c'))
 })
 
 datastoreFinder.run()

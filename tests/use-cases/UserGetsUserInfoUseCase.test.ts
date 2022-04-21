@@ -3,7 +3,8 @@ import {assert, suite} from '../test-config.js'
 import {UserGetsUserInfoUseCase} from '../../src/use-cases/UserGetsUserInfoUseCase.js'
 import {
     givenACleanInMemoryDatabase,
-    givenAStoredUser, givenAStoredUserWithPermissions,
+    givenAStoredUser,
+    givenAStoredUserWithPermissions,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
 import {UserNotFoundError} from '../../src/domain/errors/UserNotFoundError.js'
@@ -19,7 +20,7 @@ userGetsUserInfoUseCase(
     'error property as INPUT_DATA_NOT_VALID DomainError', async () => {
         const requester = await givenAStoredUser()
         const invalidRequest = {
-            requesterId: requester.id,
+            requesterId: requester.getId().getId(),
             userId: '',
         }
         const result = await new UserGetsUserInfoUseCase().execute(invalidRequest)
@@ -32,7 +33,7 @@ userGetsUserInfoUseCase(
     'and USER_NOT_FOUND DomainError', async () => {
         const requester = await givenAStoredUserWithPermissions(['GET_DATA_FROM_OTHER_USER'])
         const request = {
-            requesterId: requester.id,
+            requesterId: requester.getId().getId(),
             userId: 'nonExistingId',
         }
         const result = await new UserGetsUserInfoUseCase().execute(request)
@@ -59,11 +60,11 @@ userGetsUserInfoUseCase(
         const requester = await givenAStoredUserWithPermissions(['GET_DATA_FROM_OTHER_USER'])
         const user = await givenAStoredUser()
         const request = {
-            requesterId: requester.id,
-            userId: user.id,
+            requesterId: requester.getId().getId(),
+            userId: user.getId().getId(),
         }
         const result = await new UserGetsUserInfoUseCase().execute(request)
-        assert.equal(result, Response.OkWithData(user))
+        assert.equal(result, Response.OkWithData(user.toDto()))
     })
 
 userGetsUserInfoUseCase.run()

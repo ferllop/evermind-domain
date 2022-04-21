@@ -1,6 +1,7 @@
 import {UserIdentification} from '../../user/UserIdentification.js'
 import {PermissionValue} from './PermissionValue.js'
 import {User} from '../../user/User.js'
+import {StoredUser} from '../../user/StoredUser.js'
 
 export class UserPermissions {
 
@@ -15,7 +16,7 @@ export class UserPermissions {
         return this.userId
     }
 
-    areFromUser(user: User | UserIdentification): boolean {
+    areFromUser(user: StoredUser | UserIdentification): boolean {
         return user instanceof User
             ? user.getId().equals(this.userId)
             : user.equals(this.userId)

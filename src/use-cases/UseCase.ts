@@ -28,6 +28,7 @@ export abstract class UseCase<RequestType extends Request, ResponseType> {
             if (!this.isJsonAValidRequest(request)) {
                 return Response.withDomainError(new RequiredRequestFieldIsMissingError(this.getMissingFields(request)))
             }
+
             return await this.internalExecute(request)
         } catch (error) {
             if (error instanceof DomainError) {

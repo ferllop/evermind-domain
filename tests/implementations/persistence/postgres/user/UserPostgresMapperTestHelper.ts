@@ -1,8 +1,8 @@
 import {UserPostgresMapper} from '../../../../../src/implementations/persistence/postgres/user/UserPostgresMapper.js'
-import {User} from '../../../../../src/domain/user/User.js'
+import {StoredUser} from '../../../../../src/domain/user/StoredUser.js'
 
 export class UserPostgresMapperTestHelper extends UserPostgresMapper {
-    userToRow = (user: User) => {
+    userToRow = (user: StoredUser) => {
         const {dayStartTime, ...rest} = user.toDto()
         return {
             ...rest,

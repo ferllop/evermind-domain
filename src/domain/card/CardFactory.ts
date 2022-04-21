@@ -13,7 +13,6 @@ import {Identification} from '../shared/value/Identification.js'
 import {EntityFactory} from '../shared/EntityFactory.js'
 import {InputDataNotValidError} from '../errors/InputDataNotValidError.js'
 import {Unidentified} from '../shared/value/Unidentified.js'
-import {User} from '../user/User.js'
 import {CreateCard} from '../authorization/permission/permissions/CreateCard.js'
 import {GetCard} from '../authorization/permission/permissions/GetCard.js'
 import {NullCard} from './NullCard.js'
@@ -21,6 +20,7 @@ import {UpdateCard} from '../authorization/permission/permissions/UpdateCard.js'
 import {TransferCard} from '../authorization/permission/permissions/TransferCard.js'
 import {Authorization} from '../authorization/Authorization.js'
 import {Visibility} from './Visibility.js'
+import {StoredUser} from '../user/StoredUser.js'
 
 export class CardFactory extends EntityFactory<Card, CardDto> {
     private cardConstructor = Card.prototype.constructor as { new(authorId: AuthorIdentification, question: Question, answer: Answer, labels: Labelling, visibility: Visibility, id: CardIdentification): Card }
@@ -120,7 +120,7 @@ export class CardFactory extends EntityFactory<Card, CardDto> {
         return this.fromDto(modifiedCard)
     }
 
-    transferCardToUser(card: Card, user: User) {
+    transferCardToUser(card: Card, user: StoredUser) {
     this.authorization.assertCan(TransferCard, card)
         return card.transferTo(user)
     }

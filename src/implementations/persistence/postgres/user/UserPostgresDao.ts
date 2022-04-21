@@ -1,6 +1,5 @@
 import {User} from '../../../../domain/user/User.js'
 import {UserIdentification} from '../../../../domain/user/UserIdentification.js'
-import {NullUser} from '../../../../domain/user/NullUser.js'
 import {UserSqlQuery} from './UserSqlQuery.js'
 import {UserPostgresDatastore} from './UserPostgresDatastore.js'
 import {UserPostgresMapper} from './UserPostgresMapper.js'
@@ -11,7 +10,8 @@ import {PostgresDatastoreError} from '../PostgresDatastoreError.js'
 import {UserAlreadyExistsError} from '../../../../domain/errors/UserAlreadyExistsError.js'
 import {UserNotFoundError} from '../../../../domain/errors/UserNotFoundError.js'
 import {DataFromStorageNotValidError} from '../../../../domain/errors/DataFromStorageNotValidError.js'
-import {Email} from '../../../../domain/user/Email.js'
+import {StoredUser} from '../../../../domain/user/StoredUser.js'
+import {NullStoredUser} from '../../../../domain/user/NullStoredUser.js'
 
 export class UserPostgresDao implements UserDao {
 
@@ -21,10 +21,12 @@ export class UserPostgresDao implements UserDao {
     }
 
     async insert(user: User) {
-        const query = this.sqlQuery.insert(user)
+        const entity = new StoredUser(user, UserIdentification.create())
+        const query = this.sqlQuery.insert(entity)
 
         try {
             await this.datastore.query(query)
+            return entity
         } catch (error) {
             if (error instanceof PostgresDatastoreError &&
                 error.code === PostgresErrorType.NOT_UNIQUE_FIELD) {
@@ -42,7 +44,7 @@ export class UserPostgresDao implements UserDao {
         }
     }
 
-    async update(user: User) {
+    async update(user: StoredUser) {
         const query = this.sqlQuery.update(user)
         const result = await this.datastore.query(query)
         if (result.rowCount === 0) {
@@ -50,34 +52,24 @@ export class UserPostgresDao implements UserDao {
         }
     }
 
-    private async findOne(query: string): Promise<User> {
+    private async findOne(query: string): Promise<StoredUser> {
         const result = await this.datastore.query(query)
         if (result.rowCount > 1) {
             throw new DataFromStorageNotValidError()
         }
         return result.rowCount > 0
             ? new UserPostgresMapper().rowToUser(result.rows[0])
-            : NullUser.getInstance()
+            : NullStoredUser.getInstance()
     }
 
-    async findById(id: UserIdentification): Promise<User> {
+    async findById(id: UserIdentification): Promise<StoredUser> {
         const query = this.sqlQuery.selectUserById(id)
         return this.findOne(query)
-
     }
 
-    async findByUsername(username: Username): Promise<User> {
+    async findByUsername(username: Username): Promise<StoredUser> {
         const query = this.sqlQuery.selectUserByUsername(username)
         return this.findOne(query)
     }
-
-    findByEmail(email: Email): Promise<User> {
-        const query = this.sqlQuery.selectUserByEmail(email)
-        return this.findOne(query)
-    }
-
-
-
-
 
 }

@@ -1,5 +1,4 @@
 import {Subscription} from './Subscription.js'
-import {User} from '../user/User.js'
 import {Identification} from '../shared/value/Identification.js'
 import {SubscriptionDao} from './SubscriptionDao.js'
 import {PersistenceFactory} from '../../implementations/persistence/PersistenceFactory.js'
@@ -7,6 +6,7 @@ import {UserAuthorization} from '../authorization/permission/UserAuthorization.j
 import {UserPermissions} from '../authorization/permission/UserPermissions.js'
 import {ReadSubscriptions} from '../authorization/permission/permissions/ReadSubscriptions.js'
 import {Authorization} from '../authorization/Authorization.js'
+import {StoredUser} from '../user/StoredUser.js'
 
 export class SubscriptionRepository {
 
@@ -34,11 +34,11 @@ export class SubscriptionRepository {
         return await this.dao.findById(id)
     }
 
-    async findByUserId(user: User) {
+    async findByUserId(user: StoredUser) {
         return await this.dao.findByUserId(user.getId())
     }
 
-    async getByUserId(user: User, permissions: UserPermissions) {
+    async getByUserId(user: StoredUser, permissions: UserPermissions) {
         UserAuthorization.userWithPermissions(permissions).assertCan(ReadSubscriptions, user)
         return await this.dao.findByUserId(user.getId())
     }

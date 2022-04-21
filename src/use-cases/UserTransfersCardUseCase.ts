@@ -1,4 +1,3 @@
-import {UserRepository} from '../domain/user/UserRepository.js'
 import {AuthorIdentification} from '../domain/card/AuthorIdentification.js'
 import {CardRepository} from '../domain/card/CardRepository.js'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
@@ -6,6 +5,7 @@ import {CardIdentification} from '../domain/card/CardIdentification.js'
 import {Response} from './Response.js'
 import {UserTransfersCardRequest} from './UserTransfersCardRequest.js'
 import {CardFactory} from '../domain/card/CardFactory.js'
+import {UserRepository} from '../domain/user/UserRepository.js'
 
 export class UserTransfersCardUseCase extends WithAuthorizationUseCase<UserTransfersCardRequest, null> {
     constructor() {

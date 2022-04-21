@@ -6,8 +6,8 @@ import {CardIdentification} from './CardIdentification.js'
 import {Labelling} from './Labelling.js'
 import {Question} from './Question.js'
 import {CardDto} from './CardDto.js'
-import {User} from '../user/User.js'
 import {Visibility} from './Visibility.js'
+import {StoredUser} from '../user/StoredUser.js'
 
 export class Card extends Entity {
 
@@ -49,7 +49,7 @@ export class Card extends Entity {
         return this.getId().equals(card.getId())
     }
 
-    transferTo(user: User) {
+    transferTo(user: StoredUser) {
         return new Card(
             user.getId(),
             this.question.clone(),

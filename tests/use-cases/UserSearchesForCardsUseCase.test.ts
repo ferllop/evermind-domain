@@ -79,20 +79,19 @@ userSearchesForCards('having 0 coincident cards, when searching by author, then 
 })
 
 userSearchesForCards('having 1 coincident cards, when searching by author, then return a Result with with a one element array  as data and null as error', async () => {
-    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').build()
     await givenTheStoredUser(user)
-    const cardToBeFound = new CardBuilder().withAuthorId(user.id).buildDto()
+    const cardToBeFound = new CardBuilder().withAuthorId(user.getId().getId()).buildDto()
     await givenTheStoredCard(cardToBeFound)
-
     const result = await new UserSearchesForCardsUseCase().execute({
-        query: '@' + user.username
+        query: '@' + user.getUsername().getValue()
     })
     assert.is(result.data!.length, 1)
     assert.equal(result.data![0], cardToBeFound)
 })
 
 userSearchesForCards('having 0 coincident cards, when searching by author and label, then return a Result with an empty array as data and null as error', async () => {
-    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').build()
     await givenXStoredCards(3)
     await givenAStoredCardFromUser(user)
     const result = await new UserSearchesForCardsUseCase().execute({
@@ -105,12 +104,12 @@ userSearchesForCards('having 1 coincident cards, when searching by author and la
     const user = new UserBuilder()
         .setId('real-id')
         .setUsername('real-username')
-        .buildDto()
+        .build()
     await givenTheStoredUser(user)
 
     await givenXStoredCards(3)
     const card = new CardBuilder()
-        .withAuthorId(user.id)
+        .withAuthorId(user.getId().getId())
         .withLabels(['real-label1'])
         .buildDto()
     await givenTheStoredCard(card)
@@ -123,12 +122,12 @@ userSearchesForCards('given 1 coincident private cards, ' +
     'when a user with permissions to get private cards from others, searches by author, ' +
     'then return a Result with with a one item array as data and null as error', async () => {
     const requester = await givenAStoredUserWithPermissions(['GET_PRIVATE_CARD_FROM_OTHER'])
-    const user = new UserBuilder().setUsername('the-username').buildDto()
+    const user = new UserBuilder().setUsername('the-username').build()
     await givenTheStoredUser(user)
     const card = await givenAStoredPrivateCardFromUser(user)
     const result = await new UserSearchesForCardsUseCase().execute({
-        requesterId: requester.id,
-        query: '@' + user.username
+        requesterId: requester.getId().getId(),
+        query: '@' + user.getUsername().getValue()
     })
     assert.is(result.data!.length, 1)
     assert.equal(result.data![0], card)
@@ -141,8 +140,8 @@ userSearchesForCards('given 1 private card and 1 public card from the same autho
     const privateCard = await givenAStoredPrivateCardFromUser(requester)
     const publicCard = await givenAStoredCardFromUser(requester)
     const result = await new UserSearchesForCardsUseCase().execute({
-        requesterId: requester.id,
-        query: '@' + requester.username
+        requesterId: requester.getId().getId(),
+        query: '@' + requester.getUsername().getValue()
     })
     assert.equal(result.data!, [privateCard, publicCard])
     assert.is(result.data!.length, 2)
@@ -152,15 +151,15 @@ userSearchesForCards('given 2 private cards and 2 public cards from the same aut
     'when a user with permissions to get private cards from others, searches by author, ' +
     'then return a Result with with a the four cards array as data and null as error', async () => {
     const requester = await givenAStoredUserWithPermissions(['GET_PRIVATE_CARD_FROM_OTHER'])
-    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').build()
     await givenTheStoredUser(user)
     const privateCard1 = await givenAStoredPrivateCardFromUser(user)
     const publicCard1 = await givenAStoredCardFromUser(user)
     const privateCard2 = await givenAStoredPrivateCardFromUser(user)
     const publicCard2 = await givenAStoredCardFromUser(user)
     const result = await new UserSearchesForCardsUseCase().execute({
-        requesterId: requester.id,
-        query: '@' + user.username
+        requesterId: requester.getId().getId(),
+        query: '@' + user.getUsername().getValue()
     })
     assert.is(result.data!.length, 4)
     assert.equal(result.data!, [privateCard1, publicCard1, privateCard2, publicCard2])
@@ -170,15 +169,15 @@ userSearchesForCards('given 2 private cards and 2 public cards from the same aut
     'when a user without permissions to get private cards from others, searches by author, ' +
     'then return a Result with with a the two public cards array as data and null as error', async () => {
     const requester = await givenAStoredUserWithPermissions([])
-    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').build()
     await givenTheStoredUser(user)
     await givenAStoredPrivateCardFromUser(user)
     const publicCard1 = await givenAStoredCardFromUser(user)
     await givenAStoredPrivateCardFromUser(user)
     const publicCard2 = await givenAStoredCardFromUser(user)
     const result = await new UserSearchesForCardsUseCase().execute({
-        requesterId: requester.id,
-        query: '@' + user.username
+        requesterId: requester.getId().getId(),
+        query: '@' + user.getUsername().getValue()
     })
     assert.is(result.data!.length, 2)
     assert.equal(result.data!, [publicCard1, publicCard2])
@@ -188,12 +187,12 @@ userSearchesForCards('given 1 coincident private cards, ' +
     'when a user without permissions to get private cards from others, searches by author, ' +
     'then return a Result with with an empty array as data and null as error', async () => {
     const requester = await givenAStoredUserWithPermissions([])
-    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').build()
     await givenTheStoredUser(user)
     await givenAStoredPrivateCardFromUser(user)
     const result = await new UserSearchesForCardsUseCase().execute({
-        requesterId: requester.id,
-        query: '@' + user.username
+        requesterId: requester.getId().getId(),
+        query: '@' + user.getUsername().getValue()
     })
     assert.is(result.data!.length, 0)
 })
@@ -201,11 +200,11 @@ userSearchesForCards('given 1 coincident private cards, ' +
 userSearchesForCards('given 1 coincident private cards, ' +
     'when an anonymous user, searches by author, ' +
     'then return a Result empty array as data and null as error', async () => {
-    const user = new UserBuilder().setId('real-id').setUsername('real-username').buildDto()
+    const user = new UserBuilder().setId('real-id').setUsername('real-username').build()
     await givenTheStoredUser(user)
     await givenAStoredPrivateCardFromUser(user)
     const result = await new UserSearchesForCardsUseCase().execute({
-        query: '@' + user.username
+        query: '@' + user.getUsername().getValue()
     })
     assert.is(result.data!.length, 0)
 })
@@ -213,13 +212,13 @@ userSearchesForCards('given 1 coincident private cards, ' +
 userSearchesForCards('given 1 coincident private card and 2 public cards, ' +
     'when an anonymous user, searches by author, ' +
     'then return a Result with the public cards as array data and null as error', async () => {
-    const user = new UserBuilder().setUsername('real-username').buildDto()
+    const user = new UserBuilder().setUsername('real-username').build()
     await givenTheStoredUser(user)
     const cardToFind1 = await givenAStoredCardFromUser(user)
     await givenAStoredPrivateCardFromUser(user)
     const cardToFind2 = await givenAStoredCardFromUser(user)
     const result = await new UserSearchesForCardsUseCase().execute({
-        query: '@' + user.username
+        query: '@' + user.getUsername().getValue()
     })
     assert.is(result.data!.length, 2)
     assert.equal(result.data!, [cardToFind1, cardToFind2])
@@ -235,7 +234,7 @@ userSearchesForCards('given 2 private cards and 2 public cards with the same lab
     const privateCard2 = await givenAStoredPrivateCardWithLabels(label)
     const publicCard2 = await givenAStoredCardWithLabels(label)
     const result = await new UserSearchesForCardsUseCase().execute({
-        requesterId: requester.id,
+        requesterId: requester.getId().getId(),
         query: label,
     })
     assert.equal(result.data!, [privateCard1, publicCard1, privateCard2, publicCard2])
@@ -252,7 +251,7 @@ userSearchesForCards('given 2 private cards and 2 public cards with the same lab
     await givenAStoredPrivateCardWithLabels(label)
     const publicCard2 = await givenAStoredCardWithLabels(label)
     const result = await new UserSearchesForCardsUseCase().execute({
-        requesterId: requester.id,
+        requesterId: requester.getId().getId(),
         query: label,
     })
     assert.equal(result.data!, [publicCard1, publicCard2])

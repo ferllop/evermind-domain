@@ -2,7 +2,8 @@ import {assert, suite} from '../test-config.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {UserRemovesAccountUseCase} from '../../src/use-cases/UserRemovesAccountUseCase.js'
 import {
-    givenACleanInMemoryDatabase, givenAStoredUser,
+    givenACleanInMemoryDatabase,
+    givenAStoredUser,
     givenAStoredUserWithPermissions,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
 import {
@@ -24,13 +25,13 @@ userRemovesAccountUseCase(
     'should remove it and return an object with either ' +
     'data and error properties as null', async () => {
         const user = await givenAStoredUserWithPermissions(['REMOVE_OWN_ACCOUNT'])
-        await assertUserIsStored(user)
+        await assertUserIsStored(user.toDto())
         const validRequest = {
-            requesterId: user.id,
-            userId: user.id
+            requesterId: user.getId().getId(),
+            userId: user.getId().getId()
         }
         const result = await new UserRemovesAccountUseCase().execute(validRequest)
-        await assertUserIsNotStored(user)
+        await assertUserIsNotStored(user.toDto())
         assert.equal(result, Response.OkWithoutData())
     })
 
@@ -40,8 +41,8 @@ userRemovesAccountUseCase(
     'should return an object with UserIsNotAuthorizedError REMOVE_OWN_ACCOUNT', async () => {
         const user = await givenAStoredUserWithPermissions([])
         const request = {
-            requesterId: user.id,
-            userId: user.id
+            requesterId: user.getId().getId(),
+            userId: user.getId().getId()
         }
         const result = await new UserRemovesAccountUseCase().execute(request)
         assert.equal(
@@ -57,13 +58,13 @@ userRemovesAccountUseCase(
     'data and error properties as null', async () => {
         const requester = await givenAStoredUserWithPermissions(['REMOVE_ACCOUNT_FROM_OTHER'])
         const userToRemove = await givenAStoredUser()
-        await assertUserIsStored(userToRemove)
+        await assertUserIsStored(userToRemove.toDto())
         const request = {
-            requesterId: requester.id,
-            userId: userToRemove.id
+            requesterId: requester.getId().getId(),
+            userId: userToRemove.getId().getId()
         }
         const result = await new UserRemovesAccountUseCase().execute(request)
-        await assertUserIsNotStored(userToRemove)
+        await assertUserIsNotStored(userToRemove.toDto())
         assert.equal(result, Response.OkWithoutData())
     })
 
@@ -74,8 +75,8 @@ userRemovesAccountUseCase(
         const requester = await givenAStoredUserWithPermissions([])
         const userToRemove = await givenAStoredUser()
         const request = {
-            requesterId: requester.id,
-            userId: userToRemove.id
+            requesterId: requester.getId().getId(),
+            userId: userToRemove.getId().getId()
         }
         const result = await new UserRemovesAccountUseCase().execute(request)
         assert.equal(
@@ -91,7 +92,7 @@ userRemovesAccountUseCase(
     'error property as USER_NOT_FOUND DomainError', async () => {
         const requester = await givenAStoredUserWithPermissions(['REMOVE_ACCOUNT_FROM_OTHER'])
         const request = {
-            requesterId: requester.id,
+            requesterId: requester.getId().getId(),
             userId: UserIdentification.create().getId(),
         }
         const result = await new UserRemovesAccountUseCase().execute(request)
@@ -116,7 +117,7 @@ userRemovesAccountUseCase(
     'and error property as INPUT_DATA_NOT_VALID DomainError', async () => {
         const requester = await givenAStoredUserWithPermissions(['REMOVE_ACCOUNT_FROM_OTHER'])
         const invalidRequest = {
-            requesterId: requester.id,
+            requesterId: requester.getId().getId(),
             userId: '',
         }
         const result = await new UserRemovesAccountUseCase().execute(invalidRequest)

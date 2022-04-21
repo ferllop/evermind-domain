@@ -21,11 +21,11 @@ userModifiesUserDataUseCase(
     'null as data property', async () => {
         const user = await givenAStoredUserWithPermissions(['UPDATE_OWN_PRIVATE_DATA'])
         const updatedUser = {
-            ...user,
+            ...user.toDto(),
             name: 'newName',
         }
         const request = {
-            requesterId: user.id,
+            requesterId: user.getId().getId(),
             ...updatedUser,
         }
         const result = await new UserModifiesUserDataUseCase().execute(request)
@@ -40,7 +40,7 @@ userModifiesUserDataUseCase(
         const user = await givenAStoredUserWithPermissions(['UPDATE_PRIVATE_DATA_FROM_OTHERS'])
         const notStoredUser = new UserBuilder().buildDto()
         const request = {
-            requesterId: user.id,
+            requesterId: user.getId().getId(),
             ...notStoredUser,
         }
         const result = await new UserModifiesUserDataUseCase().execute(request)
@@ -53,11 +53,11 @@ userModifiesUserDataUseCase(
     'INPUT_DATA_NOT_VALID DomainError', async () => {
         const requester = await givenAStoredUserWithPermissions(['UPDATE_OWN_PRIVATE_DATA'])
         const invalidUser = {
-            ...requester,
+            ...requester.toDto(),
             name: '',
         }
         const invalidRequest = {
-            requesterId: requester.id,
+            requesterId: requester.getId().getId(),
             ...invalidUser,
         }
         const result = await new UserModifiesUserDataUseCase().execute(invalidRequest)

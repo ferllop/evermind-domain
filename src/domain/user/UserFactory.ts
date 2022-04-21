@@ -13,11 +13,11 @@ import {InputDataNotValidError} from '../errors/InputDataNotValidError.js'
 import {UserAuthorization} from '../authorization/permission/UserAuthorization.js'
 import {UserPermissions} from '../authorization/permission/UserPermissions.js'
 import {UpdatePrivateUserData} from '../authorization/permission/permissions/UpdatePrivateUserData.js'
-import {Email} from './Email.js'
+import {StoredUser} from './StoredUser.js'
 
 export class UserFactory extends EntityFactory<User, UserDto> {
 
-    private userConstructor = User.prototype.constructor as { new(name: PersonName, username: Username, email: Email, dayStartTime: DayStartTime, id: UserIdentification): User}
+    private userConstructor = User.prototype.constructor as { new(name: PersonName, username: Username, dayStartTime: DayStartTime): User}
 
     constructor() {
         super()
@@ -28,14 +28,12 @@ export class UserFactory extends EntityFactory<User, UserDto> {
             .set('id', UserIdentification.isValid)
             .set('name', PersonName.isValid)
             .set('username', Username.isValid)
-            .set('email', Email.isValid)
             .set('dayStartTime', DayStartTime.isValid)
     }
 
-    isValid(name: string, username: string, email: string, dayStartTime: number, id?: string): boolean {
+    isValid(name: string, username: string, dayStartTime: number, id?: string): boolean {
         return PersonName.isValid(name) &&
             Username.isValid(username) &&
-            Email.isValid(email) &&
             DayStartTime.isValid(dayStartTime) &&
             (Boolean(id) ? Identification.isValid(id) : true)
     }
@@ -45,32 +43,34 @@ export class UserFactory extends EntityFactory<User, UserDto> {
             this.isValid(
                 dto.name,
                 dto.username,
-                dto.email,
                 dto.dayStartTime,
                 'id' in dto ? dto.id : undefined)
     }
 
-    fromDto(dto: UserDto): User {
+    fromDto(dto: UserDto): StoredUser {
         precondition(this.isDtoValid(dto))
         return this.recreate(
             new PersonName(dto.name),
             new Username(dto.username),
-            new Email(dto.email),
             new DayStartTime(dto.dayStartTime),
             new Identification(dto.id))
     }
 
-     recreate(name: PersonName, username: Username, email: Email, dayStartTime: DayStartTime, id: Identification) {
-        return new this.userConstructor(name, username, email, dayStartTime, id)
+    create(name: PersonName, username: Username) {
+        return new this.userConstructor(name, username, new DayStartTime())
     }
 
-    apply(user: User, data: Omit<Partial<UserDto>, 'id'>, permissions: UserPermissions) {
+    recreate(name: PersonName, username: Username, dayStartTime: DayStartTime, id: Identification): StoredUser {
+        const user = new this.userConstructor(name, username, dayStartTime)
+        return new StoredUser(user, id)
+    }
+
+    apply(user: StoredUser, data: Omit<Partial<UserDto>, 'id'>, permissions: UserPermissions) {
         UserAuthorization.userWithPermissions(permissions).assertCan(UpdatePrivateUserData, user)
         const modifiedUser = { ...user.toDto(), ...data }
         if (!this.arePropertiesValid(modifiedUser)) {
             throw new InputDataNotValidError()
         }
-        return new UserFactory().fromDto(modifiedUser)
+        return this.fromDto(modifiedUser)
     }
-
 }

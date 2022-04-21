@@ -7,7 +7,8 @@ import {UserPermissions} from '../authorization/permission/UserPermissions.js'
 import {UserAuthorization} from '../authorization/permission/UserAuthorization.js'
 import {RemoveUserAccount} from '../authorization/permission/permissions/RemoveUserAccount.js'
 import {GetDataFromOtherUser} from '../authorization/permission/permissions/GetDataFromOtherUser.js'
-import {Email} from './Email.js'
+import {StoredUser} from './StoredUser.js'
+import {UserAlreadyExistsError} from '../errors/UserAlreadyExistsError.js'
 
 export class UserRepository {
 
@@ -18,10 +19,13 @@ export class UserRepository {
     }
 
     async add(user: User) {
-        await this.dao.insert(user)
+        if (await this.hasUsername(user.getUsername())) {
+            throw new UserAlreadyExistsError()
+        }
+        return await this.dao.insert(user)
     }
 
-    async delete(user: User, permissions: UserPermissions) {
+    async delete(user: StoredUser, permissions: UserPermissions) {
         UserAuthorization.userWithPermissions(permissions).assertCan(RemoveUserAccount, user)
         await this.dao.delete(user.getId())
     }
@@ -39,16 +43,13 @@ export class UserRepository {
         return await this.dao.findByUsername(username)
     }
 
-    async update(user: User) {
+    async update(user: StoredUser) {
         await this.dao.update(user)
     }
 
-    async hasUsername(username: Username) {
+    private async hasUsername(username: Username) {
         const user = await this.dao.findByUsername(username)
         return ! user.isNull()
     }
 
-    async findByEmail(email: Email) {
-        return this.dao.findByEmail(email)
-    }
 }

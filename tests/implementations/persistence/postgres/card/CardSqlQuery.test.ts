@@ -69,7 +69,7 @@ cardSqlQuery('should provide the correct insert query', async () => {
 
 cardSqlQuery('should provide a working insert card query', async () => {
     const user = await givenAnExistingUser()
-    const card = new CardBuilder().setAuthorId(user.getId() as AuthorIdentification).build()
+    const card = new CardBuilder().setAuthorId(user.getId()).build()
 
     const sut = new CardSqlQuery().insert(card)
 
@@ -109,9 +109,9 @@ cardSqlQuery('should provide the correct card update query', async () => {
         question = '${dto.question}',
         answer = '${dto.answer}',
         visibility = '${dto.visibility}'
-        WHERE id = '${dto.id}';
-        DELETE FROM labelling WHERE card_id = '${dto.id}';
-        INSERT INTO labelling VALUES ('${dto.id}','${dto.labelling[0]}');
+        WHERE id = '${(card.getId().getId())}';
+        DELETE FROM labelling WHERE card_id = '${(card.getId().getId())}';
+        INSERT INTO labelling VALUES ('${(card.getId().getId())}','${dto.labelling[0]}');
         COMMIT;`
     assertQueriesAreEqual(sut, expectedQuery)
 })
@@ -146,10 +146,7 @@ cardSqlQuery('should send the proper query to find a card by it\'s author', asyn
 
 cardSqlQuery('should send a working query to find a card by it\'s author', async () => {
     const user = await givenSomeExistingCardsFromSameUser(3)
-    const authorId = user.getId() as AuthorIdentification
-
-    const sut = new CardSqlQuery().selectCardByAuthorId(authorId)
-
+    const sut = new CardSqlQuery().selectCardByAuthorId(user.getId())
     const foundCards = await new CardPostgresDatastore().query(sut)
     assert.equal(foundCards.rowCount, 3)
 })
