@@ -6,9 +6,10 @@ import {CardDatabaseMap} from './CardDatabaseMap.js'
 import {LabellingDatabaseMap} from './LabellingDatabaseMap.js'
 import {UserDatabaseMap} from '../user/UserDatabaseMap.js'
 import {Id} from '../../../../domain/shared/value/Id.js'
+import {StoredCard} from '../../../../domain/card/StoredCard.js'
 
 export class CardSqlQuery {
-    insert(card: Card) {
+    insert(card: StoredCard) {
         const {id, authorId, question, answer, labelling, visibility} = card.toDto()
         return `BEGIN;
         INSERT INTO ${CardDatabaseMap.TABLE_NAME}(

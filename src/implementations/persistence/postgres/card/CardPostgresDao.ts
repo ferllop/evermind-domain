@@ -13,6 +13,7 @@ import {CardAlreadyExistsError} from '../../../../domain/errors/CardAlreadyExist
 import {CardNotFoundError} from '../../../../domain/errors/CardNotFoundError.js'
 import {DataFromStorageNotValidError} from '../../../../domain/errors/DataFromStorageNotValidError.js'
 import {Authorization} from '../../../../domain/authorization/Authorization.js'
+import {StoredCard} from '../../../../domain/card/StoredCard.js'
 
 export class CardPostgresDao implements CardDao {
 
@@ -23,17 +24,18 @@ export class CardPostgresDao implements CardDao {
     }
 
     async insert(card: Card) {
-        const query = this.sqlQuery.insert(card)
+        const entity = new StoredCard(card, CardIdentification.create())
+        const query = this.sqlQuery.insert(entity)
 
         try {
             await this.datastore.query(query)
+            return entity
         } catch (error) {
             if (error instanceof PostgresDatastoreError && error.code === PostgresErrorType.NOT_UNIQUE_FIELD) {
                 throw new CardAlreadyExistsError()
             }
             throw error
         }
-
     }
 
     async update(card: Card) {

@@ -17,7 +17,7 @@ export class UserCreatesCardUseCase extends WithAuthorizationUseCase<UserCreates
         const {requesterId, ...unidentifiedCard} = request
         const authorization = await this.getAuthorization()
         const card = new CardFactory(authorization).createFromDto(unidentifiedCard)
-        await new CardRepository(authorization).add(card)
-        return Response.OkWithData(card.toDto())
+        const storedCard = await new CardRepository(authorization).add(card)
+        return Response.OkWithData(storedCard.toDto())
     }
 }

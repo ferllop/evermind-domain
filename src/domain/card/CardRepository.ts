@@ -17,7 +17,7 @@ export class CardRepository {
     }
 
     async add(card: Card) {
-        await this.dao.insert(card)
+        return await this.dao.insert(card)
     }
 
     async delete(card: Card) {

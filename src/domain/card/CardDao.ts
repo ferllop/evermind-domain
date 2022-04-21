@@ -2,9 +2,10 @@ import {Card} from './Card.js'
 import {CardIdentification} from './CardIdentification.js'
 import {AuthorIdentification} from './AuthorIdentification.js'
 import {Labelling} from './Labelling.js'
+import {StoredCard} from './StoredCard.js'
 
 export interface CardDao {
-    insert(card: Card): Promise<void>;
+    insert(card: Card): Promise<StoredCard>;
 
     update(card: Card): Promise<void>;
 

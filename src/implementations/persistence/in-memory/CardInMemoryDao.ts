@@ -12,6 +12,7 @@ import {DataFromStorageNotValidError} from '../../../domain/errors/DataFromStora
 import {CardNotFoundError} from '../../../domain/errors/CardNotFoundError.js'
 import {CardFactory} from '../../../domain/card/CardFactory.js'
 import {Authorization} from '../../../domain/authorization/Authorization.js'
+import {StoredCard} from '../../../domain/card/StoredCard.js'
 
 export class CardInMemoryDao implements CardDao {
     private readonly tableName = 'cards'
@@ -22,10 +23,12 @@ export class CardInMemoryDao implements CardDao {
     ){}
 
     async insert(card: Card) {
-        const result = await this.datastore.create(this.tableName, card.toDto())
+        const entity = new StoredCard(card, CardIdentification.create())
+        const result = await this.datastore.create(this.tableName, entity.toDto())
         if (!result) {
             throw new DataFromStorageNotValidError()
         }
+        return entity
     }
 
     async delete(id: CardIdentification) {
