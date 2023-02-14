@@ -3,7 +3,7 @@ import {SubscriptionRepository} from '../domain/subscription/SubscriptionReposit
 import {UserRepository} from '../domain/user/UserRepository.js'
 import {Response} from './Response.js'
 import {UserSubscribesToCardRequest} from './UserSubscribesToCardRequest.js'
-import {SubscriptionDto} from '../domain/subscription/SusbcriptionDto.js'
+import {SubscriptionDto} from '../types/dtos/SusbcriptionDto.js'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 import {UserIdentification} from '../domain/user/UserIdentification.js'
 import {CardIdentification} from '../domain/card/CardIdentification.js'

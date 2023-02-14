@@ -1,7 +1,7 @@
 import {Response} from './Response.js'
 import {UserCreatesCardRequest} from './UserCreatesCardRequest.js'
 import {CardRepository} from '../domain/card/CardRepository.js'
-import {CardDto} from '../domain/card/CardDto.js'
+import {CardDto} from '../types/dtos/CardDto.js'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 import {CardFactory} from '../domain/card/CardFactory.js'
 

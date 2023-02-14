@@ -2,7 +2,7 @@ import {Response} from './Response.js'
 import {UserRepository} from '../domain/user/UserRepository.js'
 import {UserGetsUserSubscriptionsRequest} from './UserGetsUserSubscriptionsRequest.js'
 import {SubscriptionRepository} from '../domain/subscription/SubscriptionRepository.js'
-import {SubscriptionDto} from '../domain/subscription/SusbcriptionDto.js'
+import {SubscriptionDto} from '../types/dtos/SusbcriptionDto.js'
 import {UserIdentification} from '../domain/user/UserIdentification.js'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 

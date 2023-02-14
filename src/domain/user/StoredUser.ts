@@ -1,5 +1,5 @@
 import {UserIdentification} from './UserIdentification.js'
-import {UserDto} from './UserDto.js'
+import {UserDto} from '../../types/dtos/UserDto.js'
 import {User} from './User.js'
 
 export class StoredUser extends User {

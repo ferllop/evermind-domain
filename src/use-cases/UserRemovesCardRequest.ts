@@ -1,4 +1,4 @@
-import { IdDto } from '../domain/shared/value/IdDto.js'
+import { IdDto } from '../types/dtos/IdDto.js'
 import {WithRequesterRequest} from './WithRequesterRequest.js'
 
 export type UserRemovesCardRequest = WithRequesterRequest & IdDto

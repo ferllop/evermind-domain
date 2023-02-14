@@ -1,6 +1,6 @@
 import {AuthorIdentification} from './AuthorIdentification.js'
 import {Card} from './Card.js'
-import {CardDto} from './CardDto.js'
+import {CardDto} from '../../types/dtos/CardDto.js'
 import {Labelling} from './Labelling.js'
 import {WrittenAnswer} from './WrittenAnswer.js'
 import {WrittenQuestion} from './WrittenQuestion.js'

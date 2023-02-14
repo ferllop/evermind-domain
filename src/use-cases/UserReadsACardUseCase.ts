@@ -1,5 +1,5 @@
 import {CardRepository} from '../domain/card/CardRepository.js'
-import {CardDto} from '../domain/card/CardDto.js'
+import {CardDto} from '../types/dtos/CardDto.js'
 import {Response} from './Response.js'
 import {UserReadsACardRequest} from './UserReadsACardRequest.js'
 import {CardIdentification} from '../domain/card/CardIdentification.js'

@@ -1,4 +1,4 @@
-import {SubscriptionDto} from '../../../../domain/subscription/SusbcriptionDto.js'
+import {SubscriptionDto} from '../../../../types/dtos/SusbcriptionDto.js'
 import {SubscriptionRow} from './SubscriptionRow.js'
 import {Subscription} from '../../../../domain/subscription/Subscription.js'
 import {SubscriptionFactory} from '../../../../domain/subscription/SubscriptionFactory.js'

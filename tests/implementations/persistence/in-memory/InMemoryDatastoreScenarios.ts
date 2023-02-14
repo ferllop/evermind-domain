@@ -1,6 +1,6 @@
 import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import {PersistenceFactory} from '../../../../src/implementations/persistence/PersistenceFactory.js'
-import {CardDto} from '../../../../src/domain/card/CardDto.js'
+import {CardDto} from '../../../../src/types/dtos/CardDto.js'
 import {CardBuilder} from '../../../domain/card/CardBuilder.js'
 import {UserBuilder} from '../../../domain/user/UserBuilder.js'
 import {PermissionRepository} from '../../../../src/domain/authorization/permission/PermissionRepository.js'

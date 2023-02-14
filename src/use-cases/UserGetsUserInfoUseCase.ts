@@ -1,4 +1,4 @@
-import {UserDto} from '../domain/user/UserDto.js'
+import {UserDto} from '../types/dtos/UserDto.js'
 import {Response} from './Response.js'
 import {UserGetsUserInfoRequest} from './UserGetsUserInfoRequest.js'
 import {UserRepository} from '../domain/user/UserRepository.js'

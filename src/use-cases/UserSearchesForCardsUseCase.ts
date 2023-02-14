@@ -1,4 +1,4 @@
-import {CardDto} from '../domain/card/CardDto.js'
+import {CardDto} from '../types/dtos/CardDto.js'
 import {SearchService} from '../domain/search/SearchService.js'
 import {Response} from './Response.js'
 import {UserSearchesForCardsRequest} from './UserSearchesForCardsRequest.js'

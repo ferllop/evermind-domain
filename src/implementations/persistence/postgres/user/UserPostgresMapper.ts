@@ -1,4 +1,4 @@
-import {UserDto} from '../../../../domain/user/UserDto.js'
+import {UserDto} from '../../../../types/dtos/UserDto.js'
 import {UserRow} from './UserRow.js'
 import {UserFactory} from '../../../../domain/user/UserFactory.js'
 import {StoredUser} from '../../../../domain/user/StoredUser.js'
