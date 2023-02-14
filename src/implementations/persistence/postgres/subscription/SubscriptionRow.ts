@@ -1,4 +1,4 @@
-import {DateISO} from '../../../../types/types/DateISO.js'
+import {DateISO} from 'evermind-types'
 
 export type SubscriptionRow = {
     id: string;

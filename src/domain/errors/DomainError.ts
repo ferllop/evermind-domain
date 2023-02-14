@@ -1,5 +1,5 @@
 import {DomainErrorCode} from './DomainErrorCode.js'
-import {ErrorDto} from '../../types/dtos/ErrorDto.js'
+import {ErrorDto} from 'evermind-types'
 
 export abstract class DomainError extends Error {
 

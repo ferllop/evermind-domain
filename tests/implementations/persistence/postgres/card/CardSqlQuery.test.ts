@@ -19,7 +19,7 @@ import {
     CardPostgresDatastore,
 } from '../../../../../src/implementations/persistence/postgres/card/CardPostgresDatastore.js'
 import {AlwaysAuthorizedAuthorization} from '../../../AlwaysAuthorizedAuthorization.js'
-import {CardDto} from '../../../../../src/types/index.js'
+import {CardDto} from 'evermind-types'
 
 const cardSqlQuery = suite('Card Sql Query')
 

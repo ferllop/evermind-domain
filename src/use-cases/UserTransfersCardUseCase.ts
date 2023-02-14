@@ -3,7 +3,7 @@ import {CardRepository} from '../domain/card/CardRepository.js'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 import {CardIdentification} from '../domain/card/CardIdentification.js'
 import {Response} from './Response.js'
-import {UserTransfersCardRequest} from '../types/requests/UserTransfersCardRequest.js'
+import {UserTransfersCardRequest} from 'evermind-types'
 import {CardFactory} from '../domain/card/CardFactory.js'
 import {UserRepository} from '../domain/user/UserRepository.js'
 

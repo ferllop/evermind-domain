@@ -1,4 +1,4 @@
-import { DateISO } from '../../../types/types/DateISO.js'
+import { DateISO } from 'evermind-types'
 
 export class DateEvermind extends Date {
     constructor(dateString: DateISO) {

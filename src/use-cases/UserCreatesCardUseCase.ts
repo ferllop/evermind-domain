@@ -1,7 +1,7 @@
 import {Response} from './Response.js'
-import {UserCreatesCardRequest} from '../types/requests/UserCreatesCardRequest.js'
+import {UserCreatesCardRequest} from 'evermind-types'
 import {CardRepository} from '../domain/card/CardRepository.js'
-import {CardDto} from '../types/dtos/CardDto.js'
+import {CardDto} from 'evermind-types'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 import {CardFactory} from '../domain/card/CardFactory.js'
 

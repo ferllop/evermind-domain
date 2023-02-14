@@ -9,7 +9,7 @@ import {Label} from '../../../src/domain/card/Label.js'
 import {CardIdentification} from '../../../src/domain/card/CardIdentification.js'
 import {CardFactory} from '../../../src/domain/card/CardFactory.js'
 import {AlwaysAuthorizedAuthorization} from '../../implementations/AlwaysAuthorizedAuthorization.js'
-import {Visibility} from '../../../src/types/types/Visibility.js'
+import {Visibility} from 'evermind-types'
 
 export class CardBuilder {
 

@@ -1,13 +1,13 @@
 import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import {PersistenceFactory} from '../../../../src/implementations/persistence/PersistenceFactory.js'
-import {CardDto} from '../../../../src/types/dtos/CardDto.js'
+import {CardDto} from 'evermind-types'
 import {CardBuilder} from '../../../domain/card/CardBuilder.js'
 import {UserBuilder} from '../../../domain/user/UserBuilder.js'
 import {PermissionRepository} from '../../../../src/domain/authorization/permission/PermissionRepository.js'
 import {PermissionValue} from '../../../../src/domain/authorization/permission/PermissionValue.js'
-import {RequesterDto} from '../../../../src/types/dtos/RequesterDto.js'
+import {RequesterDto} from 'evermind-types'
 import {SubscriptionBuilder} from '../../../domain/subscription/SubscriptionBuilder.js'
-import {UserDto} from '../../../../src/types/index.js'
+import {UserDto} from 'evermind-types'
 
 const datastore = new InMemoryDatastore()
 const usersTable = 'users'

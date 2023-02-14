@@ -1,7 +1,7 @@
-import {CardDto} from '../types/dtos/CardDto.js'
+import {CardDto} from 'evermind-types'
 import {SearchService} from '../domain/search/SearchService.js'
 import {Response} from './Response.js'
-import {UserSearchesForCardsRequest} from '../types/requests/UserSearchesForCardsRequest.js'
+import {UserSearchesForCardsRequest} from 'evermind-types'
 import {CardRepository} from '../domain/card/CardRepository.js'
 import {MayBeWithAuthorizationUseCase} from './MayBeWithAuthorizationUseCase.js'
 

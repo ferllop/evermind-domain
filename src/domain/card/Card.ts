@@ -5,8 +5,8 @@ import {AuthorIdentification} from './AuthorIdentification.js'
 import {CardIdentification} from './CardIdentification.js'
 import {Labelling} from './Labelling.js'
 import {Question} from './Question.js'
-import {CardDto} from '../../types/dtos/CardDto.js'
-import {Visibility} from '../../types/types/Visibility.js'
+import {CardDto} from 'evermind-types'
+import {Visibility} from 'evermind-types'
 import {StoredUser} from '../user/StoredUser.js'
 
 export class Card extends Entity {

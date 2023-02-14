@@ -1,7 +1,7 @@
 import {Response} from './Response.js'
 import {DomainError} from '../domain/errors/DomainError.js'
 import {RequiredRequestFieldIsMissingError} from '../domain/errors/RequiredRequestFieldIsMissingError.js'
-import {Request} from '../types/requests/Request.js'
+import {Request} from 'evermind-types'
 
 export abstract class UseCase<RequestType extends Request, ResponseType> {
     readonly requiredFields: string[]

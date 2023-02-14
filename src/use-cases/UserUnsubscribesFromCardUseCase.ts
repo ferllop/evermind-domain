@@ -4,7 +4,7 @@ import {SubscriptionRepository} from '../domain/subscription/SubscriptionReposit
 import {UserRepository} from '../domain/user/UserRepository.js'
 import {UserIdentification} from '../domain/user/UserIdentification.js'
 import {Response} from './Response.js'
-import {UserUnsubscribesFromCardRequest} from '../types/requests/UserUnsubscribesFromCardRequest.js'
+import {UserUnsubscribesFromCardRequest} from 'evermind-types'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 
 export class UserUnsubscribesFromCardUseCase extends WithAuthorizationUseCase<UserUnsubscribesFromCardRequest, null> {

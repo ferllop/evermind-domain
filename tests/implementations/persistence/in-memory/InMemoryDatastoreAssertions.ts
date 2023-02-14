@@ -1,8 +1,8 @@
-import {UserDto} from '../../../../src/types/dtos/UserDto.js'
+import {UserDto} from 'evermind-types'
 import {InMemoryDatastore} from '../../../../src/implementations/persistence/in-memory/InMemoryDatastore.js'
 import {assert} from '../../../test-config.js'
-import {CardDto} from '../../../../src/types/dtos/CardDto.js'
-import {SubscriptionDto} from '../../../../src/types/dtos/SusbcriptionDto.js'
+import {CardDto} from 'evermind-types'
+import {SubscriptionDto} from 'evermind-types'
 import {Id} from 'in-memory-database/build/Id'
 
 const datastore = new InMemoryDatastore()

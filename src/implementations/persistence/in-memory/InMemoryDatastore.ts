@@ -1,5 +1,5 @@
 import {AsyncDatabase} from 'in-memory-database'
-import {IdDto} from '../../../types/dtos/IdDto.js'
+import {IdDto} from 'evermind-types'
 import { precondition } from '../../preconditions.js'
 
 export class InMemoryDatastore {

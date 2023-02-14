@@ -6,7 +6,7 @@ import {DayStartTime} from '../shared/value/DayStartTime.js'
 import {Hour} from '../shared/value/Hour.js'
 import {Level} from './Level.js'
 import {SubscriptionIdentification} from './SubscriptionIdentification.js'
-import {SubscriptionDto} from '../../types/dtos/SusbcriptionDto.js'
+import {SubscriptionDto} from 'evermind-types'
 import {Card} from '../card/Card.js'
 
 export class Subscription extends Entity {

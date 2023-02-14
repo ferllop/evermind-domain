@@ -1,8 +1,8 @@
 import {Response} from './Response.js'
 import {UserRepository} from '../domain/user/UserRepository.js'
-import {UserGetsUserSubscriptionsRequest} from '../types/requests/UserGetsUserSubscriptionsRequest.js'
+import {UserGetsUserSubscriptionsRequest} from 'evermind-types'
 import {SubscriptionRepository} from '../domain/subscription/SubscriptionRepository.js'
-import {SubscriptionDto} from '../types/dtos/SusbcriptionDto.js'
+import {SubscriptionDto} from 'evermind-types'
 import {UserIdentification} from '../domain/user/UserIdentification.js'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 

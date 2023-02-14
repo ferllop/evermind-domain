@@ -1,6 +1,6 @@
 import {UserRepository} from '../domain/user/UserRepository.js'
 import {Response} from './Response.js'
-import {UserRemovesAccountRequest} from '../types/requests/UserRemovesAccountRequest.js'
+import {UserRemovesAccountRequest} from 'evermind-types'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 import {UserIdentification} from '../domain/user/UserIdentification.js'
 

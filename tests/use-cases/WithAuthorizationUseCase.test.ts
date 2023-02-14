@@ -13,7 +13,7 @@ import {
     givenACleanInMemoryDatabase,
     givenAStoredUser,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
-import {WithRequesterRequest} from '../../src/types/index.js'
+import {WithRequesterRequest} from 'evermind-types'
 
 class FailingPermission implements PermissionValidator<null> {
     validate(): PermissionValue[] {

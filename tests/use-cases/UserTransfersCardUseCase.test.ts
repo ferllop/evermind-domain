@@ -1,4 +1,4 @@
-import {CardDto} from '../../src/types/dtos/CardDto.js'
+import {CardDto} from 'evermind-types'
 import {CardField} from '../../src/implementations/persistence/in-memory/CardField.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {assert, suite} from '../test-config.js'

@@ -1,4 +1,4 @@
-import {Id} from '../../../types/types/Id.js'
+import {Id} from 'evermind-types'
 import {PermissionValue} from './PermissionValue.js'
 
 export type PermissionDto = {

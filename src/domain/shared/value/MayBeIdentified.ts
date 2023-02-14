@@ -1,3 +1,3 @@
-import {Unidentified} from '../../../types/types/Unidentified.js'
+import {Unidentified} from 'evermind-types'
 
 export type MayBeIdentified<T> = Unidentified<T> | T;

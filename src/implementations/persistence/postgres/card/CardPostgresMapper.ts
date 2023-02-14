@@ -1,4 +1,4 @@
-import {CardDto} from '../../../../types/dtos/CardDto.js'
+import {CardDto} from 'evermind-types'
 import {Card} from '../../../../domain/card/Card.js'
 import {CardFactory} from '../../../../domain/card/CardFactory.js'
 import {CardRow} from './CardRow.js'

@@ -1,5 +1,5 @@
 import {DomainError} from '../domain/errors/DomainError.js'
-import {ErrorDto} from '../types/dtos/ErrorDto.js'
+import {ErrorDto} from 'evermind-types'
 import {UndocumentedError} from '../domain/errors/UndocumentedError.js'
 import {NullError} from '../domain/errors/NullError.js'
 

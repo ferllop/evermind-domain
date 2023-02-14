@@ -40,7 +40,8 @@
     "supertest": "6.2.2",
     "tsm": "2.2.1",
     "typescript": "4.5.5",
-    "uvu": "0.5.3"
+    "uvu": "0.5.3",
+    "evermind-types": "github:ferllop/evermind-types"
   },
   "dependencies": {
     "express": "4.17.3",

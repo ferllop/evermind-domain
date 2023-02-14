@@ -1,5 +1,5 @@
 import {Response, UseCase} from '../../src/index.js'
-import { Request } from '../../src/types/index.js'
+import { Request } from 'evermind-types'
 
 export class FakeUseCase extends UseCase<Request, any> {
     error?: Error

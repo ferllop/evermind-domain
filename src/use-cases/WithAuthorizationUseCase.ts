@@ -1,9 +1,9 @@
-import {WithRequesterRequest} from '../types/requests/WithRequesterRequest.js'
+import {WithRequesterRequest} from 'evermind-types'
 import {UseCase} from './UseCase.js'
 import {Response} from './Response.js'
 import {PermissionRepository} from '../domain/authorization/permission/PermissionRepository.js'
 import {RequesterIdentification} from '../domain/authorization/permission/RequesterIdentification.js'
-import {Id} from '../types/types/Id.js'
+import {Id} from 'evermind-types'
 import {UserAuthorization} from '../domain/authorization/permission/UserAuthorization.js'
 
 export abstract class WithAuthorizationUseCase<Request extends WithRequesterRequest, ResponseType> extends UseCase<Request, ResponseType> {
