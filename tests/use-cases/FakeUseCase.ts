@@ -1,4 +1,5 @@
-import {Request, Response, UseCase} from '../../src/index.js'
+import {Response, UseCase} from '../../src/index.js'
+import { Request } from '../../src/types/index.js'
 
 export class FakeUseCase extends UseCase<Request, any> {
     error?: Error

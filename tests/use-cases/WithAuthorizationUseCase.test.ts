@@ -1,7 +1,7 @@
 import {assert, suite} from '../test-config.js'
 import {Response} from '../../src/use-cases/Response.js'
 import {RequiredRequestFieldIsMissingError} from '../../src/domain/errors/RequiredRequestFieldIsMissingError.js'
-import {WithAuthorizationUseCase, WithRequesterRequest} from '../../src/index.js'
+import {WithAuthorizationUseCase} from '../../src/index.js'
 import {InputDataNotValidError} from '../../src/domain/errors/InputDataNotValidError.js'
 import {RequesterIdentification} from '../../src/domain/authorization/permission/RequesterIdentification.js'
 import {UserIsNotAuthorizedError} from '../../src/domain/errors/UserIsNotAuthorizedError.js'
@@ -13,6 +13,7 @@ import {
     givenACleanInMemoryDatabase,
     givenAStoredUser,
 } from '../implementations/persistence/in-memory/InMemoryDatastoreScenarios.js'
+import {WithRequesterRequest} from '../../src/types/index.js'
 
 class FailingPermission implements PermissionValidator<null> {
     validate(): PermissionValue[] {

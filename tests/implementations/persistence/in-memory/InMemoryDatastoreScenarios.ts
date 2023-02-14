@@ -7,7 +7,7 @@ import {PermissionRepository} from '../../../../src/domain/authorization/permiss
 import {PermissionValue} from '../../../../src/domain/authorization/permission/PermissionValue.js'
 import {RequesterDto} from '../../../../src/types/dtos/RequesterDto.js'
 import {SubscriptionBuilder} from '../../../domain/subscription/SubscriptionBuilder.js'
-import {UserDto} from '../../../../src/index.js'
+import {UserDto} from '../../../../src/types/index.js'
 
 const datastore = new InMemoryDatastore()
 const usersTable = 'users'
