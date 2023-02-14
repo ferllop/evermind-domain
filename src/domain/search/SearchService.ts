@@ -3,7 +3,7 @@ import {Card} from '../card/Card.js'
 import {Label} from '../card/Label.js'
 import {Labelling} from '../card/Labelling.js'
 import {UserRepository} from '../user/UserRepository.js'
-import {Query} from './Query.js'
+import {Query} from '../../types/types/Query.js'
 import {Search} from './Search.js'
 import {Username} from '../user/Username.js'
 

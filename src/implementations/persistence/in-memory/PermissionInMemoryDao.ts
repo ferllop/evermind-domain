@@ -5,7 +5,7 @@ import {PermissionDao} from '../../../domain/authorization/permission/Permission
 import {PermissionDto} from '../../../domain/authorization/permission/PermissionDto.js'
 import {IdDto} from '../../../types/dtos/IdDto.js'
 import {UserIdentification} from '../../../domain/user/UserIdentification.js'
-import {Id} from '../../../domain/shared/value/Id.js'
+import {Id} from '../../../types/types/Id.js'
 import {PermissionValue} from '../../../domain/authorization/permission/PermissionValue.js'
 import {UserPermissions} from '../../../domain/authorization/permission/UserPermissions.js'
 

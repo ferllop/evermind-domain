@@ -1,4 +1,4 @@
-import {DateISO} from '../../../../domain/shared/value/DateISO.js'
+import {DateISO} from '../../../../types/types/DateISO.js'
 
 export type SubscriptionRow = {
     id: string;

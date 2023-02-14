@@ -3,7 +3,7 @@ import {UseCase} from './UseCase.js'
 import {Response} from './Response.js'
 import {PermissionRepository} from '../domain/authorization/permission/PermissionRepository.js'
 import {RequesterIdentification} from '../domain/authorization/permission/RequesterIdentification.js'
-import {Id} from '../domain/shared/value/Id.js'
+import {Id} from '../types/types/Id.js'
 import {UserAuthorization} from '../domain/authorization/permission/UserAuthorization.js'
 
 export abstract class WithAuthorizationUseCase<Request extends WithRequesterRequest, ResponseType> extends UseCase<Request, ResponseType> {

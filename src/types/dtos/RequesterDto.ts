@@ -1,3 +1,3 @@
-import {Id} from '../../domain/shared/value/Id.js'
+import {Id} from '../types/Id.js'
 
 export type RequesterDto = { requesterId: Id }

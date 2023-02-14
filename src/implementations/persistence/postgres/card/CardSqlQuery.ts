@@ -5,7 +5,7 @@ import {AuthorIdentification} from '../../../../domain/card/AuthorIdentification
 import {CardDatabaseMap} from './CardDatabaseMap.js'
 import {LabellingDatabaseMap} from './LabellingDatabaseMap.js'
 import {UserDatabaseMap} from '../user/UserDatabaseMap.js'
-import {Id} from '../../../../domain/shared/value/Id.js'
+import {Id} from '../../../../types/types/Id.js'
 import {StoredCard} from '../../../../domain/card/StoredCard.js'
 
 export class CardSqlQuery {

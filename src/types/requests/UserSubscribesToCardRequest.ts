@@ -1,4 +1,4 @@
-import { Id } from '../../domain/shared/value/Id.js'
+import { Id } from '../types/Id.js'
 import {WithRequesterRequest} from './WithRequesterRequest.js'
 
 export type UserSubscribesToCardRequest = WithRequesterRequest & {

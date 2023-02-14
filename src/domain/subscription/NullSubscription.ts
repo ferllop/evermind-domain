@@ -1,4 +1,4 @@
-import { DateISO } from '../shared/value/DateISO.js'
+import { DateISO } from '../../types/types/DateISO.js'
 import { Level } from './Level.js'
 import { SubscriptionIdentification } from './SubscriptionIdentification.js'
 import { Subscription } from './Subscription.js'
