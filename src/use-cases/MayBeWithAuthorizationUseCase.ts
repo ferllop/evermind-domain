@@ -1,5 +1,5 @@
 import {WithRequesterRequest} from './WithRequesterRequest.js'
-import {RequesterDto} from './RequesterDto.js'
+import {RequesterDto} from '../types/dtos/RequesterDto.js'
 import {UseCase} from './UseCase.js'
 import {RequesterIdentification} from '../domain/authorization/permission/RequesterIdentification.js'
 import {PermissionRepository} from '../domain/authorization/permission/PermissionRepository.js'

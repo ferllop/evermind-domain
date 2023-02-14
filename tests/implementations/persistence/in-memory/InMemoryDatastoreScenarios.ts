@@ -5,7 +5,7 @@ import {CardBuilder} from '../../../domain/card/CardBuilder.js'
 import {UserBuilder} from '../../../domain/user/UserBuilder.js'
 import {PermissionRepository} from '../../../../src/domain/authorization/permission/PermissionRepository.js'
 import {PermissionValue} from '../../../../src/domain/authorization/permission/PermissionValue.js'
-import {RequesterDto} from '../../../../src/use-cases/RequesterDto.js'
+import {RequesterDto} from '../../../../src/types/dtos/RequesterDto.js'
 import {SubscriptionBuilder} from '../../../domain/subscription/SubscriptionBuilder.js'
 import {UserDto} from '../../../../src/index.js'
 
