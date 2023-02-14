@@ -24,7 +24,7 @@ export class CardPostgresDao implements CardDao {
     }
 
     async insert(card: Card) {
-        const entity = new StoredCard(card, CardIdentification.create())
+        const entity = new StoredCard(card)
         const query = this.sqlQuery.insert(entity)
 
         try {

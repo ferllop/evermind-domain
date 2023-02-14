@@ -23,7 +23,7 @@ export class CardInMemoryDao implements CardDao {
     ){}
 
     async insert(card: Card) {
-        const entity = new StoredCard(card, CardIdentification.create())
+        const entity = new StoredCard(card)
         const result = await this.datastore.create(this.tableName, entity.toDto())
         if (!result) {
             throw new DataFromStorageNotValidError()
