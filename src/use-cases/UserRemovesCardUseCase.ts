@@ -1,6 +1,6 @@
 import {CardRepository} from '../domain/card/CardRepository.js'
 import {Response} from './Response.js'
-import {UserRemovesCardRequest} from './UserRemovesCardRequest.js'
+import {UserRemovesCardRequest} from '../types/requests/UserRemovesCardRequest.js'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 import {CardIdentification} from '../domain/card/CardIdentification.js'
 

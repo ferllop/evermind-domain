@@ -1,5 +1,5 @@
 import {CardRepository} from '../domain/card/CardRepository.js'
-import {UserModifiesCardDataRequest} from './UserModifiesCardDataRequest.js'
+import {UserModifiesCardDataRequest} from '../types/requests/UserModifiesCardDataRequest.js'
 import {CardIdentification} from '../domain/card/CardIdentification.js'
 import {Response} from './Response.js'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'

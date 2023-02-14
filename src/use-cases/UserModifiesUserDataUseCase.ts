@@ -2,7 +2,7 @@ import {UserRepository} from '../domain/user/UserRepository.js'
 import {UserIdentification} from '../domain/user/UserIdentification.js'
 import {UserFactory} from '../domain/user/UserFactory.js'
 import {Response} from './Response.js'
-import {UserModifiesUserDataRequest} from './UserModifiesUserDataRequest.js'
+import {UserModifiesUserDataRequest} from '../types/requests/UserModifiesUserDataRequest.js'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 
 export class UserModifiesUserDataUseCase extends WithAuthorizationUseCase<UserModifiesUserDataRequest, null> {

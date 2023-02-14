@@ -1,6 +1,6 @@
 import {UserDto} from '../types/dtos/UserDto.js'
 import {Response} from './Response.js'
-import {UserGetsUserInfoRequest} from './UserGetsUserInfoRequest.js'
+import {UserGetsUserInfoRequest} from '../types/requests/UserGetsUserInfoRequest.js'
 import {UserRepository} from '../domain/user/UserRepository.js'
 import {WithAuthorizationUseCase} from './WithAuthorizationUseCase.js'
 import {UserIdentification} from '../domain/user/UserIdentification.js'

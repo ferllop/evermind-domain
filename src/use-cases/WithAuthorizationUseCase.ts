@@ -1,4 +1,4 @@
-import {WithRequesterRequest} from './WithRequesterRequest.js'
+import {WithRequesterRequest} from '../types/requests/WithRequesterRequest.js'
 import {UseCase} from './UseCase.js'
 import {Response} from './Response.js'
 import {PermissionRepository} from '../domain/authorization/permission/PermissionRepository.js'
