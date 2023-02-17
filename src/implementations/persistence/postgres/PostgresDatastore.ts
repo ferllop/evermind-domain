@@ -9,8 +9,9 @@ export abstract class PostgresDatastore<RowType> {
     }
 
     async query(query: string): Promise<QueryResult<RowType>> {
-        const result = await this.pool.query(query)
-        await this.pool.end()
+        const client = await this.pool.connect()
+        const result = await client.query(query)
+        await client.release(true)
         return result
     }
 }
